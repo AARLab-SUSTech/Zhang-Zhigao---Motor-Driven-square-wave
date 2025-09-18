@@ -349,7 +349,7 @@ int main(void)
 //  HAL_COMP_Start(&hcomp2);
 
   HAL_Delay(1000);
-  printf("hello\r\n");
+
 //  rad_omega = 10;
 //  // 公式： phase_increment = (电机频率 / 中断频率) * 2^32
 //  // 我们使用 64 位整数来计算以避免溢出
