@@ -1,0 +1,8 @@
+../Core/Src/control.c:21:6:DC_Power_CTR	16	static
+../Core/Src/control.c:42:6:set_speed	32	static
+../Core/Src/control.c:65:6:move_to_position	24	static
+../Core/Src/control.c:83:6:move_repeatedly	32	static
+../Core/Src/control.c:104:6:start_move_to_position	16	static
+../Core/Src/control.c:114:6:step_move	24	static,ignoring_inline_asm
+../Core/Src/control.c:131:6:Close_output	8	static
+../Core/Src/control.c:142:6:Update_output	16	static
