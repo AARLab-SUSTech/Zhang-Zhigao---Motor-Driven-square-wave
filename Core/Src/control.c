@@ -24,13 +24,13 @@ void DC_Power_CTR(bool state)
 	{
 		DC_Power_ON;
 		DC_ON_State = true;
-		 printf("%d\r\n",DC_ON_State);
+//		 printf("%d\r\n",DC_ON_State);
 	}
 	else
 	{
 		DC_Power_OFF;
 		DC_ON_State = false;
-		 printf("%d\r\n",DC_ON_State);
+//		 printf("%d\r\n",DC_ON_State);
 	}
 }
 

@@ -148,26 +148,33 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                     switch(data[4])
 	                     {
 	                         case 0x24://repeat mode
+	                        	 Motor_mode = MOTOR_OPEN_REPEATED;
 	                        	 move_repeatedly(data[7], data[6], (((uint16_t)rx_buffer[9] << 8) | rx_buffer[10]), data[8]);
 //	                        	 printf("min:%d,max:%d,count:%d,speed:%d\r\n",data[7],data[6],(((uint16_t)rx_buffer[9] << 8) | rx_buffer[10]),data[8]);
 	                             break;
 
 	                         case 0x25://STOP
 	                        	DC_Power_OFF;
+	                        	if((Motor_mode != MOTOR_OVER_HV_VOLTAGE) || (Motor_mode != MOTOR_OVER_HV_CURRENT) || (Motor_mode != MOTOR_OVER_DC_IN_CURRENT || Motor_mode != MOTOR_ERROR))
+	                        	{
 	                     		Motor_mode = MOTOR_IDLE;
+	                        	}
 	                     		Close_output();
 	                             break;
 
 	                         case 0x27://step p
+	                        	 Motor_mode = MOTOR_OPEN_POSITION;
 	                             move_to_position(data[6] , (((uint16_t)data[8] << 8) | data[7]));
 //	                             printf("speed:%d step:%d\r\n",(((uint16_t)data[8] << 8) | data[7]),data[6]);
 	                             break;
 
 	                         case 0x28://STEP+
+	                        	 Motor_mode = MOTOR_OPEN_POSITION;
 	                        	 step_move(1, 10);
 	                             break;
 
 	                         case 0x29://STEP-
+	                        	 Motor_mode = MOTOR_OPEN_POSITION;
 	                        	 step_move(-1, 10);
 	                             break;
 	                         case 0x30://SET SPEED

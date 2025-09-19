@@ -70,7 +70,7 @@ uint32_t ADC2_RAW_data[3];
 float rad_omega;
 float HV_V,HV_I,DC_I;
 float MAX_HV_voltage=1300;
-float MAX_HV_current=12;
+float MAX_HV_current=10;
 float MAX_DC_current=2;
 uint8_t loop_count;
 
@@ -328,81 +328,79 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 //  Close_output();//关闭所有输出
-//
-//  HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_buffer, RX_BUFFER_SIZE);
-//  __HAL_DMA_DISABLE_IT(&hdma_usart1_rx,DMA_IT_HT);
-//
-//  HAL_ADCEx_Calibration_Start(&hadc1, ADC_DIFFERENTIAL_ENDED);
-//  HAL_ADCEx_Calibration_Start(&hadc2, ADC_SINGLE_ENDED);
-//
-//  HAL_ADC_Start_DMA(&hadc1, ADC1_RAW_data, 2);// HV_V HV_I
-//  HAL_ADC_Start_DMA(&hadc2, ADC2_RAW_data, 3);//DC_I SIN COS
-//  HAL_TIM_Base_Start_IT(&htim7);//trigger
+
+  HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_buffer, RX_BUFFER_SIZE);
+  __HAL_DMA_DISABLE_IT(&hdma_usart1_rx,DMA_IT_HT);
+
+  HAL_ADCEx_Calibration_Start(&hadc1, ADC_DIFFERENTIAL_ENDED);
+  HAL_ADCEx_Calibration_Start(&hadc2, ADC_SINGLE_ENDED);
+
+  HAL_ADC_Start_DMA(&hadc1, ADC1_RAW_data, 2);// HV_V HV_I
+  HAL_ADC_Start_DMA(&hadc2, ADC2_RAW_data, 3);//DC_I SIN COS
+  HAL_TIM_Base_Start_IT(&htim7);//trigger
 
   //（ 10M + 20K )/20K = 501  ---- AMC1350 * 0.4   1/（（1/501）*0.4 ） = 501/0.4 = 1252.5   2400/1252.5 = 1.916167664670659V
 //  HAL_DAC_SetValue(&hdac3, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 460);//HVOUTPUT set MAX V  2500V  --  4.99001996007984V    5*0.4 = 2V  报警电压1.4 +- 1 V = 2.4V/0.4V
 //  HAL_DAC_SetValue(&hdac3, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 3000);//10ma max
 //  HAL_DAC_Start(&hdac3, DAC_CHANNEL_1);
 //  HAL_DAC_Start(&hdac3, DAC_CHANNEL_2);
-//
+
 //  HAL_COMP_Start(&hcomp1);
 //  HAL_COMP_Start(&hcomp2);
 
   HAL_Delay(1000);
 
-//  rad_omega = 10;
-//  // 公式： phase_increment = (电机频率 / 中断频率) * 2^32
-//  // 我们使用 64 位整数来计算以避免溢出
-//  phase_increment = (uint32_t)(((uint64_t)rad_omega * 0x100000000) / interrupt_freq_hz);
-//  HAL_TIM_Base_Start_IT(&htim6);//换向代码
+  rad_omega = 10;
+  // 公式： phase_increment = (电机频率 / 中断频率) * 2^32
+  // 我们使用 64 位整数来计算以避免溢出
+  phase_increment = (uint32_t)(((uint64_t)rad_omega * 0x100000000) / interrupt_freq_hz);
+  HAL_TIM_Base_Start_IT(&htim6);//换向代码
 
-  printf("\r\n--- FDCAN Minimal Test Started ---\r\n");
+//  FDCAN_FilterTypeDef sFilterConfig;
+//
+//  sFilterConfig.IdType = FDCAN_STANDARD_ID;       // ID类型：标准ID
+//  sFilterConfig.FilterIndex = 0;                  // 过滤器索引，0-27
+//  sFilterConfig.FilterType = FDCAN_FILTER_MASK;   // 过滤器类型：经典掩码模式
+//  sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // 匹配成功后存入Rx FIFO 0
+//  sFilterConfig.FilterID1 = 0x001;                // 要匹配的ID
+//  sFilterConfig.FilterID2 = 0x7FF;                // 掩码 (0x7FF表示ID的11位必须全部精确匹配)
 
-  FDCAN_FilterTypeDef sFilterConfig;
-
-  sFilterConfig.IdType = FDCAN_STANDARD_ID;       // ID类型：标准ID
-  sFilterConfig.FilterIndex = 0;                  // 过滤器索引，0-27
-  sFilterConfig.FilterType = FDCAN_FILTER_MASK;   // 过滤器类型：经典掩码模式
-  sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // 匹配成功后存入Rx FIFO 0
-  sFilterConfig.FilterID1 = 0x001;                // 要匹配的ID
-  sFilterConfig.FilterID2 = 0x7FF;                // 掩码 (0x7FF表示ID的11位必须全部精确匹配)
-
-  // 应用此过滤器配置
-  if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK)
-  {
-  	printf("rxerror\r\n");
-      Error_Handler();
-  }
-
-    /* 1. 启动 FDCAN 外设 */
-    if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
-    {
-      // 如果HAL_FDCAN_Start失败，会在这里打印信息然后卡死
-      printf("FATAL: HAL_FDCAN_Start() FAILED%d!\r\n",HAL_FDCAN_Start(&hfdcan1));
-      Error_Handler();
-    }
-    printf("INFO: HAL_FDCAN_Start() OK.\r\n");
-
-    // 激活接收FIFO 0新消息通知，这是开启接收中断的大门
-    if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
-    {
-        Error_Handler();
-    }
-
-    /* 2. 配置发送报文头和数据 */
-    TxHeader.Identifier = 0x001;
-    TxHeader.IdType = FDCAN_STANDARD_ID;
-    TxHeader.TxFrameType = FDCAN_DATA_FRAME;
-    TxHeader.DataLength = FDCAN_DLC_BYTES_8;
-    TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-    TxHeader.BitRateSwitch = FDCAN_BRS_OFF;
-    TxHeader.FDFormat = FDCAN_FRAME_CLASSIC;
-    TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
-    TxHeader.MessageMarker = 0;
-
-    for(int i=0; i<8; i++) {
-        TxData[i] = i;
-    }
+//  // 应用此过滤器配置
+//  if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK)
+//  {
+//  	printf("rxerror\r\n");
+//      Error_Handler();
+//  }
+//
+//    /* 1. 启动 FDCAN 外设 */
+//    if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
+//    {
+//      // 如果HAL_FDCAN_Start失败，会在这里打印信息然后卡死
+//      printf("FATAL: HAL_FDCAN_Start() FAILED%d!\r\n",HAL_FDCAN_Start(&hfdcan1));
+//      Error_Handler();
+//    }
+//    printf("INFO: HAL_FDCAN_Start() OK.\r\n");
+//
+//    // 激活接收FIFO 0新消息通知，这是开启接收中断的大门
+//    if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
+//    {
+//        Error_Handler();
+//    }
+//
+//    /* 2. 配置发送报文头和数据 */
+//    TxHeader.Identifier = 0x001;
+//    TxHeader.IdType = FDCAN_STANDARD_ID;
+//    TxHeader.TxFrameType = FDCAN_DATA_FRAME;
+//    TxHeader.DataLength = FDCAN_DLC_BYTES_8;
+//    TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+//    TxHeader.BitRateSwitch = FDCAN_BRS_OFF;
+//    TxHeader.FDFormat = FDCAN_FRAME_CLASSIC;
+//    TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+//    TxHeader.MessageMarker = 0;
+//
+//    for(int i=0; i<8; i++) {
+//        TxData[i] = i;
+//    }
 
   /* USER CODE END 2 */
 
@@ -413,15 +411,16 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	    HAL_Delay(1000);
-
-	    if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
-	    {
-	      if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData) != HAL_OK)
-	      {
-	        Error_Handler();
-	      }
-	    }
+		printf("%.3f,%.3f,%.3f,%d\r\n",HV_V,HV_I,DC_I,absolute_step_counter);
+		HAL_Delay(1);
+	    HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
+//	    if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+//	    {
+//	      if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData) != HAL_OK)
+//	      {
+//	        Error_Handler();
+//	      }
+//	    }
   }
   /* USER CODE END 3 */
 }
@@ -1116,6 +1115,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_1, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, Power_ON_Pin|CH1__CTR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : PC13 */
@@ -1124,6 +1126,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PF1 */
+  GPIO_InitStruct.Pin = GPIO_PIN_1;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
   /*Configure GPIO pin : Power_ON_Pin */
   GPIO_InitStruct.Pin = Power_ON_Pin;

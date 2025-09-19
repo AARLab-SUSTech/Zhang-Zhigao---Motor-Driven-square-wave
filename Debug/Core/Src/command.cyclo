@@ -1,4 +1,4 @@
 ../Core/Src/command.c:31:6:send_float_array_dma	8
 ../Core/Src/command.c:90:6:HAL_UART_TxCpltCallback	2
 ../Core/Src/command.c:100:6:HAL_UARTEx_RxEventCallback	3
-../Core/Src/command.c:122:6:process_received_data	16
+../Core/Src/command.c:122:6:process_received_data	20
