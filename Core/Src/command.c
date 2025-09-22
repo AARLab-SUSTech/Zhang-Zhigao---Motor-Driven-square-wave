@@ -149,7 +149,7 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                     {
 	                         case 0x24://repeat mode
 	                        	 Motor_mode = MOTOR_OPEN_REPEATED;
-	                        	 move_repeatedly(data[7], data[6], (((uint16_t)rx_buffer[9] << 8) | rx_buffer[10]), data[8]);
+	                        	 move_repeatedly(data[7], data[6]/2, (((uint16_t)rx_buffer[9] << 8) | rx_buffer[10]), data[8]);
 //	                        	 printf("min:%d,max:%d,count:%d,speed:%d\r\n",data[7],data[6],(((uint16_t)rx_buffer[9] << 8) | rx_buffer[10]),data[8]);
 	                             break;
 
@@ -160,6 +160,7 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                     		Motor_mode = MOTOR_IDLE;
 	                        	}
 	                     		Close_output();
+	                     		 HAL_TIM_Base_Stop(&htim16);//dma printf
 	                             break;
 
 	                         case 0x27://step p
@@ -194,7 +195,10 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	             printf("Invalid frame header. Received header: %02X %02X, Expected header: %02X %02X\n",
 	            		 data[0], data[1], 0x55, 0xAA);
 	         }
-
+	         if((Motor_mode == MOTOR_OPEN_POSITION) || (Motor_mode == MOTOR_OPEN_REPEATED))
+	         {
+	        	 HAL_TIM_Base_Start_IT(&htim16);//dma printf
+	         }
 }
 
 #endif

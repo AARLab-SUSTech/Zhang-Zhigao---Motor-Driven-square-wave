@@ -72,6 +72,7 @@ void Error_Handler(void);
 extern uint16_t duty_TIM1;
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
+extern TIM_HandleTypeDef htim16;
 extern UART_HandleTypeDef huart1;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 // --- 串口资源 ---

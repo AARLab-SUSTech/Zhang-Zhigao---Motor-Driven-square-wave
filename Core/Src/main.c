@@ -70,8 +70,32 @@ uint32_t ADC2_RAW_data[3];
 float rad_omega;
 float HV_V,HV_I,DC_I;
 float MAX_HV_voltage=1300;
-float MAX_HV_current=10;
+float MAX_HV_current=12;
 float MAX_DC_current=2;
+
+// --- 功率计算相关变量 ---
+// 直流输入电压 (输入为20V)
+const float DC_INPUT_VOLTAGE = 20.0f;
+
+// 瞬时功率
+float dc_input_power = 0.0f;
+float hv_instantaneous_power = 0.0f;
+
+// 周期平均功率相关
+float hv_power_accumulator = 0.0f; // 用于累加一个电周期内的瞬时功率
+uint32_t hv_power_sample_count = 0;   // 用于计算一个电周期内的采样点数
+float hv_average_power_cycle = 0.0f;  // 存储每个电周期计算出的平均功率
+float last_hv_average_power_cycle = 0.0f;  // 存储上个电周期计算出的平均功率
+// 每秒平均功率相关
+float hv_power_accumulator_1s = 0.0f;   // 用于累加一秒内的瞬时功率
+uint32_t hv_power_sample_count_1s = 0;  // 用于计算一秒内的采样点数
+float hv_average_power_1s = 0.0f;       // 存储每秒计算出的平均功率
+float last_hv_average_power_1s = 0.0f;  // 存储上1s计算出的平均功率
+
+
+float dma_float_data[6];
+/* USER CODE END PV */
+
 uint8_t loop_count;
 
 /* USER CODE END PM */
@@ -93,6 +117,7 @@ TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim7;
+TIM_HandleTypeDef htim16;
 
 UART_HandleTypeDef huart1;
 DMA_HandleTypeDef hdma_usart1_rx;
@@ -117,6 +142,7 @@ static void MX_COMP2_Init(void);
 static void MX_DAC3_Init(void);
 static void MX_TIM6_Init(void);
 static void MX_FDCAN1_Init(void);
+static void MX_TIM16_Init(void);
 /* USER CODE BEGIN PFP */
 #ifdef __GNUC__									//串口重定向
 #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
@@ -136,6 +162,14 @@ PUTCHAR_PROTOTYPE
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
+	if(htim == &htim16)
+	{
+		dma_float_data[0] = last_hv_average_power_cycle;
+		dma_float_data[1] = last_hv_average_power_1s;
+		dma_float_data[2] = dc_input_power;
+		dma_float_data[3] = absolute_step_counter;
+		send_float_array_dma(dma_float_data, 4);
+	}
 	if(htim == &htim6)
 	{
     	int temp_data[2];
@@ -147,6 +181,28 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     	HV_V = temp_data[0] * 1.00909423828125f;//HV_V = (temp_data[0] / 4096) * 3.3f * 2 * 501 / 0.4f
         HV_I = (temp_data[1] * 0.005035400390625f);//HV_I = (temp_data[1] / 4096) * 3.3 / 8 / 20 * 1000
     	DC_I = ADC2_RAW_data[0] * 0.0008056640625f;//(ADC2_RAW_data[0] / 4096) * 3.3 / 200 / 0.005
+
+		// 1. 计算直流输入瞬时功率 (P_dc = V_dc * I_dc)
+		dc_input_power = DC_INPUT_VOLTAGE * DC_I;
+		// 2. 计算高压输出瞬时功率 (P_hv = V_hv * I_hv)
+		hv_instantaneous_power = HV_V * HV_I * 0.001f;
+		// --- B. 进行周期平均和每秒平均功率的累加 ---
+
+		// 3. 为“每周期平均功率”累加
+		hv_power_accumulator += hv_instantaneous_power;
+		hv_power_sample_count++;
+
+		// 4. 为“每秒平均功率”累加
+		hv_power_accumulator_1s += hv_instantaneous_power;
+		hv_power_sample_count_1s++;
+
+		// 中断频率是20kHz, 所以200次中断就是0.01秒
+		if (hv_power_sample_count_1s >= 200)
+		{
+			last_hv_average_power_1s = hv_power_accumulator_1s / hv_power_sample_count_1s;// 计算并更新上一秒的平均功率
+			hv_power_sample_count_1s = 0;   //清零计数
+			hv_power_accumulator_1s = 0.0f;// 重置，为下一秒准备
+		}
 
 //    	loop_count++;
 //    	if(loop_count == 100)
@@ -238,6 +294,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
         if(step != new_step)
         {
+
+			// 【修正】同时判断正转(5->0)和反转(0->5)的周期结束点
+			if ( (step == 5 && new_step == 0) || (step == 0 && new_step == 5) )
+			{
+				// 周期结束的计算逻辑本身是正确的
+				if (hv_power_sample_count > 0)
+				{
+					// 计算并更新上个周期的平均功率
+					last_hv_average_power_cycle = hv_power_accumulator / hv_power_sample_count;
+				}
+				// 重置，为下个周期准备
+				hv_power_accumulator = 0.0f;
+				hv_power_sample_count = 0;
+			}
             if (motor_direction == MOTOR_FORWARD) { absolute_step_counter++; }// 正转，计数值加1
                 else                              { absolute_step_counter--; }// 反转，计数值减1
 
@@ -325,6 +395,7 @@ int main(void)
   MX_DAC3_Init();
   MX_TIM6_Init();
   MX_FDCAN1_Init();
+  MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
 //  Close_output();//关闭所有输出
@@ -411,7 +482,27 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		printf("%.3f,%.3f,%.3f,%d\r\n",HV_V,HV_I,DC_I,absolute_step_counter);
+
+	  if(Motor_mode == MOTOR_OVER_HV_VOLTAGE)
+	  {
+		  printf("MOTOR_OVER_HV_VOLTAGE\r\n");
+			HAL_Delay(1000);
+	  }
+	  else if(Motor_mode == MOTOR_OVER_HV_CURRENT)
+	  {
+		  printf("MOTOR_OVER_HV_CURRENT\r\n");
+			HAL_Delay(1000);
+	  }
+	  else if(Motor_mode == MOTOR_OVER_DC_IN_CURRENT)
+	  {
+		  printf("MOTOR_OVER_DC_IN_CURRENT\r\n");
+			HAL_Delay(1000);
+	  }
+	  else
+	  {
+//		  printf("%.3f,%.3f,%.3f,%ld\r\n",last_hv_average_power_1s,last_hv_average_power_cycle,dc_input_power,absolute_step_counter);
+//		  printf("%.3f,%.3f,%.3f,%ld\r\n",HV_V,HV_I,DC_I,absolute_step_counter);
+	  }
 		HAL_Delay(1);
 	    HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
 //	    if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
@@ -1020,6 +1111,38 @@ static void MX_TIM7_Init(void)
 }
 
 /**
+  * @brief TIM16 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM16_Init(void)
+{
+
+  /* USER CODE BEGIN TIM16_Init 0 */
+
+  /* USER CODE END TIM16_Init 0 */
+
+  /* USER CODE BEGIN TIM16_Init 1 */
+
+  /* USER CODE END TIM16_Init 1 */
+  htim16.Instance = TIM16;
+  htim16.Init.Prescaler = 169;
+  htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim16.Init.Period = 999;
+  htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim16.Init.RepetitionCounter = 0;
+  htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim16) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM16_Init 2 */
+
+  /* USER CODE END TIM16_Init 2 */
+
+}
+
+/**
   * @brief USART1 Initialization Function
   * @param None
   * @retval None
@@ -1035,7 +1158,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 2000000;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;

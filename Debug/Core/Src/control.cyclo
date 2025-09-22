@@ -5,4 +5,4 @@
 ../Core/Src/control.c:104:6:start_move_to_position	1
 ../Core/Src/control.c:114:6:step_move	1
 ../Core/Src/control.c:131:6:Close_output	1
-../Core/Src/control.c:142:6:Update_output	7
+../Core/Src/control.c:143:6:Update_output	7

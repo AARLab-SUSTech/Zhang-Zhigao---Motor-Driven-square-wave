@@ -130,6 +130,7 @@ void step_move(int32_t relative_steps, float speed_hz)
 
 void Close_output(void)
 {
+	 HAL_TIM_Base_Stop(&htim16);//dma printf
 	DC_Power_OFF;
 	    	    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
 	    	    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_1);
