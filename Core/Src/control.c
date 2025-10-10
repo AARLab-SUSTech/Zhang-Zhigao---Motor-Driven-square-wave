@@ -47,13 +47,13 @@ void set_speed(float speed_hz)
     {
         motor_direction = MOTOR_FORWARD;
         // 使用 speed_hz 的绝对值来计算增量
-        double increment_f = (speed_hz / interrupt_freq_hz) * PHASE_2_32;
+        float increment_f = (speed_hz / interrupt_freq_hz) * PHASE_2_32;
         phase_increment = (uint32_t)increment_f;
     }
     else
     {
         motor_direction = MOTOR_REVERSE;
-        double increment_f = (-speed_hz / interrupt_freq_hz) * PHASE_2_32;
+        float increment_f = (-speed_hz / interrupt_freq_hz) * PHASE_2_32;
         phase_increment = (uint32_t)increment_f;
     }
 }

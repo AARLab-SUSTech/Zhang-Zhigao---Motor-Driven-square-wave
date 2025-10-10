@@ -81,6 +81,10 @@ const float DC_INPUT_VOLTAGE = 20.0f;
 float dc_input_power = 0.0f;
 float hv_instantaneous_power = 0.0f;
 
+/*
+ *
+ */
+
 // 周期平均功率相关
 float hv_power_accumulator = 0.0f; // 用于累加一个电周期内的瞬时功率
 uint32_t hv_power_sample_count = 0;   // 用于计算一个电周期内的采样点数
@@ -91,7 +95,6 @@ float hv_power_accumulator_1s = 0.0f;   // 用于累加一秒内的瞬时功率
 uint32_t hv_power_sample_count_1s = 0;  // 用于计算一秒内的采样点数
 float hv_average_power_1s = 0.0f;       // 存储每秒计算出的平均功率
 float last_hv_average_power_1s = 0.0f;  // 存储上1s计算出的平均功率
-
 
 float dma_float_data[6];
 /* USER CODE END PV */
@@ -124,7 +127,14 @@ DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USER CODE BEGIN PV */
+// 1. 算法参数 (您可以根据实际情况调整)
+const float  SPIKE_CURRENT_THRESHOLD   = 16.0f;    // 定义尖峰电流的阈值 (单位: mA)
+const uint16_t CHECK_WINDOW_SAMPLES    = 60;      // 定义检查窗口的大小 (N个采样点)。200个点 @ 20kHz = 1ms
+const uint16_t MAX_SPIKES_IN_WINDOW    = 50;      // 定义在一个窗口期内，允许出现的最大尖峰次数
 
+// 2. 算法工作变量
+uint16_t window_sample_counter = 0;   // 用于在窗口内计数的采样点计数器 (从0数到CHECK_WINDOW_SAMPLES)
+uint16_t spike_count_in_window = 0;   // 用于累计一个窗口期内的尖峰次数
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -159,6 +169,11 @@ PUTCHAR_PROTOTYPE
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+int float_current_counter=0;
+float current_1ms=0;
+float current_hvi;
+float dc_current_1ms=0;
+float current_dc;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
@@ -166,9 +181,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	{
 		dma_float_data[0] = last_hv_average_power_cycle;
 		dma_float_data[1] = last_hv_average_power_1s;
-		dma_float_data[2] = dc_input_power;
+		dma_float_data[2] = dc_current_1ms * 20.0f;
 		dma_float_data[3] = absolute_step_counter;
-		send_float_array_dma(dma_float_data, 4);
+		dma_float_data[4] = (float)spike_count_in_window;
+		dma_float_data[5] = current_1ms;
+		send_float_array_dma(dma_float_data, 6);
 	}
 	if(htim == &htim6)
 	{
@@ -179,8 +196,49 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //    	temp_data[1] = (ADC1_RAW_data[1] - 2048) * 2;
     	//V  mA
     	HV_V = temp_data[0] * 1.00909423828125f;//HV_V = (temp_data[0] / 4096) * 3.3f * 2 * 501 / 0.4f
-        HV_I = (temp_data[1] * 0.005035400390625f);//HV_I = (temp_data[1] / 4096) * 3.3 / 8 / 20 * 1000
+        HV_I = (temp_data[1] * 0.01007080078125);//HV_I = (temp_data[1] / 4096) * 3.3 / 8 / 10 * 1000
     	DC_I = ADC2_RAW_data[0] * 0.0008056640625f;//(ADC2_RAW_data[0] / 4096) * 3.3 / 200 / 0.005
+
+        // 1. 检查当前电流是否形成了一次尖峰
+        if (HV_I > SPIKE_CURRENT_THRESHOLD)
+        {
+        	spike_count_in_window++;
+        }
+
+        // 2. 采样点计数器自增
+        window_sample_counter++;
+
+        // 3. 判断一个检查窗口是否已经结束
+        if (window_sample_counter >= CHECK_WINDOW_SAMPLES)
+        {
+            // 窗口结束，进行判断
+            if (spike_count_in_window > MAX_SPIKES_IN_WINDOW)
+            {
+                // 在过去的N个采样点中，尖峰次数过多，判定为故障！
+                Motor_mode = MOTOR_OVER_HV_CURRENT; // 设置故障状态
+                Close_output();
+                DC_Power_CTR(false);
+                Buzzer_ON;
+                // 您现有的安全检查层会捕捉到这个状态并执行保护
+            }
+
+            // 4. 重置计数器，为下一个检查窗口做准备
+            window_sample_counter = 0;
+            spike_count_in_window = 0;
+        }
+
+        float_current_counter++;
+        current_hvi += HV_I;
+        current_dc += DC_I;
+
+        if(float_current_counter == 20)
+        {
+        	current_1ms = current_hvi/20.0f;
+        	current_hvi = 0;
+        	dc_current_1ms = current_dc/20.0f;
+        	current_dc = 0;
+        	float_current_counter = 0;
+        }
 
 		// 1. 计算直流输入瞬时功率 (P_dc = V_dc * I_dc)
 		dc_input_power = DC_INPUT_VOLTAGE * DC_I;
@@ -212,7 +270,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //    	}
 
     		if(HV_V > MAX_HV_voltage)  { Motor_mode = MOTOR_OVER_HV_VOLTAGE;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
-   		    if(HV_I > MAX_HV_current)  { Motor_mode = MOTOR_OVER_HV_CURRENT;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
+//   		    if(HV_I > MAX_HV_current)  { Motor_mode = MOTOR_OVER_HV_CURRENT;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
     		if(DC_I > MAX_DC_current)  { Motor_mode = MOTOR_OVER_DC_IN_CURRENT; Close_output();DC_Power_CTR(false);Buzzer_ON;}
 
         // --- 1. 安全检查层：处理最高优先级的 IDLE 和 ERROR 状态 ---
@@ -320,10 +378,24 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 }
 
+#define MY_NODE_ID      0x101  // <-- 【重要】在这里设置本节点的实际ID，例如5号节点
+#define BROADCAST_ID    0x100  // <-- 我们协议中定义的广播ID
+
 FDCAN_TxHeaderTypeDef TxHeader;
 FDCAN_RxHeaderTypeDef RxHeader; // 用于存储接收报文的头信息
 uint8_t RxData[8];              // 用于存储接收报文的数据
 uint8_t TxData[8];
+/*
+Data[0] = 0x01: 紧急停止 (Emergency Stop)
+
+Data[0] = 0x02: 步进+ (相对位置正向运动)
+
+Data[0] = 0x03: 步进- (相对位置反向运动)
+
+Data[0] = 0x04: 往复模式 (Reciprocating Mode)
+
+Data[0] = 0x05: 绝对位置模式 (Absolute Position Mode) - 【新增】
+ */
 // FDCAN接收FIFO 0消息挂起回调函数
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 {
@@ -336,13 +408,127 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
             // --- 在这里添加您自己的数据处理逻辑 ---
             printf("Message Received!\r\n");
             printf("  ID   : 0x%lX\r\n", RxHeader.Identifier);
-            printf("  DLC  : %lu bytes\r\n", (RxHeader.DataLength >> 16) & 0xF);
+            printf("  DLC  : %ld bytes\r\n", RxHeader.DataLength);
             printf("  Data : ");
-            for(int i=0; i < ((RxHeader.DataLength >> 16) & 0xF); i++)
+            for(int i=0; i < RxHeader.DataLength; i++)
             {
                 printf("0x%02X ", RxData[i]);
             }
-            printf("\r\n\r\n");
+            printf("\r\n");
+
+            if((RxHeader.Identifier == MY_NODE_ID ) || (RxHeader.Identifier == BROADCAST_ID ))
+            {
+            // --- BEGIN CAN PROTOCOL PROCESSING (v2) ---
+
+                        uint8_t command = RxData[0]; // 提取命令字
+
+                        switch(command)
+                        {
+                            case 0x01: // 命令: 紧急停止
+                            {
+	                        	DC_Power_OFF;
+	                        	if((Motor_mode != MOTOR_OVER_HV_VOLTAGE) || (Motor_mode != MOTOR_OVER_HV_CURRENT) || (Motor_mode != MOTOR_OVER_DC_IN_CURRENT || Motor_mode != MOTOR_ERROR))
+	                        	{
+	                     		Motor_mode = MOTOR_IDLE;
+	                        	}
+	                     		Close_output();
+	                     		HAL_TIM_Base_Stop(&htim16);//dma printf
+                                break;
+                            }
+
+                            case 0x02: // 命令: 步进+ (正向相对运动)
+                            case 0x03: // 命令: 步进- (反向相对运动)
+                            {
+                                // 1. 解析参数
+                                uint16_t speed_hz = (uint16_t)RxData[1] |
+                                                    (uint16_t)(RxData[2] << 8);
+
+                                // 2. 计算并设置电机控制参数
+                                position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
+
+                                // 3. 设置电机模式和目标
+                                Motor_mode = MOTOR_OPEN_POSITION;
+
+                                if (command == 0x02) // 正向
+                                {
+   	                        	 Motor_mode = MOTOR_OPEN_POSITION;
+   	                        	 step_move(1, 10);
+                                }
+                                else // 反向 (command == 0x03)
+                                {
+   	                        	 Motor_mode = MOTOR_OPEN_POSITION;
+   	                        	 step_move(-1, 10);
+                                }
+                                printf("CMD: Relative Step %c, Speed: %u Hz\r\n", (command == 0x02 ? '+' : '-'), speed_hz);
+                                break;
+                            }
+
+                            case 0x04: // 命令: 往复模式
+                            {
+                                // 1. 解析参数
+                                uint16_t speed_hz = (uint16_t)RxData[1] |
+                                					(uint32_t)(RxData[2] << 8);
+                                uint16_t steps_range_A = (uint32_t)RxData[3] |
+                                                       (uint32_t)(RxData[4] << 8);
+
+                                uint16_t steps_range_B = (uint32_t)RxData[5] |
+                                                       (uint32_t)(RxData[6] << 8);
+
+                                uint8_t count =       (uint32_t)RxData[7];
+
+                                // 2. 计算速度
+                                position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
+
+                                // 3. 设置往复运动参数
+                                repeated_pos_A = steps_range_A;
+                                repeated_pos_B = steps_range_B;
+                                repeated_count_total = count;
+                                repeated_count_current = 0;
+
+                                // 4. 启动往复模式
+	                        	Motor_mode = MOTOR_OPEN_REPEATED;
+	                        	move_repeatedly(repeated_pos_A, repeated_pos_B, repeated_count_total, speed_hz);
+
+                                printf("CMD: Repeated Mode, Range: %d   %d steps, Speed: %u Hz  count:%d \r\n", steps_range_A, steps_range_B, speed_hz , count);
+                                break;
+                            }
+
+                            case 0x05: // 【新增】命令: 绝对位置模式
+                            {
+                                // 1. 解析参数
+                                // 在此模式下，参数代表的是绝对位置坐标
+
+                                uint16_t speed_hz = (uint16_t)RxData[1] |
+                                                    (uint16_t)(RxData[2] << 8);
+
+                                uint32_t absolute_pos = (uint32_t)RxData[3] |
+                                                        (uint32_t)(RxData[4] << 8);
+                                // 2. 计算速度
+                                position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
+
+                                // 3. 设置电机模式和目标
+                                Motor_mode = MOTOR_OPEN_POSITION;
+                                // 直接将目标位置设置为指令中的绝对位置
+                                target_step_position = absolute_pos;
+	                            move_to_position(target_step_position , speed_hz);
+                                printf("CMD: Absolute Position, Target: %ld, Speed: %u Hz\r\n", target_step_position, speed_hz);
+                                break;
+                            }
+
+                            default:
+                            {
+                                // 收到未知的命令
+                                printf("ERR: Unknown Command 0x%02X\r\n", command);
+                                break;
+                            }
+                        }
+                        // --- END CAN PROTOCOL PROCESSING (v2) ---
+            }
+            else
+            {
+                printf("ID error\r\n");
+            }
+
         }
 
         // 【非常重要】: 每次处理完中断后，必须重新激活通知，否则中断只会触发一次！
@@ -427,51 +613,51 @@ int main(void)
   phase_increment = (uint32_t)(((uint64_t)rad_omega * 0x100000000) / interrupt_freq_hz);
   HAL_TIM_Base_Start_IT(&htim6);//换向代码
 
-//  FDCAN_FilterTypeDef sFilterConfig;
-//
-//  sFilterConfig.IdType = FDCAN_STANDARD_ID;       // ID类型：标准ID
-//  sFilterConfig.FilterIndex = 0;                  // 过滤器索引，0-27
-//  sFilterConfig.FilterType = FDCAN_FILTER_MASK;   // 过滤器类型：经典掩码模式
-//  sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // 匹配成功后存入Rx FIFO 0
-//  sFilterConfig.FilterID1 = 0x001;                // 要匹配的ID
-//  sFilterConfig.FilterID2 = 0x7FF;                // 掩码 (0x7FF表示ID的11位必须全部精确匹配)
+  FDCAN_FilterTypeDef sFilterConfig;
 
-//  // 应用此过滤器配置
-//  if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK)
-//  {
-//  	printf("rxerror\r\n");
-//      Error_Handler();
-//  }
-//
-//    /* 1. 启动 FDCAN 外设 */
-//    if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
-//    {
-//      // 如果HAL_FDCAN_Start失败，会在这里打印信息然后卡死
-//      printf("FATAL: HAL_FDCAN_Start() FAILED%d!\r\n",HAL_FDCAN_Start(&hfdcan1));
-//      Error_Handler();
-//    }
-//    printf("INFO: HAL_FDCAN_Start() OK.\r\n");
-//
-//    // 激活接收FIFO 0新消息通知，这是开启接收中断的大门
-//    if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
-//    {
-//        Error_Handler();
-//    }
-//
-//    /* 2. 配置发送报文头和数据 */
-//    TxHeader.Identifier = 0x001;
-//    TxHeader.IdType = FDCAN_STANDARD_ID;
-//    TxHeader.TxFrameType = FDCAN_DATA_FRAME;
-//    TxHeader.DataLength = FDCAN_DLC_BYTES_8;
-//    TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-//    TxHeader.BitRateSwitch = FDCAN_BRS_OFF;
-//    TxHeader.FDFormat = FDCAN_FRAME_CLASSIC;
-//    TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
-//    TxHeader.MessageMarker = 0;
-//
-//    for(int i=0; i<8; i++) {
-//        TxData[i] = i;
-//    }
+  sFilterConfig.IdType = FDCAN_STANDARD_ID;       // ID类型：标准ID
+  sFilterConfig.FilterIndex = 0;                  // 过滤器索引，0-27
+  sFilterConfig.FilterType = FDCAN_FILTER_DUAL;   // 过滤器类型：
+  sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // 匹配成功后存入Rx FIFO 0
+  sFilterConfig.FilterID1 = MY_NODE_ID;                // 要匹配的ID
+  sFilterConfig.FilterID2 = BROADCAST_ID;              // 广播ID
+
+  // 应用此过滤器配置
+  if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK)
+  {
+  	printf("rxerror\r\n");
+      Error_Handler();
+  }
+    /* 1. 启动 FDCAN 外设 */
+    if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
+    {
+      // 如果HAL_FDCAN_Start失败，会在这里打印信息然后卡死
+      printf("FATAL: HAL_FDCAN_Start() FAILED%d!\r\n",HAL_FDCAN_Start(&hfdcan1));
+      Error_Handler();
+    }
+    printf("INFO: HAL_FDCAN_Start() OK.\r\n");
+    printf("--- FIRMWARE VERSION 2.0 -- FILTER TEST ---\r\n");
+
+    // 激活接收FIFO 0新消息通知，这是开启接收中断的大门
+    if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
+    /* 2. 配置发送报文头和数据 */
+    TxHeader.Identifier = 0x001;
+    TxHeader.IdType = FDCAN_STANDARD_ID;
+    TxHeader.TxFrameType = FDCAN_DATA_FRAME;
+    TxHeader.DataLength = FDCAN_DLC_BYTES_8;
+    TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+    TxHeader.BitRateSwitch = FDCAN_BRS_OFF;
+    TxHeader.FDFormat = FDCAN_FRAME_CLASSIC;
+    TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+    TxHeader.MessageMarker = 0;
+
+    for(int i=0; i<8; i++) {
+        TxData[i] = i;
+    }
 
   /* USER CODE END 2 */
 
@@ -503,7 +689,7 @@ int main(void)
 //		  printf("%.3f,%.3f,%.3f,%ld\r\n",last_hv_average_power_1s,last_hv_average_power_cycle,dc_input_power,absolute_step_counter);
 //		  printf("%.3f,%.3f,%.3f,%ld\r\n",HV_V,HV_I,DC_I,absolute_step_counter);
 	  }
-		HAL_Delay(1);
+		HAL_Delay(1000);
 	    HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
 //	    if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 //	    {
