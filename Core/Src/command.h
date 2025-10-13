@@ -13,4 +13,5 @@
 
 void process_received_data(uint8_t* data, uint16_t size);
 void send_float_array_dma(float* arr, int count);
+void send_int16_array_dma(int16_t* arr, int count);
 #endif /* SRC_COMMAND_H_ */

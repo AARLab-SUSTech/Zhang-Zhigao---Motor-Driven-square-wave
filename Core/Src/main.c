@@ -101,6 +101,7 @@ float hv_average_power_1s = 0.0f;       // 存储每秒计算出的平均功率
 float last_hv_average_power_1s = 0.0f;  // 存储上1s计算出的平均功率
 
 float dma_float_data[6];
+int16_t dma_int16_data[10];
 /* USER CODE END PV */
 
 uint8_t loop_count;
@@ -141,6 +142,7 @@ const uint16_t MAX_SPIKES_IN_WINDOW    = 50;      // 定义在一个窗口期内
 // 2. 算法工作变量
 uint16_t window_sample_counter = 0;   // 用于在窗口内计数的采样点计数器 (从0数到CHECK_WINDOW_SAMPLES)
 uint16_t spike_count_in_window = 0;   // 用于累计一个窗口期内的尖峰次数
+int16_t test = 32760;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -192,6 +194,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		dma_float_data[4] = absolute_step_counter;
 		dma_float_data[5] = (float)spike_count_in_window;
 		send_float_array_dma(dma_float_data, 6);
+
+
+
+
 	}
 	if(htim == &htim6)
 	{
@@ -558,8 +564,10 @@ int main(void)
 //		  printf("%.3f,%.3f,%.3f,%ld\r\n",last_hv_average_power_1s,last_hv_average_power_cycle,dc_input_power,absolute_step_counter);
 //		  printf("%.3f,%.3f,%.3f,%ld\r\n",HV_V,HV_I,DC_I,absolute_step_counter);
 	  }
-		HAL_Delay(1);
-		printf("%ld,%ld,%.3f,%.3f\r\n",ADC2_RAW_data[1],ADC2_RAW_data[2],EMA_DATA.theta_degrees,EMA_DATA.position_mm);
+		HAL_Delay(100);
+//		printf("%ld,%ld,%.3f,%.3f\r\n",ADC2_RAW_data[1],ADC2_RAW_data[2],EMA_DATA.theta_degrees,EMA_DATA.position_mm);
+		test++;
+		printf("%d\n",test);
 	    HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
 //	    if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 //	    {
@@ -1254,7 +1262,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 2000000;
+  huart1.Init.BaudRate = 4000000;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;

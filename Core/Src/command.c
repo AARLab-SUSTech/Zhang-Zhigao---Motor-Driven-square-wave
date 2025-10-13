@@ -84,17 +84,71 @@ void send_float_array_dma(float* arr, int count) {
 }
 
 /**
- * @brief UART DMA发送完成回调函数
- * @param huart UART句柄
+ * @brief 将一个大数组按指定分组大小格式化，并使用DMA一次性发送
+ * @param arr                指向int16_t数组的指针
+ * @param total_count        数组中元素的总个数
+ * @param elements_per_group 每组包含多少个元素
  */
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
-    // 检查是哪个UART完成了发送
-    if (huart->Instance == USART1) { // 假设您使用的是USART1
-        // 将DMA状态标志设置为“完成/空闲”
+void send_int16_groups_dma(int16_t* arr, int total_count, int elements_per_group)
+{
+    // 1. 检查DMA是否空闲
+    if (g_uart_dma_transfer_complete == 0) {
+        return; // DMA忙，丢弃本次任务
+    }
+    if (total_count <= 0 || elements_per_group <= 0) {
+        return; // 无效参数
+    }
+
+    // 2. 将DMA状态标志设置为“忙碌”
+    g_uart_dma_transfer_complete = 0;
+
+    // 3. 动态构建格式化字符串
+    int current_len = 0;
+    int remaining_size = UART_TX_BUFFER_SIZE;
+
+    for (int i = 0; i < total_count; i++)
+    {
+        int written_len;
+
+        // ***** 核心逻辑修改 *****
+        // 判断条件:
+        // 1. (i + 1) % elements_per_group == 0 : 当前元素是某一组的最后一个
+        // 2. i == total_count - 1             : 当前元素是整个大数组的最后一个 (处理最后一组不完整的情况)
+        if (((i + 1) % elements_per_group == 0) || (i == total_count - 1))
+        {
+            // 是组的末尾或是总的末尾，添加换行符
+            written_len = snprintf((char*)g_uart_tx_buffer + current_len, remaining_size, "%d\r\n", arr[i]);
+        }
+        else
+        {
+            // 在组的中间，添加逗号
+            written_len = snprintf((char*)g_uart_tx_buffer + current_len, remaining_size, "%d,", arr[i]);
+        }
+
+        // 检查snprintf是否成功，以及是否超出缓冲区
+        if (written_len <= 0 || written_len >= remaining_size)
+        {
+            // 缓冲区太小是常见错误，需要增大 UART_TX_BUFFER_SIZE
+            g_uart_dma_transfer_complete = 1; // 释放DMA标志
+            // 在这里可以添加错误处理代码，例如通过LED闪烁来报警
+            return;
+        }
+
+        // 更新长度和剩余空间
+        current_len += written_len;
+        remaining_size -= written_len;
+    }
+
+    // 4. 启动DMA传输
+    if (current_len > 0)
+    {
+        HAL_UART_Transmit_DMA(&huart1, g_uart_tx_buffer, current_len);
+    }
+    else
+    {
         g_uart_dma_transfer_complete = 1;
     }
 }
-
 
 // 添加这个正确的 DMA 空闲中断回调函数
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
