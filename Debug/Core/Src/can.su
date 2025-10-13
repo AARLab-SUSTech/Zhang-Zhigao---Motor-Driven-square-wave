@@ -1,0 +1,2 @@
+../Core/Src/can.c:18:6:CAN_init	40	static
+../Core/Src/can.c:79:6:HAL_FDCAN_RxFifo0Callback	72	static

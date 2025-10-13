@@ -23,6 +23,10 @@
 /* USER CODE BEGIN Includes */
 #include "control.h"
 #include "command.h"
+#include "ad7190.h"
+#include "foc.h"
+#include "can.h"
+Force_sensor Force_Sensor1;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -100,7 +104,7 @@ float dma_float_data[6];
 /* USER CODE END PV */
 
 uint8_t loop_count;
-
+Motor EMA_DATA;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -115,6 +119,8 @@ COMP_HandleTypeDef hcomp2;
 DAC_HandleTypeDef hdac3;
 
 FDCAN_HandleTypeDef hfdcan1;
+
+SPI_HandleTypeDef hspi1;
 
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
@@ -153,6 +159,7 @@ static void MX_DAC3_Init(void);
 static void MX_TIM6_Init(void);
 static void MX_FDCAN1_Init(void);
 static void MX_TIM16_Init(void);
+static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
 #ifdef __GNUC__									//串口重定向
 #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
@@ -174,17 +181,16 @@ float current_1ms=0;
 float current_hvi;
 float dc_current_1ms=0;
 float current_dc;
-
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(htim == &htim16)
 	{
 		dma_float_data[0] = last_hv_average_power_cycle;
 		dma_float_data[1] = last_hv_average_power_1s;
-		dma_float_data[2] = dc_current_1ms * 20.0f;
-		dma_float_data[3] = absolute_step_counter;
-		dma_float_data[4] = (float)spike_count_in_window;
-		dma_float_data[5] = current_1ms;
+		dma_float_data[2] = dc_current_1ms;
+		dma_float_data[3] = current_1ms;
+		dma_float_data[4] = absolute_step_counter;
+		dma_float_data[5] = (float)spike_count_in_window;
 		send_float_array_dma(dma_float_data, 6);
 	}
 	if(htim == &htim6)
@@ -192,12 +198,60 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     	int temp_data[2];
     	temp_data[0] = (2048 - ADC1_RAW_data[0]) * 2;
     	temp_data[1] = (2048 - ADC1_RAW_data[1]) * 2;
-//    	temp_data[0] = (ADC1_RAW_data[0] - 2048) * 2;
-//    	temp_data[1] = (ADC1_RAW_data[1] - 2048) * 2;
     	//V  mA
     	HV_V = temp_data[0] * 1.00909423828125f;//HV_V = (temp_data[0] / 4096) * 3.3f * 2 * 501 / 0.4f
         HV_I = (temp_data[1] * 0.01007080078125);//HV_I = (temp_data[1] / 4096) * 3.3 / 8 / 10 * 1000
     	DC_I = ADC2_RAW_data[0] * 0.0008056640625f;//(ADC2_RAW_data[0] / 4096) * 3.3 / 200 / 0.005
+
+    	EMA_DATA.sin_V = (ADC2_RAW_data[1]*0.0008056640625f);// 3.3/4096
+    	EMA_DATA.cos_V = (ADC2_RAW_data[2]*0.0008056640625f);// 3.3/4096
+
+		  float current_theta_degrees; // 存储当前计算出的角度
+		  EMA_DATA.theta_radians = atan2f(EMA_DATA.sin_V - EMA_DATA.sin_offset, EMA_DATA.cos_V - EMA_DATA.cos_offset);
+
+		  current_theta_degrees = EMA_DATA.theta_radians * (180.0f / M_PI);
+
+		  EMA_DATA.theta_degrees = current_theta_degrees; // 更新结构体中的当前角度
+		  if (EMA_DATA.theta_degrees < 0) {
+			  EMA_DATA.theta_degrees += 360.0f;
+		  }
+
+		  // 角度回绕检测和圈数累计
+		  // 需要一个阈值来判断是否发生了回绕，例如180度。
+		  // 如果角度变化超过180度，则认为发生了一次回绕。
+		  float delta_angle = EMA_DATA.theta_degrees - EMA_DATA.previous_theta_degrees;
+
+		  if (!EMA_DATA.first_calculation) { // 只有在不是第一次计算时才进行回绕检测
+			  if (delta_angle > 180.0f) { // 例如从 350 -> 10，实际是正转，但差值 < -180
+				  EMA_DATA.cycle_count--;     // 反向回绕 (例如从 10 度跳到 350 度)
+			  } else if (delta_angle < -180.0f) { // 例如从 10 -> 350，实际是反转，但差值 > 180
+				  EMA_DATA.cycle_count++;     // 正向回绕 (例如从 350 度跳到 10 度)
+			  }
+		  } else {
+			  EMA_DATA.first_calculation = 0; // 清除首次计算标志
+	      }
+		  // 更新上一时刻的角度
+		  EMA_DATA.previous_theta_degrees = EMA_DATA.theta_degrees;
+		  // 计算周期内位移 (0 到 2mm)
+		  EMA_DATA.current_displacement_within_cycle_mm = (EMA_DATA.theta_degrees / 360.0f) * 2.0f;
+		  // 计算累计位置
+		  if(EMA_DATA.Min_Max_cal_status == false)
+		  {
+			  EMA_DATA.position_mm = (float)EMA_DATA.cycle_count * 2.0f + EMA_DATA.current_displacement_within_cycle_mm;
+		  }
+		  else if(EMA_DATA.Min_Max_cal_status == true)
+		  {
+			  EMA_DATA.position_mm = (float)EMA_DATA.cycle_count * 2.0f + EMA_DATA.current_displacement_within_cycle_mm - EMA_DATA.min_position_mm + 1.5f;
+		  }
+
+		  EMA_DATA.Loop_count++;
+		  if(EMA_DATA.Loop_count == 10)
+		  {
+			  EMA_DATA.speed = (EMA_DATA.position_mm - EMA_DATA.Last_position_mm)/0.001f;//计算速度 1khz循环执行周期
+			  EMA_DATA.speed = 0.8f*EMA_DATA.speed + 0.2*EMA_DATA.Last_speed;
+			  EMA_DATA.Last_speed = EMA_DATA.speed;
+			  EMA_DATA.Last_position_mm = EMA_DATA.position_mm;//更新位置
+		  }
 
         // 1. 检查当前电流是否形成了一次尖峰
         if (HV_I > SPIKE_CURRENT_THRESHOLD)
@@ -378,166 +432,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 }
 
-#define MY_NODE_ID      0x101  // <-- 【重要】在这里设置本节点的实际ID，例如5号节点
-#define BROADCAST_ID    0x100  // <-- 我们协议中定义的广播ID
 
-FDCAN_TxHeaderTypeDef TxHeader;
-FDCAN_RxHeaderTypeDef RxHeader; // 用于存储接收报文的头信息
-uint8_t RxData[8];              // 用于存储接收报文的数据
-uint8_t TxData[8];
-/*
-Data[0] = 0x01: 紧急停止 (Emergency Stop)
-
-Data[0] = 0x02: 步进+ (相对位置正向运动)
-
-Data[0] = 0x03: 步进- (相对位置反向运动)
-
-Data[0] = 0x04: 往复模式 (Reciprocating Mode)
-
-Data[0] = 0x05: 绝对位置模式 (Absolute Position Mode) - 【新增】
- */
-// FDCAN接收FIFO 0消息挂起回调函数
-void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
-{
-    // 检查是否是“新消息到达”中断
-    if((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
-    {
-        // 从Rx FIFO 0中获取消息，存入上面的全局变量中
-        if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader, RxData) == HAL_OK)
-        {
-            // --- 在这里添加您自己的数据处理逻辑 ---
-            printf("Message Received!\r\n");
-            printf("  ID   : 0x%lX\r\n", RxHeader.Identifier);
-            printf("  DLC  : %ld bytes\r\n", RxHeader.DataLength);
-            printf("  Data : ");
-            for(int i=0; i < RxHeader.DataLength; i++)
-            {
-                printf("0x%02X ", RxData[i]);
-            }
-            printf("\r\n");
-
-            if((RxHeader.Identifier == MY_NODE_ID ) || (RxHeader.Identifier == BROADCAST_ID ))
-            {
-            // --- BEGIN CAN PROTOCOL PROCESSING (v2) ---
-
-                        uint8_t command = RxData[0]; // 提取命令字
-
-                        switch(command)
-                        {
-                            case 0x01: // 命令: 紧急停止
-                            {
-	                        	DC_Power_OFF;
-	                        	if((Motor_mode != MOTOR_OVER_HV_VOLTAGE) || (Motor_mode != MOTOR_OVER_HV_CURRENT) || (Motor_mode != MOTOR_OVER_DC_IN_CURRENT || Motor_mode != MOTOR_ERROR))
-	                        	{
-	                     		Motor_mode = MOTOR_IDLE;
-	                        	}
-	                     		Close_output();
-	                     		HAL_TIM_Base_Stop(&htim16);//dma printf
-                                break;
-                            }
-
-                            case 0x02: // 命令: 步进+ (正向相对运动)
-                            case 0x03: // 命令: 步进- (反向相对运动)
-                            {
-                                // 1. 解析参数
-                                uint16_t speed_hz = (uint16_t)RxData[1] |
-                                                    (uint16_t)(RxData[2] << 8);
-
-                                // 2. 计算并设置电机控制参数
-                                position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
-
-                                // 3. 设置电机模式和目标
-                                Motor_mode = MOTOR_OPEN_POSITION;
-
-                                if (command == 0x02) // 正向
-                                {
-   	                        	 Motor_mode = MOTOR_OPEN_POSITION;
-   	                        	 step_move(1, 10);
-                                }
-                                else // 反向 (command == 0x03)
-                                {
-   	                        	 Motor_mode = MOTOR_OPEN_POSITION;
-   	                        	 step_move(-1, 10);
-                                }
-                                printf("CMD: Relative Step %c, Speed: %u Hz\r\n", (command == 0x02 ? '+' : '-'), speed_hz);
-                                break;
-                            }
-
-                            case 0x04: // 命令: 往复模式
-                            {
-                                // 1. 解析参数
-                                uint16_t speed_hz = (uint16_t)RxData[1] |
-                                					(uint32_t)(RxData[2] << 8);
-                                uint16_t steps_range_A = (uint32_t)RxData[3] |
-                                                       (uint32_t)(RxData[4] << 8);
-
-                                uint16_t steps_range_B = (uint32_t)RxData[5] |
-                                                       (uint32_t)(RxData[6] << 8);
-
-                                uint8_t count =       (uint32_t)RxData[7];
-
-                                // 2. 计算速度
-                                position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
-
-                                // 3. 设置往复运动参数
-                                repeated_pos_A = steps_range_A;
-                                repeated_pos_B = steps_range_B;
-                                repeated_count_total = count;
-                                repeated_count_current = 0;
-
-                                // 4. 启动往复模式
-	                        	Motor_mode = MOTOR_OPEN_REPEATED;
-	                        	move_repeatedly(repeated_pos_A, repeated_pos_B, repeated_count_total, speed_hz);
-
-                                printf("CMD: Repeated Mode, Range: %d   %d steps, Speed: %u Hz  count:%d \r\n", steps_range_A, steps_range_B, speed_hz , count);
-                                break;
-                            }
-
-                            case 0x05: // 【新增】命令: 绝对位置模式
-                            {
-                                // 1. 解析参数
-                                // 在此模式下，参数代表的是绝对位置坐标
-
-                                uint16_t speed_hz = (uint16_t)RxData[1] |
-                                                    (uint16_t)(RxData[2] << 8);
-
-                                uint32_t absolute_pos = (uint32_t)RxData[3] |
-                                                        (uint32_t)(RxData[4] << 8);
-                                // 2. 计算速度
-                                position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
-
-                                // 3. 设置电机模式和目标
-                                Motor_mode = MOTOR_OPEN_POSITION;
-                                // 直接将目标位置设置为指令中的绝对位置
-                                target_step_position = absolute_pos;
-	                            move_to_position(target_step_position , speed_hz);
-                                printf("CMD: Absolute Position, Target: %ld, Speed: %u Hz\r\n", target_step_position, speed_hz);
-                                break;
-                            }
-
-                            default:
-                            {
-                                // 收到未知的命令
-                                printf("ERR: Unknown Command 0x%02X\r\n", command);
-                                break;
-                            }
-                        }
-                        // --- END CAN PROTOCOL PROCESSING (v2) ---
-            }
-            else
-            {
-                printf("ID error\r\n");
-            }
-
-        }
-
-        // 【非常重要】: 每次处理完中断后，必须重新激活通知，否则中断只会触发一次！
-        if (HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
-        {
-           Error_Handler();
-        }
-    }
-}
 /* USER CODE END 0 */
 
 /**
@@ -582,6 +477,7 @@ int main(void)
   MX_TIM6_Init();
   MX_FDCAN1_Init();
   MX_TIM16_Init();
+  MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
 //  Close_output();//关闭所有输出
@@ -605,6 +501,16 @@ int main(void)
 //  HAL_COMP_Start(&hcomp1);
 //  HAL_COMP_Start(&hcomp2);
 
+//  	  Force_Sensor1.weight_proportion=86742;  // 电压值与重量变换比例，这个需要实际测试计算才能得到
+//  	  Force_Sensor1.weight_Zero_Data=0;   // 零值
+//
+//  	    Force_sensor_init();
+//  	    weight_ad7190_conf();
+//
+//  	    HAL_Delay(500);
+//  	    Force_Sensor1.weight_Zero_Data = weight_ad7190_ReadAvg(6);
+//  	    printf("zero:%ld\n",Force_Sensor1.weight_Zero_Data);
+
   HAL_Delay(1000);
 
   rad_omega = 10;
@@ -613,51 +519,10 @@ int main(void)
   phase_increment = (uint32_t)(((uint64_t)rad_omega * 0x100000000) / interrupt_freq_hz);
   HAL_TIM_Base_Start_IT(&htim6);//换向代码
 
-  FDCAN_FilterTypeDef sFilterConfig;
+  CAN_init();
 
-  sFilterConfig.IdType = FDCAN_STANDARD_ID;       // ID类型：标准ID
-  sFilterConfig.FilterIndex = 0;                  // 过滤器索引，0-27
-  sFilterConfig.FilterType = FDCAN_FILTER_DUAL;   // 过滤器类型：
-  sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; // 匹配成功后存入Rx FIFO 0
-  sFilterConfig.FilterID1 = MY_NODE_ID;                // 要匹配的ID
-  sFilterConfig.FilterID2 = BROADCAST_ID;              // 广播ID
-
-  // 应用此过滤器配置
-  if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK)
-  {
-  	printf("rxerror\r\n");
-      Error_Handler();
-  }
-    /* 1. 启动 FDCAN 外设 */
-    if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
-    {
-      // 如果HAL_FDCAN_Start失败，会在这里打印信息然后卡死
-      printf("FATAL: HAL_FDCAN_Start() FAILED%d!\r\n",HAL_FDCAN_Start(&hfdcan1));
-      Error_Handler();
-    }
-    printf("INFO: HAL_FDCAN_Start() OK.\r\n");
-    printf("--- FIRMWARE VERSION 2.0 -- FILTER TEST ---\r\n");
-
-    // 激活接收FIFO 0新消息通知，这是开启接收中断的大门
-    if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
-    {
-        Error_Handler();
-    }
-
-    /* 2. 配置发送报文头和数据 */
-    TxHeader.Identifier = 0x001;
-    TxHeader.IdType = FDCAN_STANDARD_ID;
-    TxHeader.TxFrameType = FDCAN_DATA_FRAME;
-    TxHeader.DataLength = FDCAN_DLC_BYTES_8;
-    TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-    TxHeader.BitRateSwitch = FDCAN_BRS_OFF;
-    TxHeader.FDFormat = FDCAN_FRAME_CLASSIC;
-    TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
-    TxHeader.MessageMarker = 0;
-
-    for(int i=0; i<8; i++) {
-        TxData[i] = i;
-    }
+    EMA_DATA.sin_offset = 1.65f;
+    EMA_DATA.cos_offset = 1.65f;
 
   /* USER CODE END 2 */
 
@@ -668,6 +533,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+//	  	      Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
+//	  	      Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
+//	  	      printf("%.2f\r\n",Force_Sensor1.weight_g);
 
 	  if(Motor_mode == MOTOR_OVER_HV_VOLTAGE)
 	  {
@@ -689,7 +558,8 @@ int main(void)
 //		  printf("%.3f,%.3f,%.3f,%ld\r\n",last_hv_average_power_1s,last_hv_average_power_cycle,dc_input_power,absolute_step_counter);
 //		  printf("%.3f,%.3f,%.3f,%ld\r\n",HV_V,HV_I,DC_I,absolute_step_counter);
 	  }
-		HAL_Delay(1000);
+		HAL_Delay(1);
+		printf("%ld,%ld,%.3f,%.3f\r\n",ADC2_RAW_data[1],ADC2_RAW_data[2],EMA_DATA.theta_degrees,EMA_DATA.position_mm);
 	    HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
 //	    if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 //	    {
@@ -877,7 +747,7 @@ static void MX_ADC2_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_12CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_24CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -1067,6 +937,46 @@ static void MX_FDCAN1_Init(void)
   /* USER CODE BEGIN FDCAN1_Init 2 */
 
   /* USER CODE END FDCAN1_Init 2 */
+
+}
+
+/**
+  * @brief SPI1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI1_Init(void)
+{
+
+  /* USER CODE BEGIN SPI1_Init 0 */
+
+  /* USER CODE END SPI1_Init 0 */
+
+  /* USER CODE BEGIN SPI1_Init 1 */
+
+  /* USER CODE END SPI1_Init 1 */
+  /* SPI1 parameter configuration*/
+  hspi1.Instance = SPI1;
+  hspi1.Init.Mode = SPI_MODE_MASTER;
+  hspi1.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
+  hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
+  hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi1.Init.CRCPolynomial = 7;
+  hspi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+  hspi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+  if (HAL_SPI_Init(&hspi1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI1_Init 2 */
+
+  /* USER CODE END SPI1_Init 2 */
 
 }
 
@@ -1276,9 +1186,9 @@ static void MX_TIM7_Init(void)
 
   /* USER CODE END TIM7_Init 1 */
   htim7.Instance = TIM7;
-  htim7.Init.Prescaler = 1699;
+  htim7.Init.Prescaler = 84;
   htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim7.Init.Period = 9999;
+  htim7.Init.Period = 99;
   htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim7) != HAL_OK)
   {
@@ -1427,7 +1337,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOF, GPIO_PIN_1, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, Power_ON_Pin|CH1__CTR_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, SPI1_CS_Pin|Power_ON_Pin|CH1__CTR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : PC13 */
   GPIO_InitStruct.Pin = GPIO_PIN_13;
@@ -1443,19 +1353,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : SPI1_CS_Pin CH1__CTR_Pin */
+  GPIO_InitStruct.Pin = SPI1_CS_Pin|CH1__CTR_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /*Configure GPIO pin : Power_ON_Pin */
   GPIO_InitStruct.Pin = Power_ON_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(Power_ON_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : CH1__CTR_Pin */
-  GPIO_InitStruct.Pin = CH1__CTR_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(CH1__CTR_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 

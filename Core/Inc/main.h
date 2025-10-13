@@ -79,8 +79,10 @@ extern DMA_HandleTypeDef hdma_usart1_rx;
 #define RX_BUFFER_SIZE 256
 extern uint8_t rx_buffer[RX_BUFFER_SIZE];
 extern uint8_t process_buffer[RX_BUFFER_SIZE];
+extern FDCAN_HandleTypeDef hfdcan1;
 
 // --- 电机控制状态变量 ---
+
 extern volatile int32_t repeated_pos_A;
 extern volatile int32_t repeated_pos_B;
 extern volatile uint32_t repeated_count_total;
@@ -136,6 +138,8 @@ typedef enum {
 #define COS_GPIO_Port GPIOA
 #define I_O_Pin GPIO_PIN_6
 #define I_O_GPIO_Port GPIOA
+#define SPI1_CS_Pin GPIO_PIN_10
+#define SPI1_CS_GPIO_Port GPIOB
 #define Power_ON_Pin GPIO_PIN_11
 #define Power_ON_GPIO_Port GPIOB
 #define Buzzer_Pin GPIO_PIN_15
