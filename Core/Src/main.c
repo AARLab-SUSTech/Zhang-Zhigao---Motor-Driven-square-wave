@@ -26,7 +26,7 @@
 #include "ad7190.h"
 #include "foc.h"
 #include "can.h"
-Force_sensor Force_Sensor1;
+volatile Force_sensor Force_Sensor1;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,6 +47,7 @@ float interrupt_freq_hz = 10000.0f; // 您TIM6中断的频率 (1 / 0.00005s)
 volatile MotorDirection_t motor_direction = MOTOR_FORWARD; // 默认为正
 volatile Motor_mode_t Motor_mode = MOTOR_IDLE;
 
+int dma_print_flag = 0;
 // --- 新增：用于累计步数的全局变量 ---
 // 使用 signed 32-bit 整数，可以记录正反转，且范围足够大
 // 使用 volatile 关键字，确保在中断和主循环中安全访问
@@ -155,13 +156,13 @@ static JustFloatFrame_t Tx_A_buffer_20k;
 
 uint8_t Flag_Abuffer0_Bbuffer1 = 0;//A buffer0-----B buffer1
 volatile uint8_t Tx_sample_count = 0;
-
+volatile float weight_g_temp=0;
 
 float rad_omega;
 float HV_V,HV_I,DC_I;
 float MAX_HV_voltage=1300;
 float MAX_HV_current=12;
-float MAX_DC_current=2;
+float MAX_DC_current=4;
 
 int float_current_counter=0;
 float current_1ms=0;
@@ -301,7 +302,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			Tx_A_buffer_20k.fdata[1] = HV_I;//mA
 			Tx_A_buffer_20k.fdata[2] = absolute_step_counter;//
 			Tx_A_buffer_20k.fdata[3] = EMA_DATA.position_mm;//mm
-			Tx_A_buffer_20k.fdata[4] = Force_Sensor1.weight_g;//g
+			Tx_A_buffer_20k.fdata[4] = weight_g_temp;//g
 			Tx_A_buffer_20k.fdata[5] = DC_I;//A
 
 			Tx_A_buffer_20k.tail[0] = 0x00;
@@ -309,6 +310,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			Tx_A_buffer_20k.tail[2] = 0x80;
 			Tx_A_buffer_20k.tail[3] = 0x7F;
 
+			if(dma_print_flag == 1)
+			{
 			if(g_uart_dma_transfer_complete == 1)
 			{
 				g_uart_dma_transfer_complete = 0;//设置为发送模式
@@ -317,17 +320,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			else
 			{
 				Buzzer_ON;
-			    HAL_TIM_Base_Stop(&htim6);
+//			    HAL_TIM_Base_Stop(&htim6);
 			    while(1)
 			    {
-			    	printf("dma data error\r\n");
 			    	HAL_Delay(1000);
+			    	printf("dma data error\r\n");
 			    }
+			}
 			}
 
     		if(HV_V > MAX_HV_voltage)  { Motor_mode = MOTOR_OVER_HV_VOLTAGE;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
 //   		    if(HV_I > MAX_HV_current)  { Motor_mode = MOTOR_OVER_HV_CURRENT;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
-    		if(DC_I > MAX_DC_current)  { Motor_mode = MOTOR_OVER_DC_IN_CURRENT; Close_output();DC_Power_CTR(false);Buzzer_ON;}
+    		if(DC_I > MAX_DC_current)  { Motor_mode = MOTOR_OVER_DC_IN_CURRENT; printf("%.3f\r\n",DC_I);Close_output();DC_Power_CTR(false);Buzzer_ON;}
 
         // --- 1. 安全检查层：处理最高优先级的 IDLE 和 ERROR 状态 ---
         if (Motor_mode == MOTOR_IDLE || Motor_mode == MOTOR_ERROR || Motor_mode == MOTOR_OVER_HV_CURRENT || Motor_mode == MOTOR_OVER_HV_VOLTAGE || Motor_mode == MOTOR_OVER_DC_IN_CURRENT)
@@ -509,16 +513,17 @@ int main(void)
 
   	    HAL_Delay(500);
   	    Force_Sensor1.weight_Zero_Data = weight_ad7190_ReadAvg(6);
-  	    printf("zero:%ld\n",Force_Sensor1.weight_Zero_Data);
+//  	    printf("zero:%ld\n",Force_Sensor1.weight_Zero_Data);
 
-  HAL_Delay(1000);
+  	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
+  	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
 
   CAN_init();
 
     EMA_DATA.sin_offset = 1.65f;
     EMA_DATA.cos_offset = 1.65f;
 
-    HAL_TIM_Base_Start_IT(&htim16);
+    HAL_TIM_Base_Start_IT(&htim6);
 
 //	send_int16_groups_dma(dma_int16_data, 100, 10);
 
@@ -551,10 +556,16 @@ int main(void)
 	  {
 //		  printf("%.3f,%.3f,%.3f,%ld\r\n",last_hv_average_power_1s,last_hv_average_power_cycle,dc_input_power,absolute_step_counter);
 //		  printf("%.3f,%.3f,%.3f,%ld\r\n",HV_V,HV_I,DC_I,absolute_step_counter);
+//		  printf("%.3f\r\n",Force_Sensor1.weight_g);
 	  }
 
 	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
 	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
+
+	    __disable_irq(); // 关中断（锁门）
+		  weight_g_temp = Force_Sensor1.weight_g;
+	    __enable_irq();  // 开中断（开门）
+
 	  HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
 	  HAL_Delay(1);
 

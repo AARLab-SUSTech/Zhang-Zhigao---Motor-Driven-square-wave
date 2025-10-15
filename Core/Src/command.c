@@ -17,6 +17,7 @@
 extern uint8_t rx_buffer[RX_BUFFER_SIZE];
 extern uint8_t process_buffer[RX_BUFFER_SIZE];
 extern volatile Motor_mode_t Motor_mode;
+extern int dma_print_flag;
 
 #define UART_TX_BUFFER_SIZE 512 // 定义发送缓冲区大小，确保足够长
 uint8_t g_uart_tx_buffer[UART_TX_BUFFER_SIZE]; // DMA发送缓冲区
@@ -282,9 +283,9 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                 // ±È½ÏÐ£ÑéºÍ
 	                 uint8_t received_checksum = rx_buffer[2 + 1 + 1 + data_length];  // ½ÓÊÕµÄÐ£ÑéºÍ
 	                 if (checksum == received_checksum) {
-															 printf("ID: %02X, Command: %02X, Index: %02X Data: ", data[3], data[4], data[5]);
-															 for (uint8_t i = 0; i < data_length-2; i++) {printf("%02X ", data[6 + i]);}
-															 printf("\r\n");
+//															 printf("ID: %02X, Command: %02X, Index: %02X Data: ", data[3], data[4], data[5]);
+//															 for (uint8_t i = 0; i < data_length-2; i++) {printf("%02X ", data[6 + i]);}
+//															 printf("\r\n");
 	                     if(data[3] != 0x01)  return;
 	                     if((Motor_mode == MOTOR_OVER_HV_VOLTAGE) || (Motor_mode == MOTOR_OVER_HV_CURRENT) || (Motor_mode == MOTOR_OVER_DC_IN_CURRENT)) return;//不处理指令，直接退出
 	                     switch(data[4])
@@ -302,7 +303,8 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                     		Motor_mode = MOTOR_IDLE;
 	                        	}
 	                     		Close_output();
-	                     		 HAL_TIM_Base_Stop(&htim6);
+//	                     		 HAL_TIM_Base_Stop(&htim6);
+	                     		dma_print_flag = 0;
 	                             break;
 
 	                         case 0x27://step p
@@ -339,7 +341,8 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	         }
 	         if((Motor_mode == MOTOR_OPEN_POSITION) || (Motor_mode == MOTOR_OPEN_REPEATED))
 	         {
-	        	 HAL_TIM_Base_Start_IT(&htim6);//dma printf
+	        	 dma_print_flag = 1;
+//	        	 HAL_TIM_Base_Start_IT(&htim6);//dma printf
 	         }
 }
 
