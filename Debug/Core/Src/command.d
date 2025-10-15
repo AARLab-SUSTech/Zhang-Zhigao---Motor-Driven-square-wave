@@ -1,4 +1,4 @@
-Core/Src/command.o: ../Core/Src/command.c ../Core/Src/command.h \
+Core/Src/command.o: ../Core/Src/command.c ../Core/Src/control.h \
  ../Core/Inc/main.h ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h \
  ../Core/Inc/stm32g4xx_hal_conf.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_rcc.h \
@@ -39,8 +39,8 @@ Core/Src/command.o: ../Core/Src/command.c ../Core/Src/command.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
  ../Middlewares/ST/ARM/DSP/Inc/arm_math.h \
- ../Drivers/CMSIS/Include/cmsis_compiler.h ../Core/Src/control.h
-../Core/Src/command.h:
+ ../Drivers/CMSIS/Include/cmsis_compiler.h ../Core/Src/command.h
+../Core/Src/control.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
 ../Core/Inc/stm32g4xx_hal_conf.h:
@@ -83,4 +83,4 @@ Core/Src/command.o: ../Core/Src/command.c ../Core/Src/command.h \
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h:
 ../Middlewares/ST/ARM/DSP/Inc/arm_math.h:
 ../Drivers/CMSIS/Include/cmsis_compiler.h:
-../Core/Src/control.h:
+../Core/Src/command.h:

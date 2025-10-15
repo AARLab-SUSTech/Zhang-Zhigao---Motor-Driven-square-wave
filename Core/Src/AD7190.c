@@ -21,7 +21,7 @@
 /* 私有类型定义 --------------------------------------------------------------*/
 /* 私有宏定义 ----------------------------------------------------------------*/
 //#define AIN1P_AIN2N
-#define Get_Speed    8  //修改此值可修改AD获取速率，值越小，速率越快
+#define Get_Speed    4  //修改此值可修改AD获取速率，值越小，速率越快
 
 /* 私有变量 ------------------------------------------------------------------*/
 SPI_HandleTypeDef hspi_weight;
@@ -34,7 +34,7 @@ SPI_HandleTypeDef hspi_weight;
 void Force_sensor_init(void)
 {
 
-	  printf("24bit_ADC_AD7190称重模块\n");
+//	  printf("24bit_ADC_AD7190称重模块\n");
 	  /* 初始化AD7190检测通信状态 */
 	  if(AD7190_Init()==0)
 	  {
@@ -148,9 +148,10 @@ unsigned int AD7190_GetRegisterValue(unsigned char registerAddress,
     unsigned char i               = 0;
 
     address = AD7190_COMM_READ | AD7190_COMM_ADDR(registerAddress);
-
-    HAL_SPI_Transmit(&hspi_weight,&address, 1,0xFFFFFF);
-    HAL_SPI_Receive(&hspi_weight,registerWord,bytesNumber,0xFFFFFF);
+	  HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
+	    HAL_SPI_Transmit(&hspi_weight,&address, 1,0xFFFFFF);
+	    HAL_SPI_Receive(&hspi_weight,registerWord,bytesNumber,0xFFFFFF);
+		HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
     for(i = 0; i < bytesNumber; i++)
     {
       buffer = (buffer << 8) + registerWord[i];
@@ -193,7 +194,7 @@ unsigned char AD7190_Init(void)
     /* Allow at least 500 us before accessing any of the on-chip registers. */
     HAL_Delay(1);
 
-	  WEIGHT_CS_ENABLE();
+	WEIGHT_CS_ENABLE();
 
     regVal = AD7190_GetRegisterValue(AD7190_REG_ID, 1);
 //    printf("ad7190:0x%X\n",regVal);

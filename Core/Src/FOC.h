@@ -5,8 +5,8 @@
  *      Author: 16964
  */
 
-#ifndef SRC_FOC_H_
-#define SRC_FOC_H_
+#ifndef FOC_H_
+#define FOC_H_
 
 #include "main.h"
 
@@ -248,6 +248,7 @@ typedef struct {
 
 }Motor;
 
+extern Motor EMA_DATA;
 
 float normalize_angle_0_to_2pi_f32(float angle);
 float normalize_angle_0_to_6pi_f32(float angle);

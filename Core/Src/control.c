@@ -7,12 +7,21 @@
 
 #include "control.h"
 #include "main.h"
+#include "command.h"
+#include "FOC.h"
 
 #ifndef _CONTROL_H_
 #define _CONTROL_H_
 
+
+
 extern volatile MotorDirection_t motor_direction; // 默认为正
 extern volatile Motor_mode_t Motor_mode;
+
+extern uint32_t ADC2_RAW_data[3];
+
+
+
 
 /**
   * @brief  DCDC高压模块供电开关
@@ -33,8 +42,6 @@ void DC_Power_CTR(bool state)
 //		 printf("%d\r\n",DC_ON_State);
 	}
 }
-
-
 /**
   * @brief  设置电机速度和方向
   * @param  speed_hz: 目标频率, 单位 Hz。正数代表正转，负数代表反转。

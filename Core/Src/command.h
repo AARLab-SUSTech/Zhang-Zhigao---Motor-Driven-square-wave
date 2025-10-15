@@ -5,13 +5,12 @@
  *      Author: 16964
  */
 
-#ifndef INC_COMMAND_H_
-#define INC_COMMAND_H_
+#ifndef COMMAND_H_
+#define COMMAND_H_
 
 #include "main.h"
-#include "control.h"
 
 void process_received_data(uint8_t* data, uint16_t size);
 void send_float_array_dma(float* arr, int count);
-void send_int16_array_dma(int16_t* arr, int count);
+void send_int16_groups_dma(int16_t* arr, int total_count, int elements_per_group);
 #endif /* SRC_COMMAND_H_ */

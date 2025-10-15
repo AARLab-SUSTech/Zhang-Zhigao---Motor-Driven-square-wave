@@ -5,23 +5,36 @@
  *      Author: Letian
  */
 
-#include "command.h"
 
 #ifndef _COMMAND_H
 #define _COMMAND_H
 
+#include "control.h"
+#include "command.h"
+#include "string.h"
 
 // --- 串口 DMA 接收相关 ---
-#define RX_BUFFER_SIZE 256   // 定义接收缓冲区的最大长度
-uint8_t rx_buffer[RX_BUFFER_SIZE]; // DMA 接收缓冲区
-uint8_t process_buffer[RX_BUFFER_SIZE]; // 用于安全处理和打印数据的缓冲区
+extern uint8_t rx_buffer[RX_BUFFER_SIZE];
+extern uint8_t process_buffer[RX_BUFFER_SIZE];
 extern volatile Motor_mode_t Motor_mode;
 
-#define UART_TX_BUFFER_SIZE 128 // 定义发送缓冲区大小，确保足够长
+#define UART_TX_BUFFER_SIZE 512 // 定义发送缓冲区大小，确保足够长
 uint8_t g_uart_tx_buffer[UART_TX_BUFFER_SIZE]; // DMA发送缓冲区
 
 // volatile关键字很重要，因为它可能在主程序和中断服务程序中同时被访问
 volatile uint8_t g_uart_dma_transfer_complete = 1; // 1: 空闲, 0: 忙碌
+
+/**
+ * @brief UART DMA发送完成回调函数
+ * @param huart UART句柄
+ */
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
+    // 检查是哪个UART完成了发送
+    if (huart->Instance == USART1) { // 假设您使用的是USART1
+        // 将DMA状态标志设置为“完成/空闲”
+        g_uart_dma_transfer_complete = 1;
+    }
+}
 
 /**
  * @brief 使用DMA发送一个浮点数数组
@@ -32,11 +45,10 @@ void send_float_array_dma(float* arr, int count) {
     // 1. 检查DMA是否空闲
     if (g_uart_dma_transfer_complete == 0) {
     	Buzzer_ON;
-    	printf("dma printf error\r\n");
-
     	while(1)
     	{
-
+        	printf("dma busy error\r\n");
+        	HAL_Delay(1000);
     	}
         return; // DMA忙，直接返回
     }
@@ -65,6 +77,8 @@ void send_float_array_dma(float* arr, int count) {
         if (written_len <= 0 || written_len >= remaining_size) {
             // 写入失败或缓冲区已满，提前终止
             // 这里可以添加错误处理，例如发送一个错误提示
+            Buzzer_ON;
+        	printf("dma buffer too small error\r\n");
             g_uart_dma_transfer_complete = 1; // 释放DMA
             return;
         }
@@ -91,55 +105,63 @@ void send_float_array_dma(float* arr, int count) {
  */
 void send_int16_groups_dma(int16_t* arr, int total_count, int elements_per_group)
 {
-    // 1. 检查DMA是否空闲
-    if (g_uart_dma_transfer_complete == 0) {
-        return; // DMA忙，丢弃本次任务
-    }
-    if (total_count <= 0 || elements_per_group <= 0) {
-        return; // 无效参数
+
+	    // 1. 检查DMA是否空闲
+	    if (g_uart_dma_transfer_complete == 0) {
+	    	Buzzer_ON;
+	    	while(1)
+	    	{
+	        	printf("dma busy error\r\n");
+	        	HAL_Delay(1000);
+	    	}
+	        return; // DMA忙，丢弃本次任务
+	    }
+	    if (total_count <= 0 || elements_per_group <= 0) {
+	        return; // 无效参数
+	    }
+
+    // --- 缓冲区大小检查 (非常重要!) ---
+    // 每个元素占 2字节(int16_t) + 1字节(分隔符) = 3字节
+    // 确保定义的 UART_TX_BUFFER_SIZE 足够大
+    if (total_count * 3 > UART_TX_BUFFER_SIZE) {
+        Buzzer_ON;
+        printf("dma buffer too small error\r\n");
+        return;
     }
 
     // 2. 将DMA状态标志设置为“忙碌”
     g_uart_dma_transfer_complete = 0;
 
-    // 3. 动态构建格式化字符串
-    int current_len = 0;
-    int remaining_size = UART_TX_BUFFER_SIZE;
+    // 3. 【核心修改】使用 memcpy 和指针高效构建数据流
+    // 创建一个写入指针，指向缓冲区的开头
+    uint8_t* p_write = g_uart_tx_buffer;
 
     for (int i = 0; i < total_count; i++)
     {
-        int written_len;
+        // **步骤 A: 搬运二进制数据**
+        // 使用 memcpy 将2个字节的 int16_t 原封不动地复制到缓冲区
+        memcpy(p_write, &arr[i], sizeof(int16_t));
+        // 将写入指针向前移动2个字节
+        p_write += sizeof(int16_t);
 
-        // ***** 核心逻辑修改 *****
-        // 判断条件:
-        // 1. (i + 1) % elements_per_group == 0 : 当前元素是某一组的最后一个
-        // 2. i == total_count - 1             : 当前元素是整个大数组的最后一个 (处理最后一组不完整的情况)
+        // **步骤 B: 添加分隔符**
+        // 判断是否为一组的末尾
         if (((i + 1) % elements_per_group == 0) || (i == total_count - 1))
         {
-            // 是组的末尾或是总的末尾，添加换行符
-            written_len = snprintf((char*)g_uart_tx_buffer + current_len, remaining_size, "%d\r\n", arr[i]);
+            // 是末尾，添加换行符
+            *p_write++ = '\n'; // 写入1个字节的换行符，并使指针+1
         }
         else
         {
-            // 在组的中间，添加逗号
-            written_len = snprintf((char*)g_uart_tx_buffer + current_len, remaining_size, "%d,", arr[i]);
+            // 不是末尾，添加逗号
+            *p_write++ = ','; // 写入1个字节的逗号，并使指针+1
         }
-
-        // 检查snprintf是否成功，以及是否超出缓冲区
-        if (written_len <= 0 || written_len >= remaining_size)
-        {
-            // 缓冲区太小是常见错误，需要增大 UART_TX_BUFFER_SIZE
-            g_uart_dma_transfer_complete = 1; // 释放DMA标志
-            // 在这里可以添加错误处理代码，例如通过LED闪烁来报警
-            return;
-        }
-
-        // 更新长度和剩余空间
-        current_len += written_len;
-        remaining_size -= written_len;
     }
 
-    // 4. 启动DMA传输
+    // 计算最终写入的数据总长度
+    int current_len = p_write - g_uart_tx_buffer;
+
+    // 4. 启动DMA传输 (这部分逻辑保持不变)
     if (current_len > 0)
     {
         HAL_UART_Transmit_DMA(&huart1, g_uart_tx_buffer, current_len);
@@ -148,6 +170,72 @@ void send_int16_groups_dma(int16_t* arr, int total_count, int elements_per_group
     {
         g_uart_dma_transfer_complete = 1;
     }
+
+//    // 1. 检查DMA是否空闲
+//    if (g_uart_dma_transfer_complete == 0) {
+//    	Buzzer_ON;
+//    	while(1)
+//    	{
+//        	printf("dma busy error\r\n");
+//        	HAL_Delay(1000);
+//    	}
+//        return; // DMA忙，丢弃本次任务
+//    }
+//    if (total_count <= 0 || elements_per_group <= 0) {
+//        return; // 无效参数
+//    }
+//
+//    // 2. 将DMA状态标志设置为“忙碌”
+//    g_uart_dma_transfer_complete = 0;
+//
+//    // 3. 动态构建格式化字符串
+//    int current_len = 0;
+//    int remaining_size = UART_TX_BUFFER_SIZE;
+//
+//    for (int i = 0; i < total_count; i++)
+//    {
+//        int written_len;
+//
+//        // ***** 核心逻辑修改 *****
+//        // 判断条件:
+//        // 1. (i + 1) % elements_per_group == 0 : 当前元素是某一组的最后一个
+//        // 2. i == total_count - 1             : 当前元素是整个大数组的最后一个 (处理最后一组不完整的情况)
+//        if (((i + 1) % elements_per_group == 0) || (i == total_count - 1))
+//        {
+//            // 是组的末尾或是总的末尾，添加换行符
+//            written_len = snprintf((char*)g_uart_tx_buffer + current_len, remaining_size, "%d\r\n", arr[i]);
+//        }
+//        else
+//        {
+//            // 在组的中间，添加逗号
+//            written_len = snprintf((char*)g_uart_tx_buffer + current_len, remaining_size, "%d,", arr[i]);
+//        }
+//
+//        // 检查snprintf是否成功，以及是否超出缓冲区
+//        if (written_len <= 0 || written_len >= remaining_size)
+//        {
+//            // 缓冲区太小是常见错误，需要增大 UART_TX_BUFFER_SIZE
+//            g_uart_dma_transfer_complete = 1; // 释放DMA标志
+//            // 在这里可以添加错误处理代码，例如通过LED闪烁来报警
+//            Buzzer_ON;
+//        	printf("dma buffer too small error\r\n");
+//            return;
+//        }
+//
+//        // 更新长度和剩余空间
+//        current_len += written_len;
+//        remaining_size -= written_len;
+//    }
+//
+//    // 4. 启动DMA传输
+//    if (current_len > 0)
+//    {
+//        HAL_UART_Transmit_DMA(&huart1, g_uart_tx_buffer, current_len);
+//    }
+//    else
+//    {
+//        g_uart_dma_transfer_complete = 1;
+//    }
 }
 
 // 添加这个正确的 DMA 空闲中断回调函数
@@ -214,7 +302,7 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                     		Motor_mode = MOTOR_IDLE;
 	                        	}
 	                     		Close_output();
-	                     		 HAL_TIM_Base_Stop(&htim16);//dma printf
+	                     		 HAL_TIM_Base_Stop(&htim6);
 	                             break;
 
 	                         case 0x27://step p
@@ -251,7 +339,7 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	         }
 	         if((Motor_mode == MOTOR_OPEN_POSITION) || (Motor_mode == MOTOR_OPEN_REPEATED))
 	         {
-	        	 HAL_TIM_Base_Start_IT(&htim16);//dma printf
+	        	 HAL_TIM_Base_Start_IT(&htim6);//dma printf
 	         }
 }
 

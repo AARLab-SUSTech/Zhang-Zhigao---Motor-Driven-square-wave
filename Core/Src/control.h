@@ -5,10 +5,10 @@
  *      Author: 16964
  */
 
-#ifndef INC_CONTROL_H_  // 使用项目约定的保护符格式
-#define INC_CONTROL_H_
-#include "main.h"
+#ifndef CONTROL_H
+#define CONTROL_H
 
+#include "main.h"
 
 void DC_Power_CTR(bool state);
 void set_speed(float speed_hz);

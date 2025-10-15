@@ -42,10 +42,9 @@ volatile uint32_t phase_accumulator = 0;
 volatile uint32_t phase_increment = 0;
 volatile uint16_t pwm_duty_value = 0;
 volatile uint8_t step = 0;
-float interrupt_freq_hz = 20000.0f; // 您TIM6中断的频率 (1 / 0.00005s)
+float interrupt_freq_hz = 10000.0f; // 您TIM6中断的频率 (1 / 0.00005s)
 
 volatile MotorDirection_t motor_direction = MOTOR_FORWARD; // 默认为正
-
 volatile Motor_mode_t Motor_mode = MOTOR_IDLE;
 
 // --- 新增：用于累计步数的全局变量 ---
@@ -60,7 +59,8 @@ volatile uint32_t position_mode_increment = 10;
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+uint8_t rx_buffer[RX_BUFFER_SIZE];        // 在这里为 rx_buffer 分配了 256 字节
+uint8_t process_buffer[RX_BUFFER_SIZE]; // 在这里为 process_buffer 分配了 256 字节
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -71,37 +71,8 @@ bool DC_ON_State = false;
 uint16_t ARR;
 uint32_t ADC1_RAW_data[2];
 uint32_t ADC2_RAW_data[3];
-float rad_omega;
-float HV_V,HV_I,DC_I;
-float MAX_HV_voltage=1300;
-float MAX_HV_current=12;
-float MAX_DC_current=2;
 
-// --- 功率计算相关变量 ---
-// 直流输入电压 (输入为20V)
-const float DC_INPUT_VOLTAGE = 20.0f;
-
-// 瞬时功率
-float dc_input_power = 0.0f;
-float hv_instantaneous_power = 0.0f;
-
-/*
- *
- */
-
-// 周期平均功率相关
-float hv_power_accumulator = 0.0f; // 用于累加一个电周期内的瞬时功率
-uint32_t hv_power_sample_count = 0;   // 用于计算一个电周期内的采样点数
-float hv_average_power_cycle = 0.0f;  // 存储每个电周期计算出的平均功率
-float last_hv_average_power_cycle = 0.0f;  // 存储上个电周期计算出的平均功率
-// 每秒平均功率相关
-float hv_power_accumulator_1s = 0.0f;   // 用于累加一秒内的瞬时功率
-uint32_t hv_power_sample_count_1s = 0;  // 用于计算一秒内的采样点数
-float hv_average_power_1s = 0.0f;       // 存储每秒计算出的平均功率
-float last_hv_average_power_1s = 0.0f;  // 存储上1s计算出的平均功率
-
-float dma_float_data[6];
-int16_t dma_int16_data[10];
+int16_t dma_int16_data[100];
 /* USER CODE END PV */
 
 uint8_t loop_count;
@@ -134,15 +105,8 @@ DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USER CODE BEGIN PV */
-// 1. 算法参数 (您可以根据实际情况调整)
-const float  SPIKE_CURRENT_THRESHOLD   = 16.0f;    // 定义尖峰电流的阈值 (单位: mA)
-const uint16_t CHECK_WINDOW_SAMPLES    = 60;      // 定义检查窗口的大小 (N个采样点)。200个点 @ 20kHz = 1ms
-const uint16_t MAX_SPIKES_IN_WINDOW    = 50;      // 定义在一个窗口期内，允许出现的最大尖峰次数
 
-// 2. 算法工作变量
-uint16_t window_sample_counter = 0;   // 用于在窗口内计数的采样点计数器 (从0数到CHECK_WINDOW_SAMPLES)
-uint16_t spike_count_in_window = 0;   // 用于累计一个窗口期内的尖峰次数
-int16_t test = 32760;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -173,37 +137,83 @@ PUTCHAR_PROTOTYPE
     HAL_UART_Transmit(&huart1 , (uint8_t *)&ch, 1, 0xFFFF);
     return ch;
 }
+
+#define CHANNEL_COUNT 6 // 您有6个通道
+
+// 定义JustFloat的数据帧结构
+typedef struct __attribute__((packed)) {
+    float fdata[CHANNEL_COUNT]; // 6个float数据
+    uint8_t tail[4];            // 4字节的帧尾
+} JustFloatFrame_t;
+
+// 创建一个静态的发送包实例
+static JustFloatFrame_t Tx_A_buffer_20k;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+uint8_t Flag_Abuffer0_Bbuffer1 = 0;//A buffer0-----B buffer1
+volatile uint8_t Tx_sample_count = 0;
+
+
+float rad_omega;
+float HV_V,HV_I,DC_I;
+float MAX_HV_voltage=1300;
+float MAX_HV_current=12;
+float MAX_DC_current=2;
 
 int float_current_counter=0;
 float current_1ms=0;
 float current_hvi;
 float dc_current_1ms=0;
 float current_dc;
+
+// --- 功率计算相关变量 ---
+// 直流输入电压 (输入为20V)
+const float DC_INPUT_VOLTAGE = 20.0f;
+
+// 瞬时功率
+float dc_input_power = 0.0f;
+float hv_instantaneous_power = 0.0f;
+
+// 周期平均功率相关
+float hv_power_accumulator = 0.0f; // 用于累加一个电周期内的瞬时功率
+uint32_t hv_power_sample_count = 0;   // 用于计算一个电周期内的采样点数
+float hv_average_power_cycle = 0.0f;  // 存储每个电周期计算出的平均功率
+float last_hv_average_power_cycle = 0.0f;  // 存储上个电周期计算出的平均功率
+// 每秒平均功率相关
+float hv_power_accumulator_1s = 0.0f;   // 用于累加一秒内的瞬时功率
+uint32_t hv_power_sample_count_1s = 0;  // 用于计算一秒内的采样点数
+float hv_average_power_1s = 0.0f;       // 存储每秒计算出的平均功率
+float last_hv_average_power_1s = 0.0f;  // 存储上1s计算出的平均功率
+
+float dma_float_data[6];
+
+// 1. 算法参数 (您可以根据实际情况调整)
+const float  SPIKE_CURRENT_THRESHOLD   = 16.0f;    // 定义尖峰电流的阈值 (单位: mA)
+const uint16_t CHECK_WINDOW_SAMPLES    = 60;      // 定义检查窗口的大小 (N个采样点)。200个点 @ 20kHz = 1ms
+const uint16_t MAX_SPIKES_IN_WINDOW    = 50;      // 定义在一个窗口期内，允许出现的最大尖峰次数
+
+// 2. 算法工作变量
+uint16_t window_sample_counter = 0;   // 用于在窗口内计数的采样点计数器 (从0数到CHECK_WINDOW_SAMPLES)
+uint16_t spike_count_in_window = 0;   // 用于累计一个窗口期内的尖峰次数
+
+extern volatile uint8_t g_uart_dma_transfer_complete;
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(htim == &htim16)
 	{
-		dma_float_data[0] = last_hv_average_power_cycle;
-		dma_float_data[1] = last_hv_average_power_1s;
-		dma_float_data[2] = dc_current_1ms;
-		dma_float_data[3] = current_1ms;
-		dma_float_data[4] = absolute_step_counter;
-		dma_float_data[5] = (float)spike_count_in_window;
-		send_float_array_dma(dma_float_data, 6);
-
-
-
-
+//		  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
+//		  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
 	}
 	if(htim == &htim6)
 	{
     	int temp_data[2];
     	temp_data[0] = (2048 - ADC1_RAW_data[0]) * 2;
     	temp_data[1] = (2048 - ADC1_RAW_data[1]) * 2;
+
     	//V  mA
     	HV_V = temp_data[0] * 1.00909423828125f;//HV_V = (temp_data[0] / 4096) * 3.3f * 2 * 501 / 0.4f
         HV_I = (temp_data[1] * 0.01007080078125);//HV_I = (temp_data[1] / 4096) * 3.3 / 8 / 10 * 1000
@@ -287,47 +297,33 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             spike_count_in_window = 0;
         }
 
-        float_current_counter++;
-        current_hvi += HV_I;
-        current_dc += DC_I;
+			Tx_A_buffer_20k.fdata[0] = HV_V;//V
+			Tx_A_buffer_20k.fdata[1] = HV_I;//mA
+			Tx_A_buffer_20k.fdata[2] = absolute_step_counter;//
+			Tx_A_buffer_20k.fdata[3] = EMA_DATA.position_mm;//mm
+			Tx_A_buffer_20k.fdata[4] = Force_Sensor1.weight_g;//g
+			Tx_A_buffer_20k.fdata[5] = DC_I;//A
 
-        if(float_current_counter == 20)
-        {
-        	current_1ms = current_hvi/20.0f;
-        	current_hvi = 0;
-        	dc_current_1ms = current_dc/20.0f;
-        	current_dc = 0;
-        	float_current_counter = 0;
-        }
+			Tx_A_buffer_20k.tail[0] = 0x00;
+			Tx_A_buffer_20k.tail[1] = 0x00;
+			Tx_A_buffer_20k.tail[2] = 0x80;
+			Tx_A_buffer_20k.tail[3] = 0x7F;
 
-		// 1. 计算直流输入瞬时功率 (P_dc = V_dc * I_dc)
-		dc_input_power = DC_INPUT_VOLTAGE * DC_I;
-		// 2. 计算高压输出瞬时功率 (P_hv = V_hv * I_hv)
-		hv_instantaneous_power = HV_V * HV_I * 0.001f;
-		// --- B. 进行周期平均和每秒平均功率的累加 ---
-
-		// 3. 为“每周期平均功率”累加
-		hv_power_accumulator += hv_instantaneous_power;
-		hv_power_sample_count++;
-
-		// 4. 为“每秒平均功率”累加
-		hv_power_accumulator_1s += hv_instantaneous_power;
-		hv_power_sample_count_1s++;
-
-		// 中断频率是20kHz, 所以200次中断就是0.01秒
-		if (hv_power_sample_count_1s >= 200)
-		{
-			last_hv_average_power_1s = hv_power_accumulator_1s / hv_power_sample_count_1s;// 计算并更新上一秒的平均功率
-			hv_power_sample_count_1s = 0;   //清零计数
-			hv_power_accumulator_1s = 0.0f;// 重置，为下一秒准备
-		}
-
-//    	loop_count++;
-//    	if(loop_count == 100)
-//    	{
-//    			loop_count = 0;
-//       	    send_float_array_dma(&HV_V, 1);
-//    	}
+			if(g_uart_dma_transfer_complete == 1)
+			{
+				g_uart_dma_transfer_complete = 0;//设置为发送模式
+				HAL_UART_Transmit_DMA(&huart1, (uint8_t*)&Tx_A_buffer_20k, sizeof(JustFloatFrame_t));
+			}
+			else
+			{
+				Buzzer_ON;
+			    HAL_TIM_Base_Stop(&htim6);
+			    while(1)
+			    {
+			    	printf("dma data error\r\n");
+			    	HAL_Delay(1000);
+			    }
+			}
 
     		if(HV_V > MAX_HV_voltage)  { Motor_mode = MOTOR_OVER_HV_VOLTAGE;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
 //   		    if(HV_I > MAX_HV_current)  { Motor_mode = MOTOR_OVER_HV_CURRENT;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
@@ -437,8 +433,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 	}
 }
-
-
 /* USER CODE END 0 */
 
 /**
@@ -507,28 +501,26 @@ int main(void)
 //  HAL_COMP_Start(&hcomp1);
 //  HAL_COMP_Start(&hcomp2);
 
-//  	  Force_Sensor1.weight_proportion=86742;  // 电压值与重量变换比例，这个需要实际测试计算才能得到
-//  	  Force_Sensor1.weight_Zero_Data=0;   // 零值
-//
-//  	    Force_sensor_init();
-//  	    weight_ad7190_conf();
-//
-//  	    HAL_Delay(500);
-//  	    Force_Sensor1.weight_Zero_Data = weight_ad7190_ReadAvg(6);
-//  	    printf("zero:%ld\n",Force_Sensor1.weight_Zero_Data);
+  	  Force_Sensor1.weight_proportion=86742;  // 电压值与重量变换比例，这个需要实际测试计算才能得到
+  	  Force_Sensor1.weight_Zero_Data=0;   // 零值
+
+  	    Force_sensor_init();
+  	    weight_ad7190_conf();
+
+  	    HAL_Delay(500);
+  	    Force_Sensor1.weight_Zero_Data = weight_ad7190_ReadAvg(6);
+  	    printf("zero:%ld\n",Force_Sensor1.weight_Zero_Data);
 
   HAL_Delay(1000);
-
-  rad_omega = 10;
-  // 公式： phase_increment = (电机频率 / 中断频率) * 2^32
-  // 我们使用 64 位整数来计算以避免溢出
-  phase_increment = (uint32_t)(((uint64_t)rad_omega * 0x100000000) / interrupt_freq_hz);
-  HAL_TIM_Base_Start_IT(&htim6);//换向代码
 
   CAN_init();
 
     EMA_DATA.sin_offset = 1.65f;
     EMA_DATA.cos_offset = 1.65f;
+
+    HAL_TIM_Base_Start_IT(&htim16);
+
+//	send_int16_groups_dma(dma_int16_data, 100, 10);
 
   /* USER CODE END 2 */
 
@@ -539,10 +531,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-//	  	      Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
-//	  	      Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
-//	  	      printf("%.2f\r\n",Force_Sensor1.weight_g);
 
 	  if(Motor_mode == MOTOR_OVER_HV_VOLTAGE)
 	  {
@@ -564,11 +552,14 @@ int main(void)
 //		  printf("%.3f,%.3f,%.3f,%ld\r\n",last_hv_average_power_1s,last_hv_average_power_cycle,dc_input_power,absolute_step_counter);
 //		  printf("%.3f,%.3f,%.3f,%ld\r\n",HV_V,HV_I,DC_I,absolute_step_counter);
 	  }
-		HAL_Delay(100);
+
+	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
+	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
+	  HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
+	  HAL_Delay(1);
+
 //		printf("%ld,%ld,%.3f,%.3f\r\n",ADC2_RAW_data[1],ADC2_RAW_data[2],EMA_DATA.theta_degrees,EMA_DATA.position_mm);
-		test++;
-		printf("%d\n",test);
-	    HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
+
 //	    if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
 //	    {
 //	      if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData) != HAL_OK)
@@ -1158,7 +1149,7 @@ static void MX_TIM6_Init(void)
   htim6.Instance = TIM6;
   htim6.Init.Prescaler = 16;
   htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim6.Init.Period = 499;
+  htim6.Init.Period = 999;
   htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
   {

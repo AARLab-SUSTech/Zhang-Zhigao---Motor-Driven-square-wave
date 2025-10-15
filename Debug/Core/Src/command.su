@@ -1,4 +1,5 @@
-../Core/Src/command.c:31:6:send_float_array_dma	48	static
-../Core/Src/command.c:92:6:send_int16_groups_dma	40	static
-../Core/Src/command.c:154:6:HAL_UARTEx_RxEventCallback	16	static
-../Core/Src/command.c:176:6:process_received_data	40	static
+../Core/Src/command.c:31:6:HAL_UART_TxCpltCallback	16	static
+../Core/Src/command.c:44:6:send_float_array_dma	48	static
+../Core/Src/command.c:106:6:send_int16_groups_dma	40	static
+../Core/Src/command.c:242:6:HAL_UARTEx_RxEventCallback	16	static
+../Core/Src/command.c:264:6:process_received_data	40	static
