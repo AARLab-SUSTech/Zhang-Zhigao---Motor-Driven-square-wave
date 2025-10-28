@@ -8,7 +8,7 @@
 #ifndef CAN_H_
 #define CAN_H_
 
-#define MY_NODE_ID      0x101  // <-- 【重要】在这里设置本节点的实际ID，例如5号节点
+#define MY_NODE_ID      0x101  // <-- 设置本节点的实际ID
 #define BROADCAST_ID    0x100  // <-- 我们协议中定义的广播ID
 
 void CAN_init(void);

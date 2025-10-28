@@ -160,7 +160,7 @@ volatile float weight_g_temp=0;
 
 float rad_omega;
 float HV_V,HV_I,DC_I;
-float MAX_HV_voltage=1300;
+float MAX_HV_voltage=2600;
 float MAX_HV_current=12;
 float MAX_DC_current=4;
 
@@ -518,7 +518,7 @@ int main(void)
   	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
   	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
 
-  CAN_init();
+  	  CAN_init();
 
     EMA_DATA.sin_offset = 1.65f;
     EMA_DATA.cos_offset = 1.65f;

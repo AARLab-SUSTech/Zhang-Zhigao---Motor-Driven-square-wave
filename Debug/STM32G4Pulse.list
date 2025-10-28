@@ -5192,7 +5192,7 @@ int main(void)
  8002b22:	4b3a      	ldr	r3, [pc, #232]	@ (8002c0c <main+0x1d0>)
  8002b24:	edc3 7a04 	vstr	s15, [r3, #16]
 
-  CAN_init();
+  	  CAN_init();
  8002b28:	f7fe fdbc 	bl	80016a4 <CAN_init>
 
     EMA_DATA.sin_offset = 1.65f;
