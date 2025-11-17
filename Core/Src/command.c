@@ -19,6 +19,10 @@ extern uint8_t process_buffer[RX_BUFFER_SIZE];
 extern volatile Motor_mode_t Motor_mode;
 extern int dma_print_flag;
 
+//储存速度计算临时值
+float temp_speed_float;
+int16_t temp_speed_int16;
+
 #define UART_TX_BUFFER_SIZE 512 // 定义发送缓冲区大小，确保足够长
 uint8_t g_uart_tx_buffer[UART_TX_BUFFER_SIZE]; // DMA发送缓冲区
 
@@ -263,17 +267,17 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
 }
 
 void process_received_data(uint8_t* data, uint16_t size) {
-	//PRINT RECIEVE DATA
-//	         printf("Received data (size = %d): \r\n", size);
-//	         for (uint16_t i = 0; i < size; i++) {
-//	             printf("%02X ", data[i]);
-//	         }
+
+				//PRINT RECIEVE DATA
+				//	         printf("Received data (size = %d): \r\n", size);
+				//	         for (uint16_t i = 0; i < size; i++) {
+				//	             printf("%02X ", data[i]);
+				//	         }
 	         if (data[0] == 0x55 && data[1] == 0xAA) {
 	             // Êý¾Ý³¤¶È = Ö¡Í·(2×Ö½Ú) + ³¤¶È(1×Ö½Ú) + ID(1×Ö½Ú) + Ö¸ÁîºÅ(1×Ö½Ú) + Ë÷Òý(1×Ö½Ú) + Êý¾Ý¶Î³¤¶È + Ð£ÑéºÍ(1×Ö½Ú)
 	             uint8_t data_length = rx_buffer[2];  // Êý¾Ý³¤¶È×Ö¶Î
 	             uint16_t total_length = 2 + 1 + 1 + data_length + 1;  // Ö¡×Ü³¤¶È£¨°üÀ¨Ö¡Í·¡¢³¤¶È×Ö¶Î¡¢ID¡¢Ö¸Áî¡¢Ë÷Òý¡¢Êý¾Ý¡¢Ð£ÑéºÍ£©
 
-	             // ¼ì²éÊÇ·ñÊý¾Ý×ã¹»³¤
 	             if (size >= total_length) {
 	                 // Ð£ÑéºÍ¼ÆËã
 	                 uint8_t checksum = 0;
@@ -292,8 +296,10 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                     {
 	                         case 0x24://repeat mode
 	                        	 Motor_mode = MOTOR_OPEN_REPEATED;
-	                        	 move_repeatedly(data[7], data[6]/2, (((uint16_t)rx_buffer[9] << 8) | rx_buffer[10]), data[8]);
-//	                        	 printf("min:%d,max:%d,count:%d,speed:%d\r\n",data[7],data[6],(((uint16_t)rx_buffer[9] << 8) | rx_buffer[10]),data[8]);
+	             				 temp_speed_int16 = ((data[9] << 8 ) | data[8]);
+	             				 temp_speed_float = temp_speed_int16/100.0f;
+	                        	 move_repeatedly(data[7], data[6]/2, (((uint16_t)rx_buffer[9] << 8) | rx_buffer[10]), temp_speed_float);
+	                        	 printf("min:%d,max:%d,count:%d,speed:%.2f\r\n",data[7],data[6],(((uint16_t)rx_buffer[9] << 8) | rx_buffer[10]),temp_speed_float);
 	                             break;
 
 	                         case 0x25://STOP
@@ -303,14 +309,15 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                     		Motor_mode = MOTOR_IDLE;
 	                        	}
 	                     		Close_output();
-//	                     		 HAL_TIM_Base_Stop(&htim6);
 	                     		dma_print_flag = 0;
 	                             break;
 
-	                         case 0x27://step p
+	                         case 0x27://open position
 	                        	 Motor_mode = MOTOR_OPEN_POSITION;
-	                             move_to_position(data[6] , (((uint16_t)data[8] << 8) | data[7]));
-//	                             printf("speed:%d step:%d\r\n",(((uint16_t)data[8] << 8) | data[7]),data[6]);
+	             				 temp_speed_int16 = ((data[8] << 8 ) | data[7]);
+	             				 temp_speed_float = temp_speed_int16/100.0f;
+	                             move_to_position(data[6] , temp_speed_float);
+	                             printf("speed:%.f step:%d\r\n",temp_speed_float,data[6]);
 	                             break;
 
 	                         case 0x28://STEP+
@@ -327,8 +334,10 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                             break;
 	                         case 0x31://OPEN VELOCITY MODE
 	                        	 Motor_mode = MOTOR_OPEN_VELOCITY;
-	                    			open_loop_velocity = (((uint16_t)data[6] << 8) | data[5]);
-	                        		velocity_mode_increment = (uint32_t)(((uint64_t)open_loop_velocity * 0x100000000) / interrupt_freq_hz);
+	             				 temp_speed_int16 = ((data[6] << 8 ) | data[5]);
+	             				 temp_speed_float = temp_speed_int16/100.0f;
+	                        	 velocity_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
+	                        	 printf("%f\n",temp_speed_float);
 	                             break;
 
 

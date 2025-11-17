@@ -39,7 +39,8 @@ Core/Src/can.o: ../Core/Src/can.c ../Core/Src/can.h ../Core/Inc/main.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
  ../Middlewares/ST/ARM/DSP/Inc/arm_math.h \
- ../Drivers/CMSIS/Include/cmsis_compiler.h ../Core/Src/control.h
+ ../Drivers/CMSIS/Include/cmsis_compiler.h ../Core/Src/control.h \
+ ../Core/Src/command.h
 ../Core/Src/can.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
@@ -84,3 +85,4 @@ Core/Src/can.o: ../Core/Src/can.c ../Core/Src/can.h ../Core/Inc/main.h \
 ../Middlewares/ST/ARM/DSP/Inc/arm_math.h:
 ../Drivers/CMSIS/Include/cmsis_compiler.h:
 ../Core/Src/control.h:
+../Core/Src/command.h:

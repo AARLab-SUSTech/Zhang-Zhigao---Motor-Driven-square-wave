@@ -10,6 +10,9 @@
 
 #include "main.h"
 
+extern float temp_speed_float;
+extern int16_t temp_speed_int16;
+
 void process_received_data(uint8_t* data, uint16_t size);
 void send_float_array_dma(float* arr, int count);
 void send_int16_groups_dma(int16_t* arr, int total_count, int elements_per_group);

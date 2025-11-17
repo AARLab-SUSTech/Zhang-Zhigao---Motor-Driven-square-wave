@@ -431,21 +431,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				 }
 				 else if(Motor_mode == MOTOR_OPEN_VELOCITY)
 				 {
-
+					 phase_increment = velocity_mode_increment;
 				 }
 				 // 注意: 在 MOTOR_OPEN_SPEED 模式下，上面两个if块都不会进入，
 				 // phase_increment 会保持由 set_speed() 函数设定的值，电机将持续旋转。
         }
 
-        // 1. 累加/累减相位 (无论何种模式，都基于最终计算出的 phase_increment)
-        // 根据方向执行累加或累减
+        // 1. 累加/累减相位 (无论何种模式，都基于最终计算出的 phase_increment)  // 根据方向执行累加或累减
         if (motor_direction == MOTOR_FORWARD) { phase_accumulator += phase_increment; }
            else 							  { phase_accumulator -= phase_increment; }
 
-		// 2. 计算扇区 (0-5)
-		// 思想：将 0x00000000 ~ 0xFFFFFFFF 的范围等分成 6 份
-		// 方法：(phase_accumulator * 6) / 2^32
-		// 使用64位乘法和右移32位来实现，非常高效
+		// 2. 计算扇区 (0-5)  //将 0x00000000 ~ 0xFFFFFFFF 的范围等分成 6 份  // 方法：(phase_accumulator * 6) / 2^32  // 使用64位乘法和右移32位来实现，非常高效
 		uint8_t new_step = (uint8_t)(((uint64_t)phase_accumulator * 6) >> 32);
 
         if (new_step > 5) new_step = 5; // 防止浮点数误差导致越界
@@ -474,9 +470,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             Update_output(step);
         }
 
-
 	}
 }
+
+
 /* USER CODE END 0 */
 
 /**

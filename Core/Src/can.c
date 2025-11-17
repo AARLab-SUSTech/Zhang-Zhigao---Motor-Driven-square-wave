@@ -6,6 +6,7 @@
  */
 #include "can.h"
 #include "control.h"
+#include "command.h"
 
 extern volatile Motor_mode_t Motor_mode;
 
@@ -13,7 +14,7 @@ FDCAN_TxHeaderTypeDef TxHeader;
 FDCAN_RxHeaderTypeDef RxHeader; // 用于存储接收报文的头信息
 uint8_t RxData[8];              // 用于存储接收报文的数据
 uint8_t TxData[8];
-uint16_t Sync_Motor_Speed=0;
+float Sync_Motor_Speed=0;
 uint32_t Sync_Motor_position=0;
 uint16_t open_loop_velocity=0;
 
@@ -235,22 +236,6 @@ void Can_message_process(void)
             // 1. 队列不为空，从 "tail" 处取出消息
             volatile CanRxMessage_t* msg = &g_rx_queue[g_rx_queue_tail];
 
-
-//            if((msg->Rx_Header.Identifier == 0x101 ))
-//            {
-//            	r_d[0] = msg->Data[3];
-//            }
-//            else if((msg->Rx_Header.Identifier == 0x102 ))
-//            {
-//            	r_d[1] = msg->Data[3];
-//            }
-//            else if((msg->Rx_Header.Identifier == 0x103 ))
-//            {
-//            	r_d[2] = msg->Data[3];
-//            	printf("%d,%d,%d\r\n",r_d[0],r_d[1],r_d[2]);
-//            }
-
-
             // (可选) 打印原始报文
 //             printf("Rx ID:0x%lX,Data ", msg->Rx_Header.Identifier);
 //             for(int i=0; i < msg->Rx_Header.DataLength; i++) { printf("%02X ", msg->Data[i]); }
@@ -285,39 +270,43 @@ void Can_message_process(void)
                     case 0x03: // 命令: 步进+
                     case 0x04: // 命令: 步进-
                         {
-                            uint16_t speed_hz = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
-                            uint32_t steps = 1;
+                        	temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
+                        	temp_speed_float = temp_speed_int16 / 100.0f;
+                            position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
 
-                            position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
                             Motor_mode = MOTOR_OPEN_POSITION;
-                            printf("command:%d,speed %d,step%ld\r\n",command,speed_hz,steps);
+                            printf("command:%d,speed %.2f\r\n",command,temp_speed_float);
                             if (command == 0x03) // 正向
-                               target_step_position = absolute_step_counter + steps;
+                               target_step_position = absolute_step_counter + 1;
                             else // 反向 (command == 0x04)
-                               target_step_position = absolute_step_counter - steps;
+                               target_step_position = absolute_step_counter - 1;
                         }
                         break;
 
                     case 0x05: // 命令: 往复模式
                         {
-                            uint16_t speed_hz = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
+                            Motor_mode = MOTOR_OPEN_REPEATED;
+                        	temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
+                        	temp_speed_float = temp_speed_int16 / 100.0f;
+                            position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
+
                             repeated_pos_A = (int32_t)((uint16_t)msg->Data[3] | (uint16_t)(msg->Data[4] << 8));
                             repeated_pos_B = (int32_t)((uint16_t)msg->Data[5] | (uint16_t)(msg->Data[6] << 8));
                             repeated_count_total = (uint32_t)msg->Data[7];
                             repeated_count_current = 0;
-                            printf("command:%d,speed_hz %d,%ld,%ld\r\n",command,speed_hz,repeated_pos_A,repeated_pos_B);
-                            position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
-                            Motor_mode = MOTOR_OPEN_REPEATED;
+                            printf("command:%d,speed_hz %.2f,%ld,%ld\r\n",command,temp_speed_float,repeated_pos_A,repeated_pos_B);
                         }
                         break;
 
                     case 0x06: // 命令: 绝对位置模式
                         {
-                            uint16_t speed_hz = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
+                            Motor_mode = MOTOR_OPEN_POSITION;
+                        	temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
+                        	temp_speed_float = temp_speed_int16 / 100.0f;
+                            position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
                             uint32_t absolute_pos = (uint32_t)msg->Data[3] | (uint32_t)msg->Data[4] << 8;
 
-                            position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
-                            Motor_mode = MOTOR_OPEN_POSITION;
+                            position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
                             target_step_position = absolute_pos;
                         }
                         break;
@@ -329,7 +318,9 @@ void Can_message_process(void)
                         		if((Motor_mode != MOTOR_OVER_HV_CURRENT) | (Motor_mode != MOTOR_OVER_HV_VOLTAGE) | (Motor_mode != MOTOR_OVER_DC_IN_CURRENT))
                         		{
 								Motor_mode = MOTOR_SYNC_POSITION;
-								Sync_Motor_Speed = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
+	                        	temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
+	                        	temp_speed_float = temp_speed_int16 / 100.0f;
+								Sync_Motor_Speed = temp_speed_float;
 								Sync_Motor_position = (uint32_t)msg->Data[3] | (uint32_t)msg->Data[4] << 8;
                         		}
                         	}
@@ -352,8 +343,10 @@ void Can_message_process(void)
                     case 0x09: // 命令: 开环速度模式
                     	{
                     			Motor_mode = MOTOR_OPEN_VELOCITY;
-                    			open_loop_velocity = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
-                        		velocity_mode_increment = (uint32_t)(((uint64_t)open_loop_velocity * 0x100000000) / interrupt_freq_hz);
+                            	temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
+                            	temp_speed_float = temp_speed_int16 / 100.0f;
+                            	open_loop_velocity = temp_speed_float;
+                            	velocity_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
                         }
                         break;
 
@@ -362,7 +355,7 @@ void Can_message_process(void)
                         printf("ERR: Unknown Command\r\n");
                         break;
                 }
-
+                printf("speed:%.2f\n",temp_speed_float);
 	                  // 5. 【请求应答】(只对应答非广播消息)
 	                  if (msg->Rx_Header.Identifier != BROADCAST_ID)
 	                  {

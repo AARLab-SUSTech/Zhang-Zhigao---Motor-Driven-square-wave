@@ -76,9 +76,10 @@ void move_to_position(int32_t target_steps, float speed_hz)
     target_step_position = target_steps;
 
     // 3. 根据 speed_hz 计算并设置在位置模式下移动时要使用的速度增量
-    if (speed_hz < 0) speed_hz = -speed_hz; // 确保速度为正
-    double increment_f = (speed_hz / interrupt_freq_hz) * PHASE_2_32;
-    position_mode_increment = (uint32_t)increment_f;
+    set_speed(speed_hz);
+//    if (speed_hz < 0) speed_hz = -speed_hz; // 确保速度为正
+//    double increment_f = (speed_hz / interrupt_freq_hz) * PHASE_2_32;
+//    position_mode_increment = (uint32_t)increment_f;
 }
 /**
   * @brief  启动往复运动模式
@@ -101,9 +102,10 @@ void move_repeatedly(int32_t pos1, int32_t pos2, uint32_t count, float speed_hz)
 
     // 3. 【关键修复】: 直接设置第一个目标和速度，避免模式冲突
     target_step_position = repeated_pos_A;
-    if (repeated_speed_hz < 0) repeated_speed_hz = -repeated_speed_hz;
-    double increment_f = (repeated_speed_hz / interrupt_freq_hz) * PHASE_2_32;
-    position_mode_increment = (uint32_t)increment_f;
+    set_speed(speed_hz);
+//    if (repeated_speed_hz < 0) repeated_speed_hz = -repeated_speed_hz;
+//    double increment_f = (repeated_speed_hz / interrupt_freq_hz) * PHASE_2_32;
+//    position_mode_increment = (uint32_t)increment_f;
 }
 /**
   * @brief  启动一次单次定位任务
