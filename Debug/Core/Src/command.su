@@ -2,4 +2,4 @@
 ../Core/Src/command.c:45:6:send_float_array_dma	48	static
 ../Core/Src/command.c:107:6:send_int16_groups_dma	40	static
 ../Core/Src/command.c:243:6:HAL_UARTEx_RxEventCallback	16	static
-../Core/Src/command.c:265:6:process_received_data	40	static
+../Core/Src/command.c:265:6:process_received_data	48	static

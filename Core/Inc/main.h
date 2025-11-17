@@ -83,6 +83,8 @@ extern uint8_t process_buffer[RX_BUFFER_SIZE];
 
 extern FDCAN_HandleTypeDef hfdcan1;
 
+extern uint16_t open_loop_velocity;
+
 // --- 电机控制状态变量 ---
 
 extern volatile int32_t repeated_pos_A;
@@ -99,6 +101,7 @@ extern float interrupt_freq_hz;
 extern volatile int32_t absolute_step_counter;
 extern volatile int32_t target_step_position;
 extern volatile uint32_t position_mode_increment;
+extern volatile uint32_t velocity_mode_increment;
 
 extern uint32_t ADC1_RAW_data[2];
 extern uint32_t ADC2_RAW_data[3];
@@ -110,15 +113,19 @@ extern COMP_HandleTypeDef hcomp1;
 extern COMP_HandleTypeDef hcomp2;
 
 typedef enum {
-    MOTOR_IDLE = 0,             // 静止/待机模式
-    MOTOR_ERROR,                // 错误/急停模式
-    MOTOR_OPEN_SPEED,           // 速度模式
-    MOTOR_OPEN_POSITION,        // 单次定位模式
+    MOTOR_IDLE = 0,              // 空闲模式
+	MOTOR_READY,				 //待机模式，高压上电
+    MOTOR_ERROR,                 // 错误/急停模式
+    MOTOR_OPEN_SPEED,            // 速度模式
+    MOTOR_OPEN_POSITION,         // 单次定位模式
 	MOTOR_OPEN_REPEATED,         // 往复运动模式
+	MOTOR_OPEN_VELOCITY,         //开环速度模式
+	MOTOR_SYNC_POSITION,         //多电机同步模式
 	MOTOR_OVER_HV_CURRENT,
 	MOTOR_OVER_HV_VOLTAGE,
 	MOTOR_OVER_DC_IN_CURRENT
 } Motor_mode_t;
+
 typedef enum {
     MOTOR_REVERSE = 0,
     MOTOR_FORWARD = 1

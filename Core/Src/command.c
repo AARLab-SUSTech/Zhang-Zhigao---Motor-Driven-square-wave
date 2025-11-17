@@ -283,9 +283,9 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                 // ±È½ÏÐ£ÑéºÍ
 	                 uint8_t received_checksum = rx_buffer[2 + 1 + 1 + data_length];  // ½ÓÊÕµÄÐ£ÑéºÍ
 	                 if (checksum == received_checksum) {
-//															 printf("ID: %02X, Command: %02X, Index: %02X Data: ", data[3], data[4], data[5]);
-//															 for (uint8_t i = 0; i < data_length-2; i++) {printf("%02X ", data[6 + i]);}
-//															 printf("\r\n");
+															 printf("ID: %02X, Command: %02X, Index: %02X Data: ", data[3], data[4], data[5]);
+															 for (uint8_t i = 0; i < data_length-2; i++) {printf("%02X ", data[6 + i]);}
+															 printf("\r\n");
 	                     if(data[3] != 0x01)  return;
 	                     if((Motor_mode == MOTOR_OVER_HV_VOLTAGE) || (Motor_mode == MOTOR_OVER_HV_CURRENT) || (Motor_mode == MOTOR_OVER_DC_IN_CURRENT)) return;//不处理指令，直接退出
 	                     switch(data[4])
@@ -325,6 +325,12 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                         case 0x30://SET SPEED
 
 	                             break;
+	                         case 0x31://OPEN VELOCITY MODE
+	                        	 Motor_mode = MOTOR_OPEN_VELOCITY;
+	                    			open_loop_velocity = (((uint16_t)data[6] << 8) | data[5]);
+	                        		velocity_mode_increment = (uint32_t)(((uint64_t)open_loop_velocity * 0x100000000) / interrupt_freq_hz);
+	                             break;
+
 
 	                         default:
 	                             break;

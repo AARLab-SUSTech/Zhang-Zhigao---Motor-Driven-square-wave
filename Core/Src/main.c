@@ -56,6 +56,8 @@ volatile int32_t absolute_step_counter = 0;
 volatile int32_t target_step_position = 0;
 // 在位置模式下，电机移动到目标点时使用的速度
 volatile uint32_t position_mode_increment = 10;
+// 在速度模式下，电机移动速度
+volatile uint32_t velocity_mode_increment = 0;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -100,6 +102,7 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim7;
 TIM_HandleTypeDef htim16;
+TIM_HandleTypeDef htim17;
 
 UART_HandleTypeDef huart1;
 DMA_HandleTypeDef hdma_usart1_rx;
@@ -127,6 +130,7 @@ static void MX_TIM6_Init(void);
 static void MX_FDCAN1_Init(void);
 static void MX_TIM16_Init(void);
 static void MX_SPI1_Init(void);
+static void MX_TIM17_Init(void);
 /* USER CODE BEGIN PFP */
 #ifdef __GNUC__									//串口重定向
 #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
@@ -204,6 +208,39 @@ extern volatile uint8_t g_uart_dma_transfer_complete;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
+	if(htim == &htim17)
+	{
+		//CAN heart
+		// 1. 计算下一个 "head" 指针的位置
+		//    (使用位运算 & (TX_QUEUE_SIZE - 1) 比 % 更高效, 因为 TX_QUEUE_SIZE = 16)
+					uint16_t next_head = (g_tx_queue_head + 1) & (TX_QUEUE_SIZE - 1);
+		// 2. 检查队列是否已满 (如果 head 的下一个位置就是 tail)
+		            if (next_head == g_tx_queue_tail)
+		            {
+		                // 队列已满，本次心跳被丢弃
+		            }
+		            else
+		             {
+		                // 3. 队列未满，获取 "head" 位置的“集装箱”
+		                //    (注意：我们总是在 g_tx_queue_head 指向的位置填充)
+		                volatile CanTxMessage_t* msg_to_queue = &g_tx_queue[g_tx_queue_head];
+
+		                // 4. 填充报文头 (复制模板，再修改特定部分)
+		                msg_to_queue->Tx_Header = TxHeader;         			 // 复制模板
+		                msg_to_queue->Tx_Header.Identifier = HEART_ID;          // 【心跳ID】
+		                msg_to_queue->Tx_Header.DataLength = FDCAN_DLC_BYTES_1; // 【灵活DLC】
+
+		                // 5. 填充报文数据
+		                msg_to_queue->Data[0] = (uint8_t)Motor_mode;    // 填入当前模式/故障码
+		                // (可选) 将剩余字节清零，这是一个好习惯
+		                for (int i = 1; i < 8; i++) { msg_to_queue->Data[i] = 0x00; }
+
+		                 // 6. 【原子操作】移动头指针，正式将消息放入队列
+		                 //    这个赋值操作是原子的，主循环现在就能看到新消息了
+		                 g_tx_queue_head = next_head;
+		             }
+	}
+
 	if(htim == &htim16)
 	{
 //		  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
@@ -238,7 +275,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		  // 如果角度变化超过180度，则认为发生了一次回绕。
 		  float delta_angle = EMA_DATA.theta_degrees - EMA_DATA.previous_theta_degrees;
 
-		  if (!EMA_DATA.first_calculation) { // 只有在不是第一次计算时才进行回绕检测
+ 		  if (!EMA_DATA.first_calculation) { // 只有在不是第一次计算时才进行回绕检测
 			  if (delta_angle > 180.0f) { // 例如从 350 -> 10，实际是正转，但差值 < -180
 				  EMA_DATA.cycle_count--;     // 反向回绕 (例如从 10 度跳到 350 度)
 			  } else if (delta_angle < -180.0f) { // 例如从 10 -> 350，实际是反转，但差值 > 180
@@ -336,12 +373,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         // --- 1. 安全检查层：处理最高优先级的 IDLE 和 ERROR 状态 ---
         if (Motor_mode == MOTOR_IDLE || Motor_mode == MOTOR_ERROR || Motor_mode == MOTOR_OVER_HV_CURRENT || Motor_mode == MOTOR_OVER_HV_VOLTAGE || Motor_mode == MOTOR_OVER_DC_IN_CURRENT)
         {
-        	DC_Power_OFF;
             phase_increment = 0; // 强制速度为0，确保电机停止
         }
         else
         {
-        	DC_Power_ON;
         		// --- 1. 状态决策层：根据当前模式决定电机的目标和速度 ---
 				if (Motor_mode == MOTOR_OPEN_REPEATED)
 				{
@@ -374,9 +409,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 						}
 					}
 				}
-			// --- 2. 运动执行层：根据目标驱动电机 ---
+
+			     // --- 2. 运动执行层：根据目标驱动电机 ---
 				 // 如果是任何需要定位的模式 (单次或往复)
-				 if (Motor_mode == MOTOR_OPEN_POSITION || Motor_mode == MOTOR_OPEN_REPEATED)
+				 if (Motor_mode == MOTOR_OPEN_POSITION || Motor_mode == MOTOR_OPEN_REPEATED || Motor_mode == MOTOR_SYNC_POSITION)
 				 {
 					 if (absolute_step_counter < target_step_position)
 					 {
@@ -392,6 +428,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 					 {
 						 phase_increment = 0;
 					 }
+				 }
+				 else if(Motor_mode == MOTOR_OPEN_VELOCITY)
+				 {
+
 				 }
 				 // 注意: 在 MOTOR_OPEN_SPEED 模式下，上面两个if块都不会进入，
 				 // phase_increment 会保持由 set_speed() 函数设定的值，电机将持续旋转。
@@ -412,7 +452,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
         if(step != new_step)
         {
-
+        	HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 			// 【修正】同时判断正转(5->0)和反转(0->5)的周期结束点
 			if ( (step == 5 && new_step == 0) || (step == 0 && new_step == 5) )
 			{
@@ -482,6 +522,7 @@ int main(void)
   MX_FDCAN1_Init();
   MX_TIM16_Init();
   MX_SPI1_Init();
+  MX_TIM17_Init();
   /* USER CODE BEGIN 2 */
 
 //  Close_output();//关闭所有输出
@@ -508,24 +549,24 @@ int main(void)
   	  Force_Sensor1.weight_proportion=86742;  // 电压值与重量变换比例，这个需要实际测试计算才能得到
   	  Force_Sensor1.weight_Zero_Data=0;   // 零值
 
-  	    Force_sensor_init();
-  	    weight_ad7190_conf();
+//  	    Force_sensor_init();
+//  	    weight_ad7190_conf();
+//
+//  	    HAL_Delay(500);
+//  	    Force_Sensor1.weight_Zero_Data = weight_ad7190_ReadAvg(6);
+////  	    printf("zero:%ld\n",Force_Sensor1.weight_Zero_Data);
+//
+//  	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
+//  	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
 
-  	    HAL_Delay(500);
-  	    Force_Sensor1.weight_Zero_Data = weight_ad7190_ReadAvg(6);
-//  	    printf("zero:%ld\n",Force_Sensor1.weight_Zero_Data);
-
-  	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
-  	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
-
-  	  CAN_init();
+  	CAN_init();
 
     EMA_DATA.sin_offset = 1.65f;
     EMA_DATA.cos_offset = 1.65f;
 
     HAL_TIM_Base_Start_IT(&htim6);
 
-//	send_int16_groups_dma(dma_int16_data, 100, 10);
+    HAL_TIM_Base_Start_IT(&htim17);//CAN Heart
 
   /* USER CODE END 2 */
 
@@ -559,25 +600,55 @@ int main(void)
 //		  printf("%.3f\r\n",Force_Sensor1.weight_g);
 	  }
 
-	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
-	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
+	  // 1. 检查队列是否为空 (head 和 tail 是否相等)
+	      if (g_tx_queue_head != g_tx_queue_tail)
+	      {
+	          // 2. 检查CAN硬件Tx FIFO是否空闲 (有空余等级)
+	          if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+	          {
+	              // 3. 硬件空闲，可以发送
+	              // 注意：我们总是从 g_tx_queue[g_tx_queue_tail] 处取出消息
+	              // 我们需要强制转换(cast)，因为 g_tx_queue 被声明为 volatile
+	              FDCAN_TxHeaderTypeDef* tx_header = (FDCAN_TxHeaderTypeDef*)&g_tx_queue[g_tx_queue_tail].Tx_Header;
+	              uint8_t* tx_data = (uint8_t*)g_tx_queue[g_tx_queue_tail].Data;
 
-	    __disable_irq(); // 关中断（锁门）
-		  weight_g_temp = Force_Sensor1.weight_g;
-	    __enable_irq();  // 开中断（开门）
+	              // 4. 调用HAL库函数，将消息放入硬件发送FIFO
+	              if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, tx_header, tx_data) == HAL_OK)
+	              {
+	                  // 5. 【关键】发送成功，【原子操作】移动尾指针，完成出队
+	                  //    这会“释放”队列中的一个位置
+	                  g_tx_queue_tail = (g_tx_queue_tail + 1) & (TX_QUEUE_SIZE - 1);
+	              }
+	               else
+	               {
+	                  printf("Can_Tx_error\r\n");
+	               }
+	          }
+	           else
+	           {
+	              printf("Can fifo error\r\n");
+	           }
+	      }
 
-	  HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-	  HAL_Delay(1);
+
+	      Can_message_process();
+
+//    	  printf("%ld\r\n",absolute_step_counter);
+
+//	      if(Motor_mode == MOTOR_SYNC_POSITION)
+//	      {
+//	    	  printf("%ld\r\n",absolute_step_counter);
+//	      }
+
+//	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
+//	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
+//	  printf("%.3f\r\n",Force_Sensor1.weight_g);
+//	    __disable_irq(); // 关中断（锁门）
+//		  weight_g_temp = Force_Sensor1.weight_g;
+//	    __enable_irq();  // 开中断（开门）
+
 
 //		printf("%ld,%ld,%.3f,%.3f\r\n",ADC2_RAW_data[1],ADC2_RAW_data[2],EMA_DATA.theta_degrees,EMA_DATA.position_mm);
-
-//	    if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
-//	    {
-//	      if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData) != HAL_OK)
-//	      {
-//	        Error_Handler();
-//	      }
-//	    }
   }
   /* USER CODE END 3 */
 }
@@ -1245,6 +1316,38 @@ static void MX_TIM16_Init(void)
   /* USER CODE BEGIN TIM16_Init 2 */
 
   /* USER CODE END TIM16_Init 2 */
+
+}
+
+/**
+  * @brief TIM17 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM17_Init(void)
+{
+
+  /* USER CODE BEGIN TIM17_Init 0 */
+
+  /* USER CODE END TIM17_Init 0 */
+
+  /* USER CODE BEGIN TIM17_Init 1 */
+
+  /* USER CODE END TIM17_Init 1 */
+  htim17.Instance = TIM17;
+  htim17.Init.Prescaler = 16999;
+  htim17.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim17.Init.Period = 9999;
+  htim17.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim17.Init.RepetitionCounter = 0;
+  htim17.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim17) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM17_Init 2 */
+
+  /* USER CODE END TIM17_Init 2 */
 
 }
 

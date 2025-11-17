@@ -2,4 +2,4 @@
 ../Core/Src/command.c:45:6:send_float_array_dma	8
 ../Core/Src/command.c:107:6:send_int16_groups_dma	9
 ../Core/Src/command.c:243:6:HAL_UARTEx_RxEventCallback	3
-../Core/Src/command.c:265:6:process_received_data	21
+../Core/Src/command.c:265:6:process_received_data	23
