@@ -632,17 +632,10 @@ int main(void)
 
 //    	  printf("%ld\r\n",absolute_step_counter);
 
-//	      if(Motor_mode == MOTOR_SYNC_POSITION)
-//	      {
-//	    	  printf("%ld\r\n",absolute_step_counter);
-//	      }
 
 //	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
 //	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
 //	  printf("%.3f\r\n",Force_Sensor1.weight_g);
-//	    __disable_irq(); // 关中断（锁门）
-//		  weight_g_temp = Force_Sensor1.weight_g;
-//	    __enable_irq();  // 开中断（开门）
 
 
 //		printf("%ld,%ld,%.3f,%.3f\r\n",ADC2_RAW_data[1],ADC2_RAW_data[2],EMA_DATA.theta_degrees,EMA_DATA.position_mm);
