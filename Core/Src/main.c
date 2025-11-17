@@ -270,8 +270,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			  EMA_DATA.theta_degrees += 360.0f;
 		  }
 
-		  // 角度回绕检测和圈数累计
-		  // 需要一个阈值来判断是否发生了回绕，例如180度。
+		  // 角度回绕检测和圈数累计 // 需要一个阈值来判断是否发生了回绕，例如180度。
 		  // 如果角度变化超过180度，则认为发生了一次回绕。
 		  float delta_angle = EMA_DATA.theta_degrees - EMA_DATA.previous_theta_degrees;
 
@@ -636,7 +635,6 @@ int main(void)
 //	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
 //	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
 //	  printf("%.3f\r\n",Force_Sensor1.weight_g);
-
 
 //		printf("%ld,%ld,%.3f,%.3f\r\n",ADC2_RAW_data[1],ADC2_RAW_data[2],EMA_DATA.theta_degrees,EMA_DATA.position_mm);
   }

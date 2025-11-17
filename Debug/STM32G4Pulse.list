@@ -4308,8 +4308,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  800261c:	edc3 7a46 	vstr	s15, [r3, #280]	@ 0x118
 		  }
 
-		  // 角度回绕检测和圈数累计
-		  // 需要一个阈值来判断是否发生了回绕，例如180度。
+		  // 角度回绕检测和圈数累计 // 需要一个阈值来判断是否发生了回绕，例如180度。
 		  // 如果角度变化超过180度，则认为发生了一次回绕。
 		  float delta_angle = EMA_DATA.theta_degrees - EMA_DATA.previous_theta_degrees;
  8002620:	4b42      	ldr	r3, [pc, #264]	@ (800272c <HAL_TIM_PeriodElapsedCallback+0x2d4>)
