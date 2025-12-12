@@ -340,6 +340,16 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                        	 printf("%f\n",temp_speed_float);
 	                             break;
 
+	                         case 0x32://CLOSE POSITION MODE
+	                        	 Motor_mode = MOTOR_CLOSE_POSITION;
+	                        	 printf("close position\n");
+	                             break;
+
+	                         case 0x33://CLOSE FORCE MODE
+	                        	 Motor_mode = MOTOR_CLOSE_FORCE;
+	                        	 printf("close force\n");
+	                             break;
+
 
 	                         default:
 	                             break;

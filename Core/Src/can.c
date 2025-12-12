@@ -16,7 +16,7 @@ uint8_t RxData[8];              // 用于存储接收报文的数据
 uint8_t TxData[8];
 float Sync_Motor_Speed=0;
 uint32_t Sync_Motor_position=0;
-uint16_t open_loop_velocity=0;
+int16_t  open_loop_velocity;
 
 /**
   * @brief  定义队列的存储数组
@@ -110,7 +110,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
         // 从Rx FIFO 0中获取消息，存入上面的全局变量中
         if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader, RxData) == HAL_OK)
         {
-////             --- 在这里添加您自己的数据处理逻辑 ---
+//             --- 在这里添加您自己的数据处理逻辑 ---
 //            printf("Message Received!\r\n");
 //            printf("  ID   : 0x%lX\r\n", RxHeader.Identifier);
 //            printf("  DLC  : %ld bytes\r\n", RxHeader.DataLength);
@@ -254,6 +254,7 @@ void Can_message_process(void)
                 {
                     case 0x01: // 命令: 紧急停止
                         DC_Power_OFF;
+                        HAL_TIM_Base_Stop(&htim16);
                         Close_output();
                         if( (Motor_mode != MOTOR_OVER_HV_VOLTAGE) && (Motor_mode != MOTOR_OVER_HV_CURRENT) &&
                             (Motor_mode != MOTOR_OVER_DC_IN_CURRENT) && (Motor_mode != MOTOR_ERROR) )
@@ -293,6 +294,7 @@ void Can_message_process(void)
                             repeated_pos_A = (int32_t)((uint16_t)msg->Data[3] | (uint16_t)(msg->Data[4] << 8));
                             repeated_pos_B = (int32_t)((uint16_t)msg->Data[5] | (uint16_t)(msg->Data[6] << 8));
                             repeated_count_total = (uint32_t)msg->Data[7];
+                            if(repeated_count_total == 0)  repeated_count_total = 0xFFFFFFFF;//如果往复次数为0 则为无穷往复
                             repeated_count_current = 0;
                             printf("command:%d,speed_hz %.2f,%ld,%ld\r\n",command,temp_speed_float,repeated_pos_A,repeated_pos_B);
                         }
@@ -346,7 +348,10 @@ void Can_message_process(void)
                             	temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
                             	temp_speed_float = temp_speed_int16 / 100.0f;
                             	open_loop_velocity = temp_speed_float;
+                                if (open_loop_velocity > 0) { motor_direction = MOTOR_FORWARD; }
+                                   else 				  { motor_direction = MOTOR_REVERSE; temp_speed_float = -temp_speed_float;}
                             	velocity_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
+//                            	printf("%d,%ld\r\n",open_loop_velocity,velocity_mode_increment);
                         }
                         break;
 
@@ -355,11 +360,14 @@ void Can_message_process(void)
                         printf("ERR: Unknown Command\r\n");
                         break;
                 }
-                printf("speed:%.2f\n",temp_speed_float);
+
+
 	                  // 5. 【请求应答】(只对应答非广播消息)
 	                  if (msg->Rx_Header.Identifier != BROADCAST_ID)
 	                  {
 	                      Queue_Reply_Request(command, status_code);
+	                      if(Motor_mode == MOTOR_OPEN_REPEATED)  {HAL_TIM_Base_Start_IT(&htim16);}
+	                      else {HAL_TIM_Base_Stop(&htim16);}
 	                  }
             }
             else

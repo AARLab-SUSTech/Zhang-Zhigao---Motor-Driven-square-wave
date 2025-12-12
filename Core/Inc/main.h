@@ -85,7 +85,8 @@ extern uint8_t process_buffer[RX_BUFFER_SIZE];
 
 extern FDCAN_HandleTypeDef hfdcan1;
 
-extern uint16_t open_loop_velocity;
+extern int16_t open_loop_velocity;
+
 
 // --- 电机控制状态变量 ---
 
@@ -122,6 +123,9 @@ typedef enum {
     MOTOR_OPEN_POSITION,         // 单次定位模式
 	MOTOR_OPEN_REPEATED,         // 往复运动模式
 	MOTOR_OPEN_VELOCITY,         //开环速度模式
+	MOTOR_CLOSE_POSITION,	     //闭环位置模式
+	MOTOR_CLOSE_FORCE,	         //闭环力模式
+	MOTOR_CLOSE_VELOCITY,		 //闭环速度模式
 	MOTOR_SYNC_POSITION,         //多电机同步模式
 	MOTOR_OVER_HV_CURRENT,
 	MOTOR_OVER_HV_VOLTAGE,
@@ -132,6 +136,9 @@ typedef enum {
     MOTOR_REVERSE = 0,
     MOTOR_FORWARD = 1
 } MotorDirection_t;
+
+
+extern  volatile MotorDirection_t motor_direction;
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
