@@ -307,8 +307,6 @@ void Can_message_process(void)
                         	temp_speed_float = temp_speed_int16 / 100.0f;
                             position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
                             uint32_t absolute_pos = (uint32_t)msg->Data[3] | (uint32_t)msg->Data[4] << 8;
-
-                            position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
                             target_step_position = absolute_pos;
                         }
                         break;

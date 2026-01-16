@@ -3,8 +3,8 @@
 ../Core/Src/control.c:70:6:DC_Power_CTR	16	static
 ../Core/Src/control.c:89:6:set_speed	24	static
 ../Core/Src/control.c:112:6:move_to_position	16	static
-../Core/Src/control.c:131:6:move_repeatedly	24	static
-../Core/Src/control.c:153:6:start_move_to_position	16	static
-../Core/Src/control.c:163:6:step_move	24	static,ignoring_inline_asm
-../Core/Src/control.c:180:6:Close_output	8	static
-../Core/Src/control.c:192:6:Update_output	16	static
+../Core/Src/control.c:129:6:move_repeatedly	24	static
+../Core/Src/control.c:149:6:start_move_to_position	16	static
+../Core/Src/control.c:159:6:step_move	24	static,ignoring_inline_asm
+../Core/Src/control.c:176:6:Close_output	8	static
+../Core/Src/control.c:188:6:Update_output	16	static

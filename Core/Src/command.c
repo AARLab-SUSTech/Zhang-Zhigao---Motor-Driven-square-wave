@@ -249,7 +249,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
     if (huart->Instance == USART1)
     {
         // 1. 成功进入中断，翻转一个LED作为最直观的指示
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+//        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
         Buzzer_ON;
         // 2. 检查确实收到了数据 (size > 0)，然后处理它
         //    size 参数是本次DMA实际接收到的字节数，非常重要
@@ -287,17 +287,20 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                 // ±È½ÏÐ£ÑéºÍ
 	                 uint8_t received_checksum = rx_buffer[2 + 1 + 1 + data_length];  // ½ÓÊÕµÄÐ£ÑéºÍ
 	                 if (checksum == received_checksum) {
-															 printf("ID: %02X, Command: %02X, Index: %02X Data: ", data[3], data[4], data[5]);
-															 for (uint8_t i = 0; i < data_length-2; i++) {printf("%02X ", data[6 + i]);}
-															 printf("\r\n");
+//															 printf("ID: %02X, Command: %02X, Index: %02X Data: ", data[3], data[4], data[5]);
+//															 for (uint8_t i = 0; i < data_length-2; i++) {printf("%02X ", data[6 + i]);}
+//															 printf("\r\n");
 	                     if(data[3] != 0x01)  return;
 	                     if((Motor_mode == MOTOR_OVER_HV_VOLTAGE) || (Motor_mode == MOTOR_OVER_HV_CURRENT) || (Motor_mode == MOTOR_OVER_DC_IN_CURRENT)) return;//不处理指令，直接退出
+
+	                     if(data[4] != 0x25) {DC_Power_ON;Motor_mode = MOTOR_READY;}
+
 	                     switch(data[4])
 	                     {
 	                         case 0x24://repeat mode
 	                        	 Motor_mode = MOTOR_OPEN_REPEATED;
 	             				 temp_speed_int16 = ((data[9] << 8 ) | data[8]);
-	             				 temp_speed_float = temp_speed_int16/100.0f;
+	             				 temp_speed_float = temp_speed_int16;
 	                        	 move_repeatedly(data[7], data[6]/2, (((uint16_t)rx_buffer[9] << 8) | rx_buffer[10]), temp_speed_float);
 	                        	 printf("min:%d,max:%d,count:%d,speed:%.2f\r\n",data[7],data[6],(((uint16_t)rx_buffer[9] << 8) | rx_buffer[10]),temp_speed_float);
 	                             break;
@@ -315,19 +318,21 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                         case 0x27://open position
 	                        	 Motor_mode = MOTOR_OPEN_POSITION;
 	             				 temp_speed_int16 = ((data[8] << 8 ) | data[7]);
-	             				 temp_speed_float = temp_speed_int16/100.0f;
+	             				 temp_speed_float = temp_speed_int16;
 	                             move_to_position(data[6] , temp_speed_float);
 	                             printf("speed:%.f step:%d\r\n",temp_speed_float,data[6]);
 	                             break;
 
 	                         case 0x28://STEP+
 	                        	 Motor_mode = MOTOR_OPEN_POSITION;
-	                        	 step_move(1, 10);
+	                             target_step_position = absolute_step_counter + 1;
+	                             position_mode_increment = (uint32_t)(((uint64_t)10.0f * 0x100000000) / interrupt_freq_hz);
 	                             break;
 
 	                         case 0x29://STEP-
 	                        	 Motor_mode = MOTOR_OPEN_POSITION;
-	                        	 step_move(-1, 10);
+	                        	 target_step_position = absolute_step_counter - 1;
+	                        	 position_mode_increment = (uint32_t)(((uint64_t)10.0f * 0x100000000) / interrupt_freq_hz);
 	                             break;
 	                         case 0x30://SET SPEED
 
@@ -335,7 +340,7 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                         case 0x31://OPEN VELOCITY MODE
 	                        	 Motor_mode = MOTOR_OPEN_VELOCITY;
 	             				 temp_speed_int16 = ((data[6] << 8 ) | data[5]);
-	             				 temp_speed_float = temp_speed_int16/100.0f;
+	             				 temp_speed_float = temp_speed_int16;
 	                        	 velocity_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
 	                        	 printf("%f\n",temp_speed_float);
 	                             break;

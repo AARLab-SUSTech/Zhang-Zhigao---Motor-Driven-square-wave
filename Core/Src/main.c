@@ -712,7 +712,7 @@ int main(void)
 	      }
 	      else
 	      {
-//	    	  printf("%d\n",Motor_mode);
+//              printf("step:%ld\r\n",absolute_step_counter);
 	      }
 
 //    printf("%ld\r\n",absolute_step_counter);

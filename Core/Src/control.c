@@ -116,10 +116,8 @@ void move_to_position(int32_t target_steps, float speed_hz)
     target_step_position = target_steps;
 
     // 3. 根据 speed_hz 计算并设置在位置模式下移动时要使用的速度增量
-    set_speed(speed_hz);
-//    if (speed_hz < 0) speed_hz = -speed_hz; // 确保速度为正
-//    double increment_f = (speed_hz / interrupt_freq_hz) * PHASE_2_32;
-//    position_mode_increment = (uint32_t)increment_f;
+	position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
+
 }
 /**
   * @brief  启动往复运动模式
@@ -134,18 +132,16 @@ void move_repeatedly(int32_t pos1, int32_t pos2, uint32_t count, float speed_hz)
     repeated_pos_A = pos1;
     repeated_pos_B = pos2;
     repeated_count_total = count;
-    repeated_speed_hz = speed_hz;
-    repeated_count_current = 0; // 重置当前计数
+    if(repeated_count_total == 0)  repeated_count_total = 0xFFFFFFFF;//如果往复次数为0 则为无穷往复
+    repeated_count_current = 0;
 
     // 2. 切换到往复运动模式
     Motor_mode = MOTOR_OPEN_REPEATED;
 
     // 3. 【关键修复】: 直接设置第一个目标和速度，避免模式冲突
     target_step_position = repeated_pos_A;
-    set_speed(speed_hz);
-//    if (repeated_speed_hz < 0) repeated_speed_hz = -repeated_speed_hz;
-//    double increment_f = (repeated_speed_hz / interrupt_freq_hz) * PHASE_2_32;
-//    position_mode_increment = (uint32_t)increment_f;
+    position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
+
 }
 /**
   * @brief  启动一次单次定位任务

@@ -10,7 +10,7 @@
 
 #include "main.h"
 
-#define MOTOR_ID        0x01
+#define MOTOR_ID        0x04
 
 #define BROADCAST_ID    0x100  // <-- 我们协议中定义的广播ID
 #define MY_NODE_ID      0x100 + MOTOR_ID  // <-- 设置本节点的实际ID
