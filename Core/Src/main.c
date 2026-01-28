@@ -352,7 +352,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             if (spike_count_in_window > MAX_SPIKES_IN_WINDOW)// 窗口结束，进行判断
             {
                 // 在过去的N个采样点中，尖峰次数过多，判定为故障！
-                Motor_mode = MOTOR_OVER_HV_CURRENT; // 设置故障状态
+                Motor_mode = MOTOR_OVER_HV_CURRENT; // 设置故障状态 报警代码2
                 Close_output();
                 DC_Power_CTR(false);
                 Buzzer_ON;
@@ -365,14 +365,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //			Tx_A_buffer_20k.fdata[1] = HV_I;//mA
 //			Tx_A_buffer_20k.fdata[2] = absolute_step_counter;//
 //			Tx_A_buffer_20k.fdata[3] = EMA_DATA.position_mm;//mm
-//			Tx_A_buffer_20k.fdata[4] = weight_g_temp;//g
+//			Tx_A_buffer_20k.fdata[4] = step;//g
 //			Tx_A_buffer_20k.fdata[5] = DC_I;//A
 //
 //			Tx_A_buffer_20k.tail[0] = 0x00;
 //			Tx_A_buffer_20k.tail[1] = 0x00;
 //			Tx_A_buffer_20k.tail[2] = 0x80;
 //			Tx_A_buffer_20k.tail[3] = 0x7F;
-//
+
 //			if(dma_print_flag == 1)
 //			{
 //				if(g_uart_dma_transfer_complete == 1)
@@ -386,7 +386,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //			    printf("dma data error\r\n");
 //			}
 //			}
-
+             //报警代码1
     		if(HV_V > MAX_HV_voltage)  { Motor_mode = MOTOR_OVER_HV_VOLTAGE;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
    		    if(HV_I > MAX_HV_current * 3)  { Motor_mode = MOTOR_OVER_HV_CURRENT;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
     		if(DC_I > MAX_DC_current)  { Motor_mode = MOTOR_OVER_DC_IN_CURRENT; printf("%.3f\r\n",DC_I);Close_output();DC_Power_CTR(false);Buzzer_ON;}
@@ -1441,7 +1441,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 4000000;
+  huart1.Init.BaudRate = 115200;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;

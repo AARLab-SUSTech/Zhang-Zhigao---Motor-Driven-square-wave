@@ -189,11 +189,151 @@ void Update_output(uint8_t new_step)
 {
     // 安全第一：在改变状态前，先关闭所有6个通道的输出
     // 这确保了在切换瞬间不会有意外的导通
-
+    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
+    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_1);
+    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2);
+    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_2);
+    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_3);
+    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_3);
     switch(new_step)
     {
+
+//    case 0: // Step 1: U+ V+ (W-) —— 对应矢量 AB
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1); // U 高
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1); // V 高
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);         // W 低
+//
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
+//            break;
+//
+//        case 1: // Step 2: V+ W+ (U-) —— 对应矢量 BC
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);         // U 低
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1); // V 高
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1); // W 高
+//
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
+//            break;
+//
+//        case 2: // Step 3: W+ U+ (V-) —— 对应矢量 CA
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1); // U 高
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);         // V 低
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1); // W 高
+//
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
+//            break;
+//
+//        case 3: // Step 4: U+ V+ (W-) —— 重复 Step 1
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1);
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
+//
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
+//            break;
+//
+//        case 4: // Step 5: V+ W+ (U-) —— 重复 Step 2
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1);
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1);
+//
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
+//            break;
+//
+//        case 5: // Step 6: W+ U+ (V-) —— 重复 Step 3
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
+//            __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1);
+//
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+//            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3); HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);
+//            break;
+
+//    //单拍驱动A B C
 //    	        	        case 0: // Step 1: U+ V- (A->B)
-//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 10000);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
+//    	        	            break;
+//
+//    	        	        case 1: // Step 2: W+ V- (C->B)
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
+//    	        	            break;
+//
+//    	        	        case 2: // Step 3: W+ U- (C->A)
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
+//    	        	            break;
+//
+//    	        	        case 3: // Step 4: V+ U- (B->A)
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
+//    	        	            break;
+//
+//    	        	        case 4: // Step 5: V+ W- (B->C)
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
+//    	        	            break;
+//
+//    	        	        case 5: // Step 6: U+ W- (A->C)
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+//    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+//    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
+//    	        	            break;
+
+//    //一个相位悬空的方式驱动
+//    	        	        case 0: // Step 1: U+ V- (A->B)
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
 //    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
 //    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
 //    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
@@ -203,7 +343,7 @@ void Update_output(uint8_t new_step)
 //
 //    	        	        case 1: // Step 2: W+ V- (C->B)
 //    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
-//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 10000);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1);
 //    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
 //    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
 //    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
@@ -212,7 +352,7 @@ void Update_output(uint8_t new_step)
 //
 //    	        	        case 2: // Step 3: W+ U- (C->A)
 //    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
-//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 10000);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1);
 //    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
 //    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
 //    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
@@ -221,7 +361,7 @@ void Update_output(uint8_t new_step)
 //
 //    	        	        case 3: // Step 4: V+ U- (B->A)
 //    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
-//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 10000);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1);
 //    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
 //    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
 //    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
@@ -229,7 +369,7 @@ void Update_output(uint8_t new_step)
 //    	        	            break;
 //
 //    	        	        case 4: // Step 5: V+ W- (B->C)
-//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 10000);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1);
 //    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
 //    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
 //    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
@@ -238,13 +378,16 @@ void Update_output(uint8_t new_step)
 //    	        	            break;
 //
 //    	        	        case 5: // Step 6: U+ W- (A->C)
-//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 10000);
+//    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
 //    	        	    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
 //    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
 //    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
 //    	        	            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
 //    	        	            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
 //    	        	            break;
+
+
+//常见120度三相方波驱动方式
         case 0: // Step 1: U+ V- (A->B)
     	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
     	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
@@ -316,6 +459,8 @@ void Update_output(uint8_t new_step)
             HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
             HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
             break;
+
+
     }
 }
 
