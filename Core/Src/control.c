@@ -13,8 +13,6 @@
 #ifndef _CONTROL_H_
 #define _CONTROL_H_
 
-
-
 extern volatile MotorDirection_t motor_direction; // 默认为正
 extern volatile Motor_mode_t Motor_mode;
 

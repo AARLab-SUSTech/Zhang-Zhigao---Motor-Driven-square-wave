@@ -55,3 +55,47 @@ void DAC_Set_Voltage(float Va,float Vb,float Vc)
 //	DAC8568_Set_voltage(2,Vc/1000.0f);
 
 }
+//
+///* ==========================================
+// * 初始化函数
+// * ========================================== */
+//void P_Control_Init(P_Controller *ctrl, float kp, float max_speed) {
+//    ctrl->Kp = kp;
+//    ctrl->MaxSpeed = max_speed;
+//    ctrl->TargetPos = 0.0f;
+//    ctrl->CurrentPos = 0.0f;
+//    ctrl->Error = 0.0f;
+//    ctrl->OutSpeed = 0.0f;
+//}
+///* ==========================================
+// * 计算函数 (建议在定时器中断中调用，例如 1kHz)
+// * ========================================== */
+//float P_Control_Compute(P_Controller *ctrl, float target_pos, float current_pos) {
+//
+//	float output;
+//    // 1. 更新状态
+//    ctrl->TargetPos = target_pos;
+//    ctrl->CurrentPos = current_pos;
+//
+//    // 2. 计算误差
+//    ctrl->Error = ctrl->TargetPos - ctrl->CurrentPos;
+//
+//    // 3. 纯 P 计算 (核心公式)
+//    if((ctrl->Error < 0.25f) && (ctrl->Error > -0.25f))
+//    	{output = 0;}
+//    else
+//		{output = ctrl->Kp * ctrl->Error;}
+//
+//    // 4. 输出限幅 (Saturation)
+//    // 防止计算出的速度超过电机或驱动器的物理极限
+//    if (output > ctrl->MaxSpeed) {
+//        output = ctrl->MaxSpeed;
+//    } else if (output < -ctrl->MaxSpeed) {
+//        output = -ctrl->MaxSpeed;
+//    }
+//
+//    // 5. 保存输出并返回
+//    ctrl->OutSpeed = output;
+//    return output;
+//}
+

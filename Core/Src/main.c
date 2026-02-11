@@ -33,7 +33,7 @@ P_Controller Motor_Force_Controller;// 定义控制器实例
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-uint16_t duty_TIM1 = 999;
+uint16_t duty_TIM1 = 1000;
 
 volatile int32_t repeated_pos_A = 0;      // 往复运动点A
 volatile int32_t repeated_pos_B = 0;      // 往复运动点B
@@ -365,7 +365,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //			Tx_A_buffer_20k.fdata[1] = HV_I;//mA
 //			Tx_A_buffer_20k.fdata[2] = absolute_step_counter;//
 //			Tx_A_buffer_20k.fdata[3] = EMA_DATA.position_mm;//mm
-//			Tx_A_buffer_20k.fdata[4] = step;//g
+//			Tx_A_buffer_20k.fdata[4] = Motor_Position_Controller.TargetPos;//g
 //			Tx_A_buffer_20k.fdata[5] = DC_I;//A
 //
 //			Tx_A_buffer_20k.tail[0] = 0x00;
@@ -391,13 +391,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
    		    if(HV_I > MAX_HV_current * 3)  { Motor_mode = MOTOR_OVER_HV_CURRENT;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
     		if(DC_I > MAX_DC_current)  { Motor_mode = MOTOR_OVER_DC_IN_CURRENT; printf("%.3f\r\n",DC_I);Close_output();DC_Power_CTR(false);Buzzer_ON;}
 
-    		if(Sin_Velocity_Flag == true)
-    		{
-    			Motor_mode = MOTOR_OPEN_VELOCITY;
-    			float temp_time = HAL_GetTick() * Omega_Sin_Velocity;
-    			speed_test = Max_Velocity * sin(temp_time);
-    			set_speed(speed_test);
-    		}
+//    		if(Sin_Velocity_Flag == true)
+//    		{
+//    			Motor_mode = MOTOR_OPEN_VELOCITY;
+//    			float temp_time = HAL_GetTick() * Omega_Sin_Velocity;
+//    			speed_test = Max_Velocity * sin(temp_time);
+//    			set_speed(speed_test);
+//    		}
 
         // --- 1. 安全检查层：处理最高优先级的 IDLE 和 ERROR 状态 ---
         if (Motor_mode == MOTOR_IDLE || Motor_mode == MOTOR_ERROR || Motor_mode == MOTOR_OVER_HV_CURRENT || Motor_mode == MOTOR_OVER_HV_VOLTAGE || Motor_mode == MOTOR_OVER_DC_IN_CURRENT)
@@ -613,9 +613,16 @@ int main(void)
       EMA_DATA.sin_offset = 1.65f;
       EMA_DATA.cos_offset = 1.65f;
 
+      Motor_Position_Controller.Kp = 100;
+      Motor_Position_Controller.MaxSpeed = 100;
+      Omega_Sin_Velocity = 1 * 2 * M_PI * 0.001f;
+
       HAL_TIM_Base_Start_IT(&htim6);
 
       HAL_TIM_Base_Start_IT(&htim17);//CAN Heart
+
+//      Motor_mode = MOTOR_OPEN_VELOCITY;
+//      velocity_mode_increment = (uint32_t)(((uint64_t)100.0f * 0x100000000) / interrupt_freq_hz);
 
   /* USER CODE END 2 */
 
@@ -629,31 +636,31 @@ int main(void)
 	  //阶跃信号
 //	  if(HAL_GetTick() - last_time_ms <= 1000)
 //	  {
-//		  Motor_Position_Controller.TargetPos = 2.0f;
+//		  Motor_Position_Controller.TargetPos = 0.0f;
 //	  }
 //	  else if((HAL_GetTick() - last_time_ms <= 2000) && (HAL_GetTick() - last_time_ms >= 1000))
 //	  {
-//		  Motor_Position_Controller.TargetPos = 12.0f;
+//		  Motor_Position_Controller.TargetPos = 6.0f;
 //	  }
 //	  else
 //	  {
 //		  last_time_ms = HAL_GetTick();
 //	  }
 	  //正弦位置
-//	  Motor_Position_Controller.TargetPos = (5 * sin(HAL_GetTick() * Omega_Sin_Velocity)) + 5;
-//	  time_gap = HAL_GetTick() - last_time_ms;
-//	  if(time_gap <= 50)
-//	  {
-//		  Motor_Position_Controller.TargetPos = time_gap * 0.2f;
-//	  }
-//	  else if((time_gap <= 100) && (time_gap >= 150))
-//	  {
-//		  Motor_Position_Controller.TargetPos = 20 - (time_gap * 0.2f);
-//	  }
-//	  else
-//	  {
-//		  last_time_ms = HAL_GetTick();
-//	  }
+//	  	  Motor_Position_Controller.TargetPos = (5 * sin(HAL_GetTick() * Omega_Sin_Velocity)) + 5;
+//	  	  time_gap = HAL_GetTick() - last_time_ms;
+//	  	  if(time_gap <= 500)
+//	  	  {
+//	  		  Motor_Position_Controller.TargetPos = time_gap * 0.02f;
+//	  	  }
+//	  	  else if((time_gap <= 1000) && (time_gap >= 500))
+//	  	  {
+//	  		  Motor_Position_Controller.TargetPos = 20 - (time_gap * 0.02f);
+//	  	  }
+//	  	  else
+//	  	  {
+//	  		  last_time_ms = HAL_GetTick();
+//	  	  }
 	  if(Motor_mode == MOTOR_OVER_HV_VOLTAGE)
 	  {
 		  printf("MOTOR_OVER_HV_VOLTAGE\r\n");
@@ -702,18 +709,18 @@ int main(void)
 
 	      Can_message_process();
 
-	      if(Motor_mode == MOTOR_CLOSE_POSITION)
-	      {
-	    	  printf("%.2f,%ld,%.2f,%.2f,%ld\r\n",speed_test,absolute_step_counter,EMA_DATA.position_mm,Motor_Position_Controller.TargetPos,HAL_GetTick() - last_time_ms);
-	      }
-	      else if(Motor_mode == MOTOR_CLOSE_FORCE)
-	      {
-	    	  printf("%.2f,%ld,%.2f,%.2f,%.2f\r\n",speed_test,absolute_step_counter,EMA_DATA.position_mm,Motor_Force_Controller.TargetPos,Force_Sensor1.weight_g);
-	      }
-	      else
-	      {
-//              printf("step:%ld\r\n",absolute_step_counter);
-	      }
+//	      if(Motor_mode == MOTOR_CLOSE_POSITION)
+//	      {
+//	    	  printf("%.2f,%ld,%.2f,%.2f,%ld\r\n",speed_test,absolute_step_counter,EMA_DATA.position_mm,Motor_Position_Controller.TargetPos,HAL_GetTick() - last_time_ms);
+//	      }
+//	      else if(Motor_mode == MOTOR_CLOSE_FORCE)
+//	      {
+//	    	  printf("%.2f,%ld,%.2f,%.2f,%.2f\r\n",speed_test,absolute_step_counter,EMA_DATA.position_mm,Motor_Force_Controller.TargetPos,Force_Sensor1.weight_g);
+//	      }
+//	      else
+//	      {
+////              printf("step:%ld\r\n",absolute_step_counter);
+//	      }
 
 //    printf("%ld\r\n",absolute_step_counter);
 
