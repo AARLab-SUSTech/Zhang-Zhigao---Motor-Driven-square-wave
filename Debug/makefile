@@ -60,8 +60,8 @@ all: main-build
 main-build: STM32G4Pulse.elf secondary-outputs
 
 # Tool invocations
-STM32G4Pulse.elf STM32G4Pulse.map: $(OBJS) $(USER_OBJS) C:\Users\16964\Desktop\STM32G4Pulse\STM32G431CBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "STM32G4Pulse.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\16964\Desktop\STM32G4Pulse\STM32G431CBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STM32G4Pulse.map" -Wl,--gc-sections -static -L../Middlewares/ST/ARM/DSP/Lib --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+STM32G4Pulse.elf STM32G4Pulse.map: $(OBJS) $(USER_OBJS) /Users/letian/git/stm32-g4-hv/STM32G431CBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "STM32G4Pulse.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/letian/git/stm32-g4-hv/STM32G431CBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STM32G4Pulse.map" -Wl,--gc-sections -static -L../Middlewares/ST/ARM/DSP/Lib --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
