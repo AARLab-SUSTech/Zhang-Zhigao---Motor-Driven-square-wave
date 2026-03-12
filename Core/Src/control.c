@@ -5,9 +5,9 @@
  *      Author: Letian
  */
 
+#include <Mid_Command_Usart.h>
 #include "control.h"
 #include "main.h"
-#include "command.h"
 #include "FOC.h"
 
 #ifndef _CONTROL_H_

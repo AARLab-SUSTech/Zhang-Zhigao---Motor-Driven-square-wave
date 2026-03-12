@@ -1,5 +1,5 @@
-#ifndef __BSP_SPIWEIGHT_H__
-#define __BSP_SPIWEIGHT_H__
+#ifndef __BSP_AD7190_H__
+#define __BSP_AD7190_H__
 
 /* 包含头文件 ----------------------------------------------------------------*/
 #include "stm32g4xx_hal.h"

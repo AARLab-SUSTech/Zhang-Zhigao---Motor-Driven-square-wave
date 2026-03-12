@@ -5,8 +5,8 @@
  *      Author: 16964
  */
 
-#ifndef COMMAND_H_
-#define COMMAND_H_
+#ifndef _MID_COMMAND_USART_H
+#define _MID_COMMAND_USART_H
 
 #include "main.h"
 

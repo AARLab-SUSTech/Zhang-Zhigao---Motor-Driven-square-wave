@@ -78,10 +78,6 @@ extern TIM_HandleTypeDef htim6;
 extern TIM_HandleTypeDef htim16;
 extern UART_HandleTypeDef huart1;
 extern DMA_HandleTypeDef hdma_usart1_rx;
-// --- 串口资源 ---
-#define RX_BUFFER_SIZE 64   // 定义接收缓冲区的最大长度
-extern uint8_t rx_buffer[RX_BUFFER_SIZE];
-extern uint8_t process_buffer[RX_BUFFER_SIZE];
 
 extern FDCAN_HandleTypeDef hfdcan1;
 

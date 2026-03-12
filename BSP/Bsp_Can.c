@@ -4,9 +4,9 @@
  *  Created on: Oct 11, 2025
  *      Author: Letian
  */
-#include "can.h"
+#include <Bsp_Can.h>
+#include <Mid_Command_Usart.h>
 #include "control.h"
-#include "command.h"
 
 extern volatile Motor_mode_t Motor_mode;
 
@@ -51,7 +51,7 @@ void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan)
 /* USER CODE END 0 */
 
 
-void CAN_init(void)
+void Bsp_Can_init(void)
 {
 	  FDCAN_FilterTypeDef sFilterConfig;
 

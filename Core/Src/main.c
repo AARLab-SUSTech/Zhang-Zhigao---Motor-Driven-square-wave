@@ -17,16 +17,19 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <Bsp_Ad7190.h>
+#include <Bsp_Can.h>
+#include <Mid_Command_Usart.h>
 #include "main.h"
+
+#include "Bsp_Adc.h"
+#include "Bsp_Usart.h"
+
 //详细注释版本
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "control.h"
-#include "command.h"
-#include "ad7190.h"
 #include "foc.h"
-#include "can.h"
-volatile Force_sensor Force_Sensor1;
 P_Controller Motor_Position_Controller;// 定义控制器实例
 P_Controller Motor_Force_Controller;// 定义控制器实例
 /* USER CODE END Includes */
@@ -69,8 +72,7 @@ volatile uint32_t velocity_mode_increment = 0;
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-uint8_t rx_buffer[RX_BUFFER_SIZE];        // 在这里为 rx_buffer 分配了 256 字节
-uint8_t process_buffer[RX_BUFFER_SIZE]; // 在这里为 process_buffer 分配了 256 字节
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -474,19 +476,19 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				 }
 				 else if(Motor_mode == MOTOR_CLOSE_FORCE)
 				 {
-					 float output = P_Control_Compute(&Motor_Force_Controller, Motor_Force_Controller.TargetPos, Force_Sensor1.weight_g);
-					    if (output >= 0)
-					    {
-					        motor_direction = MOTOR_REVERSE;
-					        float increment_f = (output / interrupt_freq_hz) * PHASE_2_32;
-					        phase_increment = (uint32_t)increment_f;
-					    }
-					    else
-					    {
-					        motor_direction = MOTOR_FORWARD;
-					        float increment_f = (-output / interrupt_freq_hz) * PHASE_2_32;
-					        phase_increment = (uint32_t)increment_f;
-					    }
+//					 float output = P_Control_Compute(&Motor_Force_Controller, Motor_Force_Controller.TargetPos, Force_Sensor1.weight_g);
+//					    if (output >= 0)
+//					    {
+//					        motor_direction = MOTOR_REVERSE;
+//					        float increment_f = (output / interrupt_freq_hz) * PHASE_2_32;
+//					        phase_increment = (uint32_t)increment_f;
+//					    }
+//					    else
+//					    {
+//					        motor_direction = MOTOR_FORWARD;
+//					        float increment_f = (-output / interrupt_freq_hz) * PHASE_2_32;
+//					        phase_increment = (uint32_t)increment_f;
+//					    }
 				 }
 
 
@@ -574,41 +576,21 @@ int main(void)
   MX_TIM17_Init();
   /* USER CODE BEGIN 2 */
 
+  Bsp_Usart_Init();
+
   //  Close_output();//关闭所有输出
 
-    HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_buffer, RX_BUFFER_SIZE);
-    __HAL_DMA_DISABLE_IT(&hdma_usart1_rx,DMA_IT_HT);
-
-    HAL_ADCEx_Calibration_Start(&hadc1, ADC_DIFFERENTIAL_ENDED);
-    HAL_ADCEx_Calibration_Start(&hadc2, ADC_SINGLE_ENDED);
-
-    HAL_ADC_Start_DMA(&hadc1, ADC1_RAW_data, 2);// HV_V HV_I
-    HAL_ADC_Start_DMA(&hadc2, ADC2_RAW_data, 3);//DC_I SIN COS
-    HAL_TIM_Base_Start_IT(&htim7);//trigger
+    Bsp_Adc_Init();//板载ADC初始化配置
 
     //（ 10M + 20K )/20K = 501  ---- AMC1350 * 0.4   1/（（1/501）*0.4 ） = 501/0.4 = 1252.5   2400/1252.5 = 1.916167664670659V
   //  HAL_DAC_SetValue(&hdac3, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 460);//HVOUTPUT set MAX V  2500V  --  4.99001996007984V    5*0.4 = 2V  报警电压1.4 +- 1 V = 2.4V/0.4V
   //  HAL_DAC_SetValue(&hdac3, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 3000);//10ma max
   //  HAL_DAC_Start(&hdac3, DAC_CHANNEL_1);
   //  HAL_DAC_Start(&hdac3, DAC_CHANNEL_2);
-
   //  HAL_COMP_Start(&hcomp1);
   //  HAL_COMP_Start(&hcomp2);
 
-    	  Force_Sensor1.weight_proportion=86742;  // 电压值与重量变换比例，这个需要实际测试计算才能得到
-    	  Force_Sensor1.weight_Zero_Data=0;   // 零值
-
-  //  	    Force_sensor_init();
-  //  	    weight_ad7190_conf();
-  //
-  //  	    HAL_Delay(500);
-  //  	    Force_Sensor1.weight_Zero_Data = weight_ad7190_ReadAvg(6);
-  ////  	    printf("zero:%ld\n",Force_Sensor1.weight_Zero_Data);
-  //
-  //  	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
-  //  	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
-
-    	CAN_init();
+      Bsp_Can_init();
 
       EMA_DATA.sin_offset = 1.65f;
       EMA_DATA.cos_offset = 1.65f;
@@ -617,9 +599,9 @@ int main(void)
       Motor_Position_Controller.MaxSpeed = 100;
       Omega_Sin_Velocity = 1 * 2 * M_PI * 0.001f;
 
-      HAL_TIM_Base_Start_IT(&htim6);
+      HAL_TIM_Base_Start_IT(&htim6);//高频计算中断
 
-      HAL_TIM_Base_Start_IT(&htim17);//CAN Heart
+      HAL_TIM_Base_Start_IT(&htim17);//CAN Heart中断
 
 //      Motor_mode = MOTOR_OPEN_VELOCITY;
 //      velocity_mode_increment = (uint32_t)(((uint64_t)100.0f * 0x100000000) / interrupt_freq_hz);
@@ -723,8 +705,6 @@ int main(void)
 //	      }
 
 //    printf("%ld\r\n",absolute_step_counter);
-
-
 
 //	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
 //	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;

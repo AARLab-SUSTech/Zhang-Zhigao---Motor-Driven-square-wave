@@ -91,7 +91,7 @@ C_DEPS += \
 
 # Each subdirectory must supply rules for building sources it contributes
 Drivers/STM32G4xx_HAL_Driver/Src/%.o Drivers/STM32G4xx_HAL_Driver/Src/%.su Drivers/STM32G4xx_HAL_Driver/Src/%.cyclo: ../Drivers/STM32G4xx_HAL_Driver/Src/%.c Drivers/STM32G4xx_HAL_Driver/Src/subdir.mk
-	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/ST/ARM/DSP/Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
+	arm-none-eabi-gcc "$<" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G431xx -c -I"/Users/letian/git/stm32-g4-hv/Drivers/CMSIS/Device/ST/STM32G4xx/Include" -I"/Users/letian/git/stm32-g4-hv/Middlewares/ST/ARM/DSP/Inc" -I"/Users/letian/git/stm32-g4-hv/Drivers/CMSIS/Include" -I"/Users/letian/git/stm32-g4-hv/Core/Inc" -I"/Users/letian/git/stm32-g4-hv/APP/Include" -I"/Users/letian/git/stm32-g4-hv/Core/Src" -I"/Users/letian/git/stm32-g4-hv/MID/Include" -I"/Users/letian/git/stm32-g4-hv/BSP/Include" -I"/Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc" -I"/Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "$@"
 
 clean: clean-Drivers-2f-STM32G4xx_HAL_Driver-2f-Src
 

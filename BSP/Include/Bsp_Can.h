@@ -5,8 +5,8 @@
  *      Author: 16964
  */
 
-#ifndef CAN_H_
-#define CAN_H_
+#ifndef _BSP_CAN_H_
+#define _BSP_CAN_H_
 
 #include "main.h"
 
@@ -59,7 +59,7 @@ extern volatile uint16_t g_tx_queue_tail;
 extern volatile uint16_t g_rx_queue_tail;
 extern uint8_t TxData[8];
 
-void CAN_init(void);
+void Bsp_Can_init(void);
 void Can_message_process(void);
 bool Queue_Reply_Request(uint8_t command, uint8_t status);
 #endif
