@@ -1,2 +1,0 @@
-../Core/Src/hvisensor.c:14:6:HAL_ADC_ConvCpltCallback	16	static
-../Core/Src/hvisensor.c:34:6:HAL_COMP_TriggerCallback	16	static

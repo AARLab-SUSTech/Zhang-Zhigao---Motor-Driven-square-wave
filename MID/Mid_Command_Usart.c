@@ -4,18 +4,19 @@
  *  Created on: Sep 2, 2025
  *      Author: Letian
  */
-
-
+#include <Bsp_Control.h>
 #include <Mid_Command_Usart.h>
-#include "control.h"
 #include "string.h"
 #include "Bsp_Usart.h"
 
+#include "App_EMA.h"
+
+extern Motor EMA_DATA;
+
 extern uint8_t rx_buffer[RX_BUFFER_SIZE];        // 在这里为 rx_buffer 分配了 256 字节
-extern process_buffer[RX_BUFFER_SIZE]; 			 // 在这里为 process_buffer 分配了 256 字节
+extern uint8_t process_buffer[RX_BUFFER_SIZE]; 			 // 在这里为 process_buffer 分配了 256 字节
 
 // --- 串口 DMA 接收相关 ---
-extern volatile Motor_mode_t Motor_mode;
 extern int dma_print_flag;
 
 //储存速度计算临时值
@@ -47,7 +48,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
  * @param count 数组中浮点数的个数
  * @note  格式为: "1.23,4.56,7.89\r\n"
  */
-void send_float_array_dma(float* arr, int count) {
+void Mid_Float_Array_Dma_Send(float* arr, int count) {
     // 1. 检查DMA是否空闲
     if (g_uart_dma_transfer_complete == 0) {
     	Buzzer_ON;
@@ -105,7 +106,7 @@ void send_float_array_dma(float* arr, int count) {
  * @note  警告：此函数混合了二进制数据(int16_t)和ASCII字符(',' '\n')，
  * 如果二进制数据中碰巧包含 0x2C (逗号) 或 0x0A (换行)，可能导致上位机解析混乱。
  */
-void send_int16_groups_dma(int16_t* arr, int total_count, int elements_per_group)
+void Mid_Int16_Groups_Dma_Send(int16_t* arr, int total_count, int elements_per_group)
 {
 
 	    // 1. 检查DMA是否空闲
@@ -185,7 +186,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
         /* 2. 调用 MID 层协议解析器这里直接将收到的原始缓冲区和长度交给中层，不在此处做逻辑判断 */
         if (size > 0)
         {
-        	process_received_data(rx_buffer, size);
+        	Mid_Process_Usart_Data(rx_buffer, size);
         }
 
         /* 3. 重新启动 DMA 接收ReceiveToIdle 会在收到 IDLE 信号时触发本回调 */
@@ -214,7 +215,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
  * [n]     : 各种数据 (Index, Data...)
  * [末尾]  : 校验和 (Checksum，计算从 长度位[2] 到 数据段末尾)
  */
-void process_received_data(uint8_t* data, uint16_t size) {
+void Mid_Process_Usart_Data(uint8_t* data, uint16_t size) {
 
 			/* 1. 验证基本帧长和帧头 */
 				if (size < 6) {
@@ -251,16 +252,16 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                     if(data[3] != 0x01)  return;// 不是发给本设备的，直接退出
 
 	                     /* 6. 安全机制：如果电机正处于致命错误状态，拒绝执行任何指令 */
-	                     if((Motor_mode == MOTOR_OVER_HV_VOLTAGE) || (Motor_mode == MOTOR_OVER_HV_CURRENT) || (Motor_mode == MOTOR_OVER_DC_IN_CURRENT)) return;//不处理指令，直接退出
+	                     if((EMA_DATA.Motor_mode == MOTOR_OVER_HV_VOLTAGE) || (EMA_DATA.Motor_mode == MOTOR_OVER_HV_CURRENT) || (EMA_DATA.Motor_mode == MOTOR_OVER_DC_IN_CURRENT)) return;//不处理指令，直接退出
 
 	                     /* 7. 指令分发之前，如果是运行指令，则打开电源并置位 Ready */
-	                     if(data[4] != 0x25) {DC_Power_ON;Motor_mode = MOTOR_READY;}
+	                     if(data[4] != 0x25) {DC_Power_ON;EMA_DATA.Motor_mode = MOTOR_READY;}
 
 	                     /* 8. 业务逻辑分发 (Command Dispatcher) */
 	                     switch(data[4])
 	                     {
 	                     case 0x24: // 往复运动模式 (Repeat Mode)
-	                                             Motor_mode = MOTOR_OPEN_REPEATED;
+	                                             EMA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
 	                                             // 注意大小端拼接逻辑
 	                                             temp_speed_int16 = (int16_t)((data[9] << 8) | data[8]);
 	                                             temp_speed_float = (float)temp_speed_int16;
@@ -274,19 +275,19 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                     case 0x25: // 停止模式 (STOP)
 	                                             DC_Power_OFF;
 	                                             /* 【安全修复】：逻辑非的并列必须用 && */
-	                                             if((Motor_mode != MOTOR_OVER_HV_VOLTAGE)    &&
-	                                                (Motor_mode != MOTOR_OVER_HV_CURRENT)    &&
-	                                                (Motor_mode != MOTOR_OVER_DC_IN_CURRENT) &&
-	                                                (Motor_mode != MOTOR_ERROR))
+	                                             if((EMA_DATA.Motor_mode != MOTOR_OVER_HV_VOLTAGE)    &&
+	                                                (EMA_DATA.Motor_mode != MOTOR_OVER_HV_CURRENT)    &&
+	                                                (EMA_DATA.Motor_mode != MOTOR_OVER_DC_IN_CURRENT) &&
+	                                                (EMA_DATA.Motor_mode != MOTOR_ERROR))
 	                                             {
-	                                                 Motor_mode = MOTOR_IDLE;
+	                                                 EMA_DATA.Motor_mode = MOTOR_IDLE;
 	                                             }
 	                                             Close_output();
 	                                             dma_print_flag = 0;
 	                                             break;
 
 	                     case 0x27: // 开环位置模式 (Open Position)
-	                                             Motor_mode = MOTOR_OPEN_POSITION;
+	                                             EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
 	                                             temp_speed_int16 = (int16_t)((data[8] << 8) | data[7]);
 	                                             temp_speed_float = (float)temp_speed_int16;
 
@@ -295,14 +296,14 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                                             break;
 
 	                     case 0x28: // 正向单步 (STEP+)
-	                                             Motor_mode = MOTOR_OPEN_POSITION;
+	                                             EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
 	                                             target_step_position = absolute_step_counter + 1;
 	                                             // 这里似乎是将 float 的速度转换为累加增量
 	                                             position_mode_increment = (uint32_t)(((uint64_t)10.0f * 0x100000000ULL) / interrupt_freq_hz);
 	                                             break;
 
 	                     case 0x29: // 反向单步 (STEP-)
-	                                             Motor_mode = MOTOR_OPEN_POSITION;
+	                                             EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
 	                                             target_step_position = absolute_step_counter - 1;
 	                                             position_mode_increment = (uint32_t)(((uint64_t)10.0f * 0x100000000ULL) / interrupt_freq_hz);
 	                                             break;
@@ -312,7 +313,7 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                                             break;
 
 	                     case 0x31: // 开环速度模式 (Open Velocity Mode)
-	                                             Motor_mode = MOTOR_OPEN_VELOCITY;
+	                                             EMA_DATA.Motor_mode = MOTOR_OPEN_VELOCITY;
 	                                             temp_speed_int16 = (int16_t)((data[6] << 8) | data[5]);
 	                                             temp_speed_float = (float)temp_speed_int16;
 
@@ -321,12 +322,12 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	                                             break;
 
 	                     case 0x32: // 闭环位置模式 (Close Position Mode)
-	                                             Motor_mode = MOTOR_CLOSE_POSITION;
+	                                             EMA_DATA.Motor_mode = MOTOR_CLOSE_POSITION;
 	                                             // printf("close position\n");
 	                                             break;
 
 	                     case 0x33: // 闭环力矩模式 (Close Force Mode)
-	                                             Motor_mode = MOTOR_CLOSE_FORCE;
+	                                             EMA_DATA.Motor_mode = MOTOR_CLOSE_FORCE;
 	                                             // printf("close force\n");
 	                                             break;
 
@@ -348,7 +349,7 @@ void process_received_data(uint8_t* data, uint16_t size) {
 	         }
 
 	         /* 9. 状态联动：根据进入的模式控制打印输出的启停 */
-	             if((Motor_mode == MOTOR_OPEN_POSITION) || (Motor_mode == MOTOR_OPEN_REPEATED))
+	             if((EMA_DATA.Motor_mode == MOTOR_OPEN_POSITION) || (EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED))
 	             {
 	                 dma_print_flag = 1;
 	                 // HAL_TIM_Base_Start_IT(&htim6); // dma printf

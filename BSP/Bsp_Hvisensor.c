@@ -5,11 +5,13 @@
  *      Author: Letian
  */
 
-#include "hvisensor.h"
-#include "control.h"
+#include <Bsp_Control.h>
+#include <Bsp_Hvisensor.h>
 #include "main.h"
 
-extern volatile Motor_mode_t Motor_mode;
+#include "App_EMA.h"
+
+extern Motor EMA_DATA;
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
@@ -35,7 +37,7 @@ void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
 {
 	if(hcomp == &hcomp1)
 	{
-		Motor_mode = MOTOR_OVER_HV_VOLTAGE;
+		EMA_DATA.Motor_mode = MOTOR_OVER_HV_VOLTAGE;
 		Close_output();
 //		Buzzer_ON
 //		if(DC_ON_State == true) { DC_Power_CTR(false); }
@@ -43,7 +45,7 @@ void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
 	}
 	if(hcomp == &hcomp2)
 	{
-		Motor_mode = MOTOR_OVER_HV_CURRENT;
+		EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;
 		Buzzer_ON
 		Close_output();
 //		if(DC_ON_State == true) {  DC_Power_CTR(false); }

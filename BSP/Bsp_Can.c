@@ -5,10 +5,11 @@
  *      Author: Letian
  */
 #include <Bsp_Can.h>
+#include <Bsp_Control.h>
 #include <Mid_Command_Usart.h>
-#include "control.h"
+#include "App_EMA.h"
 
-extern volatile Motor_mode_t Motor_mode;
+extern Motor EMA_DATA;
 
 FDCAN_TxHeaderTypeDef TxHeader;
 FDCAN_RxHeaderTypeDef RxHeader; // 用于存储接收报文的头信息
@@ -256,16 +257,16 @@ void Can_message_process(void)
                         DC_Power_OFF;
                         HAL_TIM_Base_Stop(&htim16);
                         Close_output();
-                        if( (Motor_mode != MOTOR_OVER_HV_VOLTAGE) && (Motor_mode != MOTOR_OVER_HV_CURRENT) &&
-                            (Motor_mode != MOTOR_OVER_DC_IN_CURRENT) && (Motor_mode != MOTOR_ERROR) )
+                        if( (EMA_DATA.Motor_mode != MOTOR_OVER_HV_VOLTAGE) && (EMA_DATA.Motor_mode != MOTOR_OVER_HV_CURRENT) &&
+                            (EMA_DATA.Motor_mode != MOTOR_OVER_DC_IN_CURRENT) && (EMA_DATA.Motor_mode != MOTOR_ERROR) )
                         {
-                            Motor_mode = MOTOR_IDLE;
+                            EMA_DATA.Motor_mode = MOTOR_IDLE;
                         }
                         break;
 
                     case 0x02: // 命令: 高压上电
                         DC_Power_ON;
-                        Motor_mode = MOTOR_READY;
+                        EMA_DATA.Motor_mode = MOTOR_READY;
                         break;
 
                     case 0x03: // 命令: 步进+
@@ -275,7 +276,7 @@ void Can_message_process(void)
                         	temp_speed_float = temp_speed_int16 / 100.0f;
                             position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
 
-                            Motor_mode = MOTOR_OPEN_POSITION;
+                            EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
                             printf("command:%d,speed %.2f\r\n",command,temp_speed_float);
                             if (command == 0x03) // 正向
                                target_step_position = absolute_step_counter + 1;
@@ -286,7 +287,7 @@ void Can_message_process(void)
 
                     case 0x05: // 命令: 往复模式
                         {
-                            Motor_mode = MOTOR_OPEN_REPEATED;
+                            EMA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
                         	temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
                         	temp_speed_float = temp_speed_int16 / 100.0f;
                             position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
@@ -302,7 +303,7 @@ void Can_message_process(void)
 
                     case 0x06: // 命令: 绝对位置模式
                         {
-                            Motor_mode = MOTOR_OPEN_POSITION;
+                            EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
                         	temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
                         	temp_speed_float = temp_speed_int16 / 100.0f;
                             position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
@@ -315,9 +316,9 @@ void Can_message_process(void)
                         {
                         	if(msg->Rx_Header.Identifier == MY_NODE_ID )
                         	{
-                        		if((Motor_mode != MOTOR_OVER_HV_CURRENT) | (Motor_mode != MOTOR_OVER_HV_VOLTAGE) | (Motor_mode != MOTOR_OVER_DC_IN_CURRENT))
+                        		if((EMA_DATA.Motor_mode != MOTOR_OVER_HV_CURRENT) | (EMA_DATA.Motor_mode != MOTOR_OVER_HV_VOLTAGE) | (EMA_DATA.Motor_mode != MOTOR_OVER_DC_IN_CURRENT))
                         		{
-								Motor_mode = MOTOR_SYNC_POSITION;
+								EMA_DATA.Motor_mode = MOTOR_SYNC_POSITION;
 	                        	temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
 	                        	temp_speed_float = temp_speed_int16 / 100.0f;
 								Sync_Motor_Speed = temp_speed_float;
@@ -331,7 +332,7 @@ void Can_message_process(void)
                     	{
                         	if(msg->Rx_Header.Identifier == BROADCAST_ID )
                         	{
-                        		if (Motor_mode == MOTOR_SYNC_POSITION)
+                        		if (EMA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
                         		{
                                 position_mode_increment = (uint32_t)(((uint64_t)Sync_Motor_Speed * 0x100000000) / interrupt_freq_hz);
                                 target_step_position = Sync_Motor_position;
@@ -342,7 +343,7 @@ void Can_message_process(void)
 
                     case 0x09: // 命令: 开环速度模式
                     	{
-                    			Motor_mode = MOTOR_OPEN_VELOCITY;
+                    			EMA_DATA.Motor_mode = MOTOR_OPEN_VELOCITY;
                             	temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
                             	temp_speed_float = temp_speed_int16 / 100.0f;
                             	open_loop_velocity = temp_speed_float;
@@ -364,7 +365,7 @@ void Can_message_process(void)
 	                  if (msg->Rx_Header.Identifier != BROADCAST_ID)
 	                  {
 	                      Queue_Reply_Request(command, status_code);
-	                      if(Motor_mode == MOTOR_OPEN_REPEATED)  {HAL_TIM_Base_Start_IT(&htim16);}
+	                      if(EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)  {HAL_TIM_Base_Start_IT(&htim16);}
 	                      else {HAL_TIM_Base_Stop(&htim16);}
 	                  }
             }

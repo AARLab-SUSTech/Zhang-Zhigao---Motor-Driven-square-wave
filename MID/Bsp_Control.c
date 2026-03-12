@@ -5,16 +5,15 @@
  *      Author: Letian
  */
 
+#include <Bsp_Control.h>
 #include <Mid_Command_Usart.h>
-#include "control.h"
 #include "main.h"
-#include "FOC.h"
 
-#ifndef _CONTROL_H_
-#define _CONTROL_H_
+#include "App_EMA.h"
+
+extern Motor EMA_DATA;
 
 extern volatile MotorDirection_t motor_direction; // 默认为正
-extern volatile Motor_mode_t Motor_mode;
 
 extern uint32_t ADC2_RAW_data[3];
 
@@ -87,7 +86,7 @@ void DC_Power_CTR(bool state)
 void set_speed(float speed_hz)
 {
     //明确设置模式为速度模式 ***
-    Motor_mode = MOTOR_OPEN_SPEED;
+    EMA_DATA.Motor_mode = MOTOR_OPEN_SPEED;
     if (speed_hz >= 0)
     {
         motor_direction = MOTOR_FORWARD;
@@ -109,7 +108,7 @@ void set_speed(float speed_hz)
   */
 void move_to_position(int32_t target_steps, float speed_hz)
 {
-	Motor_mode = MOTOR_OPEN_POSITION;
+	EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
     // 1. 更新目标位置
     target_step_position = target_steps;
 
@@ -134,7 +133,7 @@ void move_repeatedly(int32_t pos1, int32_t pos2, uint32_t count, float speed_hz)
     repeated_count_current = 0;
 
     // 2. 切换到往复运动模式
-    Motor_mode = MOTOR_OPEN_REPEATED;
+    EMA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
 
     // 3. 【关键修复】: 直接设置第一个目标和速度，避免模式冲突
     target_step_position = repeated_pos_A;
@@ -146,7 +145,7 @@ void move_repeatedly(int32_t pos1, int32_t pos2, uint32_t count, float speed_hz)
   */
 void start_move_to_position(int32_t target_steps, float speed_hz)
 {
-    Motor_mode = MOTOR_OPEN_POSITION;
+    EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
     move_to_position(target_steps, speed_hz);
 }
 /**
@@ -466,12 +465,6 @@ void Update_output(uint8_t new_step)
 
 
 
-
-
-
-
-
-#endif
 
 
 

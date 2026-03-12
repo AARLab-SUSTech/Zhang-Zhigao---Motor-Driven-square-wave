@@ -112,23 +112,6 @@ extern COMP_HandleTypeDef hcomp1;
 extern COMP_HandleTypeDef hcomp2;
 
 typedef enum {
-    MOTOR_IDLE = 0,              // 空闲模式
-	MOTOR_READY,				 //待机模式，高压上电
-    MOTOR_ERROR,                 // 错误/急停模式
-    MOTOR_OPEN_SPEED,            // 速度模式
-    MOTOR_OPEN_POSITION,         // 单次定位模式
-	MOTOR_OPEN_REPEATED,         // 往复运动模式
-	MOTOR_OPEN_VELOCITY,         //开环速度模式
-	MOTOR_CLOSE_POSITION,	     //闭环位置模式
-	MOTOR_CLOSE_FORCE,	         //闭环力模式
-	MOTOR_CLOSE_VELOCITY,		 //闭环速度模式
-	MOTOR_SYNC_POSITION,         //多电机同步模式
-	MOTOR_OVER_HV_CURRENT,
-	MOTOR_OVER_HV_VOLTAGE,
-	MOTOR_OVER_DC_IN_CURRENT
-} Motor_mode_t;
-
-typedef enum {
     MOTOR_REVERSE = 0,
     MOTOR_FORWARD = 1
 } MotorDirection_t;

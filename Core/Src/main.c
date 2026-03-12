@@ -17,8 +17,10 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <App_EMA.h>
 #include <Bsp_Ad7190.h>
 #include <Bsp_Can.h>
+#include <Bsp_Control.h>
 #include <Mid_Command_Usart.h>
 #include "main.h"
 
@@ -28,8 +30,6 @@
 //详细注释版本
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "control.h"
-#include "foc.h"
 P_Controller Motor_Position_Controller;// 定义控制器实例
 P_Controller Motor_Force_Controller;// 定义控制器实例
 /* USER CODE END Includes */
@@ -50,7 +50,7 @@ volatile uint8_t step = 0;
 float interrupt_freq_hz = 10000.0f; // 您TIM6中断的频率 (1 / 0.00005s)
 
 volatile MotorDirection_t motor_direction = MOTOR_FORWARD; // 默认为正
-volatile Motor_mode_t Motor_mode = MOTOR_IDLE;
+//volatile Motor_mode_t Motor_mode = MOTOR_IDLE;
 
 bool Sin_Velocity_Flag = false;
 float Omega_Sin_Velocity,Max_Velocity;
@@ -163,7 +163,7 @@ typedef struct __attribute__((packed)) {
 } JustFloatFrame_t;
 
 // 创建一个静态的发送包实例
-static JustFloatFrame_t Tx_A_buffer_20k;
+//static JustFloatFrame_t Tx_A_buffer_20k;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -240,7 +240,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		                msg_to_queue->Tx_Header.DataLength = FDCAN_DLC_BYTES_1;  // 【灵活DLC】
 
 		                // 5. 填充报文数据
-		                msg_to_queue->Data[0] = (uint8_t)Motor_mode;    // 填入当前模式/故障码
+		                msg_to_queue->Data[0] = (uint8_t)EMA_DATA.Motor_mode;    // 填入当前模式/故障码
 
 		                for (int i = 1; i < 8; i++) { msg_to_queue->Data[i] = 0x00; }
 
@@ -354,7 +354,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             if (spike_count_in_window > MAX_SPIKES_IN_WINDOW)// 窗口结束，进行判断
             {
                 // 在过去的N个采样点中，尖峰次数过多，判定为故障！
-                Motor_mode = MOTOR_OVER_HV_CURRENT; // 设置故障状态 报警代码2
+            	EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT; // 设置故障状态 报警代码2
                 Close_output();
                 DC_Power_CTR(false);
                 Buzzer_ON;
@@ -389,9 +389,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //			}
 //			}
              //报警代码1
-    		if(HV_V > MAX_HV_voltage)  { Motor_mode = MOTOR_OVER_HV_VOLTAGE;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
-   		    if(HV_I > MAX_HV_current * 3)  { Motor_mode = MOTOR_OVER_HV_CURRENT;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
-    		if(DC_I > MAX_DC_current)  { Motor_mode = MOTOR_OVER_DC_IN_CURRENT; printf("%.3f\r\n",DC_I);Close_output();DC_Power_CTR(false);Buzzer_ON;}
+    		if(HV_V > MAX_HV_voltage)  { EMA_DATA.Motor_mode = MOTOR_OVER_HV_VOLTAGE;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
+   		    if(HV_I > MAX_HV_current * 3)  { EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
+    		if(DC_I > MAX_DC_current)  { EMA_DATA.Motor_mode = MOTOR_OVER_DC_IN_CURRENT; printf("%.3f\r\n",DC_I);Close_output();DC_Power_CTR(false);Buzzer_ON;}
 
 //    		if(Sin_Velocity_Flag == true)
 //    		{
@@ -402,19 +402,19 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //    		}
 
         // --- 1. 安全检查层：处理最高优先级的 IDLE 和 ERROR 状态 ---
-        if (Motor_mode == MOTOR_IDLE || Motor_mode == MOTOR_ERROR || Motor_mode == MOTOR_OVER_HV_CURRENT || Motor_mode == MOTOR_OVER_HV_VOLTAGE || Motor_mode == MOTOR_OVER_DC_IN_CURRENT)
+        if (EMA_DATA.Motor_mode == MOTOR_IDLE || EMA_DATA.Motor_mode == MOTOR_ERROR || EMA_DATA.Motor_mode == MOTOR_OVER_HV_CURRENT || EMA_DATA.Motor_mode == MOTOR_OVER_HV_VOLTAGE || EMA_DATA.Motor_mode == MOTOR_OVER_DC_IN_CURRENT)
         {
             phase_increment = 0; // 强制速度为0，确保电机停止
         }
         else
         {
-				if (Motor_mode == MOTOR_OPEN_REPEATED)// --- 1. 状态决策层：根据当前模式决定电机的目标和速度 ---
+				if (EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)// --- 1. 状态决策层：根据当前模式决定电机的目标和速度 ---
 				{
 					if (phase_increment == 0)// 在往复模式下，检查上一个移动是否已完成 (表现为电机已停止)
 					{
 						if (repeated_count_current >= repeated_count_total)// 检查总次数是否已完成
 						{
-							Motor_mode = MOTOR_IDLE; // 任务完成，切换到速度模式并保持静止
+							EMA_DATA.Motor_mode = MOTOR_IDLE; // 任务完成，切换到速度模式并保持静止
 							HAL_TIM_Base_Stop(&htim16);
 							Queue_Reply_Request(0x06, 0x10);//发送完成指令
 						}
@@ -437,7 +437,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				}
 
 			     // --- 2. 运动执行层：根据目标驱动电机 ---
-				 if (Motor_mode == MOTOR_OPEN_POSITION || Motor_mode == MOTOR_OPEN_REPEATED || Motor_mode == MOTOR_SYNC_POSITION)
+				 if (EMA_DATA.Motor_mode == MOTOR_OPEN_POSITION || EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED || EMA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
 				 {
 					 if (absolute_step_counter < target_step_position)
 					 {
@@ -454,11 +454,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 						 phase_increment = 0;
 					 }
 				 }
-				 else if(Motor_mode == MOTOR_OPEN_VELOCITY)
+				 else if(EMA_DATA.Motor_mode == MOTOR_OPEN_VELOCITY)
 				 {
 					 phase_increment = velocity_mode_increment;
 				 }
-				 else if(Motor_mode == MOTOR_CLOSE_POSITION)
+				 else if(EMA_DATA.Motor_mode == MOTOR_CLOSE_POSITION)
 				 {
 					 float output = P_Control_Compute(&Motor_Position_Controller, Motor_Position_Controller.TargetPos, EMA_DATA.position_mm);
 					    if (output >= 0)
@@ -474,7 +474,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 					        phase_increment = (uint32_t)increment_f;
 					    }
 				 }
-				 else if(Motor_mode == MOTOR_CLOSE_FORCE)
+				 else if(EMA_DATA.Motor_mode == MOTOR_CLOSE_FORCE)
 				 {
 //					 float output = P_Control_Compute(&Motor_Force_Controller, Motor_Force_Controller.TargetPos, Force_Sensor1.weight_g);
 //					    if (output >= 0)
@@ -643,17 +643,17 @@ int main(void)
 //	  	  {
 //	  		  last_time_ms = HAL_GetTick();
 //	  	  }
-	  if(Motor_mode == MOTOR_OVER_HV_VOLTAGE)
+	  if(EMA_DATA.Motor_mode == MOTOR_OVER_HV_VOLTAGE)
 	  {
 		  printf("MOTOR_OVER_HV_VOLTAGE\r\n");
 		  HAL_Delay(1000);
 	  }
-	  else if(Motor_mode == MOTOR_OVER_HV_CURRENT)
+	  else if(EMA_DATA.Motor_mode == MOTOR_OVER_HV_CURRENT)
 	  {
 		  printf("MOTOR_OVER_HV_CURRENT\r\n");
 		  HAL_Delay(1000);
 	  }
-	  else if(Motor_mode == MOTOR_OVER_DC_IN_CURRENT)
+	  else if(EMA_DATA.Motor_mode == MOTOR_OVER_DC_IN_CURRENT)
 	  {
 		  printf("MOTOR_OVER_DC_IN_CURRENT\r\n");
 		  HAL_Delay(1000);

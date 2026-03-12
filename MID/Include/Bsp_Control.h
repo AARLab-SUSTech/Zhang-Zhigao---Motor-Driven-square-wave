@@ -5,11 +5,10 @@
  *      Author: 16964
  */
 
-#ifndef CONTROL_H
-#define CONTROL_H
+#ifndef _BSP_CONTROL_H
+#define _BSP_CONTROL_H
 
 #include "main.h"
-
 
 /* ==========================================
  * 数据结构定义
