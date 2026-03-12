@@ -20,8 +20,8 @@
 #include <App_EMA.h>
 #include <Bsp_Ad7190.h>
 #include <Bsp_Can.h>
-#include <Bsp_Control.h>
 #include <Mid_Command_Usart.h>
+#include <Mid_Control.h>
 #include "main.h"
 
 #include "Bsp_Adc.h"

@@ -5,8 +5,8 @@
  *      Author: Letian
  */
 #include <Bsp_Can.h>
-#include <Bsp_Control.h>
 #include <Mid_Command_Usart.h>
+#include <Mid_Control.h>
 #include "App_EMA.h"
 
 extern Motor EMA_DATA;

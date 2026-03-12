@@ -5,8 +5,8 @@
  *      Author: 16964
  */
 
-#ifndef _BSP_CONTROL_H
-#define _BSP_CONTROL_H
+#ifndef _MID_CONTROL_H
+#define _MID_CONTROL_H
 
 #include "main.h"
 

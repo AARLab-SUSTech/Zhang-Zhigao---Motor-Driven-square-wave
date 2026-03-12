@@ -2102,7 +2102,7 @@ void Can_message_process(void)
  80015dc:	4886      	ldr	r0, [pc, #536]	@ (80017f8 <Can_message_process+0x2b0>)
  80015de:	f007 f971 	bl	80088c4 <HAL_TIM_Base_Stop>
                         Close_output();
- 80015e2:	f00a fc3d 	bl	800be60 <Close_output>
+ 80015e2:	f00a fe3b 	bl	800c25c <Close_output>
                         if( (EMA_DATA.Motor_mode != MOTOR_OVER_HV_VOLTAGE) && (EMA_DATA.Motor_mode != MOTOR_OVER_HV_CURRENT) &&
  80015e6:	4b85      	ldr	r3, [pc, #532]	@ (80017fc <Can_message_process+0x2b4>)
  80015e8:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
@@ -2772,7 +2772,7 @@ void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
  8001b52:	220c      	movs	r2, #12
  8001b54:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
 		Close_output();
- 8001b58:	f00a f982 	bl	800be60 <Close_output>
+ 8001b58:	f00a fb80 	bl	800c25c <Close_output>
 //		Buzzer_ON
 //		if(DC_ON_State == true) { DC_Power_CTR(false); }
 //		printf("HV error\r\n");
@@ -2792,7 +2792,7 @@ void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
  8001b6e:	4807      	ldr	r0, [pc, #28]	@ (8001b8c <HAL_COMP_TriggerCallback+0x4c>)
  8001b70:	f006 ff9c 	bl	8008aac <HAL_TIM_PWM_Start>
 		Close_output();
- 8001b74:	f00a f974 	bl	800be60 <Close_output>
+ 8001b74:	f00a fb72 	bl	800c25c <Close_output>
 //		if(DC_ON_State == true) {  DC_Power_CTR(false); }
 //		printf("HV I \r\n");
 	}
@@ -3490,10 +3490,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  8002102:	220b      	movs	r2, #11
  8002104:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
                 Close_output();
- 8002108:	f009 feaa 	bl	800be60 <Close_output>
+ 8002108:	f00a f8a8 	bl	800c25c <Close_output>
                 DC_Power_CTR(false);
  800210c:	2000      	movs	r0, #0
- 800210e:	f009 fdfd 	bl	800bd0c <DC_Power_CTR>
+ 800210e:	f009 fffb 	bl	800c108 <DC_Power_CTR>
                 Buzzer_ON;
  8002112:	2100      	movs	r1, #0
  8002114:	4858      	ldr	r0, [pc, #352]	@ (8002278 <HAL_TIM_PeriodElapsedCallback+0x690>)
@@ -3523,9 +3523,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  800213c:	4b48      	ldr	r3, [pc, #288]	@ (8002260 <HAL_TIM_PeriodElapsedCallback+0x678>)
  800213e:	220c      	movs	r2, #12
  8002140:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
- 8002144:	f009 fe8c 	bl	800be60 <Close_output>
+ 8002144:	f00a f88a 	bl	800c25c <Close_output>
  8002148:	2000      	movs	r0, #0
- 800214a:	f009 fddf 	bl	800bd0c <DC_Power_CTR>
+ 800214a:	f009 ffdd 	bl	800c108 <DC_Power_CTR>
  800214e:	2100      	movs	r1, #0
  8002150:	4849      	ldr	r0, [pc, #292]	@ (8002278 <HAL_TIM_PeriodElapsedCallback+0x690>)
  8002152:	f006 fcab 	bl	8008aac <HAL_TIM_PWM_Start>
@@ -3542,9 +3542,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  8002174:	4b3a      	ldr	r3, [pc, #232]	@ (8002260 <HAL_TIM_PeriodElapsedCallback+0x678>)
  8002176:	220b      	movs	r2, #11
  8002178:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
- 800217c:	f009 fe70 	bl	800be60 <Close_output>
+ 800217c:	f00a f86e 	bl	800c25c <Close_output>
  8002180:	2000      	movs	r0, #0
- 8002182:	f009 fdc3 	bl	800bd0c <DC_Power_CTR>
+ 8002182:	f009 ffc1 	bl	800c108 <DC_Power_CTR>
  8002186:	2100      	movs	r1, #0
  8002188:	483b      	ldr	r0, [pc, #236]	@ (8002278 <HAL_TIM_PeriodElapsedCallback+0x690>)
  800218a:	f006 fc8f 	bl	8008aac <HAL_TIM_PWM_Start>
@@ -3567,9 +3567,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  80021b8:	460b      	mov	r3, r1
  80021ba:	4835      	ldr	r0, [pc, #212]	@ (8002290 <HAL_TIM_PeriodElapsedCallback+0x6a8>)
  80021bc:	f00a feb2 	bl	800cf24 <iprintf>
- 80021c0:	f009 fe4e 	bl	800be60 <Close_output>
+ 80021c0:	f00a f84c 	bl	800c25c <Close_output>
  80021c4:	2000      	movs	r0, #0
- 80021c6:	f009 fda1 	bl	800bd0c <DC_Power_CTR>
+ 80021c6:	f009 ff9f 	bl	800c108 <DC_Power_CTR>
  80021ca:	2100      	movs	r1, #0
  80021cc:	482a      	ldr	r0, [pc, #168]	@ (8002278 <HAL_TIM_PeriodElapsedCallback+0x690>)
  80021ce:	f006 fc6d 	bl	8008aac <HAL_TIM_PWM_Start>
@@ -3798,7 +3798,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  800235a:	eef0 0a47 	vmov.f32	s1, s14
  800235e:	eeb0 0a67 	vmov.f32	s0, s15
  8002362:	4874      	ldr	r0, [pc, #464]	@ (8002534 <HAL_TIM_PeriodElapsedCallback+0x94c>)
- 8002364:	f009 fc68 	bl	800bc38 <P_Control_Compute>
+ 8002364:	f009 fe66 	bl	800c034 <P_Control_Compute>
  8002368:	ed87 0a0a 	vstr	s0, [r7, #40]	@ 0x28
 					    if (output >= 0)
  800236c:	edd7 7a0a 	vldr	s15, [r7, #40]	@ 0x28
@@ -3998,7 +3998,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  80024f6:	781b      	ldrb	r3, [r3, #0]
  80024f8:	b2db      	uxtb	r3, r3
  80024fa:	4618      	mov	r0, r3
- 80024fc:	f009 fcdc 	bl	800beb8 <Update_output>
+ 80024fc:	f009 feda 	bl	800c2b4 <Update_output>
         }
 
 	}
@@ -27482,7 +27482,7 @@ __STATIC_FORCEINLINE uint32_t __STREXW(uint32_t value, volatile uint32_t *addr)
  800a8f0:	b29b      	uxth	r3, r3
  800a8f2:	4619      	mov	r1, r3
  800a8f4:	6878      	ldr	r0, [r7, #4]
- 800a8f6:	f001 fc15 	bl	800c124 <HAL_UARTEx_RxEventCallback>
+ 800a8f6:	f001 f9b5 	bl	800bc64 <HAL_UARTEx_RxEventCallback>
             HAL_UARTEx_RxEventCallback(huart, huart->RxXferSize);
 #endif /* (USE_HAL_UART_REGISTER_CALLBACKS) */
           }
@@ -27513,7 +27513,7 @@ __STATIC_FORCEINLINE uint32_t __STREXW(uint32_t value, volatile uint32_t *addr)
  800a928:	f8b3 305c 	ldrh.w	r3, [r3, #92]	@ 0x5c
  800a92c:	4619      	mov	r1, r3
  800a92e:	6878      	ldr	r0, [r7, #4]
- 800a930:	f001 fbf8 	bl	800c124 <HAL_UARTEx_RxEventCallback>
+ 800a930:	f001 f998 	bl	800bc64 <HAL_UARTEx_RxEventCallback>
       return;
  800a934:	e0df      	b.n	800aaf6 <HAL_UART_IRQHandler+0x672>
     else
@@ -27659,7 +27659,7 @@ __STATIC_FORCEINLINE uint32_t __STREXW(uint32_t value, volatile uint32_t *addr)
  800aa24:	f8b7 30ce 	ldrh.w	r3, [r7, #206]	@ 0xce
  800aa28:	4619      	mov	r1, r3
  800aa2a:	6878      	ldr	r0, [r7, #4]
- 800aa2c:	f001 fb7a 	bl	800c124 <HAL_UARTEx_RxEventCallback>
+ 800aa2c:	f001 f91a 	bl	800bc64 <HAL_UARTEx_RxEventCallback>
 #endif /* (USE_HAL_UART_REGISTER_CALLBACKS) */
       }
       return;
@@ -29826,7 +29826,7 @@ static void UART_DMAReceiveCplt(DMA_HandleTypeDef *hdma)
  800b7fa:	f8b3 305c 	ldrh.w	r3, [r3, #92]	@ 0x5c
  800b7fe:	4619      	mov	r1, r3
  800b800:	6ef8      	ldr	r0, [r7, #108]	@ 0x6c
- 800b802:	f000 fc8f 	bl	800c124 <HAL_UARTEx_RxEventCallback>
+ 800b802:	f000 fa2f 	bl	800bc64 <HAL_UARTEx_RxEventCallback>
 #else
     /*Call legacy weak Rx complete callback*/
     HAL_UART_RxCpltCallback(huart);
@@ -29885,7 +29885,7 @@ static void UART_DMARxHalfCplt(DMA_HandleTypeDef *hdma)
  800b83a:	b29b      	uxth	r3, r3
  800b83c:	4619      	mov	r1, r3
  800b83e:	68f8      	ldr	r0, [r7, #12]
- 800b840:	f000 fc70 	bl	800c124 <HAL_UARTEx_RxEventCallback>
+ 800b840:	f000 fa10 	bl	800bc64 <HAL_UARTEx_RxEventCallback>
 #else
     /*Call legacy weak Rx Half complete callback*/
     HAL_UART_RxHalfCpltCallback(huart);
@@ -30084,7 +30084,7 @@ static void UART_EndTransmit_IT(UART_HandleTypeDef *huart)
   /*Call legacy weak Tx complete callback*/
   HAL_UART_TxCpltCallback(huart);
  800b940:	6878      	ldr	r0, [r7, #4]
- 800b942:	f000 fbd9 	bl	800c0f8 <HAL_UART_TxCpltCallback>
+ 800b942:	f000 f979 	bl	800bc38 <HAL_UART_TxCpltCallback>
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS */
 }
  800b946:	bf00      	nop
@@ -30658,1262 +30658,1262 @@ static void UARTEx_SetNbDataToProcess(UART_HandleTypeDef *huart)
  800bc30:	0800f3dc 	.word	0x0800f3dc
  800bc34:	0800f3e4 	.word	0x0800f3e4
 
-0800bc38 <P_Control_Compute>:
-    ctrl->OutSpeed = 0.0f;
-}
-/* ==========================================
- * 计算函数 (建议在定时器中断中调用，例如 1kHz)
- * ========================================== */
-float P_Control_Compute(P_Controller *ctrl, float target_pos, float current_pos) {
- 800bc38:	b480      	push	{r7}
- 800bc3a:	b087      	sub	sp, #28
- 800bc3c:	af00      	add	r7, sp, #0
- 800bc3e:	60f8      	str	r0, [r7, #12]
- 800bc40:	ed87 0a02 	vstr	s0, [r7, #8]
- 800bc44:	edc7 0a01 	vstr	s1, [r7, #4]
-
-	float output;
-    // 1. 更新状态
-    ctrl->TargetPos = target_pos;
- 800bc48:	68fb      	ldr	r3, [r7, #12]
- 800bc4a:	68ba      	ldr	r2, [r7, #8]
- 800bc4c:	609a      	str	r2, [r3, #8]
-    ctrl->CurrentPos = current_pos;
- 800bc4e:	68fb      	ldr	r3, [r7, #12]
- 800bc50:	687a      	ldr	r2, [r7, #4]
- 800bc52:	60da      	str	r2, [r3, #12]
-
-    // 2. 计算误差
-    ctrl->Error = ctrl->TargetPos - ctrl->CurrentPos;
- 800bc54:	68fb      	ldr	r3, [r7, #12]
- 800bc56:	ed93 7a02 	vldr	s14, [r3, #8]
- 800bc5a:	68fb      	ldr	r3, [r7, #12]
- 800bc5c:	edd3 7a03 	vldr	s15, [r3, #12]
- 800bc60:	ee77 7a67 	vsub.f32	s15, s14, s15
- 800bc64:	68fb      	ldr	r3, [r7, #12]
- 800bc66:	edc3 7a04 	vstr	s15, [r3, #16]
-
-    // 3. 纯 P 计算 (核心公式)
-    if((ctrl->Error < 0.25f) && (ctrl->Error > -0.25f))
- 800bc6a:	68fb      	ldr	r3, [r7, #12]
- 800bc6c:	edd3 7a04 	vldr	s15, [r3, #16]
- 800bc70:	eeb5 7a00 	vmov.f32	s14, #80	@ 0x3e800000  0.250
- 800bc74:	eef4 7ac7 	vcmpe.f32	s15, s14
- 800bc78:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 800bc7c:	d50d      	bpl.n	800bc9a <P_Control_Compute+0x62>
- 800bc7e:	68fb      	ldr	r3, [r7, #12]
- 800bc80:	edd3 7a04 	vldr	s15, [r3, #16]
- 800bc84:	eebd 7a00 	vmov.f32	s14, #208	@ 0xbe800000 -0.250
- 800bc88:	eef4 7ac7 	vcmpe.f32	s15, s14
- 800bc8c:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 800bc90:	dd03      	ble.n	800bc9a <P_Control_Compute+0x62>
-    	{output = 0;}
- 800bc92:	f04f 0300 	mov.w	r3, #0
- 800bc96:	617b      	str	r3, [r7, #20]
- 800bc98:	e009      	b.n	800bcae <P_Control_Compute+0x76>
-    else
-		{output = ctrl->Kp * ctrl->Error;}
- 800bc9a:	68fb      	ldr	r3, [r7, #12]
- 800bc9c:	ed93 7a00 	vldr	s14, [r3]
- 800bca0:	68fb      	ldr	r3, [r7, #12]
- 800bca2:	edd3 7a04 	vldr	s15, [r3, #16]
- 800bca6:	ee67 7a27 	vmul.f32	s15, s14, s15
- 800bcaa:	edc7 7a05 	vstr	s15, [r7, #20]
-
-    // 4. 输出限幅 (Saturation)
-    // 防止计算出的速度超过电机或驱动器的物理极限
-    if (output > ctrl->MaxSpeed) {
- 800bcae:	68fb      	ldr	r3, [r7, #12]
- 800bcb0:	edd3 7a01 	vldr	s15, [r3, #4]
- 800bcb4:	ed97 7a05 	vldr	s14, [r7, #20]
- 800bcb8:	eeb4 7ae7 	vcmpe.f32	s14, s15
- 800bcbc:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 800bcc0:	dd03      	ble.n	800bcca <P_Control_Compute+0x92>
-        output = ctrl->MaxSpeed;
- 800bcc2:	68fb      	ldr	r3, [r7, #12]
- 800bcc4:	685b      	ldr	r3, [r3, #4]
- 800bcc6:	617b      	str	r3, [r7, #20]
- 800bcc8:	e012      	b.n	800bcf0 <P_Control_Compute+0xb8>
-    } else if (output < -ctrl->MaxSpeed) {
- 800bcca:	68fb      	ldr	r3, [r7, #12]
- 800bccc:	edd3 7a01 	vldr	s15, [r3, #4]
- 800bcd0:	eef1 7a67 	vneg.f32	s15, s15
- 800bcd4:	ed97 7a05 	vldr	s14, [r7, #20]
- 800bcd8:	eeb4 7ae7 	vcmpe.f32	s14, s15
- 800bcdc:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 800bce0:	d506      	bpl.n	800bcf0 <P_Control_Compute+0xb8>
-        output = -ctrl->MaxSpeed;
- 800bce2:	68fb      	ldr	r3, [r7, #12]
- 800bce4:	edd3 7a01 	vldr	s15, [r3, #4]
- 800bce8:	eef1 7a67 	vneg.f32	s15, s15
- 800bcec:	edc7 7a05 	vstr	s15, [r7, #20]
-    }
-
-    // 5. 保存输出并返回
-    ctrl->OutSpeed = output;
- 800bcf0:	68fb      	ldr	r3, [r7, #12]
- 800bcf2:	697a      	ldr	r2, [r7, #20]
- 800bcf4:	615a      	str	r2, [r3, #20]
-    return output;
- 800bcf6:	697b      	ldr	r3, [r7, #20]
- 800bcf8:	ee07 3a90 	vmov	s15, r3
-}
- 800bcfc:	eeb0 0a67 	vmov.f32	s0, s15
- 800bd00:	371c      	adds	r7, #28
- 800bd02:	46bd      	mov	sp, r7
- 800bd04:	f85d 7b04 	ldr.w	r7, [sp], #4
- 800bd08:	4770      	bx	lr
-	...
-
-0800bd0c <DC_Power_CTR>:
-/**
-  * @brief  DCDC高压模块供电开关
-  * @param  true 供电 false 关闭电源
-  */
-void DC_Power_CTR(bool state)
-{
- 800bd0c:	b580      	push	{r7, lr}
- 800bd0e:	b082      	sub	sp, #8
- 800bd10:	af00      	add	r7, sp, #0
- 800bd12:	4603      	mov	r3, r0
- 800bd14:	71fb      	strb	r3, [r7, #7]
-	if(state == true)
- 800bd16:	79fb      	ldrb	r3, [r7, #7]
- 800bd18:	2b00      	cmp	r3, #0
- 800bd1a:	d009      	beq.n	800bd30 <DC_Power_CTR+0x24>
-	{
-		DC_Power_ON;
- 800bd1c:	2201      	movs	r2, #1
- 800bd1e:	f44f 7100 	mov.w	r1, #512	@ 0x200
- 800bd22:	480a      	ldr	r0, [pc, #40]	@ (800bd4c <DC_Power_CTR+0x40>)
- 800bd24:	f7fb fcc8 	bl	80076b8 <HAL_GPIO_WritePin>
-		DC_ON_State = true;
- 800bd28:	4b09      	ldr	r3, [pc, #36]	@ (800bd50 <DC_Power_CTR+0x44>)
- 800bd2a:	2201      	movs	r2, #1
- 800bd2c:	701a      	strb	r2, [r3, #0]
-	{
-		DC_Power_OFF;
-		DC_ON_State = false;
-//		 printf("%d\r\n",DC_ON_State);
-	}
-}
- 800bd2e:	e008      	b.n	800bd42 <DC_Power_CTR+0x36>
-		DC_Power_OFF;
- 800bd30:	2200      	movs	r2, #0
- 800bd32:	f44f 7100 	mov.w	r1, #512	@ 0x200
- 800bd36:	4805      	ldr	r0, [pc, #20]	@ (800bd4c <DC_Power_CTR+0x40>)
- 800bd38:	f7fb fcbe 	bl	80076b8 <HAL_GPIO_WritePin>
-		DC_ON_State = false;
- 800bd3c:	4b04      	ldr	r3, [pc, #16]	@ (800bd50 <DC_Power_CTR+0x44>)
- 800bd3e:	2200      	movs	r2, #0
- 800bd40:	701a      	strb	r2, [r3, #0]
-}
- 800bd42:	bf00      	nop
- 800bd44:	3708      	adds	r7, #8
- 800bd46:	46bd      	mov	sp, r7
- 800bd48:	bd80      	pop	{r7, pc}
- 800bd4a:	bf00      	nop
- 800bd4c:	48000400 	.word	0x48000400
- 800bd50:	200008dc 	.word	0x200008dc
-
-0800bd54 <move_to_position>:
-  * @brief  设置电机移动到目标位置 (开环)
-  * @param  target_steps: 目标绝对步数
-  * @param  speed_hz: 移动到目标位置时使用的速度 (Hz, 必须为正数)
-  */
-void move_to_position(int32_t target_steps, float speed_hz)
-{
- 800bd54:	b580      	push	{r7, lr}
- 800bd56:	b082      	sub	sp, #8
- 800bd58:	af00      	add	r7, sp, #0
- 800bd5a:	6078      	str	r0, [r7, #4]
- 800bd5c:	ed87 0a00 	vstr	s0, [r7]
-	EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
- 800bd60:	4b12      	ldr	r3, [pc, #72]	@ (800bdac <move_to_position+0x58>)
- 800bd62:	2204      	movs	r2, #4
- 800bd64:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
-    // 1. 更新目标位置
-    target_step_position = target_steps;
- 800bd68:	4a11      	ldr	r2, [pc, #68]	@ (800bdb0 <move_to_position+0x5c>)
- 800bd6a:	687b      	ldr	r3, [r7, #4]
- 800bd6c:	6013      	str	r3, [r2, #0]
-
-    // 3. 根据 speed_hz 计算并设置在位置模式下移动时要使用的速度增量
-	position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
- 800bd6e:	6838      	ldr	r0, [r7, #0]
- 800bd70:	f7f5 f8b8 	bl	8000ee4 <__aeabi_f2ulz>
- 800bd74:	f04f 0200 	mov.w	r2, #0
- 800bd78:	f04f 0300 	mov.w	r3, #0
- 800bd7c:	0003      	movs	r3, r0
- 800bd7e:	2200      	movs	r2, #0
- 800bd80:	4610      	mov	r0, r2
- 800bd82:	4619      	mov	r1, r3
- 800bd84:	f7f5 f850 	bl	8000e28 <__aeabi_ul2f>
- 800bd88:	ee06 0a90 	vmov	s13, r0
- 800bd8c:	4b09      	ldr	r3, [pc, #36]	@ (800bdb4 <move_to_position+0x60>)
- 800bd8e:	ed93 7a00 	vldr	s14, [r3]
- 800bd92:	eec6 7a87 	vdiv.f32	s15, s13, s14
- 800bd96:	eefc 7ae7 	vcvt.u32.f32	s15, s15
- 800bd9a:	ee17 2a90 	vmov	r2, s15
- 800bd9e:	4b06      	ldr	r3, [pc, #24]	@ (800bdb8 <move_to_position+0x64>)
- 800bda0:	601a      	str	r2, [r3, #0]
-
-}
- 800bda2:	bf00      	nop
- 800bda4:	3708      	adds	r7, #8
- 800bda6:	46bd      	mov	sp, r7
- 800bda8:	bd80      	pop	{r7, pc}
- 800bdaa:	bf00      	nop
- 800bdac:	200008f4 	.word	0x200008f4
- 800bdb0:	200008d4 	.word	0x200008d4
- 800bdb4:	20000004 	.word	0x20000004
- 800bdb8:	2000000c 	.word	0x2000000c
-
-0800bdbc <move_repeatedly>:
-  * @param  pos2: 往返点2 (绝对步数)
-  * @param  count: 往返次数 (从pos1->pos2->pos1 算一次)
-  * @param  speed_hz: 往返时使用的速度 (Hz, 必须为正数)
-  */
-void move_repeatedly(int32_t pos1, int32_t pos2, uint32_t count, float speed_hz)
-{
- 800bdbc:	b580      	push	{r7, lr}
- 800bdbe:	b084      	sub	sp, #16
- 800bdc0:	af00      	add	r7, sp, #0
- 800bdc2:	60f8      	str	r0, [r7, #12]
- 800bdc4:	60b9      	str	r1, [r7, #8]
- 800bdc6:	607a      	str	r2, [r7, #4]
- 800bdc8:	ed87 0a00 	vstr	s0, [r7]
-    // 1. 存储往复运动参数
-    repeated_pos_A = pos1;
- 800bdcc:	4a1c      	ldr	r2, [pc, #112]	@ (800be40 <move_repeatedly+0x84>)
- 800bdce:	68fb      	ldr	r3, [r7, #12]
- 800bdd0:	6013      	str	r3, [r2, #0]
-    repeated_pos_B = pos2;
- 800bdd2:	4a1c      	ldr	r2, [pc, #112]	@ (800be44 <move_repeatedly+0x88>)
- 800bdd4:	68bb      	ldr	r3, [r7, #8]
- 800bdd6:	6013      	str	r3, [r2, #0]
-    repeated_count_total = count;
- 800bdd8:	4a1b      	ldr	r2, [pc, #108]	@ (800be48 <move_repeatedly+0x8c>)
- 800bdda:	687b      	ldr	r3, [r7, #4]
- 800bddc:	6013      	str	r3, [r2, #0]
-    if(repeated_count_total == 0)  repeated_count_total = 0xFFFFFFFF;//如果往复次数为0 则为无穷往复
- 800bdde:	4b1a      	ldr	r3, [pc, #104]	@ (800be48 <move_repeatedly+0x8c>)
- 800bde0:	681b      	ldr	r3, [r3, #0]
- 800bde2:	2b00      	cmp	r3, #0
- 800bde4:	d103      	bne.n	800bdee <move_repeatedly+0x32>
- 800bde6:	4b18      	ldr	r3, [pc, #96]	@ (800be48 <move_repeatedly+0x8c>)
- 800bde8:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
- 800bdec:	601a      	str	r2, [r3, #0]
-    repeated_count_current = 0;
- 800bdee:	4b17      	ldr	r3, [pc, #92]	@ (800be4c <move_repeatedly+0x90>)
- 800bdf0:	2200      	movs	r2, #0
- 800bdf2:	601a      	str	r2, [r3, #0]
-
-    // 2. 切换到往复运动模式
-    EMA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
- 800bdf4:	4b16      	ldr	r3, [pc, #88]	@ (800be50 <move_repeatedly+0x94>)
- 800bdf6:	2205      	movs	r2, #5
- 800bdf8:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
-
-    // 3. 【关键修复】: 直接设置第一个目标和速度，避免模式冲突
-    target_step_position = repeated_pos_A;
- 800bdfc:	4b10      	ldr	r3, [pc, #64]	@ (800be40 <move_repeatedly+0x84>)
- 800bdfe:	681b      	ldr	r3, [r3, #0]
- 800be00:	4a14      	ldr	r2, [pc, #80]	@ (800be54 <move_repeatedly+0x98>)
- 800be02:	6013      	str	r3, [r2, #0]
-    position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
- 800be04:	6838      	ldr	r0, [r7, #0]
- 800be06:	f7f5 f86d 	bl	8000ee4 <__aeabi_f2ulz>
- 800be0a:	f04f 0200 	mov.w	r2, #0
- 800be0e:	f04f 0300 	mov.w	r3, #0
- 800be12:	0003      	movs	r3, r0
- 800be14:	2200      	movs	r2, #0
- 800be16:	4610      	mov	r0, r2
- 800be18:	4619      	mov	r1, r3
- 800be1a:	f7f5 f805 	bl	8000e28 <__aeabi_ul2f>
- 800be1e:	ee06 0a90 	vmov	s13, r0
- 800be22:	4b0d      	ldr	r3, [pc, #52]	@ (800be58 <move_repeatedly+0x9c>)
- 800be24:	ed93 7a00 	vldr	s14, [r3]
- 800be28:	eec6 7a87 	vdiv.f32	s15, s13, s14
- 800be2c:	eefc 7ae7 	vcvt.u32.f32	s15, s15
- 800be30:	ee17 2a90 	vmov	r2, s15
- 800be34:	4b09      	ldr	r3, [pc, #36]	@ (800be5c <move_repeatedly+0xa0>)
- 800be36:	601a      	str	r2, [r3, #0]
-
-}
- 800be38:	bf00      	nop
- 800be3a:	3710      	adds	r7, #16
- 800be3c:	46bd      	mov	sp, r7
- 800be3e:	bd80      	pop	{r7, pc}
- 800be40:	200008ac 	.word	0x200008ac
- 800be44:	200008b0 	.word	0x200008b0
- 800be48:	200008b4 	.word	0x200008b4
- 800be4c:	200008b8 	.word	0x200008b8
- 800be50:	200008f4 	.word	0x200008f4
- 800be54:	200008d4 	.word	0x200008d4
- 800be58:	20000004 	.word	0x20000004
- 800be5c:	2000000c 	.word	0x2000000c
-
-0800be60 <Close_output>:
-    // 调用已经写好的单次定位函数来执行这次移动
-    move_to_position(target_pos, speed_hz);
-}
-
-void Close_output(void)
-{
- 800be60:	b580      	push	{r7, lr}
- 800be62:	af00      	add	r7, sp, #0
-	 HAL_TIM_Base_Stop(&htim16);//dma printf
- 800be64:	4811      	ldr	r0, [pc, #68]	@ (800beac <Close_output+0x4c>)
- 800be66:	f7fc fd2d 	bl	80088c4 <HAL_TIM_Base_Stop>
-	DC_Power_OFF;
- 800be6a:	2200      	movs	r2, #0
- 800be6c:	f44f 7100 	mov.w	r1, #512	@ 0x200
- 800be70:	480f      	ldr	r0, [pc, #60]	@ (800beb0 <Close_output+0x50>)
- 800be72:	f7fb fc21 	bl	80076b8 <HAL_GPIO_WritePin>
-	    	    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
- 800be76:	2100      	movs	r1, #0
- 800be78:	480e      	ldr	r0, [pc, #56]	@ (800beb4 <Close_output+0x54>)
- 800be7a:	f7fc ff17 	bl	8008cac <HAL_TIM_PWM_Stop>
-	    	    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_1);
- 800be7e:	2100      	movs	r1, #0
- 800be80:	480c      	ldr	r0, [pc, #48]	@ (800beb4 <Close_output+0x54>)
- 800be82:	f7fe f837 	bl	8009ef4 <HAL_TIMEx_PWMN_Stop>
-	    	    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2);
- 800be86:	2104      	movs	r1, #4
- 800be88:	480a      	ldr	r0, [pc, #40]	@ (800beb4 <Close_output+0x54>)
- 800be8a:	f7fc ff0f 	bl	8008cac <HAL_TIM_PWM_Stop>
-	    	    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_2);
- 800be8e:	2104      	movs	r1, #4
- 800be90:	4808      	ldr	r0, [pc, #32]	@ (800beb4 <Close_output+0x54>)
- 800be92:	f7fe f82f 	bl	8009ef4 <HAL_TIMEx_PWMN_Stop>
-	    	    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_3);
- 800be96:	2108      	movs	r1, #8
- 800be98:	4806      	ldr	r0, [pc, #24]	@ (800beb4 <Close_output+0x54>)
- 800be9a:	f7fc ff07 	bl	8008cac <HAL_TIM_PWM_Stop>
-	    	    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_3);
- 800be9e:	2108      	movs	r1, #8
- 800bea0:	4804      	ldr	r0, [pc, #16]	@ (800beb4 <Close_output+0x54>)
- 800bea2:	f7fe f827 	bl	8009ef4 <HAL_TIMEx_PWMN_Stop>
-}
- 800bea6:	bf00      	nop
- 800bea8:	bd80      	pop	{r7, pc}
- 800beaa:	bf00      	nop
- 800beac:	20000d54 	.word	0x20000d54
- 800beb0:	48000400 	.word	0x48000400
- 800beb4:	20000c24 	.word	0x20000c24
-
-0800beb8 <Update_output>:
-
-void Update_output(uint8_t new_step)
-{
- 800beb8:	b580      	push	{r7, lr}
- 800beba:	b082      	sub	sp, #8
- 800bebc:	af00      	add	r7, sp, #0
- 800bebe:	4603      	mov	r3, r0
- 800bec0:	71fb      	strb	r3, [r7, #7]
-    // 安全第一：在改变状态前，先关闭所有6个通道的输出
-    // 这确保了在切换瞬间不会有意外的导通
-    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
- 800bec2:	2100      	movs	r1, #0
- 800bec4:	488a      	ldr	r0, [pc, #552]	@ (800c0f0 <Update_output+0x238>)
- 800bec6:	f7fc fef1 	bl	8008cac <HAL_TIM_PWM_Stop>
-    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_1);
- 800beca:	2100      	movs	r1, #0
- 800becc:	4888      	ldr	r0, [pc, #544]	@ (800c0f0 <Update_output+0x238>)
- 800bece:	f7fe f811 	bl	8009ef4 <HAL_TIMEx_PWMN_Stop>
-    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2);
- 800bed2:	2104      	movs	r1, #4
- 800bed4:	4886      	ldr	r0, [pc, #536]	@ (800c0f0 <Update_output+0x238>)
- 800bed6:	f7fc fee9 	bl	8008cac <HAL_TIM_PWM_Stop>
-    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_2);
- 800beda:	2104      	movs	r1, #4
- 800bedc:	4884      	ldr	r0, [pc, #528]	@ (800c0f0 <Update_output+0x238>)
- 800bede:	f7fe f809 	bl	8009ef4 <HAL_TIMEx_PWMN_Stop>
-    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_3);
- 800bee2:	2108      	movs	r1, #8
- 800bee4:	4882      	ldr	r0, [pc, #520]	@ (800c0f0 <Update_output+0x238>)
- 800bee6:	f7fc fee1 	bl	8008cac <HAL_TIM_PWM_Stop>
-    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_3);
- 800beea:	2108      	movs	r1, #8
- 800beec:	4880      	ldr	r0, [pc, #512]	@ (800c0f0 <Update_output+0x238>)
- 800beee:	f7fe f801 	bl	8009ef4 <HAL_TIMEx_PWMN_Stop>
-    switch(new_step)
- 800bef2:	79fb      	ldrb	r3, [r7, #7]
- 800bef4:	2b05      	cmp	r3, #5
- 800bef6:	f200 80f6 	bhi.w	800c0e6 <Update_output+0x22e>
- 800befa:	a201      	add	r2, pc, #4	@ (adr r2, 800bf00 <Update_output+0x48>)
- 800befc:	f852 f023 	ldr.w	pc, [r2, r3, lsl #2]
- 800bf00:	0800bf19 	.word	0x0800bf19
- 800bf04:	0800bf67 	.word	0x0800bf67
- 800bf08:	0800bfb3 	.word	0x0800bfb3
- 800bf0c:	0800c001 	.word	0x0800c001
- 800bf10:	0800c04d 	.word	0x0800c04d
- 800bf14:	0800c09b 	.word	0x0800c09b
-//    	        	            break;
-
-
-//常见120度三相方波驱动方式
-        case 0: // Step 1: U+ V- (A->B)
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
- 800bf18:	4b76      	ldr	r3, [pc, #472]	@ (800c0f4 <Update_output+0x23c>)
- 800bf1a:	881a      	ldrh	r2, [r3, #0]
- 800bf1c:	4b74      	ldr	r3, [pc, #464]	@ (800c0f0 <Update_output+0x238>)
- 800bf1e:	681b      	ldr	r3, [r3, #0]
- 800bf20:	635a      	str	r2, [r3, #52]	@ 0x34
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
- 800bf22:	4b73      	ldr	r3, [pc, #460]	@ (800c0f0 <Update_output+0x238>)
- 800bf24:	681b      	ldr	r3, [r3, #0]
- 800bf26:	2200      	movs	r2, #0
- 800bf28:	639a      	str	r2, [r3, #56]	@ 0x38
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1);
- 800bf2a:	4b72      	ldr	r3, [pc, #456]	@ (800c0f4 <Update_output+0x23c>)
- 800bf2c:	881a      	ldrh	r2, [r3, #0]
- 800bf2e:	4b70      	ldr	r3, [pc, #448]	@ (800c0f0 <Update_output+0x238>)
- 800bf30:	681b      	ldr	r3, [r3, #0]
- 800bf32:	63da      	str	r2, [r3, #60]	@ 0x3c
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
- 800bf34:	2100      	movs	r1, #0
- 800bf36:	486e      	ldr	r0, [pc, #440]	@ (800c0f0 <Update_output+0x238>)
- 800bf38:	f7fc fdb8 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
- 800bf3c:	2100      	movs	r1, #0
- 800bf3e:	486c      	ldr	r0, [pc, #432]	@ (800c0f0 <Update_output+0x238>)
- 800bf40:	f7fd ff24 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
- 800bf44:	2104      	movs	r1, #4
- 800bf46:	486a      	ldr	r0, [pc, #424]	@ (800c0f0 <Update_output+0x238>)
- 800bf48:	f7fc fdb0 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
- 800bf4c:	2104      	movs	r1, #4
- 800bf4e:	4868      	ldr	r0, [pc, #416]	@ (800c0f0 <Update_output+0x238>)
- 800bf50:	f7fd ff1c 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
- 800bf54:	2108      	movs	r1, #8
- 800bf56:	4866      	ldr	r0, [pc, #408]	@ (800c0f0 <Update_output+0x238>)
- 800bf58:	f7fc fda8 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
- 800bf5c:	2108      	movs	r1, #8
- 800bf5e:	4864      	ldr	r0, [pc, #400]	@ (800c0f0 <Update_output+0x238>)
- 800bf60:	f7fd ff14 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            break;
- 800bf64:	e0bf      	b.n	800c0e6 <Update_output+0x22e>
-
-        case 1: // Step 2: W+ V- (C->B)
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
- 800bf66:	4b63      	ldr	r3, [pc, #396]	@ (800c0f4 <Update_output+0x23c>)
- 800bf68:	881a      	ldrh	r2, [r3, #0]
- 800bf6a:	4b61      	ldr	r3, [pc, #388]	@ (800c0f0 <Update_output+0x238>)
- 800bf6c:	681b      	ldr	r3, [r3, #0]
- 800bf6e:	635a      	str	r2, [r3, #52]	@ 0x34
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
- 800bf70:	4b5f      	ldr	r3, [pc, #380]	@ (800c0f0 <Update_output+0x238>)
- 800bf72:	681b      	ldr	r3, [r3, #0]
- 800bf74:	2200      	movs	r2, #0
- 800bf76:	639a      	str	r2, [r3, #56]	@ 0x38
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
- 800bf78:	4b5d      	ldr	r3, [pc, #372]	@ (800c0f0 <Update_output+0x238>)
- 800bf7a:	681b      	ldr	r3, [r3, #0]
- 800bf7c:	2200      	movs	r2, #0
- 800bf7e:	63da      	str	r2, [r3, #60]	@ 0x3c
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
- 800bf80:	2100      	movs	r1, #0
- 800bf82:	485b      	ldr	r0, [pc, #364]	@ (800c0f0 <Update_output+0x238>)
- 800bf84:	f7fc fd92 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
- 800bf88:	2100      	movs	r1, #0
- 800bf8a:	4859      	ldr	r0, [pc, #356]	@ (800c0f0 <Update_output+0x238>)
- 800bf8c:	f7fd fefe 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
- 800bf90:	2104      	movs	r1, #4
- 800bf92:	4857      	ldr	r0, [pc, #348]	@ (800c0f0 <Update_output+0x238>)
- 800bf94:	f7fc fd8a 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
- 800bf98:	2104      	movs	r1, #4
- 800bf9a:	4855      	ldr	r0, [pc, #340]	@ (800c0f0 <Update_output+0x238>)
- 800bf9c:	f7fd fef6 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
- 800bfa0:	2108      	movs	r1, #8
- 800bfa2:	4853      	ldr	r0, [pc, #332]	@ (800c0f0 <Update_output+0x238>)
- 800bfa4:	f7fc fd82 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
- 800bfa8:	2108      	movs	r1, #8
- 800bfaa:	4851      	ldr	r0, [pc, #324]	@ (800c0f0 <Update_output+0x238>)
- 800bfac:	f7fd feee 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            break;
- 800bfb0:	e099      	b.n	800c0e6 <Update_output+0x22e>
-
-        case 2: // Step 3: W+ U- (C->A)
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
- 800bfb2:	4b50      	ldr	r3, [pc, #320]	@ (800c0f4 <Update_output+0x23c>)
- 800bfb4:	881a      	ldrh	r2, [r3, #0]
- 800bfb6:	4b4e      	ldr	r3, [pc, #312]	@ (800c0f0 <Update_output+0x238>)
- 800bfb8:	681b      	ldr	r3, [r3, #0]
- 800bfba:	635a      	str	r2, [r3, #52]	@ 0x34
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1);
- 800bfbc:	4b4d      	ldr	r3, [pc, #308]	@ (800c0f4 <Update_output+0x23c>)
- 800bfbe:	881a      	ldrh	r2, [r3, #0]
- 800bfc0:	4b4b      	ldr	r3, [pc, #300]	@ (800c0f0 <Update_output+0x238>)
- 800bfc2:	681b      	ldr	r3, [r3, #0]
- 800bfc4:	639a      	str	r2, [r3, #56]	@ 0x38
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
- 800bfc6:	4b4a      	ldr	r3, [pc, #296]	@ (800c0f0 <Update_output+0x238>)
- 800bfc8:	681b      	ldr	r3, [r3, #0]
- 800bfca:	2200      	movs	r2, #0
- 800bfcc:	63da      	str	r2, [r3, #60]	@ 0x3c
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
- 800bfce:	2100      	movs	r1, #0
- 800bfd0:	4847      	ldr	r0, [pc, #284]	@ (800c0f0 <Update_output+0x238>)
- 800bfd2:	f7fc fd6b 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
- 800bfd6:	2100      	movs	r1, #0
- 800bfd8:	4845      	ldr	r0, [pc, #276]	@ (800c0f0 <Update_output+0x238>)
- 800bfda:	f7fd fed7 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
- 800bfde:	2104      	movs	r1, #4
- 800bfe0:	4843      	ldr	r0, [pc, #268]	@ (800c0f0 <Update_output+0x238>)
- 800bfe2:	f7fc fd63 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
- 800bfe6:	2104      	movs	r1, #4
- 800bfe8:	4841      	ldr	r0, [pc, #260]	@ (800c0f0 <Update_output+0x238>)
- 800bfea:	f7fd fecf 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
- 800bfee:	2108      	movs	r1, #8
- 800bff0:	483f      	ldr	r0, [pc, #252]	@ (800c0f0 <Update_output+0x238>)
- 800bff2:	f7fc fd5b 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
- 800bff6:	2108      	movs	r1, #8
- 800bff8:	483d      	ldr	r0, [pc, #244]	@ (800c0f0 <Update_output+0x238>)
- 800bffa:	f7fd fec7 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            break;
- 800bffe:	e072      	b.n	800c0e6 <Update_output+0x22e>
-
-        case 3: // Step 4: V+ U- (B->A)
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
- 800c000:	4b3b      	ldr	r3, [pc, #236]	@ (800c0f0 <Update_output+0x238>)
- 800c002:	681b      	ldr	r3, [r3, #0]
- 800c004:	2200      	movs	r2, #0
- 800c006:	635a      	str	r2, [r3, #52]	@ 0x34
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1);
- 800c008:	4b3a      	ldr	r3, [pc, #232]	@ (800c0f4 <Update_output+0x23c>)
- 800c00a:	881a      	ldrh	r2, [r3, #0]
- 800c00c:	4b38      	ldr	r3, [pc, #224]	@ (800c0f0 <Update_output+0x238>)
- 800c00e:	681b      	ldr	r3, [r3, #0]
- 800c010:	639a      	str	r2, [r3, #56]	@ 0x38
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
- 800c012:	4b37      	ldr	r3, [pc, #220]	@ (800c0f0 <Update_output+0x238>)
- 800c014:	681b      	ldr	r3, [r3, #0]
- 800c016:	2200      	movs	r2, #0
- 800c018:	63da      	str	r2, [r3, #60]	@ 0x3c
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
- 800c01a:	2100      	movs	r1, #0
- 800c01c:	4834      	ldr	r0, [pc, #208]	@ (800c0f0 <Update_output+0x238>)
- 800c01e:	f7fc fd45 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
- 800c022:	2100      	movs	r1, #0
- 800c024:	4832      	ldr	r0, [pc, #200]	@ (800c0f0 <Update_output+0x238>)
- 800c026:	f7fd feb1 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
- 800c02a:	2104      	movs	r1, #4
- 800c02c:	4830      	ldr	r0, [pc, #192]	@ (800c0f0 <Update_output+0x238>)
- 800c02e:	f7fc fd3d 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
- 800c032:	2104      	movs	r1, #4
- 800c034:	482e      	ldr	r0, [pc, #184]	@ (800c0f0 <Update_output+0x238>)
- 800c036:	f7fd fea9 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
- 800c03a:	2108      	movs	r1, #8
- 800c03c:	482c      	ldr	r0, [pc, #176]	@ (800c0f0 <Update_output+0x238>)
- 800c03e:	f7fc fd35 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
- 800c042:	2108      	movs	r1, #8
- 800c044:	482a      	ldr	r0, [pc, #168]	@ (800c0f0 <Update_output+0x238>)
- 800c046:	f7fd fea1 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            break;
- 800c04a:	e04c      	b.n	800c0e6 <Update_output+0x22e>
-
-        case 4: // Step 5: V+ W- (B->C)
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
- 800c04c:	4b28      	ldr	r3, [pc, #160]	@ (800c0f0 <Update_output+0x238>)
- 800c04e:	681b      	ldr	r3, [r3, #0]
- 800c050:	2200      	movs	r2, #0
- 800c052:	635a      	str	r2, [r3, #52]	@ 0x34
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1);
- 800c054:	4b27      	ldr	r3, [pc, #156]	@ (800c0f4 <Update_output+0x23c>)
- 800c056:	881a      	ldrh	r2, [r3, #0]
- 800c058:	4b25      	ldr	r3, [pc, #148]	@ (800c0f0 <Update_output+0x238>)
- 800c05a:	681b      	ldr	r3, [r3, #0]
- 800c05c:	639a      	str	r2, [r3, #56]	@ 0x38
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1);
- 800c05e:	4b25      	ldr	r3, [pc, #148]	@ (800c0f4 <Update_output+0x23c>)
- 800c060:	881a      	ldrh	r2, [r3, #0]
- 800c062:	4b23      	ldr	r3, [pc, #140]	@ (800c0f0 <Update_output+0x238>)
- 800c064:	681b      	ldr	r3, [r3, #0]
- 800c066:	63da      	str	r2, [r3, #60]	@ 0x3c
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
- 800c068:	2100      	movs	r1, #0
- 800c06a:	4821      	ldr	r0, [pc, #132]	@ (800c0f0 <Update_output+0x238>)
- 800c06c:	f7fc fd1e 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
- 800c070:	2100      	movs	r1, #0
- 800c072:	481f      	ldr	r0, [pc, #124]	@ (800c0f0 <Update_output+0x238>)
- 800c074:	f7fd fe8a 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
- 800c078:	2104      	movs	r1, #4
- 800c07a:	481d      	ldr	r0, [pc, #116]	@ (800c0f0 <Update_output+0x238>)
- 800c07c:	f7fc fd16 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
- 800c080:	2104      	movs	r1, #4
- 800c082:	481b      	ldr	r0, [pc, #108]	@ (800c0f0 <Update_output+0x238>)
- 800c084:	f7fd fe82 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
- 800c088:	2108      	movs	r1, #8
- 800c08a:	4819      	ldr	r0, [pc, #100]	@ (800c0f0 <Update_output+0x238>)
- 800c08c:	f7fc fd0e 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
- 800c090:	2108      	movs	r1, #8
- 800c092:	4817      	ldr	r0, [pc, #92]	@ (800c0f0 <Update_output+0x238>)
- 800c094:	f7fd fe7a 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            break;
- 800c098:	e025      	b.n	800c0e6 <Update_output+0x22e>
-
-        case 5: // Step 6: U+ W- (A->C)
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
- 800c09a:	4b15      	ldr	r3, [pc, #84]	@ (800c0f0 <Update_output+0x238>)
- 800c09c:	681b      	ldr	r3, [r3, #0]
- 800c09e:	2200      	movs	r2, #0
- 800c0a0:	635a      	str	r2, [r3, #52]	@ 0x34
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
- 800c0a2:	4b13      	ldr	r3, [pc, #76]	@ (800c0f0 <Update_output+0x238>)
- 800c0a4:	681b      	ldr	r3, [r3, #0]
- 800c0a6:	2200      	movs	r2, #0
- 800c0a8:	639a      	str	r2, [r3, #56]	@ 0x38
-    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1);
- 800c0aa:	4b12      	ldr	r3, [pc, #72]	@ (800c0f4 <Update_output+0x23c>)
- 800c0ac:	881a      	ldrh	r2, [r3, #0]
- 800c0ae:	4b10      	ldr	r3, [pc, #64]	@ (800c0f0 <Update_output+0x238>)
- 800c0b0:	681b      	ldr	r3, [r3, #0]
- 800c0b2:	63da      	str	r2, [r3, #60]	@ 0x3c
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
- 800c0b4:	2100      	movs	r1, #0
- 800c0b6:	480e      	ldr	r0, [pc, #56]	@ (800c0f0 <Update_output+0x238>)
- 800c0b8:	f7fc fcf8 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
- 800c0bc:	2100      	movs	r1, #0
- 800c0be:	480c      	ldr	r0, [pc, #48]	@ (800c0f0 <Update_output+0x238>)
- 800c0c0:	f7fd fe64 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
- 800c0c4:	2104      	movs	r1, #4
- 800c0c6:	480a      	ldr	r0, [pc, #40]	@ (800c0f0 <Update_output+0x238>)
- 800c0c8:	f7fc fcf0 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
- 800c0cc:	2104      	movs	r1, #4
- 800c0ce:	4808      	ldr	r0, [pc, #32]	@ (800c0f0 <Update_output+0x238>)
- 800c0d0:	f7fd fe5c 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
- 800c0d4:	2108      	movs	r1, #8
- 800c0d6:	4806      	ldr	r0, [pc, #24]	@ (800c0f0 <Update_output+0x238>)
- 800c0d8:	f7fc fce8 	bl	8008aac <HAL_TIM_PWM_Start>
-            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
- 800c0dc:	2108      	movs	r1, #8
- 800c0de:	4804      	ldr	r0, [pc, #16]	@ (800c0f0 <Update_output+0x238>)
- 800c0e0:	f7fd fe54 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
-            break;
- 800c0e4:	bf00      	nop
-
-
-    }
-}
- 800c0e6:	bf00      	nop
- 800c0e8:	3708      	adds	r7, #8
- 800c0ea:	46bd      	mov	sp, r7
- 800c0ec:	bd80      	pop	{r7, pc}
- 800c0ee:	bf00      	nop
- 800c0f0:	20000c24 	.word	0x20000c24
- 800c0f4:	20000000 	.word	0x20000000
-
-0800c0f8 <HAL_UART_TxCpltCallback>:
+0800bc38 <HAL_UART_TxCpltCallback>:
 /**
  * @brief UART DMA发送完成回调函数
  * @param huart UART句柄
  * @note  由 HAL 库在 DMA 传输完成中断中自动调用
  */
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
- 800c0f8:	b480      	push	{r7}
- 800c0fa:	b083      	sub	sp, #12
- 800c0fc:	af00      	add	r7, sp, #0
- 800c0fe:	6078      	str	r0, [r7, #4]
+ 800bc38:	b480      	push	{r7}
+ 800bc3a:	b083      	sub	sp, #12
+ 800bc3c:	af00      	add	r7, sp, #0
+ 800bc3e:	6078      	str	r0, [r7, #4]
     // 检查是哪个UART完成了发送
     if (huart->Instance == USART1) {
- 800c100:	687b      	ldr	r3, [r7, #4]
- 800c102:	681b      	ldr	r3, [r3, #0]
- 800c104:	4a05      	ldr	r2, [pc, #20]	@ (800c11c <HAL_UART_TxCpltCallback+0x24>)
- 800c106:	4293      	cmp	r3, r2
- 800c108:	d102      	bne.n	800c110 <HAL_UART_TxCpltCallback+0x18>
+ 800bc40:	687b      	ldr	r3, [r7, #4]
+ 800bc42:	681b      	ldr	r3, [r3, #0]
+ 800bc44:	4a05      	ldr	r2, [pc, #20]	@ (800bc5c <HAL_UART_TxCpltCallback+0x24>)
+ 800bc46:	4293      	cmp	r3, r2
+ 800bc48:	d102      	bne.n	800bc50 <HAL_UART_TxCpltCallback+0x18>
         // 将DMA状态标志设置为完成
         g_uart_dma_transfer_complete = 1;
- 800c10a:	4b05      	ldr	r3, [pc, #20]	@ (800c120 <HAL_UART_TxCpltCallback+0x28>)
- 800c10c:	2201      	movs	r2, #1
- 800c10e:	701a      	strb	r2, [r3, #0]
+ 800bc4a:	4b05      	ldr	r3, [pc, #20]	@ (800bc60 <HAL_UART_TxCpltCallback+0x28>)
+ 800bc4c:	2201      	movs	r2, #1
+ 800bc4e:	701a      	strb	r2, [r3, #0]
     }
 }
- 800c110:	bf00      	nop
- 800c112:	370c      	adds	r7, #12
- 800c114:	46bd      	mov	sp, r7
- 800c116:	f85d 7b04 	ldr.w	r7, [sp], #4
- 800c11a:	4770      	bx	lr
- 800c11c:	40013800 	.word	0x40013800
- 800c120:	20000028 	.word	0x20000028
+ 800bc50:	bf00      	nop
+ 800bc52:	370c      	adds	r7, #12
+ 800bc54:	46bd      	mov	sp, r7
+ 800bc56:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800bc5a:	4770      	bx	lr
+ 800bc5c:	40013800 	.word	0x40013800
+ 800bc60:	20000028 	.word	0x20000028
 
-0800c124 <HAL_UARTEx_RxEventCallback>:
+0800bc64 <HAL_UARTEx_RxEventCallback>:
  * @param  size  本次 DMA 接收到的实际有效字节数
  * @retval None
  * @note   该函数实现了“DMA + IDLE (空闲中断)”的变长数据接收逻辑
  */
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
 {
- 800c124:	b580      	push	{r7, lr}
- 800c126:	b084      	sub	sp, #16
- 800c128:	af00      	add	r7, sp, #0
- 800c12a:	6078      	str	r0, [r7, #4]
- 800c12c:	460b      	mov	r3, r1
- 800c12e:	807b      	strh	r3, [r7, #2]
+ 800bc64:	b580      	push	{r7, lr}
+ 800bc66:	b084      	sub	sp, #16
+ 800bc68:	af00      	add	r7, sp, #0
+ 800bc6a:	6078      	str	r0, [r7, #4]
+ 800bc6c:	460b      	mov	r3, r1
+ 800bc6e:	807b      	strh	r3, [r7, #2]
     /* 1. 安全性检查：确保是指令串口 */
     if (huart->Instance == USART1)
- 800c130:	687b      	ldr	r3, [r7, #4]
- 800c132:	681b      	ldr	r3, [r3, #0]
- 800c134:	4a10      	ldr	r2, [pc, #64]	@ (800c178 <HAL_UARTEx_RxEventCallback+0x54>)
- 800c136:	4293      	cmp	r3, r2
- 800c138:	d11a      	bne.n	800c170 <HAL_UARTEx_RxEventCallback+0x4c>
+ 800bc70:	687b      	ldr	r3, [r7, #4]
+ 800bc72:	681b      	ldr	r3, [r3, #0]
+ 800bc74:	4a10      	ldr	r2, [pc, #64]	@ (800bcb8 <HAL_UARTEx_RxEventCallback+0x54>)
+ 800bc76:	4293      	cmp	r3, r2
+ 800bc78:	d11a      	bne.n	800bcb0 <HAL_UARTEx_RxEventCallback+0x4c>
     {
         /* 2. 调用 MID 层协议解析器这里直接将收到的原始缓冲区和长度交给中层，不在此处做逻辑判断 */
         if (size > 0)
- 800c13a:	887b      	ldrh	r3, [r7, #2]
- 800c13c:	2b00      	cmp	r3, #0
- 800c13e:	d004      	beq.n	800c14a <HAL_UARTEx_RxEventCallback+0x26>
+ 800bc7a:	887b      	ldrh	r3, [r7, #2]
+ 800bc7c:	2b00      	cmp	r3, #0
+ 800bc7e:	d004      	beq.n	800bc8a <HAL_UARTEx_RxEventCallback+0x26>
         {
         	Mid_Process_Usart_Data(rx_buffer, size);
- 800c140:	887b      	ldrh	r3, [r7, #2]
- 800c142:	4619      	mov	r1, r3
- 800c144:	480d      	ldr	r0, [pc, #52]	@ (800c17c <HAL_UARTEx_RxEventCallback+0x58>)
- 800c146:	f000 f81b 	bl	800c180 <Mid_Process_Usart_Data>
+ 800bc80:	887b      	ldrh	r3, [r7, #2]
+ 800bc82:	4619      	mov	r1, r3
+ 800bc84:	480d      	ldr	r0, [pc, #52]	@ (800bcbc <HAL_UARTEx_RxEventCallback+0x58>)
+ 800bc86:	f000 f81b 	bl	800bcc0 <Mid_Process_Usart_Data>
         }
 
         /* 3. 重新启动 DMA 接收ReceiveToIdle 会在收到 IDLE 信号时触发本回调 */
         HAL_StatusTypeDef status = HAL_UARTEx_ReceiveToIdle_DMA(huart, rx_buffer, RX_BUFFER_SIZE);
- 800c14a:	2240      	movs	r2, #64	@ 0x40
- 800c14c:	490b      	ldr	r1, [pc, #44]	@ (800c17c <HAL_UARTEx_RxEventCallback+0x58>)
- 800c14e:	6878      	ldr	r0, [r7, #4]
- 800c150:	f7ff fcd0 	bl	800baf4 <HAL_UARTEx_ReceiveToIdle_DMA>
- 800c154:	4603      	mov	r3, r0
- 800c156:	73fb      	strb	r3, [r7, #15]
+ 800bc8a:	2240      	movs	r2, #64	@ 0x40
+ 800bc8c:	490b      	ldr	r1, [pc, #44]	@ (800bcbc <HAL_UARTEx_RxEventCallback+0x58>)
+ 800bc8e:	6878      	ldr	r0, [r7, #4]
+ 800bc90:	f7ff ff30 	bl	800baf4 <HAL_UARTEx_ReceiveToIdle_DMA>
+ 800bc94:	4603      	mov	r3, r0
+ 800bc96:	73fb      	strb	r3, [r7, #15]
             /* 错误处理：可以在此处添加日志或硬件报错逻辑 */
             // Error_Handler();
         }
 
         /* 4. 关键：禁用 DMA 半传输中断 (Half-Transfer) 如果不禁用，当缓冲区填满一半时也会触发回调，导致一帧长指令被拆成两次解析 */
         __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
- 800c158:	687b      	ldr	r3, [r7, #4]
- 800c15a:	f8d3 3080 	ldr.w	r3, [r3, #128]	@ 0x80
- 800c15e:	681b      	ldr	r3, [r3, #0]
- 800c160:	681a      	ldr	r2, [r3, #0]
- 800c162:	687b      	ldr	r3, [r7, #4]
- 800c164:	f8d3 3080 	ldr.w	r3, [r3, #128]	@ 0x80
- 800c168:	681b      	ldr	r3, [r3, #0]
- 800c16a:	f022 0204 	bic.w	r2, r2, #4
- 800c16e:	601a      	str	r2, [r3, #0]
+ 800bc98:	687b      	ldr	r3, [r7, #4]
+ 800bc9a:	f8d3 3080 	ldr.w	r3, [r3, #128]	@ 0x80
+ 800bc9e:	681b      	ldr	r3, [r3, #0]
+ 800bca0:	681a      	ldr	r2, [r3, #0]
+ 800bca2:	687b      	ldr	r3, [r7, #4]
+ 800bca4:	f8d3 3080 	ldr.w	r3, [r3, #128]	@ 0x80
+ 800bca8:	681b      	ldr	r3, [r3, #0]
+ 800bcaa:	f022 0204 	bic.w	r2, r2, #4
+ 800bcae:	601a      	str	r2, [r3, #0]
     }
 }
- 800c170:	bf00      	nop
- 800c172:	3710      	adds	r7, #16
- 800c174:	46bd      	mov	sp, r7
- 800c176:	bd80      	pop	{r7, pc}
- 800c178:	40013800 	.word	0x40013800
- 800c17c:	20000854 	.word	0x20000854
+ 800bcb0:	bf00      	nop
+ 800bcb2:	3710      	adds	r7, #16
+ 800bcb4:	46bd      	mov	sp, r7
+ 800bcb6:	bd80      	pop	{r7, pc}
+ 800bcb8:	40013800 	.word	0x40013800
+ 800bcbc:	20000854 	.word	0x20000854
 
-0800c180 <Mid_Process_Usart_Data>:
+0800bcc0 <Mid_Process_Usart_Data>:
  * [3]     : 设备 ID (ID = 0x01)
  * [4]     : 指令码 (Command)
  * [n]     : 各种数据 (Index, Data...)
  * [末尾]  : 校验和 (Checksum，计算从 长度位[2] 到 数据段末尾)
  */
 void Mid_Process_Usart_Data(uint8_t* data, uint16_t size) {
- 800c180:	b580      	push	{r7, lr}
- 800c182:	b086      	sub	sp, #24
- 800c184:	af00      	add	r7, sp, #0
- 800c186:	6078      	str	r0, [r7, #4]
- 800c188:	460b      	mov	r3, r1
- 800c18a:	807b      	strh	r3, [r7, #2]
+ 800bcc0:	b580      	push	{r7, lr}
+ 800bcc2:	b086      	sub	sp, #24
+ 800bcc4:	af00      	add	r7, sp, #0
+ 800bcc6:	6078      	str	r0, [r7, #4]
+ 800bcc8:	460b      	mov	r3, r1
+ 800bcca:	807b      	strh	r3, [r7, #2]
 
 			/* 1. 验证基本帧长和帧头 */
 				if (size < 6) {
- 800c18c:	887b      	ldrh	r3, [r7, #2]
- 800c18e:	2b05      	cmp	r3, #5
- 800c190:	f240 8192 	bls.w	800c4b8 <Mid_Process_Usart_Data+0x338>
+ 800bccc:	887b      	ldrh	r3, [r7, #2]
+ 800bcce:	2b05      	cmp	r3, #5
+ 800bcd0:	f240 8192 	bls.w	800bff8 <Mid_Process_Usart_Data+0x338>
 				//	         printf("Received data (size = %d): \r\n", size);
 				//	         for (uint16_t i = 0; i < size; i++) {
 				//	             printf("%02X ", data[i]);
 				//	         }
 
 	         if (data[0] == 0x55 && data[1] == 0xAA) {
- 800c194:	687b      	ldr	r3, [r7, #4]
- 800c196:	781b      	ldrb	r3, [r3, #0]
- 800c198:	2b55      	cmp	r3, #85	@ 0x55
- 800c19a:	f040 817f 	bne.w	800c49c <Mid_Process_Usart_Data+0x31c>
- 800c19e:	687b      	ldr	r3, [r7, #4]
- 800c1a0:	3301      	adds	r3, #1
- 800c1a2:	781b      	ldrb	r3, [r3, #0]
- 800c1a4:	2baa      	cmp	r3, #170	@ 0xaa
- 800c1a6:	f040 8179 	bne.w	800c49c <Mid_Process_Usart_Data+0x31c>
+ 800bcd4:	687b      	ldr	r3, [r7, #4]
+ 800bcd6:	781b      	ldrb	r3, [r3, #0]
+ 800bcd8:	2b55      	cmp	r3, #85	@ 0x55
+ 800bcda:	f040 817f 	bne.w	800bfdc <Mid_Process_Usart_Data+0x31c>
+ 800bcde:	687b      	ldr	r3, [r7, #4]
+ 800bce0:	3301      	adds	r3, #1
+ 800bce2:	781b      	ldrb	r3, [r3, #0]
+ 800bce4:	2baa      	cmp	r3, #170	@ 0xaa
+ 800bce6:	f040 8179 	bne.w	800bfdc <Mid_Process_Usart_Data+0x31c>
 	        	 /* 2. 提取长度并验证完整性 */
 	        	 uint8_t data_length = data[2];  // 载荷数据长度字段 (注意：这里已修复为 data[2] 而不是 rx_buffer[2])
- 800c1aa:	687b      	ldr	r3, [r7, #4]
- 800c1ac:	789b      	ldrb	r3, [r3, #2]
- 800c1ae:	74fb      	strb	r3, [r7, #19]
+ 800bcea:	687b      	ldr	r3, [r7, #4]
+ 800bcec:	789b      	ldrb	r3, [r3, #2]
+ 800bcee:	74fb      	strb	r3, [r7, #19]
 
 	        	 // 总长度 = 帧头(2) + 长度(1) + 额外位(1) + 载荷长度 + 校验和(1)
 	        	uint16_t total_length = 2 + 1 + 1 + data_length + 1;
- 800c1b0:	7cfb      	ldrb	r3, [r7, #19]
- 800c1b2:	b29b      	uxth	r3, r3
- 800c1b4:	3305      	adds	r3, #5
- 800c1b6:	823b      	strh	r3, [r7, #16]
+ 800bcf0:	7cfb      	ldrb	r3, [r7, #19]
+ 800bcf2:	b29b      	uxth	r3, r3
+ 800bcf4:	3305      	adds	r3, #5
+ 800bcf6:	823b      	strh	r3, [r7, #16]
 
 	             if (size >= total_length) {
- 800c1b8:	887a      	ldrh	r2, [r7, #2]
- 800c1ba:	8a3b      	ldrh	r3, [r7, #16]
- 800c1bc:	429a      	cmp	r2, r3
- 800c1be:	f0c0 816d 	bcc.w	800c49c <Mid_Process_Usart_Data+0x31c>
+ 800bcf8:	887a      	ldrh	r2, [r7, #2]
+ 800bcfa:	8a3b      	ldrh	r3, [r7, #16]
+ 800bcfc:	429a      	cmp	r2, r3
+ 800bcfe:	f0c0 816d 	bcc.w	800bfdc <Mid_Process_Usart_Data+0x31c>
 	            	 /* 3. 校验和 (Checksum) 计算 */
 	                 uint8_t checksum = 0;
- 800c1c2:	2300      	movs	r3, #0
- 800c1c4:	75fb      	strb	r3, [r7, #23]
+ 800bd02:	2300      	movs	r3, #0
+ 800bd04:	75fb      	strb	r3, [r7, #23]
 	                 for (uint16_t i = 2; i < 2 + 1 + 1 + data_length; i++) {
- 800c1c6:	2302      	movs	r3, #2
- 800c1c8:	82bb      	strh	r3, [r7, #20]
- 800c1ca:	e009      	b.n	800c1e0 <Mid_Process_Usart_Data+0x60>
+ 800bd06:	2302      	movs	r3, #2
+ 800bd08:	82bb      	strh	r3, [r7, #20]
+ 800bd0a:	e009      	b.n	800bd20 <Mid_Process_Usart_Data+0x60>
 	                     checksum += data[i];  // 累加除帧头(0,1)之外的所有字节，直到校验和之前
- 800c1cc:	8abb      	ldrh	r3, [r7, #20]
- 800c1ce:	687a      	ldr	r2, [r7, #4]
- 800c1d0:	4413      	add	r3, r2
- 800c1d2:	781a      	ldrb	r2, [r3, #0]
- 800c1d4:	7dfb      	ldrb	r3, [r7, #23]
- 800c1d6:	4413      	add	r3, r2
- 800c1d8:	75fb      	strb	r3, [r7, #23]
+ 800bd0c:	8abb      	ldrh	r3, [r7, #20]
+ 800bd0e:	687a      	ldr	r2, [r7, #4]
+ 800bd10:	4413      	add	r3, r2
+ 800bd12:	781a      	ldrb	r2, [r3, #0]
+ 800bd14:	7dfb      	ldrb	r3, [r7, #23]
+ 800bd16:	4413      	add	r3, r2
+ 800bd18:	75fb      	strb	r3, [r7, #23]
 	                 for (uint16_t i = 2; i < 2 + 1 + 1 + data_length; i++) {
- 800c1da:	8abb      	ldrh	r3, [r7, #20]
- 800c1dc:	3301      	adds	r3, #1
- 800c1de:	82bb      	strh	r3, [r7, #20]
- 800c1e0:	7cfb      	ldrb	r3, [r7, #19]
- 800c1e2:	1cda      	adds	r2, r3, #3
- 800c1e4:	8abb      	ldrh	r3, [r7, #20]
- 800c1e6:	429a      	cmp	r2, r3
- 800c1e8:	daf0      	bge.n	800c1cc <Mid_Process_Usart_Data+0x4c>
+ 800bd1a:	8abb      	ldrh	r3, [r7, #20]
+ 800bd1c:	3301      	adds	r3, #1
+ 800bd1e:	82bb      	strh	r3, [r7, #20]
+ 800bd20:	7cfb      	ldrb	r3, [r7, #19]
+ 800bd22:	1cda      	adds	r2, r3, #3
+ 800bd24:	8abb      	ldrh	r3, [r7, #20]
+ 800bd26:	429a      	cmp	r2, r3
+ 800bd28:	daf0      	bge.n	800bd0c <Mid_Process_Usart_Data+0x4c>
 	                 }
 	                 // 获取发送方传来的校验和
 	                 uint8_t received_checksum = data[total_length - 1];  // data[2 + 1 + 1 + data_length]
- 800c1ea:	8a3b      	ldrh	r3, [r7, #16]
- 800c1ec:	3b01      	subs	r3, #1
- 800c1ee:	687a      	ldr	r2, [r7, #4]
- 800c1f0:	4413      	add	r3, r2
- 800c1f2:	781b      	ldrb	r3, [r3, #0]
- 800c1f4:	73fb      	strb	r3, [r7, #15]
+ 800bd2a:	8a3b      	ldrh	r3, [r7, #16]
+ 800bd2c:	3b01      	subs	r3, #1
+ 800bd2e:	687a      	ldr	r2, [r7, #4]
+ 800bd30:	4413      	add	r3, r2
+ 800bd32:	781b      	ldrb	r3, [r3, #0]
+ 800bd34:	73fb      	strb	r3, [r7, #15]
 	                 if (checksum == received_checksum) {
- 800c1f6:	7dfa      	ldrb	r2, [r7, #23]
- 800c1f8:	7bfb      	ldrb	r3, [r7, #15]
- 800c1fa:	429a      	cmp	r2, r3
- 800c1fc:	f040 814e 	bne.w	800c49c <Mid_Process_Usart_Data+0x31c>
+ 800bd36:	7dfa      	ldrb	r2, [r7, #23]
+ 800bd38:	7bfb      	ldrb	r3, [r7, #15]
+ 800bd3a:	429a      	cmp	r2, r3
+ 800bd3c:	f040 814e 	bne.w	800bfdc <Mid_Process_Usart_Data+0x31c>
 
 //															 printf("ID: %02X, Command: %02X, Index: %02X Data: ", data[3], data[4], data[5]);
 //															 for (uint8_t i = 0; i < data_length-2; i++) {printf("%02X ", data[6 + i]);}
 //															 printf("\r\n");
 
 	                     if(data[3] != 0x01)  return;// 不是发给本设备的，直接退出
- 800c200:	687b      	ldr	r3, [r7, #4]
- 800c202:	3303      	adds	r3, #3
- 800c204:	781b      	ldrb	r3, [r3, #0]
- 800c206:	2b01      	cmp	r3, #1
- 800c208:	f040 8158 	bne.w	800c4bc <Mid_Process_Usart_Data+0x33c>
+ 800bd40:	687b      	ldr	r3, [r7, #4]
+ 800bd42:	3303      	adds	r3, #3
+ 800bd44:	781b      	ldrb	r3, [r3, #0]
+ 800bd46:	2b01      	cmp	r3, #1
+ 800bd48:	f040 8158 	bne.w	800bffc <Mid_Process_Usart_Data+0x33c>
 
 	                     /* 6. 安全机制：如果电机正处于致命错误状态，拒绝执行任何指令 */
 	                     if((EMA_DATA.Motor_mode == MOTOR_OVER_HV_VOLTAGE) || (EMA_DATA.Motor_mode == MOTOR_OVER_HV_CURRENT) || (EMA_DATA.Motor_mode == MOTOR_OVER_DC_IN_CURRENT)) return;//不处理指令，直接退出
- 800c20c:	4bae      	ldr	r3, [pc, #696]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c20e:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
- 800c212:	2b0c      	cmp	r3, #12
- 800c214:	f000 8154 	beq.w	800c4c0 <Mid_Process_Usart_Data+0x340>
- 800c218:	4bab      	ldr	r3, [pc, #684]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c21a:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
- 800c21e:	2b0b      	cmp	r3, #11
- 800c220:	f000 814e 	beq.w	800c4c0 <Mid_Process_Usart_Data+0x340>
- 800c224:	4ba8      	ldr	r3, [pc, #672]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c226:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
- 800c22a:	2b0d      	cmp	r3, #13
- 800c22c:	f000 8148 	beq.w	800c4c0 <Mid_Process_Usart_Data+0x340>
+ 800bd4c:	4bae      	ldr	r3, [pc, #696]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800bd4e:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
+ 800bd52:	2b0c      	cmp	r3, #12
+ 800bd54:	f000 8154 	beq.w	800c000 <Mid_Process_Usart_Data+0x340>
+ 800bd58:	4bab      	ldr	r3, [pc, #684]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800bd5a:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
+ 800bd5e:	2b0b      	cmp	r3, #11
+ 800bd60:	f000 814e 	beq.w	800c000 <Mid_Process_Usart_Data+0x340>
+ 800bd64:	4ba8      	ldr	r3, [pc, #672]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800bd66:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
+ 800bd6a:	2b0d      	cmp	r3, #13
+ 800bd6c:	f000 8148 	beq.w	800c000 <Mid_Process_Usart_Data+0x340>
 
 	                     /* 7. 指令分发之前，如果是运行指令，则打开电源并置位 Ready */
 	                     if(data[4] != 0x25) {DC_Power_ON;EMA_DATA.Motor_mode = MOTOR_READY;}
- 800c230:	687b      	ldr	r3, [r7, #4]
- 800c232:	3304      	adds	r3, #4
- 800c234:	781b      	ldrb	r3, [r3, #0]
- 800c236:	2b25      	cmp	r3, #37	@ 0x25
- 800c238:	d009      	beq.n	800c24e <Mid_Process_Usart_Data+0xce>
- 800c23a:	2201      	movs	r2, #1
- 800c23c:	f44f 7100 	mov.w	r1, #512	@ 0x200
- 800c240:	48a2      	ldr	r0, [pc, #648]	@ (800c4cc <Mid_Process_Usart_Data+0x34c>)
- 800c242:	f7fb fa39 	bl	80076b8 <HAL_GPIO_WritePin>
- 800c246:	4ba0      	ldr	r3, [pc, #640]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c248:	2201      	movs	r2, #1
- 800c24a:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
+ 800bd70:	687b      	ldr	r3, [r7, #4]
+ 800bd72:	3304      	adds	r3, #4
+ 800bd74:	781b      	ldrb	r3, [r3, #0]
+ 800bd76:	2b25      	cmp	r3, #37	@ 0x25
+ 800bd78:	d009      	beq.n	800bd8e <Mid_Process_Usart_Data+0xce>
+ 800bd7a:	2201      	movs	r2, #1
+ 800bd7c:	f44f 7100 	mov.w	r1, #512	@ 0x200
+ 800bd80:	48a2      	ldr	r0, [pc, #648]	@ (800c00c <Mid_Process_Usart_Data+0x34c>)
+ 800bd82:	f7fb fc99 	bl	80076b8 <HAL_GPIO_WritePin>
+ 800bd86:	4ba0      	ldr	r3, [pc, #640]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800bd88:	2201      	movs	r2, #1
+ 800bd8a:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
 
 	                     /* 8. 业务逻辑分发 (Command Dispatcher) */
 	                     switch(data[4])
- 800c24e:	687b      	ldr	r3, [r7, #4]
- 800c250:	3304      	adds	r3, #4
- 800c252:	781b      	ldrb	r3, [r3, #0]
- 800c254:	3b24      	subs	r3, #36	@ 0x24
- 800c256:	2b0f      	cmp	r3, #15
- 800c258:	f200 811f 	bhi.w	800c49a <Mid_Process_Usart_Data+0x31a>
- 800c25c:	a201      	add	r2, pc, #4	@ (adr r2, 800c264 <Mid_Process_Usart_Data+0xe4>)
- 800c25e:	f852 f023 	ldr.w	pc, [r2, r3, lsl #2]
- 800c262:	bf00      	nop
- 800c264:	0800c2a5 	.word	0x0800c2a5
- 800c268:	0800c31f 	.word	0x0800c31f
- 800c26c:	0800c49b 	.word	0x0800c49b
- 800c270:	0800c367 	.word	0x0800c367
- 800c274:	0800c3b9 	.word	0x0800c3b9
- 800c278:	0800c3e7 	.word	0x0800c3e7
- 800c27c:	0800c49b 	.word	0x0800c49b
- 800c280:	0800c49b 	.word	0x0800c49b
- 800c284:	0800c49b 	.word	0x0800c49b
- 800c288:	0800c49b 	.word	0x0800c49b
- 800c28c:	0800c49b 	.word	0x0800c49b
- 800c290:	0800c49b 	.word	0x0800c49b
- 800c294:	0800c49b 	.word	0x0800c49b
- 800c298:	0800c415 	.word	0x0800c415
- 800c29c:	0800c487 	.word	0x0800c487
- 800c2a0:	0800c491 	.word	0x0800c491
+ 800bd8e:	687b      	ldr	r3, [r7, #4]
+ 800bd90:	3304      	adds	r3, #4
+ 800bd92:	781b      	ldrb	r3, [r3, #0]
+ 800bd94:	3b24      	subs	r3, #36	@ 0x24
+ 800bd96:	2b0f      	cmp	r3, #15
+ 800bd98:	f200 811f 	bhi.w	800bfda <Mid_Process_Usart_Data+0x31a>
+ 800bd9c:	a201      	add	r2, pc, #4	@ (adr r2, 800bda4 <Mid_Process_Usart_Data+0xe4>)
+ 800bd9e:	f852 f023 	ldr.w	pc, [r2, r3, lsl #2]
+ 800bda2:	bf00      	nop
+ 800bda4:	0800bde5 	.word	0x0800bde5
+ 800bda8:	0800be5f 	.word	0x0800be5f
+ 800bdac:	0800bfdb 	.word	0x0800bfdb
+ 800bdb0:	0800bea7 	.word	0x0800bea7
+ 800bdb4:	0800bef9 	.word	0x0800bef9
+ 800bdb8:	0800bf27 	.word	0x0800bf27
+ 800bdbc:	0800bfdb 	.word	0x0800bfdb
+ 800bdc0:	0800bfdb 	.word	0x0800bfdb
+ 800bdc4:	0800bfdb 	.word	0x0800bfdb
+ 800bdc8:	0800bfdb 	.word	0x0800bfdb
+ 800bdcc:	0800bfdb 	.word	0x0800bfdb
+ 800bdd0:	0800bfdb 	.word	0x0800bfdb
+ 800bdd4:	0800bfdb 	.word	0x0800bfdb
+ 800bdd8:	0800bf55 	.word	0x0800bf55
+ 800bddc:	0800bfc7 	.word	0x0800bfc7
+ 800bde0:	0800bfd1 	.word	0x0800bfd1
 	                     {
 	                     case 0x24: // 往复运动模式 (Repeat Mode)
 	                                             EMA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
- 800c2a4:	4b88      	ldr	r3, [pc, #544]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c2a6:	2205      	movs	r2, #5
- 800c2a8:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
+ 800bde4:	4b88      	ldr	r3, [pc, #544]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800bde6:	2205      	movs	r2, #5
+ 800bde8:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
 	                                             // 注意大小端拼接逻辑
 	                                             temp_speed_int16 = (int16_t)((data[9] << 8) | data[8]);
- 800c2ac:	687b      	ldr	r3, [r7, #4]
- 800c2ae:	3309      	adds	r3, #9
- 800c2b0:	781b      	ldrb	r3, [r3, #0]
- 800c2b2:	b21b      	sxth	r3, r3
- 800c2b4:	021b      	lsls	r3, r3, #8
- 800c2b6:	b21a      	sxth	r2, r3
- 800c2b8:	687b      	ldr	r3, [r7, #4]
- 800c2ba:	3308      	adds	r3, #8
- 800c2bc:	781b      	ldrb	r3, [r3, #0]
- 800c2be:	b21b      	sxth	r3, r3
- 800c2c0:	4313      	orrs	r3, r2
- 800c2c2:	b21a      	sxth	r2, r3
- 800c2c4:	4b82      	ldr	r3, [pc, #520]	@ (800c4d0 <Mid_Process_Usart_Data+0x350>)
- 800c2c6:	801a      	strh	r2, [r3, #0]
+ 800bdec:	687b      	ldr	r3, [r7, #4]
+ 800bdee:	3309      	adds	r3, #9
+ 800bdf0:	781b      	ldrb	r3, [r3, #0]
+ 800bdf2:	b21b      	sxth	r3, r3
+ 800bdf4:	021b      	lsls	r3, r3, #8
+ 800bdf6:	b21a      	sxth	r2, r3
+ 800bdf8:	687b      	ldr	r3, [r7, #4]
+ 800bdfa:	3308      	adds	r3, #8
+ 800bdfc:	781b      	ldrb	r3, [r3, #0]
+ 800bdfe:	b21b      	sxth	r3, r3
+ 800be00:	4313      	orrs	r3, r2
+ 800be02:	b21a      	sxth	r2, r3
+ 800be04:	4b82      	ldr	r3, [pc, #520]	@ (800c010 <Mid_Process_Usart_Data+0x350>)
+ 800be06:	801a      	strh	r2, [r3, #0]
 	                                             temp_speed_float = (float)temp_speed_int16;
- 800c2c8:	4b81      	ldr	r3, [pc, #516]	@ (800c4d0 <Mid_Process_Usart_Data+0x350>)
- 800c2ca:	f9b3 3000 	ldrsh.w	r3, [r3]
- 800c2ce:	ee07 3a90 	vmov	s15, r3
- 800c2d2:	eef8 7ae7 	vcvt.f32.s32	s15, s15
- 800c2d6:	4b7f      	ldr	r3, [pc, #508]	@ (800c4d4 <Mid_Process_Usart_Data+0x354>)
- 800c2d8:	edc3 7a00 	vstr	s15, [r3]
+ 800be08:	4b81      	ldr	r3, [pc, #516]	@ (800c010 <Mid_Process_Usart_Data+0x350>)
+ 800be0a:	f9b3 3000 	ldrsh.w	r3, [r3]
+ 800be0e:	ee07 3a90 	vmov	s15, r3
+ 800be12:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+ 800be16:	4b7f      	ldr	r3, [pc, #508]	@ (800c014 <Mid_Process_Usart_Data+0x354>)
+ 800be18:	edc3 7a00 	vstr	s15, [r3]
 	                                             // 提取各个参数 (已修复为 data)
 	                                             uint16_t count_val = ((uint16_t)data[9] << 8) | data[10];
- 800c2dc:	687b      	ldr	r3, [r7, #4]
- 800c2de:	3309      	adds	r3, #9
- 800c2e0:	781b      	ldrb	r3, [r3, #0]
- 800c2e2:	b21b      	sxth	r3, r3
- 800c2e4:	021b      	lsls	r3, r3, #8
- 800c2e6:	b21a      	sxth	r2, r3
- 800c2e8:	687b      	ldr	r3, [r7, #4]
- 800c2ea:	330a      	adds	r3, #10
- 800c2ec:	781b      	ldrb	r3, [r3, #0]
- 800c2ee:	b21b      	sxth	r3, r3
- 800c2f0:	4313      	orrs	r3, r2
- 800c2f2:	b21b      	sxth	r3, r3
- 800c2f4:	81bb      	strh	r3, [r7, #12]
+ 800be1c:	687b      	ldr	r3, [r7, #4]
+ 800be1e:	3309      	adds	r3, #9
+ 800be20:	781b      	ldrb	r3, [r3, #0]
+ 800be22:	b21b      	sxth	r3, r3
+ 800be24:	021b      	lsls	r3, r3, #8
+ 800be26:	b21a      	sxth	r2, r3
+ 800be28:	687b      	ldr	r3, [r7, #4]
+ 800be2a:	330a      	adds	r3, #10
+ 800be2c:	781b      	ldrb	r3, [r3, #0]
+ 800be2e:	b21b      	sxth	r3, r3
+ 800be30:	4313      	orrs	r3, r2
+ 800be32:	b21b      	sxth	r3, r3
+ 800be34:	81bb      	strh	r3, [r7, #12]
 
 	                                             move_repeatedly(data[7], data[6]/2, count_val, temp_speed_float);
- 800c2f6:	687b      	ldr	r3, [r7, #4]
- 800c2f8:	3307      	adds	r3, #7
- 800c2fa:	781b      	ldrb	r3, [r3, #0]
- 800c2fc:	4618      	mov	r0, r3
- 800c2fe:	687b      	ldr	r3, [r7, #4]
- 800c300:	3306      	adds	r3, #6
- 800c302:	781b      	ldrb	r3, [r3, #0]
- 800c304:	085b      	lsrs	r3, r3, #1
- 800c306:	b2db      	uxtb	r3, r3
- 800c308:	4619      	mov	r1, r3
- 800c30a:	89bb      	ldrh	r3, [r7, #12]
- 800c30c:	4a71      	ldr	r2, [pc, #452]	@ (800c4d4 <Mid_Process_Usart_Data+0x354>)
- 800c30e:	edd2 7a00 	vldr	s15, [r2]
- 800c312:	eeb0 0a67 	vmov.f32	s0, s15
- 800c316:	461a      	mov	r2, r3
- 800c318:	f7ff fd50 	bl	800bdbc <move_repeatedly>
+ 800be36:	687b      	ldr	r3, [r7, #4]
+ 800be38:	3307      	adds	r3, #7
+ 800be3a:	781b      	ldrb	r3, [r3, #0]
+ 800be3c:	4618      	mov	r0, r3
+ 800be3e:	687b      	ldr	r3, [r7, #4]
+ 800be40:	3306      	adds	r3, #6
+ 800be42:	781b      	ldrb	r3, [r3, #0]
+ 800be44:	085b      	lsrs	r3, r3, #1
+ 800be46:	b2db      	uxtb	r3, r3
+ 800be48:	4619      	mov	r1, r3
+ 800be4a:	89bb      	ldrh	r3, [r7, #12]
+ 800be4c:	4a71      	ldr	r2, [pc, #452]	@ (800c014 <Mid_Process_Usart_Data+0x354>)
+ 800be4e:	edd2 7a00 	vldr	s15, [r2]
+ 800be52:	eeb0 0a67 	vmov.f32	s0, s15
+ 800be56:	461a      	mov	r2, r3
+ 800be58:	f000 f9ae 	bl	800c1b8 <move_repeatedly>
 	                                             // printf("min:%d, max:%d, count:%d, speed:%.2f\r\n", data[7], data[6], count_val, temp_speed_float);
 	                                             break;
- 800c31c:	e0be      	b.n	800c49c <Mid_Process_Usart_Data+0x31c>
+ 800be5c:	e0be      	b.n	800bfdc <Mid_Process_Usart_Data+0x31c>
 
 	                     case 0x25: // 停止模式 (STOP)
 	                                             DC_Power_OFF;
- 800c31e:	2200      	movs	r2, #0
- 800c320:	f44f 7100 	mov.w	r1, #512	@ 0x200
- 800c324:	4869      	ldr	r0, [pc, #420]	@ (800c4cc <Mid_Process_Usart_Data+0x34c>)
- 800c326:	f7fb f9c7 	bl	80076b8 <HAL_GPIO_WritePin>
+ 800be5e:	2200      	movs	r2, #0
+ 800be60:	f44f 7100 	mov.w	r1, #512	@ 0x200
+ 800be64:	4869      	ldr	r0, [pc, #420]	@ (800c00c <Mid_Process_Usart_Data+0x34c>)
+ 800be66:	f7fb fc27 	bl	80076b8 <HAL_GPIO_WritePin>
 	                                             /* 【安全修复】：逻辑非的并列必须用 && */
 	                                             if((EMA_DATA.Motor_mode != MOTOR_OVER_HV_VOLTAGE)    &&
- 800c32a:	4b67      	ldr	r3, [pc, #412]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c32c:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
- 800c330:	2b0c      	cmp	r3, #12
- 800c332:	d012      	beq.n	800c35a <Mid_Process_Usart_Data+0x1da>
+ 800be6a:	4b67      	ldr	r3, [pc, #412]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800be6c:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
+ 800be70:	2b0c      	cmp	r3, #12
+ 800be72:	d012      	beq.n	800be9a <Mid_Process_Usart_Data+0x1da>
 	                                                (EMA_DATA.Motor_mode != MOTOR_OVER_HV_CURRENT)    &&
- 800c334:	4b64      	ldr	r3, [pc, #400]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c336:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
+ 800be74:	4b64      	ldr	r3, [pc, #400]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800be76:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
 	                                             if((EMA_DATA.Motor_mode != MOTOR_OVER_HV_VOLTAGE)    &&
- 800c33a:	2b0b      	cmp	r3, #11
- 800c33c:	d00d      	beq.n	800c35a <Mid_Process_Usart_Data+0x1da>
+ 800be7a:	2b0b      	cmp	r3, #11
+ 800be7c:	d00d      	beq.n	800be9a <Mid_Process_Usart_Data+0x1da>
 	                                                (EMA_DATA.Motor_mode != MOTOR_OVER_DC_IN_CURRENT) &&
- 800c33e:	4b62      	ldr	r3, [pc, #392]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c340:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
+ 800be7e:	4b62      	ldr	r3, [pc, #392]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800be80:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
 	                                                (EMA_DATA.Motor_mode != MOTOR_OVER_HV_CURRENT)    &&
- 800c344:	2b0d      	cmp	r3, #13
- 800c346:	d008      	beq.n	800c35a <Mid_Process_Usart_Data+0x1da>
+ 800be84:	2b0d      	cmp	r3, #13
+ 800be86:	d008      	beq.n	800be9a <Mid_Process_Usart_Data+0x1da>
 	                                                (EMA_DATA.Motor_mode != MOTOR_ERROR))
- 800c348:	4b5f      	ldr	r3, [pc, #380]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c34a:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
+ 800be88:	4b5f      	ldr	r3, [pc, #380]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800be8a:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
 	                                                (EMA_DATA.Motor_mode != MOTOR_OVER_DC_IN_CURRENT) &&
- 800c34e:	2b02      	cmp	r3, #2
- 800c350:	d003      	beq.n	800c35a <Mid_Process_Usart_Data+0x1da>
+ 800be8e:	2b02      	cmp	r3, #2
+ 800be90:	d003      	beq.n	800be9a <Mid_Process_Usart_Data+0x1da>
 	                                             {
 	                                                 EMA_DATA.Motor_mode = MOTOR_IDLE;
- 800c352:	4b5d      	ldr	r3, [pc, #372]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c354:	2200      	movs	r2, #0
- 800c356:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
+ 800be92:	4b5d      	ldr	r3, [pc, #372]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800be94:	2200      	movs	r2, #0
+ 800be96:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
 	                                             }
 	                                             Close_output();
- 800c35a:	f7ff fd81 	bl	800be60 <Close_output>
+ 800be9a:	f000 f9df 	bl	800c25c <Close_output>
 	                                             dma_print_flag = 0;
- 800c35e:	4b5e      	ldr	r3, [pc, #376]	@ (800c4d8 <Mid_Process_Usart_Data+0x358>)
- 800c360:	2200      	movs	r2, #0
- 800c362:	601a      	str	r2, [r3, #0]
+ 800be9e:	4b5e      	ldr	r3, [pc, #376]	@ (800c018 <Mid_Process_Usart_Data+0x358>)
+ 800bea0:	2200      	movs	r2, #0
+ 800bea2:	601a      	str	r2, [r3, #0]
 	                                             break;
- 800c364:	e09a      	b.n	800c49c <Mid_Process_Usart_Data+0x31c>
+ 800bea4:	e09a      	b.n	800bfdc <Mid_Process_Usart_Data+0x31c>
 
 	                     case 0x27: // 开环位置模式 (Open Position)
 	                                             EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
- 800c366:	4b58      	ldr	r3, [pc, #352]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c368:	2204      	movs	r2, #4
- 800c36a:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
+ 800bea6:	4b58      	ldr	r3, [pc, #352]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800bea8:	2204      	movs	r2, #4
+ 800beaa:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
 	                                             temp_speed_int16 = (int16_t)((data[8] << 8) | data[7]);
- 800c36e:	687b      	ldr	r3, [r7, #4]
- 800c370:	3308      	adds	r3, #8
- 800c372:	781b      	ldrb	r3, [r3, #0]
- 800c374:	b21b      	sxth	r3, r3
- 800c376:	021b      	lsls	r3, r3, #8
- 800c378:	b21a      	sxth	r2, r3
- 800c37a:	687b      	ldr	r3, [r7, #4]
- 800c37c:	3307      	adds	r3, #7
- 800c37e:	781b      	ldrb	r3, [r3, #0]
- 800c380:	b21b      	sxth	r3, r3
- 800c382:	4313      	orrs	r3, r2
- 800c384:	b21a      	sxth	r2, r3
- 800c386:	4b52      	ldr	r3, [pc, #328]	@ (800c4d0 <Mid_Process_Usart_Data+0x350>)
- 800c388:	801a      	strh	r2, [r3, #0]
+ 800beae:	687b      	ldr	r3, [r7, #4]
+ 800beb0:	3308      	adds	r3, #8
+ 800beb2:	781b      	ldrb	r3, [r3, #0]
+ 800beb4:	b21b      	sxth	r3, r3
+ 800beb6:	021b      	lsls	r3, r3, #8
+ 800beb8:	b21a      	sxth	r2, r3
+ 800beba:	687b      	ldr	r3, [r7, #4]
+ 800bebc:	3307      	adds	r3, #7
+ 800bebe:	781b      	ldrb	r3, [r3, #0]
+ 800bec0:	b21b      	sxth	r3, r3
+ 800bec2:	4313      	orrs	r3, r2
+ 800bec4:	b21a      	sxth	r2, r3
+ 800bec6:	4b52      	ldr	r3, [pc, #328]	@ (800c010 <Mid_Process_Usart_Data+0x350>)
+ 800bec8:	801a      	strh	r2, [r3, #0]
 	                                             temp_speed_float = (float)temp_speed_int16;
- 800c38a:	4b51      	ldr	r3, [pc, #324]	@ (800c4d0 <Mid_Process_Usart_Data+0x350>)
- 800c38c:	f9b3 3000 	ldrsh.w	r3, [r3]
- 800c390:	ee07 3a90 	vmov	s15, r3
- 800c394:	eef8 7ae7 	vcvt.f32.s32	s15, s15
- 800c398:	4b4e      	ldr	r3, [pc, #312]	@ (800c4d4 <Mid_Process_Usart_Data+0x354>)
- 800c39a:	edc3 7a00 	vstr	s15, [r3]
+ 800beca:	4b51      	ldr	r3, [pc, #324]	@ (800c010 <Mid_Process_Usart_Data+0x350>)
+ 800becc:	f9b3 3000 	ldrsh.w	r3, [r3]
+ 800bed0:	ee07 3a90 	vmov	s15, r3
+ 800bed4:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+ 800bed8:	4b4e      	ldr	r3, [pc, #312]	@ (800c014 <Mid_Process_Usart_Data+0x354>)
+ 800beda:	edc3 7a00 	vstr	s15, [r3]
 
 	                                             move_to_position(data[6], temp_speed_float);
- 800c39e:	687b      	ldr	r3, [r7, #4]
- 800c3a0:	3306      	adds	r3, #6
- 800c3a2:	781b      	ldrb	r3, [r3, #0]
- 800c3a4:	461a      	mov	r2, r3
- 800c3a6:	4b4b      	ldr	r3, [pc, #300]	@ (800c4d4 <Mid_Process_Usart_Data+0x354>)
- 800c3a8:	edd3 7a00 	vldr	s15, [r3]
- 800c3ac:	eeb0 0a67 	vmov.f32	s0, s15
- 800c3b0:	4610      	mov	r0, r2
- 800c3b2:	f7ff fccf 	bl	800bd54 <move_to_position>
+ 800bede:	687b      	ldr	r3, [r7, #4]
+ 800bee0:	3306      	adds	r3, #6
+ 800bee2:	781b      	ldrb	r3, [r3, #0]
+ 800bee4:	461a      	mov	r2, r3
+ 800bee6:	4b4b      	ldr	r3, [pc, #300]	@ (800c014 <Mid_Process_Usart_Data+0x354>)
+ 800bee8:	edd3 7a00 	vldr	s15, [r3]
+ 800beec:	eeb0 0a67 	vmov.f32	s0, s15
+ 800bef0:	4610      	mov	r0, r2
+ 800bef2:	f000 f92d 	bl	800c150 <move_to_position>
 	                                             // printf("speed:%.f step:%d\r\n", temp_speed_float, data[6]);
 	                                             break;
- 800c3b6:	e071      	b.n	800c49c <Mid_Process_Usart_Data+0x31c>
+ 800bef6:	e071      	b.n	800bfdc <Mid_Process_Usart_Data+0x31c>
 
 	                     case 0x28: // 正向单步 (STEP+)
 	                                             EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
- 800c3b8:	4b43      	ldr	r3, [pc, #268]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c3ba:	2204      	movs	r2, #4
- 800c3bc:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
+ 800bef8:	4b43      	ldr	r3, [pc, #268]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800befa:	2204      	movs	r2, #4
+ 800befc:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
 	                                             target_step_position = absolute_step_counter + 1;
- 800c3c0:	4b46      	ldr	r3, [pc, #280]	@ (800c4dc <Mid_Process_Usart_Data+0x35c>)
- 800c3c2:	681b      	ldr	r3, [r3, #0]
- 800c3c4:	3301      	adds	r3, #1
- 800c3c6:	4a46      	ldr	r2, [pc, #280]	@ (800c4e0 <Mid_Process_Usart_Data+0x360>)
- 800c3c8:	6013      	str	r3, [r2, #0]
+ 800bf00:	4b46      	ldr	r3, [pc, #280]	@ (800c01c <Mid_Process_Usart_Data+0x35c>)
+ 800bf02:	681b      	ldr	r3, [r3, #0]
+ 800bf04:	3301      	adds	r3, #1
+ 800bf06:	4a46      	ldr	r2, [pc, #280]	@ (800c020 <Mid_Process_Usart_Data+0x360>)
+ 800bf08:	6013      	str	r3, [r2, #0]
 	                                             // 这里似乎是将 float 的速度转换为累加增量
 	                                             position_mode_increment = (uint32_t)(((uint64_t)10.0f * 0x100000000ULL) / interrupt_freq_hz);
- 800c3ca:	4b46      	ldr	r3, [pc, #280]	@ (800c4e4 <Mid_Process_Usart_Data+0x364>)
- 800c3cc:	ed93 7a00 	vldr	s14, [r3]
- 800c3d0:	eddf 6a45 	vldr	s13, [pc, #276]	@ 800c4e8 <Mid_Process_Usart_Data+0x368>
- 800c3d4:	eec6 7a87 	vdiv.f32	s15, s13, s14
- 800c3d8:	eefc 7ae7 	vcvt.u32.f32	s15, s15
- 800c3dc:	ee17 2a90 	vmov	r2, s15
- 800c3e0:	4b42      	ldr	r3, [pc, #264]	@ (800c4ec <Mid_Process_Usart_Data+0x36c>)
- 800c3e2:	601a      	str	r2, [r3, #0]
+ 800bf0a:	4b46      	ldr	r3, [pc, #280]	@ (800c024 <Mid_Process_Usart_Data+0x364>)
+ 800bf0c:	ed93 7a00 	vldr	s14, [r3]
+ 800bf10:	eddf 6a45 	vldr	s13, [pc, #276]	@ 800c028 <Mid_Process_Usart_Data+0x368>
+ 800bf14:	eec6 7a87 	vdiv.f32	s15, s13, s14
+ 800bf18:	eefc 7ae7 	vcvt.u32.f32	s15, s15
+ 800bf1c:	ee17 2a90 	vmov	r2, s15
+ 800bf20:	4b42      	ldr	r3, [pc, #264]	@ (800c02c <Mid_Process_Usart_Data+0x36c>)
+ 800bf22:	601a      	str	r2, [r3, #0]
 	                                             break;
- 800c3e4:	e05a      	b.n	800c49c <Mid_Process_Usart_Data+0x31c>
+ 800bf24:	e05a      	b.n	800bfdc <Mid_Process_Usart_Data+0x31c>
 
 	                     case 0x29: // 反向单步 (STEP-)
 	                                             EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
- 800c3e6:	4b38      	ldr	r3, [pc, #224]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c3e8:	2204      	movs	r2, #4
- 800c3ea:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
+ 800bf26:	4b38      	ldr	r3, [pc, #224]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800bf28:	2204      	movs	r2, #4
+ 800bf2a:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
 	                                             target_step_position = absolute_step_counter - 1;
- 800c3ee:	4b3b      	ldr	r3, [pc, #236]	@ (800c4dc <Mid_Process_Usart_Data+0x35c>)
- 800c3f0:	681b      	ldr	r3, [r3, #0]
- 800c3f2:	3b01      	subs	r3, #1
- 800c3f4:	4a3a      	ldr	r2, [pc, #232]	@ (800c4e0 <Mid_Process_Usart_Data+0x360>)
- 800c3f6:	6013      	str	r3, [r2, #0]
+ 800bf2e:	4b3b      	ldr	r3, [pc, #236]	@ (800c01c <Mid_Process_Usart_Data+0x35c>)
+ 800bf30:	681b      	ldr	r3, [r3, #0]
+ 800bf32:	3b01      	subs	r3, #1
+ 800bf34:	4a3a      	ldr	r2, [pc, #232]	@ (800c020 <Mid_Process_Usart_Data+0x360>)
+ 800bf36:	6013      	str	r3, [r2, #0]
 	                                             position_mode_increment = (uint32_t)(((uint64_t)10.0f * 0x100000000ULL) / interrupt_freq_hz);
- 800c3f8:	4b3a      	ldr	r3, [pc, #232]	@ (800c4e4 <Mid_Process_Usart_Data+0x364>)
- 800c3fa:	ed93 7a00 	vldr	s14, [r3]
- 800c3fe:	eddf 6a3a 	vldr	s13, [pc, #232]	@ 800c4e8 <Mid_Process_Usart_Data+0x368>
- 800c402:	eec6 7a87 	vdiv.f32	s15, s13, s14
- 800c406:	eefc 7ae7 	vcvt.u32.f32	s15, s15
- 800c40a:	ee17 2a90 	vmov	r2, s15
- 800c40e:	4b37      	ldr	r3, [pc, #220]	@ (800c4ec <Mid_Process_Usart_Data+0x36c>)
- 800c410:	601a      	str	r2, [r3, #0]
+ 800bf38:	4b3a      	ldr	r3, [pc, #232]	@ (800c024 <Mid_Process_Usart_Data+0x364>)
+ 800bf3a:	ed93 7a00 	vldr	s14, [r3]
+ 800bf3e:	eddf 6a3a 	vldr	s13, [pc, #232]	@ 800c028 <Mid_Process_Usart_Data+0x368>
+ 800bf42:	eec6 7a87 	vdiv.f32	s15, s13, s14
+ 800bf46:	eefc 7ae7 	vcvt.u32.f32	s15, s15
+ 800bf4a:	ee17 2a90 	vmov	r2, s15
+ 800bf4e:	4b37      	ldr	r3, [pc, #220]	@ (800c02c <Mid_Process_Usart_Data+0x36c>)
+ 800bf50:	601a      	str	r2, [r3, #0]
 	                                             break;
- 800c412:	e043      	b.n	800c49c <Mid_Process_Usart_Data+0x31c>
+ 800bf52:	e043      	b.n	800bfdc <Mid_Process_Usart_Data+0x31c>
 	                     case 0x30: // 设置速度 (SET SPEED)
 	                                             // 预留功能
 	                                             break;
 
 	                     case 0x31: // 开环速度模式 (Open Velocity Mode)
 	                                             EMA_DATA.Motor_mode = MOTOR_OPEN_VELOCITY;
- 800c414:	4b2c      	ldr	r3, [pc, #176]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c416:	2206      	movs	r2, #6
- 800c418:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
+ 800bf54:	4b2c      	ldr	r3, [pc, #176]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800bf56:	2206      	movs	r2, #6
+ 800bf58:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
 	                                             temp_speed_int16 = (int16_t)((data[6] << 8) | data[5]);
- 800c41c:	687b      	ldr	r3, [r7, #4]
- 800c41e:	3306      	adds	r3, #6
- 800c420:	781b      	ldrb	r3, [r3, #0]
- 800c422:	b21b      	sxth	r3, r3
- 800c424:	021b      	lsls	r3, r3, #8
- 800c426:	b21a      	sxth	r2, r3
- 800c428:	687b      	ldr	r3, [r7, #4]
- 800c42a:	3305      	adds	r3, #5
- 800c42c:	781b      	ldrb	r3, [r3, #0]
- 800c42e:	b21b      	sxth	r3, r3
- 800c430:	4313      	orrs	r3, r2
- 800c432:	b21a      	sxth	r2, r3
- 800c434:	4b26      	ldr	r3, [pc, #152]	@ (800c4d0 <Mid_Process_Usart_Data+0x350>)
- 800c436:	801a      	strh	r2, [r3, #0]
+ 800bf5c:	687b      	ldr	r3, [r7, #4]
+ 800bf5e:	3306      	adds	r3, #6
+ 800bf60:	781b      	ldrb	r3, [r3, #0]
+ 800bf62:	b21b      	sxth	r3, r3
+ 800bf64:	021b      	lsls	r3, r3, #8
+ 800bf66:	b21a      	sxth	r2, r3
+ 800bf68:	687b      	ldr	r3, [r7, #4]
+ 800bf6a:	3305      	adds	r3, #5
+ 800bf6c:	781b      	ldrb	r3, [r3, #0]
+ 800bf6e:	b21b      	sxth	r3, r3
+ 800bf70:	4313      	orrs	r3, r2
+ 800bf72:	b21a      	sxth	r2, r3
+ 800bf74:	4b26      	ldr	r3, [pc, #152]	@ (800c010 <Mid_Process_Usart_Data+0x350>)
+ 800bf76:	801a      	strh	r2, [r3, #0]
 	                                             temp_speed_float = (float)temp_speed_int16;
- 800c438:	4b25      	ldr	r3, [pc, #148]	@ (800c4d0 <Mid_Process_Usart_Data+0x350>)
- 800c43a:	f9b3 3000 	ldrsh.w	r3, [r3]
- 800c43e:	ee07 3a90 	vmov	s15, r3
- 800c442:	eef8 7ae7 	vcvt.f32.s32	s15, s15
- 800c446:	4b23      	ldr	r3, [pc, #140]	@ (800c4d4 <Mid_Process_Usart_Data+0x354>)
- 800c448:	edc3 7a00 	vstr	s15, [r3]
+ 800bf78:	4b25      	ldr	r3, [pc, #148]	@ (800c010 <Mid_Process_Usart_Data+0x350>)
+ 800bf7a:	f9b3 3000 	ldrsh.w	r3, [r3]
+ 800bf7e:	ee07 3a90 	vmov	s15, r3
+ 800bf82:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+ 800bf86:	4b23      	ldr	r3, [pc, #140]	@ (800c014 <Mid_Process_Usart_Data+0x354>)
+ 800bf88:	edc3 7a00 	vstr	s15, [r3]
 
 	                                             velocity_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000ULL) / interrupt_freq_hz);
- 800c44c:	4b21      	ldr	r3, [pc, #132]	@ (800c4d4 <Mid_Process_Usart_Data+0x354>)
- 800c44e:	681b      	ldr	r3, [r3, #0]
- 800c450:	4618      	mov	r0, r3
- 800c452:	f7f4 fd47 	bl	8000ee4 <__aeabi_f2ulz>
- 800c456:	f04f 0200 	mov.w	r2, #0
- 800c45a:	f04f 0300 	mov.w	r3, #0
- 800c45e:	0003      	movs	r3, r0
- 800c460:	2200      	movs	r2, #0
- 800c462:	4610      	mov	r0, r2
- 800c464:	4619      	mov	r1, r3
- 800c466:	f7f4 fcdf 	bl	8000e28 <__aeabi_ul2f>
- 800c46a:	ee06 0a90 	vmov	s13, r0
- 800c46e:	4b1d      	ldr	r3, [pc, #116]	@ (800c4e4 <Mid_Process_Usart_Data+0x364>)
- 800c470:	ed93 7a00 	vldr	s14, [r3]
- 800c474:	eec6 7a87 	vdiv.f32	s15, s13, s14
- 800c478:	eefc 7ae7 	vcvt.u32.f32	s15, s15
- 800c47c:	ee17 2a90 	vmov	r2, s15
- 800c480:	4b1b      	ldr	r3, [pc, #108]	@ (800c4f0 <Mid_Process_Usart_Data+0x370>)
- 800c482:	601a      	str	r2, [r3, #0]
+ 800bf8c:	4b21      	ldr	r3, [pc, #132]	@ (800c014 <Mid_Process_Usart_Data+0x354>)
+ 800bf8e:	681b      	ldr	r3, [r3, #0]
+ 800bf90:	4618      	mov	r0, r3
+ 800bf92:	f7f4 ffa7 	bl	8000ee4 <__aeabi_f2ulz>
+ 800bf96:	f04f 0200 	mov.w	r2, #0
+ 800bf9a:	f04f 0300 	mov.w	r3, #0
+ 800bf9e:	0003      	movs	r3, r0
+ 800bfa0:	2200      	movs	r2, #0
+ 800bfa2:	4610      	mov	r0, r2
+ 800bfa4:	4619      	mov	r1, r3
+ 800bfa6:	f7f4 ff3f 	bl	8000e28 <__aeabi_ul2f>
+ 800bfaa:	ee06 0a90 	vmov	s13, r0
+ 800bfae:	4b1d      	ldr	r3, [pc, #116]	@ (800c024 <Mid_Process_Usart_Data+0x364>)
+ 800bfb0:	ed93 7a00 	vldr	s14, [r3]
+ 800bfb4:	eec6 7a87 	vdiv.f32	s15, s13, s14
+ 800bfb8:	eefc 7ae7 	vcvt.u32.f32	s15, s15
+ 800bfbc:	ee17 2a90 	vmov	r2, s15
+ 800bfc0:	4b1b      	ldr	r3, [pc, #108]	@ (800c030 <Mid_Process_Usart_Data+0x370>)
+ 800bfc2:	601a      	str	r2, [r3, #0]
 	                                             // printf("Velocity Mode Target: %f\n", temp_speed_float);
 	                                             break;
- 800c484:	e00a      	b.n	800c49c <Mid_Process_Usart_Data+0x31c>
+ 800bfc4:	e00a      	b.n	800bfdc <Mid_Process_Usart_Data+0x31c>
 
 	                     case 0x32: // 闭环位置模式 (Close Position Mode)
 	                                             EMA_DATA.Motor_mode = MOTOR_CLOSE_POSITION;
- 800c486:	4b10      	ldr	r3, [pc, #64]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c488:	2207      	movs	r2, #7
- 800c48a:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
+ 800bfc6:	4b10      	ldr	r3, [pc, #64]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800bfc8:	2207      	movs	r2, #7
+ 800bfca:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
 	                                             // printf("close position\n");
 	                                             break;
- 800c48e:	e005      	b.n	800c49c <Mid_Process_Usart_Data+0x31c>
+ 800bfce:	e005      	b.n	800bfdc <Mid_Process_Usart_Data+0x31c>
 
 	                     case 0x33: // 闭环力矩模式 (Close Force Mode)
 	                                             EMA_DATA.Motor_mode = MOTOR_CLOSE_FORCE;
- 800c490:	4b0d      	ldr	r3, [pc, #52]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c492:	2208      	movs	r2, #8
- 800c494:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
+ 800bfd0:	4b0d      	ldr	r3, [pc, #52]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800bfd2:	2208      	movs	r2, #8
+ 800bfd4:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
 	                                             // printf("close force\n");
 	                                             break;
- 800c498:	e000      	b.n	800c49c <Mid_Process_Usart_Data+0x31c>
+ 800bfd8:	e000      	b.n	800bfdc <Mid_Process_Usart_Data+0x31c>
 
 	                     default:
 	                                             // 未知指令不处理
 	                                             break;
- 800c49a:	bf00      	nop
+ 800bfda:	bf00      	nop
 	        	 	 	// 帧头错误日志
 	        	        // printf("Invalid header: %02X %02X\n", data[0], data[1]);
 	         }
 
 	         /* 9. 状态联动：根据进入的模式控制打印输出的启停 */
 	             if((EMA_DATA.Motor_mode == MOTOR_OPEN_POSITION) || (EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED))
- 800c49c:	4b0a      	ldr	r3, [pc, #40]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c49e:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
- 800c4a2:	2b04      	cmp	r3, #4
- 800c4a4:	d004      	beq.n	800c4b0 <Mid_Process_Usart_Data+0x330>
- 800c4a6:	4b08      	ldr	r3, [pc, #32]	@ (800c4c8 <Mid_Process_Usart_Data+0x348>)
- 800c4a8:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
- 800c4ac:	2b05      	cmp	r3, #5
- 800c4ae:	d108      	bne.n	800c4c2 <Mid_Process_Usart_Data+0x342>
+ 800bfdc:	4b0a      	ldr	r3, [pc, #40]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800bfde:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
+ 800bfe2:	2b04      	cmp	r3, #4
+ 800bfe4:	d004      	beq.n	800bff0 <Mid_Process_Usart_Data+0x330>
+ 800bfe6:	4b08      	ldr	r3, [pc, #32]	@ (800c008 <Mid_Process_Usart_Data+0x348>)
+ 800bfe8:	f893 304e 	ldrb.w	r3, [r3, #78]	@ 0x4e
+ 800bfec:	2b05      	cmp	r3, #5
+ 800bfee:	d108      	bne.n	800c002 <Mid_Process_Usart_Data+0x342>
 	             {
 	                 dma_print_flag = 1;
- 800c4b0:	4b09      	ldr	r3, [pc, #36]	@ (800c4d8 <Mid_Process_Usart_Data+0x358>)
- 800c4b2:	2201      	movs	r2, #1
- 800c4b4:	601a      	str	r2, [r3, #0]
- 800c4b6:	e004      	b.n	800c4c2 <Mid_Process_Usart_Data+0x342>
+ 800bff0:	4b09      	ldr	r3, [pc, #36]	@ (800c018 <Mid_Process_Usart_Data+0x358>)
+ 800bff2:	2201      	movs	r2, #1
+ 800bff4:	601a      	str	r2, [r3, #0]
+ 800bff6:	e004      	b.n	800c002 <Mid_Process_Usart_Data+0x342>
 					return; // 帧太短，不可能是完整指令
- 800c4b8:	bf00      	nop
- 800c4ba:	e002      	b.n	800c4c2 <Mid_Process_Usart_Data+0x342>
+ 800bff8:	bf00      	nop
+ 800bffa:	e002      	b.n	800c002 <Mid_Process_Usart_Data+0x342>
 	                     if(data[3] != 0x01)  return;// 不是发给本设备的，直接退出
- 800c4bc:	bf00      	nop
- 800c4be:	e000      	b.n	800c4c2 <Mid_Process_Usart_Data+0x342>
+ 800bffc:	bf00      	nop
+ 800bffe:	e000      	b.n	800c002 <Mid_Process_Usart_Data+0x342>
 	                     if((EMA_DATA.Motor_mode == MOTOR_OVER_HV_VOLTAGE) || (EMA_DATA.Motor_mode == MOTOR_OVER_HV_CURRENT) || (EMA_DATA.Motor_mode == MOTOR_OVER_DC_IN_CURRENT)) return;//不处理指令，直接退出
- 800c4c0:	bf00      	nop
+ 800c000:	bf00      	nop
 	                 // HAL_TIM_Base_Start_IT(&htim6); // dma printf
 	             }
 
 }
- 800c4c2:	3718      	adds	r7, #24
- 800c4c4:	46bd      	mov	sp, r7
- 800c4c6:	bd80      	pop	{r7, pc}
- 800c4c8:	200008f4 	.word	0x200008f4
- 800c4cc:	48000400 	.word	0x48000400
- 800c4d0:	20000f6c 	.word	0x20000f6c
- 800c4d4:	20000f68 	.word	0x20000f68
- 800c4d8:	200008cc 	.word	0x200008cc
- 800c4dc:	200008d0 	.word	0x200008d0
- 800c4e0:	200008d4 	.word	0x200008d4
- 800c4e4:	20000004 	.word	0x20000004
- 800c4e8:	51200000 	.word	0x51200000
- 800c4ec:	2000000c 	.word	0x2000000c
- 800c4f0:	200008d8 	.word	0x200008d8
+ 800c002:	3718      	adds	r7, #24
+ 800c004:	46bd      	mov	sp, r7
+ 800c006:	bd80      	pop	{r7, pc}
+ 800c008:	200008f4 	.word	0x200008f4
+ 800c00c:	48000400 	.word	0x48000400
+ 800c010:	20000f6c 	.word	0x20000f6c
+ 800c014:	20000f68 	.word	0x20000f68
+ 800c018:	200008cc 	.word	0x200008cc
+ 800c01c:	200008d0 	.word	0x200008d0
+ 800c020:	200008d4 	.word	0x200008d4
+ 800c024:	20000004 	.word	0x20000004
+ 800c028:	51200000 	.word	0x51200000
+ 800c02c:	2000000c 	.word	0x2000000c
+ 800c030:	200008d8 	.word	0x200008d8
+
+0800c034 <P_Control_Compute>:
+    ctrl->OutSpeed = 0.0f;
+}
+/* ==========================================
+ * 计算函数 (建议在定时器中断中调用，例如 1kHz)
+ * ========================================== */
+float P_Control_Compute(P_Controller *ctrl, float target_pos, float current_pos) {
+ 800c034:	b480      	push	{r7}
+ 800c036:	b087      	sub	sp, #28
+ 800c038:	af00      	add	r7, sp, #0
+ 800c03a:	60f8      	str	r0, [r7, #12]
+ 800c03c:	ed87 0a02 	vstr	s0, [r7, #8]
+ 800c040:	edc7 0a01 	vstr	s1, [r7, #4]
+
+	float output;
+    // 1. 更新状态
+    ctrl->TargetPos = target_pos;
+ 800c044:	68fb      	ldr	r3, [r7, #12]
+ 800c046:	68ba      	ldr	r2, [r7, #8]
+ 800c048:	609a      	str	r2, [r3, #8]
+    ctrl->CurrentPos = current_pos;
+ 800c04a:	68fb      	ldr	r3, [r7, #12]
+ 800c04c:	687a      	ldr	r2, [r7, #4]
+ 800c04e:	60da      	str	r2, [r3, #12]
+
+    // 2. 计算误差
+    ctrl->Error = ctrl->TargetPos - ctrl->CurrentPos;
+ 800c050:	68fb      	ldr	r3, [r7, #12]
+ 800c052:	ed93 7a02 	vldr	s14, [r3, #8]
+ 800c056:	68fb      	ldr	r3, [r7, #12]
+ 800c058:	edd3 7a03 	vldr	s15, [r3, #12]
+ 800c05c:	ee77 7a67 	vsub.f32	s15, s14, s15
+ 800c060:	68fb      	ldr	r3, [r7, #12]
+ 800c062:	edc3 7a04 	vstr	s15, [r3, #16]
+
+    // 3. 纯 P 计算 (核心公式)
+    if((ctrl->Error < 0.25f) && (ctrl->Error > -0.25f))
+ 800c066:	68fb      	ldr	r3, [r7, #12]
+ 800c068:	edd3 7a04 	vldr	s15, [r3, #16]
+ 800c06c:	eeb5 7a00 	vmov.f32	s14, #80	@ 0x3e800000  0.250
+ 800c070:	eef4 7ac7 	vcmpe.f32	s15, s14
+ 800c074:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 800c078:	d50d      	bpl.n	800c096 <P_Control_Compute+0x62>
+ 800c07a:	68fb      	ldr	r3, [r7, #12]
+ 800c07c:	edd3 7a04 	vldr	s15, [r3, #16]
+ 800c080:	eebd 7a00 	vmov.f32	s14, #208	@ 0xbe800000 -0.250
+ 800c084:	eef4 7ac7 	vcmpe.f32	s15, s14
+ 800c088:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 800c08c:	dd03      	ble.n	800c096 <P_Control_Compute+0x62>
+    	{output = 0;}
+ 800c08e:	f04f 0300 	mov.w	r3, #0
+ 800c092:	617b      	str	r3, [r7, #20]
+ 800c094:	e009      	b.n	800c0aa <P_Control_Compute+0x76>
+    else
+		{output = ctrl->Kp * ctrl->Error;}
+ 800c096:	68fb      	ldr	r3, [r7, #12]
+ 800c098:	ed93 7a00 	vldr	s14, [r3]
+ 800c09c:	68fb      	ldr	r3, [r7, #12]
+ 800c09e:	edd3 7a04 	vldr	s15, [r3, #16]
+ 800c0a2:	ee67 7a27 	vmul.f32	s15, s14, s15
+ 800c0a6:	edc7 7a05 	vstr	s15, [r7, #20]
+
+    // 4. 输出限幅 (Saturation)
+    // 防止计算出的速度超过电机或驱动器的物理极限
+    if (output > ctrl->MaxSpeed) {
+ 800c0aa:	68fb      	ldr	r3, [r7, #12]
+ 800c0ac:	edd3 7a01 	vldr	s15, [r3, #4]
+ 800c0b0:	ed97 7a05 	vldr	s14, [r7, #20]
+ 800c0b4:	eeb4 7ae7 	vcmpe.f32	s14, s15
+ 800c0b8:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 800c0bc:	dd03      	ble.n	800c0c6 <P_Control_Compute+0x92>
+        output = ctrl->MaxSpeed;
+ 800c0be:	68fb      	ldr	r3, [r7, #12]
+ 800c0c0:	685b      	ldr	r3, [r3, #4]
+ 800c0c2:	617b      	str	r3, [r7, #20]
+ 800c0c4:	e012      	b.n	800c0ec <P_Control_Compute+0xb8>
+    } else if (output < -ctrl->MaxSpeed) {
+ 800c0c6:	68fb      	ldr	r3, [r7, #12]
+ 800c0c8:	edd3 7a01 	vldr	s15, [r3, #4]
+ 800c0cc:	eef1 7a67 	vneg.f32	s15, s15
+ 800c0d0:	ed97 7a05 	vldr	s14, [r7, #20]
+ 800c0d4:	eeb4 7ae7 	vcmpe.f32	s14, s15
+ 800c0d8:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 800c0dc:	d506      	bpl.n	800c0ec <P_Control_Compute+0xb8>
+        output = -ctrl->MaxSpeed;
+ 800c0de:	68fb      	ldr	r3, [r7, #12]
+ 800c0e0:	edd3 7a01 	vldr	s15, [r3, #4]
+ 800c0e4:	eef1 7a67 	vneg.f32	s15, s15
+ 800c0e8:	edc7 7a05 	vstr	s15, [r7, #20]
+    }
+
+    // 5. 保存输出并返回
+    ctrl->OutSpeed = output;
+ 800c0ec:	68fb      	ldr	r3, [r7, #12]
+ 800c0ee:	697a      	ldr	r2, [r7, #20]
+ 800c0f0:	615a      	str	r2, [r3, #20]
+    return output;
+ 800c0f2:	697b      	ldr	r3, [r7, #20]
+ 800c0f4:	ee07 3a90 	vmov	s15, r3
+}
+ 800c0f8:	eeb0 0a67 	vmov.f32	s0, s15
+ 800c0fc:	371c      	adds	r7, #28
+ 800c0fe:	46bd      	mov	sp, r7
+ 800c100:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800c104:	4770      	bx	lr
+	...
+
+0800c108 <DC_Power_CTR>:
+/**
+  * @brief  DCDC高压模块供电开关
+  * @param  true 供电 false 关闭电源
+  */
+void DC_Power_CTR(bool state)
+{
+ 800c108:	b580      	push	{r7, lr}
+ 800c10a:	b082      	sub	sp, #8
+ 800c10c:	af00      	add	r7, sp, #0
+ 800c10e:	4603      	mov	r3, r0
+ 800c110:	71fb      	strb	r3, [r7, #7]
+	if(state == true)
+ 800c112:	79fb      	ldrb	r3, [r7, #7]
+ 800c114:	2b00      	cmp	r3, #0
+ 800c116:	d009      	beq.n	800c12c <DC_Power_CTR+0x24>
+	{
+		DC_Power_ON;
+ 800c118:	2201      	movs	r2, #1
+ 800c11a:	f44f 7100 	mov.w	r1, #512	@ 0x200
+ 800c11e:	480a      	ldr	r0, [pc, #40]	@ (800c148 <DC_Power_CTR+0x40>)
+ 800c120:	f7fb faca 	bl	80076b8 <HAL_GPIO_WritePin>
+		DC_ON_State = true;
+ 800c124:	4b09      	ldr	r3, [pc, #36]	@ (800c14c <DC_Power_CTR+0x44>)
+ 800c126:	2201      	movs	r2, #1
+ 800c128:	701a      	strb	r2, [r3, #0]
+	{
+		DC_Power_OFF;
+		DC_ON_State = false;
+//		 printf("%d\r\n",DC_ON_State);
+	}
+}
+ 800c12a:	e008      	b.n	800c13e <DC_Power_CTR+0x36>
+		DC_Power_OFF;
+ 800c12c:	2200      	movs	r2, #0
+ 800c12e:	f44f 7100 	mov.w	r1, #512	@ 0x200
+ 800c132:	4805      	ldr	r0, [pc, #20]	@ (800c148 <DC_Power_CTR+0x40>)
+ 800c134:	f7fb fac0 	bl	80076b8 <HAL_GPIO_WritePin>
+		DC_ON_State = false;
+ 800c138:	4b04      	ldr	r3, [pc, #16]	@ (800c14c <DC_Power_CTR+0x44>)
+ 800c13a:	2200      	movs	r2, #0
+ 800c13c:	701a      	strb	r2, [r3, #0]
+}
+ 800c13e:	bf00      	nop
+ 800c140:	3708      	adds	r7, #8
+ 800c142:	46bd      	mov	sp, r7
+ 800c144:	bd80      	pop	{r7, pc}
+ 800c146:	bf00      	nop
+ 800c148:	48000400 	.word	0x48000400
+ 800c14c:	200008dc 	.word	0x200008dc
+
+0800c150 <move_to_position>:
+  * @brief  设置电机移动到目标位置 (开环)
+  * @param  target_steps: 目标绝对步数
+  * @param  speed_hz: 移动到目标位置时使用的速度 (Hz, 必须为正数)
+  */
+void move_to_position(int32_t target_steps, float speed_hz)
+{
+ 800c150:	b580      	push	{r7, lr}
+ 800c152:	b082      	sub	sp, #8
+ 800c154:	af00      	add	r7, sp, #0
+ 800c156:	6078      	str	r0, [r7, #4]
+ 800c158:	ed87 0a00 	vstr	s0, [r7]
+	EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+ 800c15c:	4b12      	ldr	r3, [pc, #72]	@ (800c1a8 <move_to_position+0x58>)
+ 800c15e:	2204      	movs	r2, #4
+ 800c160:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
+    // 1. 更新目标位置
+    target_step_position = target_steps;
+ 800c164:	4a11      	ldr	r2, [pc, #68]	@ (800c1ac <move_to_position+0x5c>)
+ 800c166:	687b      	ldr	r3, [r7, #4]
+ 800c168:	6013      	str	r3, [r2, #0]
+
+    // 3. 根据 speed_hz 计算并设置在位置模式下移动时要使用的速度增量
+	position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
+ 800c16a:	6838      	ldr	r0, [r7, #0]
+ 800c16c:	f7f4 feba 	bl	8000ee4 <__aeabi_f2ulz>
+ 800c170:	f04f 0200 	mov.w	r2, #0
+ 800c174:	f04f 0300 	mov.w	r3, #0
+ 800c178:	0003      	movs	r3, r0
+ 800c17a:	2200      	movs	r2, #0
+ 800c17c:	4610      	mov	r0, r2
+ 800c17e:	4619      	mov	r1, r3
+ 800c180:	f7f4 fe52 	bl	8000e28 <__aeabi_ul2f>
+ 800c184:	ee06 0a90 	vmov	s13, r0
+ 800c188:	4b09      	ldr	r3, [pc, #36]	@ (800c1b0 <move_to_position+0x60>)
+ 800c18a:	ed93 7a00 	vldr	s14, [r3]
+ 800c18e:	eec6 7a87 	vdiv.f32	s15, s13, s14
+ 800c192:	eefc 7ae7 	vcvt.u32.f32	s15, s15
+ 800c196:	ee17 2a90 	vmov	r2, s15
+ 800c19a:	4b06      	ldr	r3, [pc, #24]	@ (800c1b4 <move_to_position+0x64>)
+ 800c19c:	601a      	str	r2, [r3, #0]
+
+}
+ 800c19e:	bf00      	nop
+ 800c1a0:	3708      	adds	r7, #8
+ 800c1a2:	46bd      	mov	sp, r7
+ 800c1a4:	bd80      	pop	{r7, pc}
+ 800c1a6:	bf00      	nop
+ 800c1a8:	200008f4 	.word	0x200008f4
+ 800c1ac:	200008d4 	.word	0x200008d4
+ 800c1b0:	20000004 	.word	0x20000004
+ 800c1b4:	2000000c 	.word	0x2000000c
+
+0800c1b8 <move_repeatedly>:
+  * @param  pos2: 往返点2 (绝对步数)
+  * @param  count: 往返次数 (从pos1->pos2->pos1 算一次)
+  * @param  speed_hz: 往返时使用的速度 (Hz, 必须为正数)
+  */
+void move_repeatedly(int32_t pos1, int32_t pos2, uint32_t count, float speed_hz)
+{
+ 800c1b8:	b580      	push	{r7, lr}
+ 800c1ba:	b084      	sub	sp, #16
+ 800c1bc:	af00      	add	r7, sp, #0
+ 800c1be:	60f8      	str	r0, [r7, #12]
+ 800c1c0:	60b9      	str	r1, [r7, #8]
+ 800c1c2:	607a      	str	r2, [r7, #4]
+ 800c1c4:	ed87 0a00 	vstr	s0, [r7]
+    // 1. 存储往复运动参数
+    repeated_pos_A = pos1;
+ 800c1c8:	4a1c      	ldr	r2, [pc, #112]	@ (800c23c <move_repeatedly+0x84>)
+ 800c1ca:	68fb      	ldr	r3, [r7, #12]
+ 800c1cc:	6013      	str	r3, [r2, #0]
+    repeated_pos_B = pos2;
+ 800c1ce:	4a1c      	ldr	r2, [pc, #112]	@ (800c240 <move_repeatedly+0x88>)
+ 800c1d0:	68bb      	ldr	r3, [r7, #8]
+ 800c1d2:	6013      	str	r3, [r2, #0]
+    repeated_count_total = count;
+ 800c1d4:	4a1b      	ldr	r2, [pc, #108]	@ (800c244 <move_repeatedly+0x8c>)
+ 800c1d6:	687b      	ldr	r3, [r7, #4]
+ 800c1d8:	6013      	str	r3, [r2, #0]
+    if(repeated_count_total == 0)  repeated_count_total = 0xFFFFFFFF;//如果往复次数为0 则为无穷往复
+ 800c1da:	4b1a      	ldr	r3, [pc, #104]	@ (800c244 <move_repeatedly+0x8c>)
+ 800c1dc:	681b      	ldr	r3, [r3, #0]
+ 800c1de:	2b00      	cmp	r3, #0
+ 800c1e0:	d103      	bne.n	800c1ea <move_repeatedly+0x32>
+ 800c1e2:	4b18      	ldr	r3, [pc, #96]	@ (800c244 <move_repeatedly+0x8c>)
+ 800c1e4:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
+ 800c1e8:	601a      	str	r2, [r3, #0]
+    repeated_count_current = 0;
+ 800c1ea:	4b17      	ldr	r3, [pc, #92]	@ (800c248 <move_repeatedly+0x90>)
+ 800c1ec:	2200      	movs	r2, #0
+ 800c1ee:	601a      	str	r2, [r3, #0]
+
+    // 2. 切换到往复运动模式
+    EMA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
+ 800c1f0:	4b16      	ldr	r3, [pc, #88]	@ (800c24c <move_repeatedly+0x94>)
+ 800c1f2:	2205      	movs	r2, #5
+ 800c1f4:	f883 204e 	strb.w	r2, [r3, #78]	@ 0x4e
+
+    // 3. 【关键修复】: 直接设置第一个目标和速度，避免模式冲突
+    target_step_position = repeated_pos_A;
+ 800c1f8:	4b10      	ldr	r3, [pc, #64]	@ (800c23c <move_repeatedly+0x84>)
+ 800c1fa:	681b      	ldr	r3, [r3, #0]
+ 800c1fc:	4a14      	ldr	r2, [pc, #80]	@ (800c250 <move_repeatedly+0x98>)
+ 800c1fe:	6013      	str	r3, [r2, #0]
+    position_mode_increment = (uint32_t)(((uint64_t)speed_hz * 0x100000000) / interrupt_freq_hz);
+ 800c200:	6838      	ldr	r0, [r7, #0]
+ 800c202:	f7f4 fe6f 	bl	8000ee4 <__aeabi_f2ulz>
+ 800c206:	f04f 0200 	mov.w	r2, #0
+ 800c20a:	f04f 0300 	mov.w	r3, #0
+ 800c20e:	0003      	movs	r3, r0
+ 800c210:	2200      	movs	r2, #0
+ 800c212:	4610      	mov	r0, r2
+ 800c214:	4619      	mov	r1, r3
+ 800c216:	f7f4 fe07 	bl	8000e28 <__aeabi_ul2f>
+ 800c21a:	ee06 0a90 	vmov	s13, r0
+ 800c21e:	4b0d      	ldr	r3, [pc, #52]	@ (800c254 <move_repeatedly+0x9c>)
+ 800c220:	ed93 7a00 	vldr	s14, [r3]
+ 800c224:	eec6 7a87 	vdiv.f32	s15, s13, s14
+ 800c228:	eefc 7ae7 	vcvt.u32.f32	s15, s15
+ 800c22c:	ee17 2a90 	vmov	r2, s15
+ 800c230:	4b09      	ldr	r3, [pc, #36]	@ (800c258 <move_repeatedly+0xa0>)
+ 800c232:	601a      	str	r2, [r3, #0]
+
+}
+ 800c234:	bf00      	nop
+ 800c236:	3710      	adds	r7, #16
+ 800c238:	46bd      	mov	sp, r7
+ 800c23a:	bd80      	pop	{r7, pc}
+ 800c23c:	200008ac 	.word	0x200008ac
+ 800c240:	200008b0 	.word	0x200008b0
+ 800c244:	200008b4 	.word	0x200008b4
+ 800c248:	200008b8 	.word	0x200008b8
+ 800c24c:	200008f4 	.word	0x200008f4
+ 800c250:	200008d4 	.word	0x200008d4
+ 800c254:	20000004 	.word	0x20000004
+ 800c258:	2000000c 	.word	0x2000000c
+
+0800c25c <Close_output>:
+    // 调用已经写好的单次定位函数来执行这次移动
+    move_to_position(target_pos, speed_hz);
+}
+
+void Close_output(void)
+{
+ 800c25c:	b580      	push	{r7, lr}
+ 800c25e:	af00      	add	r7, sp, #0
+	 HAL_TIM_Base_Stop(&htim16);//dma printf
+ 800c260:	4811      	ldr	r0, [pc, #68]	@ (800c2a8 <Close_output+0x4c>)
+ 800c262:	f7fc fb2f 	bl	80088c4 <HAL_TIM_Base_Stop>
+	DC_Power_OFF;
+ 800c266:	2200      	movs	r2, #0
+ 800c268:	f44f 7100 	mov.w	r1, #512	@ 0x200
+ 800c26c:	480f      	ldr	r0, [pc, #60]	@ (800c2ac <Close_output+0x50>)
+ 800c26e:	f7fb fa23 	bl	80076b8 <HAL_GPIO_WritePin>
+	    	    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
+ 800c272:	2100      	movs	r1, #0
+ 800c274:	480e      	ldr	r0, [pc, #56]	@ (800c2b0 <Close_output+0x54>)
+ 800c276:	f7fc fd19 	bl	8008cac <HAL_TIM_PWM_Stop>
+	    	    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_1);
+ 800c27a:	2100      	movs	r1, #0
+ 800c27c:	480c      	ldr	r0, [pc, #48]	@ (800c2b0 <Close_output+0x54>)
+ 800c27e:	f7fd fe39 	bl	8009ef4 <HAL_TIMEx_PWMN_Stop>
+	    	    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2);
+ 800c282:	2104      	movs	r1, #4
+ 800c284:	480a      	ldr	r0, [pc, #40]	@ (800c2b0 <Close_output+0x54>)
+ 800c286:	f7fc fd11 	bl	8008cac <HAL_TIM_PWM_Stop>
+	    	    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_2);
+ 800c28a:	2104      	movs	r1, #4
+ 800c28c:	4808      	ldr	r0, [pc, #32]	@ (800c2b0 <Close_output+0x54>)
+ 800c28e:	f7fd fe31 	bl	8009ef4 <HAL_TIMEx_PWMN_Stop>
+	    	    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_3);
+ 800c292:	2108      	movs	r1, #8
+ 800c294:	4806      	ldr	r0, [pc, #24]	@ (800c2b0 <Close_output+0x54>)
+ 800c296:	f7fc fd09 	bl	8008cac <HAL_TIM_PWM_Stop>
+	    	    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_3);
+ 800c29a:	2108      	movs	r1, #8
+ 800c29c:	4804      	ldr	r0, [pc, #16]	@ (800c2b0 <Close_output+0x54>)
+ 800c29e:	f7fd fe29 	bl	8009ef4 <HAL_TIMEx_PWMN_Stop>
+}
+ 800c2a2:	bf00      	nop
+ 800c2a4:	bd80      	pop	{r7, pc}
+ 800c2a6:	bf00      	nop
+ 800c2a8:	20000d54 	.word	0x20000d54
+ 800c2ac:	48000400 	.word	0x48000400
+ 800c2b0:	20000c24 	.word	0x20000c24
+
+0800c2b4 <Update_output>:
+
+void Update_output(uint8_t new_step)
+{
+ 800c2b4:	b580      	push	{r7, lr}
+ 800c2b6:	b082      	sub	sp, #8
+ 800c2b8:	af00      	add	r7, sp, #0
+ 800c2ba:	4603      	mov	r3, r0
+ 800c2bc:	71fb      	strb	r3, [r7, #7]
+    // 安全第一：在改变状态前，先关闭所有6个通道的输出
+    // 这确保了在切换瞬间不会有意外的导通
+    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
+ 800c2be:	2100      	movs	r1, #0
+ 800c2c0:	488a      	ldr	r0, [pc, #552]	@ (800c4ec <Update_output+0x238>)
+ 800c2c2:	f7fc fcf3 	bl	8008cac <HAL_TIM_PWM_Stop>
+    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_1);
+ 800c2c6:	2100      	movs	r1, #0
+ 800c2c8:	4888      	ldr	r0, [pc, #544]	@ (800c4ec <Update_output+0x238>)
+ 800c2ca:	f7fd fe13 	bl	8009ef4 <HAL_TIMEx_PWMN_Stop>
+    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2);
+ 800c2ce:	2104      	movs	r1, #4
+ 800c2d0:	4886      	ldr	r0, [pc, #536]	@ (800c4ec <Update_output+0x238>)
+ 800c2d2:	f7fc fceb 	bl	8008cac <HAL_TIM_PWM_Stop>
+    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_2);
+ 800c2d6:	2104      	movs	r1, #4
+ 800c2d8:	4884      	ldr	r0, [pc, #528]	@ (800c4ec <Update_output+0x238>)
+ 800c2da:	f7fd fe0b 	bl	8009ef4 <HAL_TIMEx_PWMN_Stop>
+    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_3);
+ 800c2de:	2108      	movs	r1, #8
+ 800c2e0:	4882      	ldr	r0, [pc, #520]	@ (800c4ec <Update_output+0x238>)
+ 800c2e2:	f7fc fce3 	bl	8008cac <HAL_TIM_PWM_Stop>
+    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_3);
+ 800c2e6:	2108      	movs	r1, #8
+ 800c2e8:	4880      	ldr	r0, [pc, #512]	@ (800c4ec <Update_output+0x238>)
+ 800c2ea:	f7fd fe03 	bl	8009ef4 <HAL_TIMEx_PWMN_Stop>
+    switch(new_step)
+ 800c2ee:	79fb      	ldrb	r3, [r7, #7]
+ 800c2f0:	2b05      	cmp	r3, #5
+ 800c2f2:	f200 80f6 	bhi.w	800c4e2 <Update_output+0x22e>
+ 800c2f6:	a201      	add	r2, pc, #4	@ (adr r2, 800c2fc <Update_output+0x48>)
+ 800c2f8:	f852 f023 	ldr.w	pc, [r2, r3, lsl #2]
+ 800c2fc:	0800c315 	.word	0x0800c315
+ 800c300:	0800c363 	.word	0x0800c363
+ 800c304:	0800c3af 	.word	0x0800c3af
+ 800c308:	0800c3fd 	.word	0x0800c3fd
+ 800c30c:	0800c449 	.word	0x0800c449
+ 800c310:	0800c497 	.word	0x0800c497
+//    	        	            break;
+
+
+//常见120度三相方波驱动方式
+        case 0: // Step 1: U+ V- (A->B)
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
+ 800c314:	4b76      	ldr	r3, [pc, #472]	@ (800c4f0 <Update_output+0x23c>)
+ 800c316:	881a      	ldrh	r2, [r3, #0]
+ 800c318:	4b74      	ldr	r3, [pc, #464]	@ (800c4ec <Update_output+0x238>)
+ 800c31a:	681b      	ldr	r3, [r3, #0]
+ 800c31c:	635a      	str	r2, [r3, #52]	@ 0x34
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
+ 800c31e:	4b73      	ldr	r3, [pc, #460]	@ (800c4ec <Update_output+0x238>)
+ 800c320:	681b      	ldr	r3, [r3, #0]
+ 800c322:	2200      	movs	r2, #0
+ 800c324:	639a      	str	r2, [r3, #56]	@ 0x38
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1);
+ 800c326:	4b72      	ldr	r3, [pc, #456]	@ (800c4f0 <Update_output+0x23c>)
+ 800c328:	881a      	ldrh	r2, [r3, #0]
+ 800c32a:	4b70      	ldr	r3, [pc, #448]	@ (800c4ec <Update_output+0x238>)
+ 800c32c:	681b      	ldr	r3, [r3, #0]
+ 800c32e:	63da      	str	r2, [r3, #60]	@ 0x3c
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
+ 800c330:	2100      	movs	r1, #0
+ 800c332:	486e      	ldr	r0, [pc, #440]	@ (800c4ec <Update_output+0x238>)
+ 800c334:	f7fc fbba 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+ 800c338:	2100      	movs	r1, #0
+ 800c33a:	486c      	ldr	r0, [pc, #432]	@ (800c4ec <Update_output+0x238>)
+ 800c33c:	f7fd fd26 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
+ 800c340:	2104      	movs	r1, #4
+ 800c342:	486a      	ldr	r0, [pc, #424]	@ (800c4ec <Update_output+0x238>)
+ 800c344:	f7fc fbb2 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+ 800c348:	2104      	movs	r1, #4
+ 800c34a:	4868      	ldr	r0, [pc, #416]	@ (800c4ec <Update_output+0x238>)
+ 800c34c:	f7fd fd1e 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+ 800c350:	2108      	movs	r1, #8
+ 800c352:	4866      	ldr	r0, [pc, #408]	@ (800c4ec <Update_output+0x238>)
+ 800c354:	f7fc fbaa 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
+ 800c358:	2108      	movs	r1, #8
+ 800c35a:	4864      	ldr	r0, [pc, #400]	@ (800c4ec <Update_output+0x238>)
+ 800c35c:	f7fd fd16 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            break;
+ 800c360:	e0bf      	b.n	800c4e2 <Update_output+0x22e>
+
+        case 1: // Step 2: W+ V- (C->B)
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
+ 800c362:	4b63      	ldr	r3, [pc, #396]	@ (800c4f0 <Update_output+0x23c>)
+ 800c364:	881a      	ldrh	r2, [r3, #0]
+ 800c366:	4b61      	ldr	r3, [pc, #388]	@ (800c4ec <Update_output+0x238>)
+ 800c368:	681b      	ldr	r3, [r3, #0]
+ 800c36a:	635a      	str	r2, [r3, #52]	@ 0x34
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
+ 800c36c:	4b5f      	ldr	r3, [pc, #380]	@ (800c4ec <Update_output+0x238>)
+ 800c36e:	681b      	ldr	r3, [r3, #0]
+ 800c370:	2200      	movs	r2, #0
+ 800c372:	639a      	str	r2, [r3, #56]	@ 0x38
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
+ 800c374:	4b5d      	ldr	r3, [pc, #372]	@ (800c4ec <Update_output+0x238>)
+ 800c376:	681b      	ldr	r3, [r3, #0]
+ 800c378:	2200      	movs	r2, #0
+ 800c37a:	63da      	str	r2, [r3, #60]	@ 0x3c
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
+ 800c37c:	2100      	movs	r1, #0
+ 800c37e:	485b      	ldr	r0, [pc, #364]	@ (800c4ec <Update_output+0x238>)
+ 800c380:	f7fc fb94 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+ 800c384:	2100      	movs	r1, #0
+ 800c386:	4859      	ldr	r0, [pc, #356]	@ (800c4ec <Update_output+0x238>)
+ 800c388:	f7fd fd00 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
+ 800c38c:	2104      	movs	r1, #4
+ 800c38e:	4857      	ldr	r0, [pc, #348]	@ (800c4ec <Update_output+0x238>)
+ 800c390:	f7fc fb8c 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+ 800c394:	2104      	movs	r1, #4
+ 800c396:	4855      	ldr	r0, [pc, #340]	@ (800c4ec <Update_output+0x238>)
+ 800c398:	f7fd fcf8 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+ 800c39c:	2108      	movs	r1, #8
+ 800c39e:	4853      	ldr	r0, [pc, #332]	@ (800c4ec <Update_output+0x238>)
+ 800c3a0:	f7fc fb84 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
+ 800c3a4:	2108      	movs	r1, #8
+ 800c3a6:	4851      	ldr	r0, [pc, #324]	@ (800c4ec <Update_output+0x238>)
+ 800c3a8:	f7fd fcf0 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            break;
+ 800c3ac:	e099      	b.n	800c4e2 <Update_output+0x22e>
+
+        case 2: // Step 3: W+ U- (C->A)
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, duty_TIM1);
+ 800c3ae:	4b50      	ldr	r3, [pc, #320]	@ (800c4f0 <Update_output+0x23c>)
+ 800c3b0:	881a      	ldrh	r2, [r3, #0]
+ 800c3b2:	4b4e      	ldr	r3, [pc, #312]	@ (800c4ec <Update_output+0x238>)
+ 800c3b4:	681b      	ldr	r3, [r3, #0]
+ 800c3b6:	635a      	str	r2, [r3, #52]	@ 0x34
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1);
+ 800c3b8:	4b4d      	ldr	r3, [pc, #308]	@ (800c4f0 <Update_output+0x23c>)
+ 800c3ba:	881a      	ldrh	r2, [r3, #0]
+ 800c3bc:	4b4b      	ldr	r3, [pc, #300]	@ (800c4ec <Update_output+0x238>)
+ 800c3be:	681b      	ldr	r3, [r3, #0]
+ 800c3c0:	639a      	str	r2, [r3, #56]	@ 0x38
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
+ 800c3c2:	4b4a      	ldr	r3, [pc, #296]	@ (800c4ec <Update_output+0x238>)
+ 800c3c4:	681b      	ldr	r3, [r3, #0]
+ 800c3c6:	2200      	movs	r2, #0
+ 800c3c8:	63da      	str	r2, [r3, #60]	@ 0x3c
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
+ 800c3ca:	2100      	movs	r1, #0
+ 800c3cc:	4847      	ldr	r0, [pc, #284]	@ (800c4ec <Update_output+0x238>)
+ 800c3ce:	f7fc fb6d 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+ 800c3d2:	2100      	movs	r1, #0
+ 800c3d4:	4845      	ldr	r0, [pc, #276]	@ (800c4ec <Update_output+0x238>)
+ 800c3d6:	f7fd fcd9 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
+ 800c3da:	2104      	movs	r1, #4
+ 800c3dc:	4843      	ldr	r0, [pc, #268]	@ (800c4ec <Update_output+0x238>)
+ 800c3de:	f7fc fb65 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+ 800c3e2:	2104      	movs	r1, #4
+ 800c3e4:	4841      	ldr	r0, [pc, #260]	@ (800c4ec <Update_output+0x238>)
+ 800c3e6:	f7fd fcd1 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+ 800c3ea:	2108      	movs	r1, #8
+ 800c3ec:	483f      	ldr	r0, [pc, #252]	@ (800c4ec <Update_output+0x238>)
+ 800c3ee:	f7fc fb5d 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
+ 800c3f2:	2108      	movs	r1, #8
+ 800c3f4:	483d      	ldr	r0, [pc, #244]	@ (800c4ec <Update_output+0x238>)
+ 800c3f6:	f7fd fcc9 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            break;
+ 800c3fa:	e072      	b.n	800c4e2 <Update_output+0x22e>
+
+        case 3: // Step 4: V+ U- (B->A)
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
+ 800c3fc:	4b3b      	ldr	r3, [pc, #236]	@ (800c4ec <Update_output+0x238>)
+ 800c3fe:	681b      	ldr	r3, [r3, #0]
+ 800c400:	2200      	movs	r2, #0
+ 800c402:	635a      	str	r2, [r3, #52]	@ 0x34
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1);
+ 800c404:	4b3a      	ldr	r3, [pc, #232]	@ (800c4f0 <Update_output+0x23c>)
+ 800c406:	881a      	ldrh	r2, [r3, #0]
+ 800c408:	4b38      	ldr	r3, [pc, #224]	@ (800c4ec <Update_output+0x238>)
+ 800c40a:	681b      	ldr	r3, [r3, #0]
+ 800c40c:	639a      	str	r2, [r3, #56]	@ 0x38
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
+ 800c40e:	4b37      	ldr	r3, [pc, #220]	@ (800c4ec <Update_output+0x238>)
+ 800c410:	681b      	ldr	r3, [r3, #0]
+ 800c412:	2200      	movs	r2, #0
+ 800c414:	63da      	str	r2, [r3, #60]	@ 0x3c
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
+ 800c416:	2100      	movs	r1, #0
+ 800c418:	4834      	ldr	r0, [pc, #208]	@ (800c4ec <Update_output+0x238>)
+ 800c41a:	f7fc fb47 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+ 800c41e:	2100      	movs	r1, #0
+ 800c420:	4832      	ldr	r0, [pc, #200]	@ (800c4ec <Update_output+0x238>)
+ 800c422:	f7fd fcb3 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
+ 800c426:	2104      	movs	r1, #4
+ 800c428:	4830      	ldr	r0, [pc, #192]	@ (800c4ec <Update_output+0x238>)
+ 800c42a:	f7fc fb3f 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+ 800c42e:	2104      	movs	r1, #4
+ 800c430:	482e      	ldr	r0, [pc, #184]	@ (800c4ec <Update_output+0x238>)
+ 800c432:	f7fd fcab 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+ 800c436:	2108      	movs	r1, #8
+ 800c438:	482c      	ldr	r0, [pc, #176]	@ (800c4ec <Update_output+0x238>)
+ 800c43a:	f7fc fb37 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
+ 800c43e:	2108      	movs	r1, #8
+ 800c440:	482a      	ldr	r0, [pc, #168]	@ (800c4ec <Update_output+0x238>)
+ 800c442:	f7fd fca3 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            break;
+ 800c446:	e04c      	b.n	800c4e2 <Update_output+0x22e>
+
+        case 4: // Step 5: V+ W- (B->C)
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
+ 800c448:	4b28      	ldr	r3, [pc, #160]	@ (800c4ec <Update_output+0x238>)
+ 800c44a:	681b      	ldr	r3, [r3, #0]
+ 800c44c:	2200      	movs	r2, #0
+ 800c44e:	635a      	str	r2, [r3, #52]	@ 0x34
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, duty_TIM1);
+ 800c450:	4b27      	ldr	r3, [pc, #156]	@ (800c4f0 <Update_output+0x23c>)
+ 800c452:	881a      	ldrh	r2, [r3, #0]
+ 800c454:	4b25      	ldr	r3, [pc, #148]	@ (800c4ec <Update_output+0x238>)
+ 800c456:	681b      	ldr	r3, [r3, #0]
+ 800c458:	639a      	str	r2, [r3, #56]	@ 0x38
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1);
+ 800c45a:	4b25      	ldr	r3, [pc, #148]	@ (800c4f0 <Update_output+0x23c>)
+ 800c45c:	881a      	ldrh	r2, [r3, #0]
+ 800c45e:	4b23      	ldr	r3, [pc, #140]	@ (800c4ec <Update_output+0x238>)
+ 800c460:	681b      	ldr	r3, [r3, #0]
+ 800c462:	63da      	str	r2, [r3, #60]	@ 0x3c
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
+ 800c464:	2100      	movs	r1, #0
+ 800c466:	4821      	ldr	r0, [pc, #132]	@ (800c4ec <Update_output+0x238>)
+ 800c468:	f7fc fb20 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+ 800c46c:	2100      	movs	r1, #0
+ 800c46e:	481f      	ldr	r0, [pc, #124]	@ (800c4ec <Update_output+0x238>)
+ 800c470:	f7fd fc8c 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
+ 800c474:	2104      	movs	r1, #4
+ 800c476:	481d      	ldr	r0, [pc, #116]	@ (800c4ec <Update_output+0x238>)
+ 800c478:	f7fc fb18 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+ 800c47c:	2104      	movs	r1, #4
+ 800c47e:	481b      	ldr	r0, [pc, #108]	@ (800c4ec <Update_output+0x238>)
+ 800c480:	f7fd fc84 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+ 800c484:	2108      	movs	r1, #8
+ 800c486:	4819      	ldr	r0, [pc, #100]	@ (800c4ec <Update_output+0x238>)
+ 800c488:	f7fc fb10 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
+ 800c48c:	2108      	movs	r1, #8
+ 800c48e:	4817      	ldr	r0, [pc, #92]	@ (800c4ec <Update_output+0x238>)
+ 800c490:	f7fd fc7c 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            break;
+ 800c494:	e025      	b.n	800c4e2 <Update_output+0x22e>
+
+        case 5: // Step 6: U+ W- (A->C)
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
+ 800c496:	4b15      	ldr	r3, [pc, #84]	@ (800c4ec <Update_output+0x238>)
+ 800c498:	681b      	ldr	r3, [r3, #0]
+ 800c49a:	2200      	movs	r2, #0
+ 800c49c:	635a      	str	r2, [r3, #52]	@ 0x34
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
+ 800c49e:	4b13      	ldr	r3, [pc, #76]	@ (800c4ec <Update_output+0x238>)
+ 800c4a0:	681b      	ldr	r3, [r3, #0]
+ 800c4a2:	2200      	movs	r2, #0
+ 800c4a4:	639a      	str	r2, [r3, #56]	@ 0x38
+    	    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, duty_TIM1);
+ 800c4a6:	4b12      	ldr	r3, [pc, #72]	@ (800c4f0 <Update_output+0x23c>)
+ 800c4a8:	881a      	ldrh	r2, [r3, #0]
+ 800c4aa:	4b10      	ldr	r3, [pc, #64]	@ (800c4ec <Update_output+0x238>)
+ 800c4ac:	681b      	ldr	r3, [r3, #0]
+ 800c4ae:	63da      	str	r2, [r3, #60]	@ 0x3c
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);       // U相上桥臂输出
+ 800c4b0:	2100      	movs	r1, #0
+ 800c4b2:	480e      	ldr	r0, [pc, #56]	@ (800c4ec <Update_output+0x238>)
+ 800c4b4:	f7fc fafa 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+ 800c4b8:	2100      	movs	r1, #0
+ 800c4ba:	480c      	ldr	r0, [pc, #48]	@ (800c4ec <Update_output+0x238>)
+ 800c4bc:	f7fd fc66 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);		// V相下桥臂导通
+ 800c4c0:	2104      	movs	r1, #4
+ 800c4c2:	480a      	ldr	r0, [pc, #40]	@ (800c4ec <Update_output+0x238>)
+ 800c4c4:	f7fc faf2 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+ 800c4c8:	2104      	movs	r1, #4
+ 800c4ca:	4808      	ldr	r0, [pc, #32]	@ (800c4ec <Update_output+0x238>)
+ 800c4cc:	f7fd fc5e 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+ 800c4d0:	2108      	movs	r1, #8
+ 800c4d2:	4806      	ldr	r0, [pc, #24]	@ (800c4ec <Update_output+0x238>)
+ 800c4d4:	f7fc faea 	bl	8008aac <HAL_TIM_PWM_Start>
+            HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_3);    // W相下桥臂导通
+ 800c4d8:	2108      	movs	r1, #8
+ 800c4da:	4804      	ldr	r0, [pc, #16]	@ (800c4ec <Update_output+0x238>)
+ 800c4dc:	f7fd fc56 	bl	8009d8c <HAL_TIMEx_PWMN_Start>
+            break;
+ 800c4e0:	bf00      	nop
+
+
+    }
+}
+ 800c4e2:	bf00      	nop
+ 800c4e4:	3708      	adds	r7, #8
+ 800c4e6:	46bd      	mov	sp, r7
+ 800c4e8:	bd80      	pop	{r7, pc}
+ 800c4ea:	bf00      	nop
+ 800c4ec:	20000c24 	.word	0x20000c24
+ 800c4f0:	20000000 	.word	0x20000000
 
 0800c4f4 <__cvt>:
  800c4f4:	e92d 47ff 	stmdb	sp!, {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, sl, lr}

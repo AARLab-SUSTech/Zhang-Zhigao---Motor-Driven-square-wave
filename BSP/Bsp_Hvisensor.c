@@ -5,8 +5,8 @@
  *      Author: Letian
  */
 
-#include <Bsp_Control.h>
 #include <Bsp_Hvisensor.h>
+#include <Mid_Control.h>
 #include "main.h"
 
 #include "App_EMA.h"

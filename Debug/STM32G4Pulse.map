@@ -5614,169 +5614,21 @@ Discarded input sections
  .comment       0x00000000       0x44 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_adc.o
  .ARM.attributes
                 0x00000000       0x34 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_adc.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .group         0x00000000        0xc ./MID/Bsp_Control.o
- .text          0x00000000        0x0 ./MID/Bsp_Control.o
- .data          0x00000000        0x0 ./MID/Bsp_Control.o
- .bss           0x00000000        0x0 ./MID/Bsp_Control.o
- .text.P_Control_Init
-                0x00000000       0x48 ./MID/Bsp_Control.o
- .text.set_speed
-                0x00000000       0xa8 ./MID/Bsp_Control.o
- .text.start_move_to_position
-                0x00000000       0x2c ./MID/Bsp_Control.o
- .text.step_move
-                0x00000000       0x38 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0xad8 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x179 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x2e ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x28 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x22 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x8e ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x51 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x103 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x6a ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x1df ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x1c ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x22 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0xfb ./MID/Bsp_Control.o
- .debug_macro   0x00000000     0x1011 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x11f ./MID/Bsp_Control.o
- .debug_macro   0x00000000    0x1138f ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x6d ./MID/Bsp_Control.o
- .debug_macro   0x00000000     0x3558 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x190 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x5c ./MID/Bsp_Control.o
- .debug_macro   0x00000000     0x141d ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x535 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x1b6 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x288 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x41d ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x18b ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x43 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x23d ./MID/Bsp_Control.o
- .debug_macro   0x00000000     0x1112 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x72e ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x391 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x11d ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x401 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x209 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x108 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x211 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x6bd ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x401 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x107 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x122 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x3d1 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x2fe ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0xbda ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x47e ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x693 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0xa6 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x306 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x61 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x2a ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x43 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x34 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x16 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x3c ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x370 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x10 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x16 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x4a ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x34 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x10 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x58 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x8e ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x1c ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x185 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x16 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x16 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x146 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x22 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x16 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x20 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x19b ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x201 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x7c ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0x17 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x118 ./MID/Bsp_Control.o
- .debug_macro   0x00000000      0x169 ./MID/Bsp_Control.o
- .debug_macro   0x00000000       0xbe ./MID/Bsp_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Command_Can.o
+ .text          0x00000000        0x0 ./MID/Mid_Command_Can.o
+ .data          0x00000000        0x0 ./MID/Mid_Command_Can.o
+ .bss           0x00000000        0x0 ./MID/Mid_Command_Can.o
+ .debug_info    0x00000000       0x22 ./MID/Mid_Command_Can.o
+ .debug_abbrev  0x00000000       0x12 ./MID/Mid_Command_Can.o
+ .debug_aranges
+                0x00000000       0x18 ./MID/Mid_Command_Can.o
+ .debug_macro   0x00000000       0x1b ./MID/Mid_Command_Can.o
+ .debug_macro   0x00000000      0xad8 ./MID/Mid_Command_Can.o
+ .debug_line    0x00000000       0x78 ./MID/Mid_Command_Can.o
+ .debug_str     0x00000000     0x2e77 ./MID/Mid_Command_Can.o
+ .comment       0x00000000       0x44 ./MID/Mid_Command_Can.o
+ .ARM.attributes
+                0x00000000       0x34 ./MID/Mid_Command_Can.o
  .group         0x00000000        0xc ./MID/Mid_Command_Usart.o
  .group         0x00000000        0xc ./MID/Mid_Command_Usart.o
  .group         0x00000000        0xc ./MID/Mid_Command_Usart.o
@@ -5941,26 +5793,169 @@ Discarded input sections
  .debug_macro   0x00000000      0x169 ./MID/Mid_Command_Usart.o
  .debug_macro   0x00000000       0xbe ./MID/Mid_Command_Usart.o
  .debug_macro   0x00000000       0x10 ./MID/Mid_Command_Usart.o
- .group         0x00000000        0xc ./MID/Mid_Ctr.o
- .text          0x00000000        0x0 ./MID/Mid_Ctr.o
- .data          0x00000000        0x0 ./MID/Mid_Ctr.o
- .bss           0x00000000        0x0 ./MID/Mid_Ctr.o
- .text.Mid_Control_Init
-                0x00000000        0xe ./MID/Mid_Ctr.o
- .debug_info    0x00000000       0x3d ./MID/Mid_Ctr.o
- .debug_abbrev  0x00000000       0x2f ./MID/Mid_Ctr.o
- .debug_aranges
-                0x00000000       0x20 ./MID/Mid_Ctr.o
- .debug_rnglists
-                0x00000000       0x13 ./MID/Mid_Ctr.o
- .debug_macro   0x00000000       0x1b ./MID/Mid_Ctr.o
- .debug_macro   0x00000000      0xad8 ./MID/Mid_Ctr.o
- .debug_line    0x00000000       0x78 ./MID/Mid_Ctr.o
- .debug_str     0x00000000     0x2e78 ./MID/Mid_Ctr.o
- .comment       0x00000000       0x44 ./MID/Mid_Ctr.o
- .debug_frame   0x00000000       0x30 ./MID/Mid_Ctr.o
- .ARM.attributes
-                0x00000000       0x34 ./MID/Mid_Ctr.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .group         0x00000000        0xc ./MID/Mid_Control.o
+ .text          0x00000000        0x0 ./MID/Mid_Control.o
+ .data          0x00000000        0x0 ./MID/Mid_Control.o
+ .bss           0x00000000        0x0 ./MID/Mid_Control.o
+ .text.P_Control_Init
+                0x00000000       0x48 ./MID/Mid_Control.o
+ .text.set_speed
+                0x00000000       0xa8 ./MID/Mid_Control.o
+ .text.start_move_to_position
+                0x00000000       0x2c ./MID/Mid_Control.o
+ .text.step_move
+                0x00000000       0x38 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0xad8 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x179 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x2e ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x28 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x22 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x8e ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x51 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x103 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x6a ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x1df ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x1c ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x22 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0xfb ./MID/Mid_Control.o
+ .debug_macro   0x00000000     0x1011 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x11f ./MID/Mid_Control.o
+ .debug_macro   0x00000000    0x1138f ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x6d ./MID/Mid_Control.o
+ .debug_macro   0x00000000     0x3558 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x190 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x5c ./MID/Mid_Control.o
+ .debug_macro   0x00000000     0x141d ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x535 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x1b6 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x288 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x41d ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x18b ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x43 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x23d ./MID/Mid_Control.o
+ .debug_macro   0x00000000     0x1112 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x72e ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x391 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x11d ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x401 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x209 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x108 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x211 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x6bd ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x401 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x107 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x122 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x3d1 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x2fe ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0xbda ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x47e ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x693 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0xa6 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x306 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x61 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x2a ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x43 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x34 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x16 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x3c ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x370 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x10 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x16 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x4a ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x34 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x10 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x58 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x8e ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x1c ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x185 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x16 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x16 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x146 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x22 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x16 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x20 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x19b ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x201 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x7c ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0x17 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x118 ./MID/Mid_Control.o
+ .debug_macro   0x00000000      0x169 ./MID/Mid_Control.o
+ .debug_macro   0x00000000       0xbe ./MID/Mid_Control.o
  .text          0x00000000        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.macos64_1.0.0.202411102158/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-exit.o)
  .data          0x00000000        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.macos64_1.0.0.202411102158/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-exit.o)
  .bss           0x00000000        0x0 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.macos64_1.0.0.202411102158/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-exit.o)
@@ -6365,9 +6360,9 @@ LOAD ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.o
 LOAD ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.o
 LOAD ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
 LOAD ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_adc.o
-LOAD ./MID/Bsp_Control.o
+LOAD ./MID/Mid_Command_Can.o
 LOAD ./MID/Mid_Command_Usart.o
-LOAD ./MID/Mid_Ctr.o
+LOAD ./MID/Mid_Control.o
 LOAD ../Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a
 START GROUP
 LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.macos64_1.0.0.202411102158/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a
@@ -7212,34 +7207,34 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
                 0x0800baf4                HAL_UARTEx_ReceiveToIdle_DMA
  .text.UARTEx_SetNbDataToProcess
                 0x0800bb9c       0x9c ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
- .text.P_Control_Compute
-                0x0800bc38       0xd2 ./MID/Bsp_Control.o
-                0x0800bc38                P_Control_Compute
- *fill*         0x0800bd0a        0x2 
- .text.DC_Power_CTR
-                0x0800bd0c       0x48 ./MID/Bsp_Control.o
-                0x0800bd0c                DC_Power_CTR
- .text.move_to_position
-                0x0800bd54       0x68 ./MID/Bsp_Control.o
-                0x0800bd54                move_to_position
- .text.move_repeatedly
-                0x0800bdbc       0xa4 ./MID/Bsp_Control.o
-                0x0800bdbc                move_repeatedly
- .text.Close_output
-                0x0800be60       0x58 ./MID/Bsp_Control.o
-                0x0800be60                Close_output
- .text.Update_output
-                0x0800beb8      0x240 ./MID/Bsp_Control.o
-                0x0800beb8                Update_output
  .text.HAL_UART_TxCpltCallback
-                0x0800c0f8       0x2c ./MID/Mid_Command_Usart.o
-                0x0800c0f8                HAL_UART_TxCpltCallback
+                0x0800bc38       0x2c ./MID/Mid_Command_Usart.o
+                0x0800bc38                HAL_UART_TxCpltCallback
  .text.HAL_UARTEx_RxEventCallback
-                0x0800c124       0x5c ./MID/Mid_Command_Usart.o
-                0x0800c124                HAL_UARTEx_RxEventCallback
+                0x0800bc64       0x5c ./MID/Mid_Command_Usart.o
+                0x0800bc64                HAL_UARTEx_RxEventCallback
  .text.Mid_Process_Usart_Data
-                0x0800c180      0x374 ./MID/Mid_Command_Usart.o
-                0x0800c180                Mid_Process_Usart_Data
+                0x0800bcc0      0x374 ./MID/Mid_Command_Usart.o
+                0x0800bcc0                Mid_Process_Usart_Data
+ .text.P_Control_Compute
+                0x0800c034       0xd2 ./MID/Mid_Control.o
+                0x0800c034                P_Control_Compute
+ *fill*         0x0800c106        0x2 
+ .text.DC_Power_CTR
+                0x0800c108       0x48 ./MID/Mid_Control.o
+                0x0800c108                DC_Power_CTR
+ .text.move_to_position
+                0x0800c150       0x68 ./MID/Mid_Control.o
+                0x0800c150                move_to_position
+ .text.move_repeatedly
+                0x0800c1b8       0xa4 ./MID/Mid_Control.o
+                0x0800c1b8                move_repeatedly
+ .text.Close_output
+                0x0800c25c       0x58 ./MID/Mid_Control.o
+                0x0800c25c                Close_output
+ .text.Update_output
+                0x0800c2b4      0x240 ./MID/Mid_Control.o
+                0x0800c2b4                Update_output
  .text.__cvt    0x0800c4f4       0xca /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.macos64_1.0.0.202411102158/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-nano-vfprintf_float.o)
                 0x0800c4f4                __cvt
  .text.__exponent
@@ -7927,9 +7922,9 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .ARM.attributes
                 0x000005f3       0x34 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
  .ARM.attributes
-                0x00000627       0x34 ./MID/Bsp_Control.o
+                0x00000627       0x34 ./MID/Mid_Command_Usart.o
  .ARM.attributes
-                0x0000065b       0x34 ./MID/Mid_Command_Usart.o
+                0x0000065b       0x34 ./MID/Mid_Control.o
  .ARM.attributes
                 0x0000068f       0x34 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.macos64_1.0.0.202411102158/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-nano-vfprintf_float.o)
  .ARM.attributes
@@ -8090,8 +8085,8 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .debug_info    0x0001c4a7     0x1d95 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.o
  .debug_info    0x0001e23c     0x481e ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.o
  .debug_info    0x00022a5a      0xfdd ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
- .debug_info    0x00023a37      0xfe5 ./MID/Bsp_Control.o
- .debug_info    0x00024a1c     0x1328 ./MID/Mid_Command_Usart.o
+ .debug_info    0x00023a37     0x1328 ./MID/Mid_Command_Usart.o
+ .debug_info    0x00024d5f      0xfe5 ./MID/Mid_Control.o
 
 .debug_abbrev   0x00000000     0x4599
  .debug_abbrev  0x00000000      0x1da ./BSP/Bsp_Adc.o
@@ -8123,8 +8118,8 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .debug_abbrev  0x000037bb      0x2c5 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.o
  .debug_abbrev  0x00003a80      0x304 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.o
  .debug_abbrev  0x00003d84      0x2d2 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
- .debug_abbrev  0x00004056      0x27f ./MID/Bsp_Control.o
- .debug_abbrev  0x000042d5      0x2c4 ./MID/Mid_Command_Usart.o
+ .debug_abbrev  0x00004056      0x2c4 ./MID/Mid_Command_Usart.o
+ .debug_abbrev  0x0000431a      0x27f ./MID/Mid_Control.o
 
 .debug_aranges  0x00000000     0x1dc0
  .debug_aranges
@@ -8186,9 +8181,9 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .debug_aranges
                 0x00001c70       0xa8 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
  .debug_aranges
-                0x00001d18       0x68 ./MID/Bsp_Control.o
+                0x00001d18       0x40 ./MID/Mid_Command_Usart.o
  .debug_aranges
-                0x00001d80       0x40 ./MID/Mid_Command_Usart.o
+                0x00001d58       0x68 ./MID/Mid_Control.o
 
 .debug_rnglists
                 0x00000000     0x171f
@@ -8251,9 +8246,9 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .debug_rnglists
                 0x00001607       0x7f ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
  .debug_rnglists
-                0x00001686       0x4d ./MID/Bsp_Control.o
+                0x00001686       0x4c ./MID/Mid_Command_Usart.o
  .debug_rnglists
-                0x000016d3       0x4c ./MID/Mid_Command_Usart.o
+                0x000016d2       0x4d ./MID/Mid_Control.o
 
 .debug_macro    0x00000000     0x656d
  .debug_macro   0x00000000      0x247 ./BSP/Bsp_Adc.o
@@ -8324,8 +8319,8 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .debug_macro   0x00005692      0x243 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.o
  .debug_macro   0x000058d5      0x268 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.o
  .debug_macro   0x00005b3d      0x249 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
- .debug_macro   0x00005d86      0x3ec ./MID/Bsp_Control.o
- .debug_macro   0x00006172      0x3fb ./MID/Mid_Command_Usart.o
+ .debug_macro   0x00005d86      0x3fb ./MID/Mid_Command_Usart.o
+ .debug_macro   0x00006181      0x3ec ./MID/Mid_Control.o
 
 .debug_line     0x00000000    0x23d23
  .debug_line    0x00000000      0x928 ./BSP/Bsp_Adc.o
@@ -8357,8 +8352,8 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .debug_line    0x0001bc03     0x20ee ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.o
  .debug_line    0x0001dcf1     0x36cc ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.o
  .debug_line    0x000213bd      0xddc ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
- .debug_line    0x00022199      0xd4b ./MID/Bsp_Control.o
- .debug_line    0x00022ee4      0xe3f ./MID/Mid_Command_Usart.o
+ .debug_line    0x00022199      0xe3f ./MID/Mid_Command_Usart.o
+ .debug_line    0x00022fd8      0xd4b ./MID/Mid_Control.o
 
 .debug_str      0x00000000    0xef59c
  .debug_str     0x00000000    0xef59c ./BSP/Bsp_Adc.o
@@ -8391,8 +8386,8 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .debug_str     0x000ef59c    0xdede7 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.o
  .debug_str     0x000ef59c    0xdec30 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.o
  .debug_str     0x000ef59c    0xde42e ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
- .debug_str     0x000ef59c    0xe3d8c ./MID/Bsp_Control.o
  .debug_str     0x000ef59c    0xe3fff ./MID/Mid_Command_Usart.o
+ .debug_str     0x000ef59c    0xe3d8c ./MID/Mid_Control.o
 
 .comment        0x00000000       0x43
  .comment       0x00000000       0x43 ./BSP/Bsp_Adc.o
@@ -8424,8 +8419,8 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .comment       0x00000043       0x44 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.o
  .comment       0x00000043       0x44 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.o
  .comment       0x00000043       0x44 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
- .comment       0x00000043       0x44 ./MID/Bsp_Control.o
  .comment       0x00000043       0x44 ./MID/Mid_Command_Usart.o
+ .comment       0x00000043       0x44 ./MID/Mid_Control.o
 
 .debug_frame    0x00000000     0x91c8
  .debug_frame   0x00000000       0xe8 ./BSP/Bsp_Adc.o
@@ -8456,8 +8451,8 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .debug_frame   0x00006524      0xa68 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.o
  .debug_frame   0x00006f8c      0xa94 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.o
  .debug_frame   0x00007a20      0x2c0 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
- .debug_frame   0x00007ce0      0x180 ./MID/Bsp_Control.o
- .debug_frame   0x00007e60       0xd4 ./MID/Mid_Command_Usart.o
+ .debug_frame   0x00007ce0       0xd4 ./MID/Mid_Command_Usart.o
+ .debug_frame   0x00007db4      0x180 ./MID/Mid_Control.o
  .debug_frame   0x00007f34       0x90 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.macos64_1.0.0.202411102158/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-nano-vfprintf_float.o)
  .debug_frame   0x00007fc4       0x60 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.macos64_1.0.0.202411102158/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-nano-vfprintf_i.o)
  .debug_frame   0x00008024      0x144 /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.macos64_1.0.0.202411102158/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(libc_a-findfp.o)
