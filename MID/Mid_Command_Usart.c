@@ -19,9 +19,8 @@ extern uint8_t process_buffer[RX_BUFFER_SIZE]; 			 // 在这里为 process_buffe
 // --- 串口 DMA 接收相关 ---
 extern int dma_print_flag;
 
-//储存速度计算临时值
-float temp_speed_float;
-int16_t temp_speed_int16;
+
+
 
 #define UART_TX_BUFFER_SIZE 512 // 定义发送缓冲区大小，确保足够长
 uint8_t g_uart_tx_buffer[UART_TX_BUFFER_SIZE]; // DMA发送缓冲区

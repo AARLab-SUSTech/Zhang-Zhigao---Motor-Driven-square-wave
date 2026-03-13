@@ -9,7 +9,7 @@
 #define _MID_COMMAND_CAN_H
 
 
-
+void Can_message_process(void);
 
 
 

@@ -60,6 +60,5 @@ extern volatile uint16_t g_rx_queue_tail;
 extern uint8_t TxData[8];
 
 void Bsp_Can_init(void);
-void Can_message_process(void);
 bool Queue_Reply_Request(uint8_t command, uint8_t status);
 #endif
