@@ -2,7 +2,6 @@
 #include "Bsp_Force_Sensor.h"
 #include "stdio.h"
 
-
 volatile Force_sensor Force_Sensor1;
 
 void Bsp_Force_Sensor_Init(void)

@@ -21,11 +21,13 @@
 #include <Bsp_Ad7190.h>
 #include <Bsp_Can.h>
 #include <Mid_Command_Usart.h>
+#include <Mid_Command_Can.h>
 #include <Mid_Control.h>
 #include "main.h"
 
 #include "Bsp_Adc.h"
 #include "Bsp_Usart.h"
+#include "Bsp_Can.h"
 
 //详细注释版本
 /* Private includes ----------------------------------------------------------*/
@@ -223,19 +225,19 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	{
 		//CAN heart
 		// 1. 计算下一个 "head" 指针的位置   (使用位运算 & (TX_QUEUE_SIZE - 1) 比 % 更高效, 因为 TX_QUEUE_SIZE = 16)
-					uint16_t next_head = (g_tx_queue_head + 1) & (TX_QUEUE_SIZE - 1);
+					uint16_t Next_Head = (g_Tx_Queue_Head + 1) & (TX_QUEUE_SIZE - 1);
 		// 2. 检查队列是否已满 (如果 head 的下一个位置就是 tail)
-		            if (next_head == g_tx_queue_tail)
+		            if (Next_Head == g_Tx_Queue_Tail)
 		            {
 		                // 队列已满，本次心跳被丢弃
 		            }
 		            else
 		             {
-		                // 3. 队列未满，获取 "head" 位置的“集装箱”  //    (注意：我们总是在 g_tx_queue_head 指向的位置填充)
-		                volatile CanTxMessage_t* msg_to_queue = &g_tx_queue[g_tx_queue_head];
+		                // 3. 队列未满，获取 "head" 位置的“集装箱”  //    (注意：我们总是在 g_Tx_Queue_Head 指向的位置填充)
+		                volatile CanTxMessage_t* msg_to_queue = &g_Tx_Queue[g_Tx_Queue_Head];
 
 		                // 4. 填充报文头 (复制模板，再修改特定部分)
-		                msg_to_queue->Tx_Header = TxHeader;         			 // 复制模板
+		                msg_to_queue->Tx_Header = s_Can_Tx_Header;         			 // 复制模板
 		                msg_to_queue->Tx_Header.Identifier = HEART_ID;           // 【心跳ID】
 		                msg_to_queue->Tx_Header.DataLength = FDCAN_DLC_BYTES_1;  // 【灵活DLC】
 
@@ -245,7 +247,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		                for (int i = 1; i < 8; i++) { msg_to_queue->Data[i] = 0x00; }
 
 		                 // 6. 【原子操作】移动头指针，正式将消息放入队列
-		                 g_tx_queue_head = next_head;
+		                 g_Tx_Queue_Head = Next_Head;
 		             }
 	}
 
@@ -253,20 +255,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	{
 		//CAN heart
 		// 1. 计算下一个 "head" 指针的位置   (使用位运算 & (TX_QUEUE_SIZE - 1) 比 % 更高效, 因为 TX_QUEUE_SIZE = 16)
-					uint16_t next_head = (g_tx_queue_head + 1) & (TX_QUEUE_SIZE - 1);
+					uint16_t next_head = (g_Tx_Queue_Head + 1) & (TX_QUEUE_SIZE - 1);
 					uint16_t temp_data;
 		// 2. 检查队列是否已满 (如果 head 的下一个位置就是 tail)
-		            if (next_head == g_tx_queue_tail)
+		            if (next_head == g_Tx_Queue_Tail)
 		            {
 		                // 队列已满，本次心跳被丢弃
 		            }
 		            else
 		             {
-		                // 3. 队列未满，获取 "head" 位置的“集装箱”  //    (注意：我们总是在 g_tx_queue_head 指向的位置填充)
-		                volatile CanTxMessage_t* msg_to_queue = &g_tx_queue[g_tx_queue_head];
+		                // 3. 队列未满，获取 "head" 位置的“集装箱”  //    (注意：我们总是在 g_Tx_Queue_Head 指向的位置填充)
+		                volatile CanTxMessage_t* msg_to_queue = &g_Tx_Queue[g_Tx_Queue_Head];
 
 		                // 4. 填充报文头 (复制模板，再修改特定部分)
-		                msg_to_queue->Tx_Header = TxHeader;         			 // 复制模板
+		                msg_to_queue->Tx_Header = s_Can_Tx_Header;         			 // 复制模板
 		                msg_to_queue->Tx_Header.Identifier = MESSAGE_ID;           // 【心跳ID】
 		                msg_to_queue->Tx_Header.DataLength = FDCAN_DLC_BYTES_8;  // 【灵活DLC】
 
@@ -285,7 +287,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		                for (int i = 6; i < 8; i++) { msg_to_queue->Data[i] = 0x00; }
 
 		                 // 6. 【原子操作】移动头指针，正式将消息放入队列
-		                 g_tx_queue_head = next_head;
+		                 g_Tx_Queue_Head = next_head;
 		             }
 	}
 	if(htim == &htim6)
@@ -590,7 +592,7 @@ int main(void)
   //  HAL_COMP_Start(&hcomp1);
   //  HAL_COMP_Start(&hcomp2);
 
-      Bsp_Can_init();
+      Bsp_Can_Init();
 
       EMA_DATA.sin_offset = 1.65f;
       EMA_DATA.cos_offset = 1.65f;
@@ -666,17 +668,17 @@ int main(void)
 	  }
 
 
-	      if (g_tx_queue_head != g_tx_queue_tail) // 1. 检查队列是否为空 (head 和 tail 是否相等)
+	      if (g_Tx_Queue_Head != g_Tx_Queue_Tail) // 1. 检查队列是否为空 (head 和 tail 是否相等)
 	      {
 	          if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)// 2. 检查CAN硬件Tx FIFO是否空闲 (有空余等级)
 	          {
-	              // 注意：我们总是从 g_tx_queue[g_tx_queue_tail] 处取出消息 我们需要强制转换(cast)，因为 g_tx_queue 被声明为 volatile
-	              FDCAN_TxHeaderTypeDef* tx_header = (FDCAN_TxHeaderTypeDef*)&g_tx_queue[g_tx_queue_tail].Tx_Header;
-	              uint8_t* tx_data = (uint8_t*)g_tx_queue[g_tx_queue_tail].Data;
+	              // 注意：我们总是从 g_tx_queue[g_Tx_Queue_Tail] 处取出消息 我们需要强制转换(cast)，因为 g_tx_queue 被声明为 volatile
+	              FDCAN_TxHeaderTypeDef* tx_header = (FDCAN_TxHeaderTypeDef*)&g_Tx_Queue[g_Tx_Queue_Tail].Tx_Header;
+	              uint8_t* tx_data = (uint8_t*)g_Tx_Queue[g_Tx_Queue_Tail].Data;
 
 	              if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, tx_header, tx_data) == HAL_OK)// 4. 调用HAL库函数，将消息放入硬件发送FIFO
 	              {
-	                  g_tx_queue_tail = (g_tx_queue_tail + 1) & (TX_QUEUE_SIZE - 1);// 5. 【关键】发送成功，【原子操作】移动尾指针，完成出队
+	                  g_Tx_Queue_Tail = (g_Tx_Queue_Tail + 1) & (TX_QUEUE_SIZE - 1);// 5. 【关键】发送成功，【原子操作】移动尾指针，完成出队
 	              }
 	              else
 	              {

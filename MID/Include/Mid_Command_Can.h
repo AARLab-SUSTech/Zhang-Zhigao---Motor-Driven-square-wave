@@ -1,16 +1,24 @@
-/*
- * command.h
- *
- *  Created on: Sep 2, 2025
- *      Author: 16964
+/**
+ ******************************************************************************
+ * @file    Mid_Command_Can.h (原 command.h)
+ * @author  Letian
+ * @date    Sep 2, 2025
+ * @brief   CAN 通信协议解析与业务分发中间件头文件 (MID)
+ * @note    提供 CAN 报文处理与状态机调度的核心接口声明。
+ ******************************************************************************
  */
 
-#ifndef _MID_COMMAND_CAN_H
-#define _MID_COMMAND_CAN_H
+#ifndef _MID_COMMAND_CAN_H_
+#define _MID_COMMAND_CAN_H_
 
+/* ========================================================================== *
+ * 函数接口声明 (Function Prototypes)
+ * ========================================================================== */
 
+/**
+ * @brief  处理 CAN 接收队列中的报文并执行业务逻辑分发 (消费者)
+ * @note   需在主循环或高频业务任务中周期性调用，以非阻塞方式处理接收到的底层数据。
+ */
 void Can_message_process(void);
 
-
-
-#endif /* SRC_COMMAND_H_ */
+#endif /* _MID_COMMAND_CAN_H_ */
