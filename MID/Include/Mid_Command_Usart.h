@@ -54,5 +54,12 @@ void Mid_Float_Array_Dma_Send(float* arr, int count);
  */
 void Mid_Int16_Groups_Dma_Send(int16_t* arr, int total_count, int elements_per_group);
 
+/**
+ * @brief  使用 JustFloat 协议通过 USART DMA 发送浮点数组
+ * @param  pData 浮点数数组指针
+ * @param  count 浮点数的个数
+ * @note   通常用于对接 Vofa+ 等上位机波形显示软件
+ */
+void Mid_Usart_Send_JustFloat(float *pData, uint8_t count);
 
 #endif /* _MID_COMMAND_USART_H_ */

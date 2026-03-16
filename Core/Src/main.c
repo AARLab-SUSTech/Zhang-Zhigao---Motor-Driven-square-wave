@@ -25,6 +25,8 @@
 #include <Mid_Control.h>
 #include "main.h"
 
+#include "App_Can.h"
+
 #include "Bsp_Adc.h"
 #include "Bsp_Usart.h"
 #include "Bsp_Can.h"
@@ -57,7 +59,6 @@ volatile MotorDirection_t motor_direction = MOTOR_FORWARD; // 默认为正
 bool Sin_Velocity_Flag = false;
 float Omega_Sin_Velocity,Max_Velocity;
 
-int dma_print_flag = 0;
 // --- 新增：用于累计步数的全局变量 ---
 // 使用 signed 32-bit 整数，可以记录正反转，且范围足够大
 // 使用 volatile 关键字，确保在中断和主循环中安全访问
@@ -223,72 +224,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(htim == &htim17)
 	{
-		//CAN heart
-		// 1. 计算下一个 "head" 指针的位置   (使用位运算 & (TX_QUEUE_SIZE - 1) 比 % 更高效, 因为 TX_QUEUE_SIZE = 16)
-					uint16_t Next_Head = (g_Tx_Queue_Head + 1) & (TX_QUEUE_SIZE - 1);
-		// 2. 检查队列是否已满 (如果 head 的下一个位置就是 tail)
-		            if (Next_Head == g_Tx_Queue_Tail)
-		            {
-		                // 队列已满，本次心跳被丢弃
-		            }
-		            else
-		             {
-		                // 3. 队列未满，获取 "head" 位置的“集装箱”  //    (注意：我们总是在 g_Tx_Queue_Head 指向的位置填充)
-		                volatile CanTxMessage_t* msg_to_queue = &g_Tx_Queue[g_Tx_Queue_Head];
-
-		                // 4. 填充报文头 (复制模板，再修改特定部分)
-		                msg_to_queue->Tx_Header = s_Can_Tx_Header;         			 // 复制模板
-		                msg_to_queue->Tx_Header.Identifier = HEART_ID;           // 【心跳ID】
-		                msg_to_queue->Tx_Header.DataLength = FDCAN_DLC_BYTES_1;  // 【灵活DLC】
-
-		                // 5. 填充报文数据
-		                msg_to_queue->Data[0] = (uint8_t)EMA_DATA.Motor_mode;    // 填入当前模式/故障码
-
-		                for (int i = 1; i < 8; i++) { msg_to_queue->Data[i] = 0x00; }
-
-		                 // 6. 【原子操作】移动头指针，正式将消息放入队列
-		                 g_Tx_Queue_Head = Next_Head;
-		             }
+		App_Can_Heart_Send();//Can Heart
 	}
 
 	if(htim == &htim16)//用于往复模式下打印往复次数以及电流电压等
 	{
-		//CAN heart
-		// 1. 计算下一个 "head" 指针的位置   (使用位运算 & (TX_QUEUE_SIZE - 1) 比 % 更高效, 因为 TX_QUEUE_SIZE = 16)
-					uint16_t next_head = (g_Tx_Queue_Head + 1) & (TX_QUEUE_SIZE - 1);
-					uint16_t temp_data;
-		// 2. 检查队列是否已满 (如果 head 的下一个位置就是 tail)
-		            if (next_head == g_Tx_Queue_Tail)
-		            {
-		                // 队列已满，本次心跳被丢弃
-		            }
-		            else
-		             {
-		                // 3. 队列未满，获取 "head" 位置的“集装箱”  //    (注意：我们总是在 g_Tx_Queue_Head 指向的位置填充)
-		                volatile CanTxMessage_t* msg_to_queue = &g_Tx_Queue[g_Tx_Queue_Head];
-
-		                // 4. 填充报文头 (复制模板，再修改特定部分)
-		                msg_to_queue->Tx_Header = s_Can_Tx_Header;         			 // 复制模板
-		                msg_to_queue->Tx_Header.Identifier = MESSAGE_ID;           // 【心跳ID】
-		                msg_to_queue->Tx_Header.DataLength = FDCAN_DLC_BYTES_8;  // 【灵活DLC】
-
-		                // 5. 填充报文数据
-		                msg_to_queue->Data[0] = (uint8_t)((repeated_count_current >> 24) & 0xFF);
-		                msg_to_queue->Data[1] = (uint8_t)((repeated_count_current >> 16) & 0xFF);
-		                msg_to_queue->Data[2] = (uint8_t)((repeated_count_current >> 8) & 0xFF);
-		                msg_to_queue->Data[3] = (uint8_t)(repeated_count_current & 0xFF);
-		                temp_data = (uint16_t)(HV_V*10);
-		                msg_to_queue->Data[4] = temp_data >> 8;
-		                msg_to_queue->Data[5] = temp_data & 0xFF;
-		                temp_data = (uint16_t)(HV_I*100);
-		                msg_to_queue->Data[6] = temp_data >> 8;
-		                msg_to_queue->Data[7] = temp_data & 0xFF;
-
-		                for (int i = 6; i < 8; i++) { msg_to_queue->Data[i] = 0x00; }
-
-		                 // 6. 【原子操作】移动头指针，正式将消息放入队列
-		                 g_Tx_Queue_Head = next_head;
-		             }
+		App_Can_Send_Data();
 	}
 	if(htim == &htim6)
 	{
@@ -364,32 +305,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             window_sample_counter = 0;// 4. 重置计数器，为下一个检查窗口做准备
             spike_count_in_window = 0;
         }
-
-//			Tx_A_buffer_20k.fdata[0] = HV_V;//V
-//			Tx_A_buffer_20k.fdata[1] = HV_I;//mA
-//			Tx_A_buffer_20k.fdata[2] = absolute_step_counter;//
-//			Tx_A_buffer_20k.fdata[3] = EMA_DATA.position_mm;//mm
-//			Tx_A_buffer_20k.fdata[4] = Motor_Position_Controller.TargetPos;//g
-//			Tx_A_buffer_20k.fdata[5] = DC_I;//A
-//
-//			Tx_A_buffer_20k.tail[0] = 0x00;
-//			Tx_A_buffer_20k.tail[1] = 0x00;
-//			Tx_A_buffer_20k.tail[2] = 0x80;
-//			Tx_A_buffer_20k.tail[3] = 0x7F;
-
-//			if(dma_print_flag == 1)
-//			{
-//				if(g_uart_dma_transfer_complete == 1)
-//				{
-//					g_uart_dma_transfer_complete = 0;//设置为发送模式
-//					HAL_UART_Transmit_DMA(&huart1, (uint8_t*)&Tx_A_buffer_20k, sizeof(JustFloatFrame_t));
-//				}
-//			else
-//			{
-//				Buzzer_ON;
-//			    printf("dma data error\r\n");
-//			}
-//			}
              //报警代码1
     		if(HV_V > MAX_HV_voltage)  { EMA_DATA.Motor_mode = MOTOR_OVER_HV_VOLTAGE;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
    		    if(HV_I > MAX_HV_current * 3)  { EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;    Close_output();DC_Power_CTR(false);Buzzer_ON;}

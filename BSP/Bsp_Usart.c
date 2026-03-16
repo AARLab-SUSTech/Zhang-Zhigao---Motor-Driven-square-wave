@@ -49,3 +49,15 @@ void Bsp_Usart_Init(void)
      * 底层也会触发一次回调，这会导致原本完整的一长帧指令被错误地劈成两半。 */
     __HAL_DMA_DISABLE_IT(&hdma_usart1_rx, DMA_IT_HT);
 }
+
+/**
+ * @brief  USART DMA 数据发送底层接口
+ * @param  pData 指向要发送的数据缓冲区的指针
+ * @param  size  要发送的数据字节数
+ * @note   对上层 (MID) 屏蔽具体的 HAL 库函数和硬件句柄 (huart1)
+ */
+void Bsp_Usart_Send_DMA(uint8_t *pData, uint16_t size)
+{
+    /* 调用 ST 的 HAL 库触发 DMA 发送 */
+    HAL_UART_Transmit_DMA(&huart1, pData, size);
+}

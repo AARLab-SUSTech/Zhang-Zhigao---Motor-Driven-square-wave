@@ -1,3 +1,5 @@
+"./APP/App_Can.o"
+"./APP/App_Usart.o"
 "./BSP/Bsp_Ad7190.o"
 "./BSP/Bsp_Adc.o"
 "./BSP/Bsp_Can.o"

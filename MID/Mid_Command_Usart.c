@@ -15,6 +15,9 @@
 #include "Bsp_Usart.h"
 #include "App_EMA.h"
 
+/* 定义 Vofa+ JustFloat 协议的尾部帧 */
+const uint8_t JUST_FLOAT_TAIL[4] = {0x00, 0x00, 0x80, 0x7F};
+
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)
  * ========================================== */
@@ -418,3 +421,47 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
         // HAL_TIM_Base_Start_IT(&htim6); // dma printf
     }
 }
+
+
+/**
+ * @brief  使用 JustFloat 协议通过 USART DMA 发送浮点数组
+ * @param  pData 浮点数数组指针
+ * @param  count 浮点数的个数
+ * @note   通常用于对接 Vofa+ 等上位机波形显示软件
+ */
+void Mid_Usart_Send_JustFloat(float *pData, uint8_t count)
+{
+    /* 1. 检查 DMA 是否空闲 */
+    if (g_uart_dma_transfer_complete == 0)
+    {
+        /* DMA 忙碌，直接丢弃本次遥测数据，保证不卡死主循环 */
+        return;
+    }
+
+    /* 2. 检查缓冲区是否溢出 (浮点数占 4 字节，尾部占 4 字节) */
+    uint16_t TotalBytes = (count * 4) + 4;
+    if (TotalBytes > UART_TX_BUFFER_SIZE)
+    {
+        Buzzer_ON; /* 数据超长报警 */
+        return;
+    }
+
+    /* 3. 锁定 DMA 状态 */
+    g_uart_dma_transfer_complete = 0;
+
+    /* 4. 组装数据帧到发送缓冲区 */
+    uint8_t *pWrite = g_uart_tx_buffer;
+
+    /* A. 拷贝浮点数据段 */
+    memcpy(pWrite, pData, count * 4);
+    pWrite += (count * 4);
+
+    /* B. 拷贝 JustFloat 尾部帧 */
+    memcpy(pWrite, JUST_FLOAT_TAIL, 4);
+
+    /* 5. 触发底层 DMA 发送 (真正实现与底层 HAL 库解耦) */
+    Bsp_Usart_Send_DMA(g_uart_tx_buffer, TotalBytes);
+}
+
+
+
