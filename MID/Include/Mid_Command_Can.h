@@ -21,4 +21,11 @@
  */
 void Can_message_process(void);
 
+/**
+ * @brief  CAN 发送队列清空任务 (MID 层)
+ * @note   不断检查软件环形发送队列，如果有数据，则尝试推给 BSP 层发送。
+ * 需放置在 main() 函数的 while(1) 主循环中高速轮询。
+ */
+void Mid_Can_Tx_Task(void);
+
 #endif /* _MID_COMMAND_CAN_H_ */

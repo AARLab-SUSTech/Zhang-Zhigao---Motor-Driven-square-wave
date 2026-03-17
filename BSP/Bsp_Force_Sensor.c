@@ -20,7 +20,12 @@ void Bsp_Force_Sensor_Init(void)
 	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
 }
 
-
+void Bsp_Force_Data_Printf(void)
+{
+		  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
+		  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
+		  printf("%.3f\r\n",Force_Sensor1.weight_g);
+}
 
 
 

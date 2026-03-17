@@ -23,9 +23,12 @@
 #include <Mid_Command_Usart.h>
 #include <Mid_Command_Can.h>
 #include <Mid_Control.h>
+#include "Mid_Adc.h"
 #include "main.h"
 
 #include "App_Can.h"
+#include "App_Position_Sensor.h"
+#include "App_Voltage_Current.h"
 
 #include "Bsp_Adc.h"
 #include "Bsp_Usart.h"
@@ -34,41 +37,18 @@
 //详细注释版本
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-P_Controller Motor_Position_Controller;// 定义控制器实例
-P_Controller Motor_Force_Controller;// 定义控制器实例
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 uint16_t duty_TIM1 = 1000;
 
-volatile int32_t repeated_pos_A = 0;      // 往复运动点A
-volatile int32_t repeated_pos_B = 0;      // 往复运动点B
-volatile uint32_t repeated_count_total = 0; // 需要往复的总次数
-volatile uint32_t repeated_count_current = 0; // 当前已完成的次数
-volatile float repeated_speed_hz = 0.0f;    // 往复运动时使用的速度
-volatile uint32_t phase_accumulator = 0;
-volatile uint32_t phase_increment = 0;
-volatile uint16_t pwm_duty_value = 0;
-volatile uint8_t step = 0;
-float interrupt_freq_hz = 10000.0f; // 您TIM6中断的频率 (1 / 0.00005s)
 
-volatile MotorDirection_t motor_direction = MOTOR_FORWARD; // 默认为正
-//volatile Motor_mode_t Motor_mode = MOTOR_IDLE;
+
 
 bool Sin_Velocity_Flag = false;
 float Omega_Sin_Velocity,Max_Velocity;
-
-// --- 新增：用于累计步数的全局变量 ---
-// 使用 signed 32-bit 整数，可以记录正反转，且范围足够大
-// 使用 volatile 关键字，确保在中断和主循环中安全访问
-volatile int32_t absolute_step_counter = 0;
-// 目标步数位置
-volatile int32_t target_step_position = 0;
-// 在位置模式下，电机移动到目标点时使用的速度
-volatile uint32_t position_mode_increment = 10;
-// 在速度模式下，电机移动速度
-volatile uint32_t velocity_mode_increment = 0;
 
 #define AD7190_Force_sensor 0
 /* USER CODE END PTD */
@@ -87,10 +67,8 @@ uint16_t ARR;
 uint32_t ADC1_RAW_data[2];
 uint32_t ADC2_RAW_data[3];
 
-int16_t dma_int16_data[100];
 /* USER CODE END PV */
 
-uint8_t loop_count;
 Motor EMA_DATA;
 
 int last_time_ms,time_gap;
@@ -157,69 +135,13 @@ PUTCHAR_PROTOTYPE
     return ch;
 }
 
-#define CHANNEL_COUNT 6 // 您有6个通道
-
-// 定义JustFloat的数据帧结构
-typedef struct __attribute__((packed)) {
-    float fdata[CHANNEL_COUNT]; // 6个float数据
-    uint8_t tail[4];            // 4字节的帧尾
-} JustFloatFrame_t;
-
-// 创建一个静态的发送包实例
-//static JustFloatFrame_t Tx_A_buffer_20k;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-uint8_t Flag_Abuffer0_Bbuffer1 = 0;//A buffer0-----B buffer1
-volatile uint8_t Tx_sample_count = 0;
-volatile float weight_g_temp=0;
-
-float rad_omega;
-float HV_V,HV_I,DC_I;
-float MAX_HV_voltage=2600;
-float MAX_HV_current=12;
-float MAX_DC_current=4;
-
-int float_current_counter=0;
-float current_1ms=0;
-float current_hvi;
-float dc_current_1ms=0;
-float current_dc;
-
-// --- 功率计算相关变量 ---
-// 直流输入电压 (输入为20V)
-const float DC_INPUT_VOLTAGE = 20.0f;
-
-// 瞬时功率
-float dc_input_power = 0.0f;
-float hv_instantaneous_power = 0.0f;
-
-// 周期平均功率相关
-float hv_power_accumulator = 0.0f; // 用于累加一个电周期内的瞬时功率
-uint32_t hv_power_sample_count = 0;   // 用于计算一个电周期内的采样点数
-float hv_average_power_cycle = 0.0f;  // 存储每个电周期计算出的平均功率
-float last_hv_average_power_cycle = 0.0f;  // 存储上个电周期计算出的平均功率
-// 每秒平均功率相关
-float hv_power_accumulator_1s = 0.0f;   // 用于累加一秒内的瞬时功率
-uint32_t hv_power_sample_count_1s = 0;  // 用于计算一秒内的采样点数
-float hv_average_power_1s = 0.0f;       // 存储每秒计算出的平均功率
-float last_hv_average_power_1s = 0.0f;  // 存储上1s计算出的平均功率
-
-float dma_float_data[6];
-
-// 1. 算法参数 (您可以根据实际情况调整)
-const float  SPIKE_CURRENT_THRESHOLD   = 16.0f;    // 定义尖峰电流的阈值 (单位: mA)
-const uint16_t CHECK_WINDOW_SAMPLES    = 60;      // 定义检查窗口的大小 (N个采样点)。200个点 @ 20kHz = 1ms
-const uint16_t MAX_SPIKES_IN_WINDOW    = 50;      // 定义在一个窗口期内，允许出现的最大尖峰次数
-
-// 2. 算法工作变量
-uint16_t window_sample_counter = 0;   // 用于在窗口内计数的采样点计数器 (从0数到CHECK_WINDOW_SAMPLES)
-uint16_t spike_count_in_window = 0;   // 用于累计一个窗口期内的尖峰次数
-
 extern volatile uint8_t g_uart_dma_transfer_complete;
-float speed_test;
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(htim == &htim17)
@@ -233,217 +155,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 	if(htim == &htim6)
 	{
-			/*高压电流 电压 低压DC电流 ADC DMA数据处理与单位转换*/
-		  int temp_data[2];
-		  temp_data[0] = (2048 - ADC1_RAW_data[0]) * 2;
-		  temp_data[1] = (2048 - ADC1_RAW_data[1]) * 2;
 
-		  HV_V = temp_data[0] * 1.00909423828125f;		//HV_V = (temp_data[0] / 4096) * 3.3f * 2 * 501 / 0.4f
-		  HV_I = (temp_data[1] * 0.01007080078125);		//HV_I = (temp_data[1] / 4096) * 3.3 / 8 / 10 * 1000
-		  DC_I = ADC2_RAW_data[0] * 0.0008056640625f;		//(ADC2_RAW_data[0] / 4096) * 3.3 / 200 / 0.005
+		App_Upate_Voltage_Current_Data();
 
-		  EMA_DATA.sin_V = (ADC2_RAW_data[1]*0.0008056640625f);// 3.3/4096  磁栅尺位移传感器ADC采样与转换
-		  EMA_DATA.cos_V = (ADC2_RAW_data[2]*0.0008056640625f);// 3.3/4096
+		App_Update_Position_Sensor_Data();
 
-		  float current_theta_degrees; // 存储当前计算出的角度
-		  EMA_DATA.theta_radians = atan2f(EMA_DATA.sin_V - EMA_DATA.sin_offset, EMA_DATA.cos_V - EMA_DATA.cos_offset);
-		  current_theta_degrees = EMA_DATA.theta_radians * (180.0f / M_PI);
-		  EMA_DATA.theta_degrees = current_theta_degrees; // 更新结构体中的当前角度
+		App_System_Safety_Monitor();
 
-		  if (EMA_DATA.theta_degrees < 0) {
-			  EMA_DATA.theta_degrees += 360.0f;
-		  }
-
-		  // 角度回绕检测和圈数累计 // 需要一个阈值来判断是否发生了回绕，例如180度。 如果角度变化超过180度，则认为发生了一次回绕。
-		  float delta_angle = EMA_DATA.theta_degrees - EMA_DATA.previous_theta_degrees;
-
- 		  if (!EMA_DATA.first_calculation) { // 只有在不是第一次计算时才进行回绕检测
-				  if (delta_angle > 180.0f) 		  { EMA_DATA.cycle_count--;}// 例如从 350 -> 10，实际是正转，但差值 < -180
-					  else if (delta_angle < -180.0f) { EMA_DATA.cycle_count++;}// 反向回绕 (例如从 10 度跳到 350 度)
-		  }
- 		  else {
-			  EMA_DATA.first_calculation = 0; // 清除首次计算标志
-	      }
-
-
-		  EMA_DATA.previous_theta_degrees = EMA_DATA.theta_degrees;// 更新上一时刻的角度
-		  EMA_DATA.current_displacement_within_cycle_mm = (EMA_DATA.theta_degrees / 360.0f) * 2.0f;// 计算周期内位移 (0 到 2mm)
-
-		  if(EMA_DATA.Min_Max_cal_status == false)// 计算累计位置
-		  {
-			  EMA_DATA.position_mm = (float)EMA_DATA.cycle_count * 2.0f + EMA_DATA.current_displacement_within_cycle_mm;
-		  }
-		  else if(EMA_DATA.Min_Max_cal_status == true)
-		  {
-			  EMA_DATA.position_mm = (float)EMA_DATA.cycle_count * 2.0f + EMA_DATA.current_displacement_within_cycle_mm - EMA_DATA.min_position_mm + 1.5f;
-		  }
-
-		  EMA_DATA.Loop_count++;
-		  if(EMA_DATA.Loop_count == 10)//低速环路
-		  {
-			  EMA_DATA.speed = (EMA_DATA.position_mm - EMA_DATA.Last_position_mm)/0.001f;//计算速度 1khz循环执行周期
-			  EMA_DATA.speed = 0.8f*EMA_DATA.speed + 0.2*EMA_DATA.Last_speed;
-			  EMA_DATA.Last_speed = EMA_DATA.speed;
-			  EMA_DATA.Last_position_mm = EMA_DATA.position_mm;//更新位置
-		  }
-
-
-        if (HV_I > SPIKE_CURRENT_THRESHOLD) { spike_count_in_window++; }// 1. 检查当前电流是否形成了一次尖峰
-        window_sample_counter++;// 2. 采样点计数器自增
-
-        // 3. 判断一个检查窗口是否已经结束
-        if (window_sample_counter >= CHECK_WINDOW_SAMPLES)
-        {
-            if (spike_count_in_window > MAX_SPIKES_IN_WINDOW)// 窗口结束，进行判断
-            {
-                // 在过去的N个采样点中，尖峰次数过多，判定为故障！
-            	EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT; // 设置故障状态 报警代码2
-                Close_output();
-                DC_Power_CTR(false);
-                Buzzer_ON;
-            }
-            window_sample_counter = 0;// 4. 重置计数器，为下一个检查窗口做准备
-            spike_count_in_window = 0;
-        }
-             //报警代码1
-    		if(HV_V > MAX_HV_voltage)  { EMA_DATA.Motor_mode = MOTOR_OVER_HV_VOLTAGE;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
-   		    if(HV_I > MAX_HV_current * 3)  { EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;    Close_output();DC_Power_CTR(false);Buzzer_ON;}
-    		if(DC_I > MAX_DC_current)  { EMA_DATA.Motor_mode = MOTOR_OVER_DC_IN_CURRENT; printf("%.3f\r\n",DC_I);Close_output();DC_Power_CTR(false);Buzzer_ON;}
-
-//    		if(Sin_Velocity_Flag == true)
-//    		{
-//    			Motor_mode = MOTOR_OPEN_VELOCITY;
-//    			float temp_time = HAL_GetTick() * Omega_Sin_Velocity;
-//    			speed_test = Max_Velocity * sin(temp_time);
-//    			set_speed(speed_test);
-//    		}
-
-        // --- 1. 安全检查层：处理最高优先级的 IDLE 和 ERROR 状态 ---
-        if (EMA_DATA.Motor_mode == MOTOR_IDLE || EMA_DATA.Motor_mode == MOTOR_ERROR || EMA_DATA.Motor_mode == MOTOR_OVER_HV_CURRENT || EMA_DATA.Motor_mode == MOTOR_OVER_HV_VOLTAGE || EMA_DATA.Motor_mode == MOTOR_OVER_DC_IN_CURRENT)
-        {
-            phase_increment = 0; // 强制速度为0，确保电机停止
-        }
-        else
-        {
-				if (EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)// --- 1. 状态决策层：根据当前模式决定电机的目标和速度 ---
-				{
-					if (phase_increment == 0)// 在往复模式下，检查上一个移动是否已完成 (表现为电机已停止)
-					{
-						if (repeated_count_current >= repeated_count_total)// 检查总次数是否已完成
-						{
-							EMA_DATA.Motor_mode = MOTOR_IDLE; // 任务完成，切换到速度模式并保持静止
-							HAL_TIM_Base_Stop(&htim16);
-							Queue_Reply_Request(0x06, 0x10);//发送完成指令
-						}
-						else
-						{
-							if (absolute_step_counter == repeated_pos_A)// 任务未完成，决定下一个目标点
-							{
-								target_step_position = repeated_pos_B;// 当前在A点，下一个目标是B点
-							}
-							else // 当前在B点 (或者初始位置)
-							{
-								target_step_position = repeated_pos_A;// 下一个目标是A点
-								if (absolute_step_counter == repeated_pos_B)// 完成一次 B->A 的移动，才算一个完整的往复周期
-								{
-									repeated_count_current++;
-								}
-							}
-						}
-					}
-				}
-
-			     // --- 2. 运动执行层：根据目标驱动电机 ---
-				 if (EMA_DATA.Motor_mode == MOTOR_OPEN_POSITION || EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED || EMA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
-				 {
-					 if (absolute_step_counter < target_step_position)
-					 {
-						 motor_direction = MOTOR_FORWARD;
-						 phase_increment = position_mode_increment;
-					 }
-					 else if (absolute_step_counter > target_step_position)
-					 {
-						 motor_direction = MOTOR_REVERSE;
-						 phase_increment = position_mode_increment;
-					 }
-					 else // 已到达目标
-					 {
-						 phase_increment = 0;
-					 }
-				 }
-				 else if(EMA_DATA.Motor_mode == MOTOR_OPEN_VELOCITY)
-				 {
-					 phase_increment = velocity_mode_increment;
-				 }
-				 else if(EMA_DATA.Motor_mode == MOTOR_CLOSE_POSITION)
-				 {
-					 float output = P_Control_Compute(&Motor_Position_Controller, Motor_Position_Controller.TargetPos, EMA_DATA.position_mm);
-					    if (output >= 0)
-					    {
-					        motor_direction = MOTOR_REVERSE;
-					        float increment_f = (output / interrupt_freq_hz) * PHASE_2_32;
-					        phase_increment = (uint32_t)increment_f;
-					    }
-					    else
-					    {
-					        motor_direction = MOTOR_FORWARD;
-					        float increment_f = (-output / interrupt_freq_hz) * PHASE_2_32;
-					        phase_increment = (uint32_t)increment_f;
-					    }
-				 }
-				 else if(EMA_DATA.Motor_mode == MOTOR_CLOSE_FORCE)
-				 {
-//					 float output = P_Control_Compute(&Motor_Force_Controller, Motor_Force_Controller.TargetPos, Force_Sensor1.weight_g);
-//					    if (output >= 0)
-//					    {
-//					        motor_direction = MOTOR_REVERSE;
-//					        float increment_f = (output / interrupt_freq_hz) * PHASE_2_32;
-//					        phase_increment = (uint32_t)increment_f;
-//					    }
-//					    else
-//					    {
-//					        motor_direction = MOTOR_FORWARD;
-//					        float increment_f = (-output / interrupt_freq_hz) * PHASE_2_32;
-//					        phase_increment = (uint32_t)increment_f;
-//					    }
-				 }
-
-
-        }
-
-        // 1. 累加/累减相位 (无论何种模式，都基于最终计算出的 phase_increment)  // 根据方向执行累加或累减
-        if (motor_direction == MOTOR_FORWARD) { phase_accumulator += phase_increment; }
-           else 							  { phase_accumulator -= phase_increment; }
-
-		// 2. 计算扇区 (0-5)  //将 0x00000000 ~ 0xFFFFFFFF 的范围等分成 6 份  // 方法：(phase_accumulator * 6) / 2^32  // 使用64位乘法和右移32位来实现，非常高效
-		uint8_t new_step = (uint8_t)(((uint64_t)phase_accumulator * 6) >> 32);
-
-        if (new_step > 5) new_step = 5; // 防止浮点数误差导致越界
-
-        if(step != new_step)
-        {
-        	HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-
-			if ( (step == 5 && new_step == 0) || (step == 0 && new_step == 5) )  // 【修正】同时判断正转(5->0)和反转(0->5)的周期结束点
-			{
-				if (hv_power_sample_count > 0)// 周期结束的计算逻辑本身是正确的
-				{
-					last_hv_average_power_cycle = hv_power_accumulator / hv_power_sample_count;// 计算并更新上个周期的平均功率
-				}
-				hv_power_accumulator = 0.0f;// 重置，为下个周期准备
-				hv_power_sample_count = 0;
-			}
-            if (motor_direction == MOTOR_FORWARD) { absolute_step_counter++; }// 正转，计数值加1
-                else                              { absolute_step_counter--; }// 反转，计数值减1
-
-            step = new_step; // 更新当前步骤
-
-            Update_output(step);
-        }
+		App_EMA_Commutation_Task();
 
 	}
 }
-
 
 /* USER CODE END 0 */
 
@@ -495,7 +217,7 @@ int main(void)
 
   Bsp_Usart_Init();
 
-  //  Close_output();//关闭所有输出
+    Close_output();//关闭所有输出
 
     Bsp_Adc_Init();//板载ADC初始化配置
 
@@ -512,16 +234,9 @@ int main(void)
       EMA_DATA.sin_offset = 1.65f;
       EMA_DATA.cos_offset = 1.65f;
 
-      Motor_Position_Controller.Kp = 100;
-      Motor_Position_Controller.MaxSpeed = 100;
-      Omega_Sin_Velocity = 1 * 2 * M_PI * 0.001f;
-
       HAL_TIM_Base_Start_IT(&htim6);//高频计算中断
 
       HAL_TIM_Base_Start_IT(&htim17);//CAN Heart中断
-
-//      Motor_mode = MOTOR_OPEN_VELOCITY;
-//      velocity_mode_increment = (uint32_t)(((uint64_t)100.0f * 0x100000000) / interrupt_freq_hz);
 
   /* USER CODE END 2 */
 
@@ -532,101 +247,11 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  //阶跃信号
-//	  if(HAL_GetTick() - last_time_ms <= 1000)
-//	  {
-//		  Motor_Position_Controller.TargetPos = 0.0f;
-//	  }
-//	  else if((HAL_GetTick() - last_time_ms <= 2000) && (HAL_GetTick() - last_time_ms >= 1000))
-//	  {
-//		  Motor_Position_Controller.TargetPos = 6.0f;
-//	  }
-//	  else
-//	  {
-//		  last_time_ms = HAL_GetTick();
-//	  }
-	  //正弦位置
-//	  	  Motor_Position_Controller.TargetPos = (5 * sin(HAL_GetTick() * Omega_Sin_Velocity)) + 5;
-//	  	  time_gap = HAL_GetTick() - last_time_ms;
-//	  	  if(time_gap <= 500)
-//	  	  {
-//	  		  Motor_Position_Controller.TargetPos = time_gap * 0.02f;
-//	  	  }
-//	  	  else if((time_gap <= 1000) && (time_gap >= 500))
-//	  	  {
-//	  		  Motor_Position_Controller.TargetPos = 20 - (time_gap * 0.02f);
-//	  	  }
-//	  	  else
-//	  	  {
-//	  		  last_time_ms = HAL_GetTick();
-//	  	  }
-	  if(EMA_DATA.Motor_mode == MOTOR_OVER_HV_VOLTAGE)
-	  {
-		  printf("MOTOR_OVER_HV_VOLTAGE\r\n");
-		  HAL_Delay(1000);
-	  }
-	  else if(EMA_DATA.Motor_mode == MOTOR_OVER_HV_CURRENT)
-	  {
-		  printf("MOTOR_OVER_HV_CURRENT\r\n");
-		  HAL_Delay(1000);
-	  }
-	  else if(EMA_DATA.Motor_mode == MOTOR_OVER_DC_IN_CURRENT)
-	  {
-		  printf("MOTOR_OVER_DC_IN_CURRENT\r\n");
-		  HAL_Delay(1000);
-	  }
-	  else
-	  {
-//		  printf("%.3f,%.3f,%.3f,%ld\r\n",last_hv_average_power_1s,last_hv_average_power_cycle,dc_input_power,absolute_step_counter);
-//		  printf("%.3f,%.3f,%.3f,%ld\r\n",HV_V,HV_I,DC_I,absolute_step_counter);
-//		  printf("%.3f\r\n",Force_Sensor1.weight_g);
-	  }
 
-
-	      if (g_Tx_Queue_Head != g_Tx_Queue_Tail) // 1. 检查队列是否为空 (head 和 tail 是否相等)
-	      {
-	          if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)// 2. 检查CAN硬件Tx FIFO是否空闲 (有空余等级)
-	          {
-	              // 注意：我们总是从 g_tx_queue[g_Tx_Queue_Tail] 处取出消息 我们需要强制转换(cast)，因为 g_tx_queue 被声明为 volatile
-	              FDCAN_TxHeaderTypeDef* tx_header = (FDCAN_TxHeaderTypeDef*)&g_Tx_Queue[g_Tx_Queue_Tail].Tx_Header;
-	              uint8_t* tx_data = (uint8_t*)g_Tx_Queue[g_Tx_Queue_Tail].Data;
-
-	              if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, tx_header, tx_data) == HAL_OK)// 4. 调用HAL库函数，将消息放入硬件发送FIFO
-	              {
-	                  g_Tx_Queue_Tail = (g_Tx_Queue_Tail + 1) & (TX_QUEUE_SIZE - 1);// 5. 【关键】发送成功，【原子操作】移动尾指针，完成出队
-	              }
-	              else
-	              {
-	                  printf("Can_Tx_error\r\n");
-	              }
-	          }
-	           else
-	          {
-	              printf("Can fifo error\r\n");
-	          }
-	      }
+	  	  Mid_Can_Tx_Task();
 
 	      Can_message_process();
 
-//	      if(Motor_mode == MOTOR_CLOSE_POSITION)
-//	      {
-//	    	  printf("%.2f,%ld,%.2f,%.2f,%ld\r\n",speed_test,absolute_step_counter,EMA_DATA.position_mm,Motor_Position_Controller.TargetPos,HAL_GetTick() - last_time_ms);
-//	      }
-//	      else if(Motor_mode == MOTOR_CLOSE_FORCE)
-//	      {
-//	    	  printf("%.2f,%ld,%.2f,%.2f,%.2f\r\n",speed_test,absolute_step_counter,EMA_DATA.position_mm,Motor_Force_Controller.TargetPos,Force_Sensor1.weight_g);
-//	      }
-//	      else
-//	      {
-////              printf("step:%ld\r\n",absolute_step_counter);
-//	      }
-
-//    printf("%ld\r\n",absolute_step_counter);
-
-//	  Force_Sensor1.RAW_Data=weight_ad7190_ReadAvg(1);
-//	  Force_Sensor1.weight_g=(Force_Sensor1.RAW_Data-Force_Sensor1.weight_Zero_Data)*1000/Force_Sensor1.weight_proportion;
-//	  printf("%.3f\r\n",Force_Sensor1.weight_g);
-//	  printf("%ld,%ld,%.3f,%.3f\r\n",ADC2_RAW_data[1],ADC2_RAW_data[2],EMA_DATA.theta_degrees,EMA_DATA.position_mm);
   }
   /* USER CODE END 3 */
 }

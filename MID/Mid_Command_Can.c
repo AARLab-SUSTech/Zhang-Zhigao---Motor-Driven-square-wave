@@ -26,6 +26,9 @@ extern Motor EMA_DATA;
 float    temp_speed_float;
 int16_t  temp_speed_int16;
 
+/* 定义一个全局错误计数器，用于替代危险的 printf */
+uint32_t g_Can_Tx_Drop_Count = 0;
+
 /* 多电机同步模式参数 */
 float    Sync_Motor_Speed = 0;
 uint32_t Sync_Motor_position = 0;
@@ -282,3 +285,35 @@ void Can_message_process(void)
         g_Rx_Queue_Tail = (g_Rx_Queue_Tail + 1) & (RX_QUEUE_SIZE - 1);
     }
 }
+
+/**
+ * @brief  CAN 发送队列清空任务 (MID 层)
+ * @note   不断检查软件环形发送队列，如果有数据，则尝试推给 BSP 层发送。
+ * 需放置在 main() 函数的 while(1) 主循环中高速轮询。
+ */
+void Mid_Can_Tx_Task(void)
+{
+    /* 1. 检查软件环形队列是否为空 */
+    if (g_Tx_Queue_Head != g_Tx_Queue_Tail)
+    {
+        /* 2. 获取队尾 (Tail) 准备发送的数据包指针 */
+        CanTxMessage_t* msg_to_send = (CanTxMessage_t*)&g_Tx_Queue[g_Tx_Queue_Tail];
+
+        /* 3. 尝试调用 BSP 层硬件接口发送 */
+        if (Bsp_Can_Transmit_Message(msg_to_send) == true)
+        {
+            /* 4. 【关键】硬件接收成功，【原子操作】移动尾指针，完成出队 */
+            g_Tx_Queue_Tail = (g_Tx_Queue_Tail + 1) & (TX_QUEUE_SIZE - 1);
+        }
+        else
+        {
+            /* 5. 硬件 FIFO 满碌或离线 (不移动尾指针，下次循环重试) */
+            /* 【安全拦截】：这里绝对不能用 printf！我们只做静默计数 */
+            g_Can_Tx_Drop_Count++;
+
+            /* 如果确实需要报警，可以通过状态机将故障抛给 APP 层，
+             * 比如当 g_Can_Tx_Drop_Count 超过 10000 时，触发总线离线故障。*/
+        }
+    }
+}
+

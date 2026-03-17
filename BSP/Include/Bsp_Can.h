@@ -106,4 +106,11 @@ int8_t Bsp_Can_Init(void);
  */
 bool Queue_Reply_Request(uint8_t command, uint8_t status);
 
+/**
+ * @brief  尝试将一条报文压入 CAN 硬件发送 FIFO (纯底层逻辑)
+ * @param  msg 指向待发送报文结构体的指针
+ * @retval bool 发送结果 (true: 成功压入硬件, false: 硬件 FIFO 满或错误)
+ */
+bool Bsp_Can_Transmit_Message(CanTxMessage_t *msg);
+
 #endif /* _BSP_CAN_H_ */

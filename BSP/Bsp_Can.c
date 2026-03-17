@@ -250,3 +250,27 @@ bool Queue_Reply_Request(uint8_t command, uint8_t status)
 
     return true;
 }
+
+/**
+ * @brief  尝试将一条报文压入 CAN 硬件发送 FIFO (纯底层逻辑)
+ * @param  msg 指向待发送报文结构体的指针
+ * @retval bool 发送结果 (true: 成功压入硬件, false: 硬件 FIFO 满或错误)
+ */
+bool Bsp_Can_Transmit_Message(CanTxMessage_t *msg)
+{
+    /* 1. 检查 CAN 硬件 Tx FIFO 是否有空余空间 */
+    if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
+    {
+        /* 2. 调用 HAL 库，将消息放入硬件 FIFO */
+        if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, (FDCAN_TxHeaderTypeDef*)&msg->Tx_Header, (uint8_t*)msg->Data) == HAL_OK)
+        {
+            return true; /* 成功发送 */
+        }
+    }
+    return false; /* 硬件忙或发送失败 */
+}
+
+
+
+
+

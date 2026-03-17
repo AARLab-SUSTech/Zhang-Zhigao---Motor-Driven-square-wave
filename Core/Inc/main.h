@@ -111,13 +111,6 @@ extern bool DC_ON_State;
 extern COMP_HandleTypeDef hcomp1;
 extern COMP_HandleTypeDef hcomp2;
 
-typedef enum {
-    MOTOR_REVERSE = 0,
-    MOTOR_FORWARD = 1
-} MotorDirection_t;
-
-
-extern  volatile MotorDirection_t motor_direction;
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

@@ -105,12 +105,12 @@ void App_Can_Send_Data(void)
         MsgToQueue->Data[3] = (uint8_t)(repeated_count_current & 0xFF);
 
         /* Data[4..5]: 高压母线电压 (放大 10 倍保留 1 位小数, 16-bit, 大端模式) */
-        TempData = (uint16_t)(HV_V * 10);
+        TempData = (uint16_t)(EMA_DATA.Hv_V_V * 10);
         MsgToQueue->Data[4] = (uint8_t)(TempData >> 8);
         MsgToQueue->Data[5] = (uint8_t)(TempData & 0xFF);
 
         /* Data[6..7]: 高压母线电流 (放大 100 倍保留 2 位小数, 16-bit, 大端模式) */
-        TempData = (uint16_t)(HV_I * 100);
+        TempData = (uint16_t)(EMA_DATA.Hv_I_uA * 100);
         MsgToQueue->Data[6] = (uint8_t)(TempData >> 8);
         MsgToQueue->Data[7] = (uint8_t)(TempData & 0xFF);
 
@@ -120,5 +120,6 @@ void App_Can_Send_Data(void)
         g_Tx_Queue_Head = NextHead;
     }
 }
+
 
 

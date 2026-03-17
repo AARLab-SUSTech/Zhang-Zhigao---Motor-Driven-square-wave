@@ -58,7 +58,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
         /* 将原始数据换算为低压 DC 电流
          * 换算公式: (ADC2_RAW_data[0] / 4096) * 3.3 / 200 / 0.005
          */
-        DC_I = ADC2_RAW_data[0] * 0.0008056640625f;
+//        DC_I = ADC2_RAW_data[0] * 0.0008056640625f;
 
         /* ========================================================== */
         /* [DEBUG 预留] 打印测试数据 */

@@ -49,6 +49,12 @@ typedef enum {
     MOTOR_OVER_DC_IN_CURRENT     /* 故障: 低压供电过流保护 */
 } Motor_Control_Mode_e;
 
+typedef enum {
+    MOTOR_REVERSE = 0,
+    MOTOR_FORWARD = 1
+} MotorDirection_t;
+
+extern  volatile MotorDirection_t motor_direction;
 
 /* ========================================================================== *
  * 核心数据结构 (Core Data Structures)
@@ -107,6 +113,12 @@ typedef struct {
         float error_sum_pos_rad;  /* 位置环误差积分项 (I, 弧度/位置) */
     } Position_P;
 
+    /* --- 8. 电压电流参数  Hv_V Hv_I Dc_I --- */
+
+    float                Hv_V_V; 				 /* 高压母线电压 (V)  */
+    float                Hv_I_uA; 				 /* 高压母线电流 (uA)  */
+    float                Dc_I_A; 				 /* 低压母线电流 (A)  */
+
     float                Id_ref;             /* d 轴期望目标电流 (mA) - 励磁分量 */
     float                Iq_ref;             /* q 轴期望目标电流 (mA) - 转矩分量 */
 
@@ -121,5 +133,16 @@ typedef struct {
  * @note  在 App_EMA.c 中定义，其他所有子模块均通过此变量监控与控制电机状态。
  */
 extern Motor EMA_DATA;
+
+void App_EMA_Position_Control(void);
+
+/**
+ * @brief  EMA 电机六步换向与相位执行任务 (APP 层 / 算法底层)
+ * @note   该函数是电机的“心脏起搏器”，基于数控振荡器 (NCO) 原理。
+ * 它消费运动规划层产生的 phase_increment，将其转化为 0~5 的六步换向扇区，
+ * 并触发底层硬件进行实际的 PWM 切换。
+ * 【执行上下文】：必须在控制环定时器中断中调用，且必须位于 App_EMA_Motion_Task() 之后！
+ */
+void App_EMA_Commutation_Task(void);
 
 #endif /* _APP_EMA_H_ */
