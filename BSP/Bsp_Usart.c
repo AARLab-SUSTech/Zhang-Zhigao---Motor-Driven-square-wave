@@ -32,6 +32,20 @@ uint8_t process_buffer[RX_BUFFER_SIZE];
 /* ==========================================
  * 函数实现 (Function Implementations)
  * ========================================== */
+/**
+ * @brief  USART串口Printf重定向
+ */
+#ifdef __GNUC__
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
+PUTCHAR_PROTOTYPE
+{
+    HAL_UART_Transmit(&huart1 , (uint8_t *)&ch, 1, 0xFFFF);
+    return ch;
+}
+
 
 /**
  * @brief  USART 硬件初始化及 DMA 接收配置

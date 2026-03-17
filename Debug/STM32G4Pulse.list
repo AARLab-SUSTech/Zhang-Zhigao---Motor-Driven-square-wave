@@ -9,43 +9,43 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   2 .rodata       000005bc  0800ee80  0800ee80  0000fe80  2**3
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  0800f43c  0800f43c  000111f4  2**0
+  3 .ARM.extab    00000000  0800f43c  0800f43c  000111f0  2**0
                   CONTENTS, READONLY
   4 .ARM          00000008  0800f43c  0800f43c  0001043c  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .preinit_array 00000000  0800f444  0800f444  000111f4  2**0
+  5 .preinit_array 00000000  0800f444  0800f444  000111f0  2**0
                   CONTENTS, ALLOC, LOAD, DATA
   6 .init_array   00000004  0800f444  0800f444  00010444  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   7 .fini_array   00000004  0800f448  0800f448  00010448  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  8 .data         000001f4  20000000  0800f44c  00011000  2**2
+  8 .data         000001f0  20000000  0800f44c  00011000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          00000eb0  200001f4  0800f640  000111f4  2**2
+  9 .bss          00000eb0  200001f0  0800f63c  000111f0  2**2
                   ALLOC
- 10 ._user_heap_stack 00000604  200010a4  0800f640  000120a4  2**0
+ 10 ._user_heap_stack 00000600  200010a0  0800f63c  000120a0  2**0
                   ALLOC
- 11 .ARM.attributes 00000030  00000000  00000000  000111f4  2**0
+ 11 .ARM.attributes 00000030  00000000  00000000  000111f0  2**0
                   CONTENTS, READONLY
- 12 .debug_info   00028226  00000000  00000000  00011224  2**0
+ 12 .debug_info   00028908  00000000  00000000  00011220  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 000050c6  00000000  00000000  0003944a  2**0
+ 13 .debug_abbrev 00005254  00000000  00000000  00039b28  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 00001f28  00000000  00000000  0003e510  2**3
+ 14 .debug_aranges 00001f40  00000000  00000000  0003ed80  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 00001818  00000000  00000000  00040438  2**0
+ 15 .debug_rnglists 00001825  00000000  00000000  00040cc0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00026d83  00000000  00000000  00041c50  2**0
+ 16 .debug_macro  00026fe9  00000000  00000000  000424e5  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   00028352  00000000  00000000  000689d3  2**0
+ 17 .debug_line   00028c22  00000000  00000000  000694ce  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000ef85d  00000000  00000000  00090d25  2**0
+ 18 .debug_str    000ef80d  00000000  00000000  000920f0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  00180582  2**0
+ 19 .comment      00000043  00000000  00000000  001818fd  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  000094f4  00000000  00000000  001805c8  2**2
+ 20 .debug_frame  00009504  00000000  00000000  00181940  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000004c  00000000  00000000  00189abc  2**0
+ 21 .debug_line_str 0000004c  00000000  00000000  0018ae44  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -62,7 +62,7 @@ Disassembly of section .text:
  80001f2:	2301      	movs	r3, #1
  80001f4:	7023      	strb	r3, [r4, #0]
  80001f6:	bd10      	pop	{r4, pc}
- 80001f8:	200001f4 	.word	0x200001f4
+ 80001f8:	200001f0 	.word	0x200001f0
  80001fc:	00000000 	.word	0x00000000
  8000200:	0800ee64 	.word	0x0800ee64
 
@@ -75,7 +75,7 @@ Disassembly of section .text:
  800020e:	f3af 8000 	nop.w
  8000212:	bd08      	pop	{r3, pc}
  8000214:	00000000 	.word	0x00000000
- 8000218:	200001f8 	.word	0x200001f8
+ 8000218:	200001f4 	.word	0x200001f4
  800021c:	0800ee64 	.word	0x0800ee64
 
 08000220 <memchr>:
@@ -1577,11 +1577,11 @@ void App_Can_Heart_Send(void)
  800124a:	46bd      	mov	sp, r7
  800124c:	bcb0      	pop	{r4, r5, r7}
  800124e:	4770      	bx	lr
- 8001250:	20000880 	.word	0x20000880
- 8001254:	20000884 	.word	0x20000884
- 8001258:	200002c0 	.word	0x200002c0
- 800125c:	20000260 	.word	0x20000260
- 8001260:	200008cc 	.word	0x200008cc
+ 8001250:	2000087c 	.word	0x2000087c
+ 8001254:	20000880 	.word	0x20000880
+ 8001258:	200002bc 	.word	0x200002bc
+ 800125c:	2000025c 	.word	0x2000025c
+ 8001260:	200008c4 	.word	0x200008c4
 
 08001264 <App_Can_Send_Data>:
  * [0..3] : 往复次数 (repeated_count_current, 32-bit)
@@ -1741,1470 +1741,1470 @@ void App_Can_Send_Data(void)
  800135e:	bcb0      	pop	{r4, r5, r7}
  8001360:	4770      	bx	lr
  8001362:	bf00      	nop
- 8001364:	20000880 	.word	0x20000880
- 8001368:	20000884 	.word	0x20000884
- 800136c:	200002c0 	.word	0x200002c0
- 8001370:	20000260 	.word	0x20000260
- 8001374:	2000021c 	.word	0x2000021c
- 8001378:	200008cc 	.word	0x200008cc
+ 8001364:	2000087c 	.word	0x2000087c
+ 8001368:	20000880 	.word	0x20000880
+ 800136c:	200002bc 	.word	0x200002bc
+ 8001370:	2000025c 	.word	0x2000025c
+ 8001374:	20000218 	.word	0x20000218
+ 8001378:	200008c4 	.word	0x200008c4
  800137c:	42c80000 	.word	0x42c80000
 
-08001380 <App_EMA_Commutation_Task>:
+08001380 <HAL_TIM_PeriodElapsedCallback>:
+extern TIM_HandleTypeDef htim6;
+extern TIM_HandleTypeDef htim16;
+extern TIM_HandleTypeDef htim17;
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+ 8001380:	b580      	push	{r7, lr}
+ 8001382:	b082      	sub	sp, #8
+ 8001384:	af00      	add	r7, sp, #0
+ 8001386:	6078      	str	r0, [r7, #4]
+	if(htim == &htim17)
+ 8001388:	687b      	ldr	r3, [r7, #4]
+ 800138a:	4a0d      	ldr	r2, [pc, #52]	@ (80013c0 <HAL_TIM_PeriodElapsedCallback+0x40>)
+ 800138c:	4293      	cmp	r3, r2
+ 800138e:	d101      	bne.n	8001394 <HAL_TIM_PeriodElapsedCallback+0x14>
+	{
+		App_Can_Heart_Send();//Can Heart
+ 8001390:	f7ff ff16 	bl	80011c0 <App_Can_Heart_Send>
+	}
+
+	if(htim == &htim16)//用于往复模式下打印往复次数以及电流电压等
+ 8001394:	687b      	ldr	r3, [r7, #4]
+ 8001396:	4a0b      	ldr	r2, [pc, #44]	@ (80013c4 <HAL_TIM_PeriodElapsedCallback+0x44>)
+ 8001398:	4293      	cmp	r3, r2
+ 800139a:	d101      	bne.n	80013a0 <HAL_TIM_PeriodElapsedCallback+0x20>
+	{
+		App_Can_Send_Data();
+ 800139c:	f7ff ff62 	bl	8001264 <App_Can_Send_Data>
+	}
+	if(htim == &htim6)
+ 80013a0:	687b      	ldr	r3, [r7, #4]
+ 80013a2:	4a09      	ldr	r2, [pc, #36]	@ (80013c8 <HAL_TIM_PeriodElapsedCallback+0x48>)
+ 80013a4:	4293      	cmp	r3, r2
+ 80013a6:	d107      	bne.n	80013b8 <HAL_TIM_PeriodElapsedCallback+0x38>
+	{
+
+		App_Upate_Voltage_Current_Data();
+ 80013a8:	f000 f94e 	bl	8001648 <App_Upate_Voltage_Current_Data>
+
+		App_Update_Position_Sensor_Data();
+ 80013ac:	f000 f8b0 	bl	8001510 <App_Update_Position_Sensor_Data>
+
+		App_System_Safety_Monitor();
+ 80013b0:	f000 f966 	bl	8001680 <App_System_Safety_Monitor>
+
+		App_EMA_Commutation_Task();
+ 80013b4:	f000 f80a 	bl	80013cc <App_EMA_Commutation_Task>
+
+	}
+}
+ 80013b8:	bf00      	nop
+ 80013ba:	3708      	adds	r7, #8
+ 80013bc:	46bd      	mov	sp, r7
+ 80013be:	bd80      	pop	{r7, pc}
+ 80013c0:	20000d7c 	.word	0x20000d7c
+ 80013c4:	20000d30 	.word	0x20000d30
+ 80013c8:	20000c98 	.word	0x20000c98
+
+080013cc <App_EMA_Commutation_Task>:
  * 它消费运动规划层产生的 phase_increment，将其转化为 0~5 的六步换向扇区，
  * 并触发底层硬件进行实际的 PWM 切换。
  * 【执行上下文】：必须在控制环定时器中断中调用，且必须位于 App_EMA_Motion_Task() 之后！
  */
 void App_EMA_Commutation_Task(void)
 {
- 8001380:	e92d 4fb0 	stmdb	sp!, {r4, r5, r7, r8, r9, sl, fp, lr}
- 8001384:	b082      	sub	sp, #8
- 8001386:	af00      	add	r7, sp, #0
+ 80013cc:	e92d 4fb0 	stmdb	sp!, {r4, r5, r7, r8, r9, sl, fp, lr}
+ 80013d0:	b082      	sub	sp, #8
+ 80013d2:	af00      	add	r7, sp, #0
     /* ========================================================================== *
      * 1. NCO 相位累加器 (Phase Accumulator) 更新
      * ========================================================================== */
     /* 无论何种模式，都基于上一级状态机计算出的 phase_increment 进行累加/累减 */
     if (motor_direction == MOTOR_FORWARD)
- 8001388:	4945      	ldr	r1, [pc, #276]	@ (80014a0 <App_EMA_Commutation_Task+0x120>)
- 800138a:	7809      	ldrb	r1, [r1, #0]
- 800138c:	b2c9      	uxtb	r1, r1
- 800138e:	2901      	cmp	r1, #1
- 8001390:	d107      	bne.n	80013a2 <App_EMA_Commutation_Task+0x22>
+ 80013d4:	4945      	ldr	r1, [pc, #276]	@ (80014ec <App_EMA_Commutation_Task+0x120>)
+ 80013d6:	7809      	ldrb	r1, [r1, #0]
+ 80013d8:	b2c9      	uxtb	r1, r1
+ 80013da:	2901      	cmp	r1, #1
+ 80013dc:	d107      	bne.n	80013ee <App_EMA_Commutation_Task+0x22>
     {
         phase_accumulator += phase_increment;
- 8001392:	4944      	ldr	r1, [pc, #272]	@ (80014a4 <App_EMA_Commutation_Task+0x124>)
- 8001394:	6808      	ldr	r0, [r1, #0]
- 8001396:	4944      	ldr	r1, [pc, #272]	@ (80014a8 <App_EMA_Commutation_Task+0x128>)
- 8001398:	6809      	ldr	r1, [r1, #0]
- 800139a:	4401      	add	r1, r0
- 800139c:	4842      	ldr	r0, [pc, #264]	@ (80014a8 <App_EMA_Commutation_Task+0x128>)
- 800139e:	6001      	str	r1, [r0, #0]
- 80013a0:	e006      	b.n	80013b0 <App_EMA_Commutation_Task+0x30>
+ 80013de:	4944      	ldr	r1, [pc, #272]	@ (80014f0 <App_EMA_Commutation_Task+0x124>)
+ 80013e0:	6808      	ldr	r0, [r1, #0]
+ 80013e2:	4944      	ldr	r1, [pc, #272]	@ (80014f4 <App_EMA_Commutation_Task+0x128>)
+ 80013e4:	6809      	ldr	r1, [r1, #0]
+ 80013e6:	4401      	add	r1, r0
+ 80013e8:	4842      	ldr	r0, [pc, #264]	@ (80014f4 <App_EMA_Commutation_Task+0x128>)
+ 80013ea:	6001      	str	r1, [r0, #0]
+ 80013ec:	e006      	b.n	80013fc <App_EMA_Commutation_Task+0x30>
     }
     else
     {
         phase_accumulator -= phase_increment;
- 80013a2:	4940      	ldr	r1, [pc, #256]	@ (80014a4 <App_EMA_Commutation_Task+0x124>)
- 80013a4:	6809      	ldr	r1, [r1, #0]
- 80013a6:	4840      	ldr	r0, [pc, #256]	@ (80014a8 <App_EMA_Commutation_Task+0x128>)
- 80013a8:	6800      	ldr	r0, [r0, #0]
- 80013aa:	1a41      	subs	r1, r0, r1
- 80013ac:	483e      	ldr	r0, [pc, #248]	@ (80014a8 <App_EMA_Commutation_Task+0x128>)
- 80013ae:	6001      	str	r1, [r0, #0]
+ 80013ee:	4940      	ldr	r1, [pc, #256]	@ (80014f0 <App_EMA_Commutation_Task+0x124>)
+ 80013f0:	6809      	ldr	r1, [r1, #0]
+ 80013f2:	4840      	ldr	r0, [pc, #256]	@ (80014f4 <App_EMA_Commutation_Task+0x128>)
+ 80013f4:	6800      	ldr	r0, [r0, #0]
+ 80013f6:	1a41      	subs	r1, r0, r1
+ 80013f8:	483e      	ldr	r0, [pc, #248]	@ (80014f4 <App_EMA_Commutation_Task+0x128>)
+ 80013fa:	6001      	str	r1, [r0, #0]
     /* ========================================================================== *
      * 2. 相位到电气扇区 (0~5) 的高速映射
      * ========================================================================== */
     /* 【神级优化】：将 0x00000000 ~ 0xFFFFFFFF 的全量程等分成 6 份。
      * 使用 64 位整数乘法后右移 32 位，完美避开了耗时的浮点除法，单周期即可完成！ */
     uint8_t new_step = (uint8_t)(((uint64_t)phase_accumulator * 6) >> 32);
- 80013b0:	493d      	ldr	r1, [pc, #244]	@ (80014a8 <App_EMA_Commutation_Task+0x128>)
- 80013b2:	6809      	ldr	r1, [r1, #0]
- 80013b4:	2000      	movs	r0, #0
- 80013b6:	460c      	mov	r4, r1
- 80013b8:	4605      	mov	r5, r0
- 80013ba:	4620      	mov	r0, r4
- 80013bc:	4629      	mov	r1, r5
- 80013be:	eb10 0a00 	adds.w	sl, r0, r0
- 80013c2:	eb41 0b01 	adc.w	fp, r1, r1
- 80013c6:	4650      	mov	r0, sl
- 80013c8:	4659      	mov	r1, fp
- 80013ca:	1902      	adds	r2, r0, r4
- 80013cc:	eb41 0305 	adc.w	r3, r1, r5
- 80013d0:	eb12 0802 	adds.w	r8, r2, r2
- 80013d4:	eb43 0903 	adc.w	r9, r3, r3
- 80013d8:	4642      	mov	r2, r8
- 80013da:	464b      	mov	r3, r9
- 80013dc:	4610      	mov	r0, r2
- 80013de:	4619      	mov	r1, r3
- 80013e0:	f04f 0200 	mov.w	r2, #0
- 80013e4:	f04f 0300 	mov.w	r3, #0
- 80013e8:	000a      	movs	r2, r1
- 80013ea:	2300      	movs	r3, #0
- 80013ec:	4613      	mov	r3, r2
- 80013ee:	71fb      	strb	r3, [r7, #7]
+ 80013fc:	493d      	ldr	r1, [pc, #244]	@ (80014f4 <App_EMA_Commutation_Task+0x128>)
+ 80013fe:	6809      	ldr	r1, [r1, #0]
+ 8001400:	2000      	movs	r0, #0
+ 8001402:	460c      	mov	r4, r1
+ 8001404:	4605      	mov	r5, r0
+ 8001406:	4620      	mov	r0, r4
+ 8001408:	4629      	mov	r1, r5
+ 800140a:	eb10 0a00 	adds.w	sl, r0, r0
+ 800140e:	eb41 0b01 	adc.w	fp, r1, r1
+ 8001412:	4650      	mov	r0, sl
+ 8001414:	4659      	mov	r1, fp
+ 8001416:	1902      	adds	r2, r0, r4
+ 8001418:	eb41 0305 	adc.w	r3, r1, r5
+ 800141c:	eb12 0802 	adds.w	r8, r2, r2
+ 8001420:	eb43 0903 	adc.w	r9, r3, r3
+ 8001424:	4642      	mov	r2, r8
+ 8001426:	464b      	mov	r3, r9
+ 8001428:	4610      	mov	r0, r2
+ 800142a:	4619      	mov	r1, r3
+ 800142c:	f04f 0200 	mov.w	r2, #0
+ 8001430:	f04f 0300 	mov.w	r3, #0
+ 8001434:	000a      	movs	r2, r1
+ 8001436:	2300      	movs	r3, #0
+ 8001438:	4613      	mov	r3, r2
+ 800143a:	71fb      	strb	r3, [r7, #7]
 
     /* 安全钳位：虽然理论上右移不会超过 5，但为防位运算溢出做最后一道防线 */
     if (new_step > 5)
- 80013f0:	79fb      	ldrb	r3, [r7, #7]
- 80013f2:	2b05      	cmp	r3, #5
- 80013f4:	d901      	bls.n	80013fa <App_EMA_Commutation_Task+0x7a>
+ 800143c:	79fb      	ldrb	r3, [r7, #7]
+ 800143e:	2b05      	cmp	r3, #5
+ 8001440:	d901      	bls.n	8001446 <App_EMA_Commutation_Task+0x7a>
     {
         new_step = 5;
- 80013f6:	2305      	movs	r3, #5
- 80013f8:	71fb      	strb	r3, [r7, #7]
+ 8001442:	2305      	movs	r3, #5
+ 8001444:	71fb      	strb	r3, [r7, #7]
 
     /* ========================================================================== *
      * 3. 扇区跨越检测与硬件触发 (Edge Detection & Hardware Trigger)
      * ========================================================================== */
     /* 只有当计算出的扇区发生变化时，才进行底层硬件操作，避免无意义的频繁刷新 */
     if (step != new_step)
- 80013fa:	4b2c      	ldr	r3, [pc, #176]	@ (80014ac <App_EMA_Commutation_Task+0x12c>)
- 80013fc:	781b      	ldrb	r3, [r3, #0]
- 80013fe:	b2db      	uxtb	r3, r3
- 8001400:	79fa      	ldrb	r2, [r7, #7]
- 8001402:	429a      	cmp	r2, r3
- 8001404:	d046      	beq.n	8001494 <App_EMA_Commutation_Task+0x114>
+ 8001446:	4b2c      	ldr	r3, [pc, #176]	@ (80014f8 <App_EMA_Commutation_Task+0x12c>)
+ 8001448:	781b      	ldrb	r3, [r3, #0]
+ 800144a:	b2db      	uxtb	r3, r3
+ 800144c:	79fa      	ldrb	r2, [r7, #7]
+ 800144e:	429a      	cmp	r2, r3
+ 8001450:	d046      	beq.n	80014e0 <App_EMA_Commutation_Task+0x114>
     {
         /* [DEBUG] 翻转测试引脚，方便用示波器测量真实的换向频率和中断延迟 */
         HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
- 8001406:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
- 800140a:	4829      	ldr	r0, [pc, #164]	@ (80014b0 <App_EMA_Commutation_Task+0x130>)
- 800140c:	f005 fc18 	bl	8006c40 <HAL_GPIO_TogglePin>
+ 8001452:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
+ 8001456:	4829      	ldr	r0, [pc, #164]	@ (80014fc <App_EMA_Commutation_Task+0x130>)
+ 8001458:	f005 fbf2 	bl	8006c40 <HAL_GPIO_TogglePin>
 
         /* --------------------------------------------------- *
          * 3.1 完整电气周期结束检测 (用于平均功率计算)
          * --------------------------------------------------- */
         /* 同时捕捉正转 (5 -> 0) 和反转 (0 -> 5) 的过零点 */
         if ((step == 5 && new_step == 0) || (step == 0 && new_step == 5))
- 8001410:	4b26      	ldr	r3, [pc, #152]	@ (80014ac <App_EMA_Commutation_Task+0x12c>)
- 8001412:	781b      	ldrb	r3, [r3, #0]
- 8001414:	b2db      	uxtb	r3, r3
- 8001416:	2b05      	cmp	r3, #5
- 8001418:	d102      	bne.n	8001420 <App_EMA_Commutation_Task+0xa0>
- 800141a:	79fb      	ldrb	r3, [r7, #7]
- 800141c:	2b00      	cmp	r3, #0
- 800141e:	d007      	beq.n	8001430 <App_EMA_Commutation_Task+0xb0>
- 8001420:	4b22      	ldr	r3, [pc, #136]	@ (80014ac <App_EMA_Commutation_Task+0x12c>)
- 8001422:	781b      	ldrb	r3, [r3, #0]
- 8001424:	b2db      	uxtb	r3, r3
- 8001426:	2b00      	cmp	r3, #0
- 8001428:	d11b      	bne.n	8001462 <App_EMA_Commutation_Task+0xe2>
- 800142a:	79fb      	ldrb	r3, [r7, #7]
- 800142c:	2b05      	cmp	r3, #5
- 800142e:	d118      	bne.n	8001462 <App_EMA_Commutation_Task+0xe2>
+ 800145c:	4b26      	ldr	r3, [pc, #152]	@ (80014f8 <App_EMA_Commutation_Task+0x12c>)
+ 800145e:	781b      	ldrb	r3, [r3, #0]
+ 8001460:	b2db      	uxtb	r3, r3
+ 8001462:	2b05      	cmp	r3, #5
+ 8001464:	d102      	bne.n	800146c <App_EMA_Commutation_Task+0xa0>
+ 8001466:	79fb      	ldrb	r3, [r7, #7]
+ 8001468:	2b00      	cmp	r3, #0
+ 800146a:	d007      	beq.n	800147c <App_EMA_Commutation_Task+0xb0>
+ 800146c:	4b22      	ldr	r3, [pc, #136]	@ (80014f8 <App_EMA_Commutation_Task+0x12c>)
+ 800146e:	781b      	ldrb	r3, [r3, #0]
+ 8001470:	b2db      	uxtb	r3, r3
+ 8001472:	2b00      	cmp	r3, #0
+ 8001474:	d11b      	bne.n	80014ae <App_EMA_Commutation_Task+0xe2>
+ 8001476:	79fb      	ldrb	r3, [r7, #7]
+ 8001478:	2b05      	cmp	r3, #5
+ 800147a:	d118      	bne.n	80014ae <App_EMA_Commutation_Task+0xe2>
         {
             if (hv_power_sample_count > 0)
- 8001430:	4b20      	ldr	r3, [pc, #128]	@ (80014b4 <App_EMA_Commutation_Task+0x134>)
- 8001432:	681b      	ldr	r3, [r3, #0]
- 8001434:	2b00      	cmp	r3, #0
- 8001436:	d00d      	beq.n	8001454 <App_EMA_Commutation_Task+0xd4>
+ 800147c:	4b20      	ldr	r3, [pc, #128]	@ (8001500 <App_EMA_Commutation_Task+0x134>)
+ 800147e:	681b      	ldr	r3, [r3, #0]
+ 8001480:	2b00      	cmp	r3, #0
+ 8001482:	d00d      	beq.n	80014a0 <App_EMA_Commutation_Task+0xd4>
             {
                 /* 计算并更新上个完整电气周期的平均功率 */
                 last_hv_average_power_cycle = hv_power_accumulator / hv_power_sample_count;
- 8001438:	4b1f      	ldr	r3, [pc, #124]	@ (80014b8 <App_EMA_Commutation_Task+0x138>)
- 800143a:	edd3 6a00 	vldr	s13, [r3]
- 800143e:	4b1d      	ldr	r3, [pc, #116]	@ (80014b4 <App_EMA_Commutation_Task+0x134>)
- 8001440:	681b      	ldr	r3, [r3, #0]
- 8001442:	ee07 3a90 	vmov	s15, r3
- 8001446:	eeb8 7a67 	vcvt.f32.u32	s14, s15
- 800144a:	eec6 7a87 	vdiv.f32	s15, s13, s14
- 800144e:	4b1b      	ldr	r3, [pc, #108]	@ (80014bc <App_EMA_Commutation_Task+0x13c>)
- 8001450:	edc3 7a00 	vstr	s15, [r3]
+ 8001484:	4b1f      	ldr	r3, [pc, #124]	@ (8001504 <App_EMA_Commutation_Task+0x138>)
+ 8001486:	edd3 6a00 	vldr	s13, [r3]
+ 800148a:	4b1d      	ldr	r3, [pc, #116]	@ (8001500 <App_EMA_Commutation_Task+0x134>)
+ 800148c:	681b      	ldr	r3, [r3, #0]
+ 800148e:	ee07 3a90 	vmov	s15, r3
+ 8001492:	eeb8 7a67 	vcvt.f32.u32	s14, s15
+ 8001496:	eec6 7a87 	vdiv.f32	s15, s13, s14
+ 800149a:	4b1b      	ldr	r3, [pc, #108]	@ (8001508 <App_EMA_Commutation_Task+0x13c>)
+ 800149c:	edc3 7a00 	vstr	s15, [r3]
             }
 
             /* 重置累加器，为下一个电气周期做准备 */
             hv_power_accumulator = 0.0f;
- 8001454:	4b18      	ldr	r3, [pc, #96]	@ (80014b8 <App_EMA_Commutation_Task+0x138>)
- 8001456:	f04f 0200 	mov.w	r2, #0
- 800145a:	601a      	str	r2, [r3, #0]
+ 80014a0:	4b18      	ldr	r3, [pc, #96]	@ (8001504 <App_EMA_Commutation_Task+0x138>)
+ 80014a2:	f04f 0200 	mov.w	r2, #0
+ 80014a6:	601a      	str	r2, [r3, #0]
             hv_power_sample_count = 0;
- 800145c:	4b15      	ldr	r3, [pc, #84]	@ (80014b4 <App_EMA_Commutation_Task+0x134>)
- 800145e:	2200      	movs	r2, #0
- 8001460:	601a      	str	r2, [r3, #0]
+ 80014a8:	4b15      	ldr	r3, [pc, #84]	@ (8001500 <App_EMA_Commutation_Task+0x134>)
+ 80014aa:	2200      	movs	r2, #0
+ 80014ac:	601a      	str	r2, [r3, #0]
         }
 
         /* --------------------------------------------------- *
          * 3.2 更新绝对步进计数器 (全局物理位置的基础)
          * --------------------------------------------------- */
         if (motor_direction == MOTOR_FORWARD)
- 8001462:	4b0f      	ldr	r3, [pc, #60]	@ (80014a0 <App_EMA_Commutation_Task+0x120>)
- 8001464:	781b      	ldrb	r3, [r3, #0]
- 8001466:	b2db      	uxtb	r3, r3
- 8001468:	2b01      	cmp	r3, #1
- 800146a:	d105      	bne.n	8001478 <App_EMA_Commutation_Task+0xf8>
+ 80014ae:	4b0f      	ldr	r3, [pc, #60]	@ (80014ec <App_EMA_Commutation_Task+0x120>)
+ 80014b0:	781b      	ldrb	r3, [r3, #0]
+ 80014b2:	b2db      	uxtb	r3, r3
+ 80014b4:	2b01      	cmp	r3, #1
+ 80014b6:	d105      	bne.n	80014c4 <App_EMA_Commutation_Task+0xf8>
         {
             absolute_step_counter++;
- 800146c:	4b14      	ldr	r3, [pc, #80]	@ (80014c0 <App_EMA_Commutation_Task+0x140>)
- 800146e:	681b      	ldr	r3, [r3, #0]
- 8001470:	3301      	adds	r3, #1
- 8001472:	4a13      	ldr	r2, [pc, #76]	@ (80014c0 <App_EMA_Commutation_Task+0x140>)
- 8001474:	6013      	str	r3, [r2, #0]
- 8001476:	e004      	b.n	8001482 <App_EMA_Commutation_Task+0x102>
+ 80014b8:	4b14      	ldr	r3, [pc, #80]	@ (800150c <App_EMA_Commutation_Task+0x140>)
+ 80014ba:	681b      	ldr	r3, [r3, #0]
+ 80014bc:	3301      	adds	r3, #1
+ 80014be:	4a13      	ldr	r2, [pc, #76]	@ (800150c <App_EMA_Commutation_Task+0x140>)
+ 80014c0:	6013      	str	r3, [r2, #0]
+ 80014c2:	e004      	b.n	80014ce <App_EMA_Commutation_Task+0x102>
         }
         else
         {
             absolute_step_counter--;
- 8001478:	4b11      	ldr	r3, [pc, #68]	@ (80014c0 <App_EMA_Commutation_Task+0x140>)
- 800147a:	681b      	ldr	r3, [r3, #0]
- 800147c:	3b01      	subs	r3, #1
- 800147e:	4a10      	ldr	r2, [pc, #64]	@ (80014c0 <App_EMA_Commutation_Task+0x140>)
- 8001480:	6013      	str	r3, [r2, #0]
+ 80014c4:	4b11      	ldr	r3, [pc, #68]	@ (800150c <App_EMA_Commutation_Task+0x140>)
+ 80014c6:	681b      	ldr	r3, [r3, #0]
+ 80014c8:	3b01      	subs	r3, #1
+ 80014ca:	4a10      	ldr	r2, [pc, #64]	@ (800150c <App_EMA_Commutation_Task+0x140>)
+ 80014cc:	6013      	str	r3, [r2, #0]
         }
 
         /* --------------------------------------------------- *
          * 3.3 触发底层硬件执行换向
          * --------------------------------------------------- */
         step = new_step;         /* 更新全局当前步进状态 */
- 8001482:	4a0a      	ldr	r2, [pc, #40]	@ (80014ac <App_EMA_Commutation_Task+0x12c>)
- 8001484:	79fb      	ldrb	r3, [r7, #7]
- 8001486:	7013      	strb	r3, [r2, #0]
+ 80014ce:	4a0a      	ldr	r2, [pc, #40]	@ (80014f8 <App_EMA_Commutation_Task+0x12c>)
+ 80014d0:	79fb      	ldrb	r3, [r7, #7]
+ 80014d2:	7013      	strb	r3, [r2, #0]
         Update_output(step);     /* 【调用 BSP 层】真正改变 MOS 管的开关状态 */
- 8001488:	4b08      	ldr	r3, [pc, #32]	@ (80014ac <App_EMA_Commutation_Task+0x12c>)
- 800148a:	781b      	ldrb	r3, [r3, #0]
- 800148c:	b2db      	uxtb	r3, r3
- 800148e:	4618      	mov	r0, r3
- 8001490:	f00a fca8 	bl	800bde4 <Update_output>
+ 80014d4:	4b08      	ldr	r3, [pc, #32]	@ (80014f8 <App_EMA_Commutation_Task+0x12c>)
+ 80014d6:	781b      	ldrb	r3, [r3, #0]
+ 80014d8:	b2db      	uxtb	r3, r3
+ 80014da:	4618      	mov	r0, r3
+ 80014dc:	f00a fc82 	bl	800bde4 <Update_output>
     }
 }
- 8001494:	bf00      	nop
- 8001496:	3708      	adds	r7, #8
- 8001498:	46bd      	mov	sp, r7
- 800149a:	e8bd 8fb0 	ldmia.w	sp!, {r4, r5, r7, r8, r9, sl, fp, pc}
- 800149e:	bf00      	nop
- 80014a0:	20000000 	.word	0x20000000
- 80014a4:	20000224 	.word	0x20000224
- 80014a8:	20000220 	.word	0x20000220
- 80014ac:	20000228 	.word	0x20000228
- 80014b0:	48000800 	.word	0x48000800
- 80014b4:	20000230 	.word	0x20000230
- 80014b8:	2000022c 	.word	0x2000022c
- 80014bc:	20000234 	.word	0x20000234
- 80014c0:	20000238 	.word	0x20000238
+ 80014e0:	bf00      	nop
+ 80014e2:	3708      	adds	r7, #8
+ 80014e4:	46bd      	mov	sp, r7
+ 80014e6:	e8bd 8fb0 	ldmia.w	sp!, {r4, r5, r7, r8, r9, sl, fp, pc}
+ 80014ea:	bf00      	nop
+ 80014ec:	20000000 	.word	0x20000000
+ 80014f0:	20000220 	.word	0x20000220
+ 80014f4:	2000021c 	.word	0x2000021c
+ 80014f8:	20000224 	.word	0x20000224
+ 80014fc:	48000800 	.word	0x48000800
+ 8001500:	2000022c 	.word	0x2000022c
+ 8001504:	20000228 	.word	0x20000228
+ 8001508:	20000230 	.word	0x20000230
+ 800150c:	20000234 	.word	0x20000234
 
-080014c4 <App_Update_Position_Sensor_Data>:
+08001510 <App_Update_Position_Sensor_Data>:
  * @brief  更新电机位置与速度状态数据
  * @note   建议在控制主循环或高频定时器中断中周期性调用 (如 1kHz)。
  * 内部包含了对速度计算的 10 倍降频处理 (100Hz) 及一阶低通滤波。
  */
 void App_Update_Position_Sensor_Data(void)
 {
- 80014c4:	b580      	push	{r7, lr}
- 80014c6:	af00      	add	r7, sp, #0
+ 8001510:	b580      	push	{r7, lr}
+ 8001512:	af00      	add	r7, sp, #0
     /* 1. 触发 MID 层更新传感器数据
      * (APP 层把自己的偏置参数传给 MID 层算，但不管它是怎么去底层拿ADC的)
      */
     Mid_Encoder_Update(EMA_DATA.sin_offset, EMA_DATA.cos_offset);
- 80014c8:	4b47      	ldr	r3, [pc, #284]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80014ca:	edd3 7a05 	vldr	s15, [r3, #20]
- 80014ce:	4b46      	ldr	r3, [pc, #280]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80014d0:	ed93 7a06 	vldr	s14, [r3, #24]
- 80014d4:	eef0 0a47 	vmov.f32	s1, s14
- 80014d8:	eeb0 0a67 	vmov.f32	s0, s15
- 80014dc:	f00a fda2 	bl	800c024 <Mid_Encoder_Update>
+ 8001514:	4b47      	ldr	r3, [pc, #284]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 8001516:	edd3 7a05 	vldr	s15, [r3, #20]
+ 800151a:	4b46      	ldr	r3, [pc, #280]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 800151c:	ed93 7a06 	vldr	s14, [r3, #24]
+ 8001520:	eef0 0a47 	vmov.f32	s1, s14
+ 8001524:	eeb0 0a67 	vmov.f32	s0, s15
+ 8001528:	f00a fd7c 	bl	800c024 <Mid_Encoder_Update>
 
     /* 2. 直接从 MID 层拿走已经算好的、干干净净的角度和圈数！ */
     EMA_DATA.theta_degrees = Mid_Encoder_Get_Angle_Degrees();
- 80014e0:	f00a fe36 	bl	800c150 <Mid_Encoder_Get_Angle_Degrees>
- 80014e4:	eef0 7a40 	vmov.f32	s15, s0
- 80014e8:	4b3f      	ldr	r3, [pc, #252]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80014ea:	edc3 7a08 	vstr	s15, [r3, #32]
+ 800152c:	f00a fe10 	bl	800c150 <Mid_Encoder_Get_Angle_Degrees>
+ 8001530:	eef0 7a40 	vmov.f32	s15, s0
+ 8001534:	4b3f      	ldr	r3, [pc, #252]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 8001536:	edc3 7a08 	vstr	s15, [r3, #32]
     EMA_DATA.cycle_count   = Mid_Encoder_Get_Cycle_Count();
- 80014ee:	f00a fe3d 	bl	800c16c <Mid_Encoder_Get_Cycle_Count>
- 80014f2:	4603      	mov	r3, r0
- 80014f4:	4a3c      	ldr	r2, [pc, #240]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80014f6:	6293      	str	r3, [r2, #40]	@ 0x28
+ 800153a:	f00a fe17 	bl	800c16c <Mid_Encoder_Get_Cycle_Count>
+ 800153e:	4603      	mov	r3, r0
+ 8001540:	4a3c      	ldr	r2, [pc, #240]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 8001542:	6293      	str	r3, [r2, #40]	@ 0x28
 
     /* 3. 【APP 层专属业务】运动学转换：角度转直线位移 (极距 2.0mm) */
     EMA_DATA.current_displacement_within_cycle_mm = (EMA_DATA.theta_degrees / 360.0f) * 2.0f;
- 80014f8:	4b3b      	ldr	r3, [pc, #236]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80014fa:	ed93 7a08 	vldr	s14, [r3, #32]
- 80014fe:	eddf 6a3b 	vldr	s13, [pc, #236]	@ 80015ec <App_Update_Position_Sensor_Data+0x128>
- 8001502:	eec7 7a26 	vdiv.f32	s15, s14, s13
- 8001506:	ee77 7aa7 	vadd.f32	s15, s15, s15
- 800150a:	4b37      	ldr	r3, [pc, #220]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 800150c:	edc3 7a0b 	vstr	s15, [r3, #44]	@ 0x2c
+ 8001544:	4b3b      	ldr	r3, [pc, #236]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 8001546:	ed93 7a08 	vldr	s14, [r3, #32]
+ 800154a:	eddf 6a3b 	vldr	s13, [pc, #236]	@ 8001638 <App_Update_Position_Sensor_Data+0x128>
+ 800154e:	eec7 7a26 	vdiv.f32	s15, s14, s13
+ 8001552:	ee77 7aa7 	vadd.f32	s15, s15, s15
+ 8001556:	4b37      	ldr	r3, [pc, #220]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 8001558:	edc3 7a0b 	vstr	s15, [r3, #44]	@ 0x2c
 
     /* 4. 应用标定偏置，计算绝对物理位置 */
     if (EMA_DATA.Min_Max_cal_status == false)
- 8001510:	4b35      	ldr	r3, [pc, #212]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 8001512:	f893 304c 	ldrb.w	r3, [r3, #76]	@ 0x4c
- 8001516:	f083 0301 	eor.w	r3, r3, #1
- 800151a:	b2db      	uxtb	r3, r3
- 800151c:	2b00      	cmp	r3, #0
- 800151e:	d010      	beq.n	8001542 <App_Update_Position_Sensor_Data+0x7e>
+ 800155c:	4b35      	ldr	r3, [pc, #212]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 800155e:	f893 304c 	ldrb.w	r3, [r3, #76]	@ 0x4c
+ 8001562:	f083 0301 	eor.w	r3, r3, #1
+ 8001566:	b2db      	uxtb	r3, r3
+ 8001568:	2b00      	cmp	r3, #0
+ 800156a:	d010      	beq.n	800158e <App_Update_Position_Sensor_Data+0x7e>
     {
         EMA_DATA.position_mm = (float)EMA_DATA.cycle_count * 2.0f + EMA_DATA.current_displacement_within_cycle_mm;
- 8001520:	4b31      	ldr	r3, [pc, #196]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 8001522:	6a9b      	ldr	r3, [r3, #40]	@ 0x28
- 8001524:	ee07 3a90 	vmov	s15, r3
- 8001528:	eef8 7ae7 	vcvt.f32.s32	s15, s15
- 800152c:	ee37 7aa7 	vadd.f32	s14, s15, s15
- 8001530:	4b2d      	ldr	r3, [pc, #180]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 8001532:	edd3 7a0b 	vldr	s15, [r3, #44]	@ 0x2c
- 8001536:	ee77 7a27 	vadd.f32	s15, s14, s15
- 800153a:	4b2b      	ldr	r3, [pc, #172]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 800153c:	edc3 7a0c 	vstr	s15, [r3, #48]	@ 0x30
- 8001540:	e018      	b.n	8001574 <App_Update_Position_Sensor_Data+0xb0>
+ 800156c:	4b31      	ldr	r3, [pc, #196]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 800156e:	6a9b      	ldr	r3, [r3, #40]	@ 0x28
+ 8001570:	ee07 3a90 	vmov	s15, r3
+ 8001574:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+ 8001578:	ee37 7aa7 	vadd.f32	s14, s15, s15
+ 800157c:	4b2d      	ldr	r3, [pc, #180]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 800157e:	edd3 7a0b 	vldr	s15, [r3, #44]	@ 0x2c
+ 8001582:	ee77 7a27 	vadd.f32	s15, s14, s15
+ 8001586:	4b2b      	ldr	r3, [pc, #172]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 8001588:	edc3 7a0c 	vstr	s15, [r3, #48]	@ 0x30
+ 800158c:	e018      	b.n	80015c0 <App_Update_Position_Sensor_Data+0xb0>
     }
     else
     {
         EMA_DATA.position_mm = (float)EMA_DATA.cycle_count * 2.0f + EMA_DATA.current_displacement_within_cycle_mm - EMA_DATA.min_position_mm + 1.5f;
- 8001542:	4b29      	ldr	r3, [pc, #164]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 8001544:	6a9b      	ldr	r3, [r3, #40]	@ 0x28
- 8001546:	ee07 3a90 	vmov	s15, r3
- 800154a:	eef8 7ae7 	vcvt.f32.s32	s15, s15
- 800154e:	ee37 7aa7 	vadd.f32	s14, s15, s15
- 8001552:	4b25      	ldr	r3, [pc, #148]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 8001554:	edd3 7a0b 	vldr	s15, [r3, #44]	@ 0x2c
- 8001558:	ee37 7a27 	vadd.f32	s14, s14, s15
- 800155c:	4b22      	ldr	r3, [pc, #136]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 800155e:	edd3 7a10 	vldr	s15, [r3, #64]	@ 0x40
- 8001562:	ee77 7a67 	vsub.f32	s15, s14, s15
- 8001566:	eeb7 7a08 	vmov.f32	s14, #120	@ 0x3fc00000  1.5
- 800156a:	ee77 7a87 	vadd.f32	s15, s15, s14
- 800156e:	4b1e      	ldr	r3, [pc, #120]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 8001570:	edc3 7a0c 	vstr	s15, [r3, #48]	@ 0x30
+ 800158e:	4b29      	ldr	r3, [pc, #164]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 8001590:	6a9b      	ldr	r3, [r3, #40]	@ 0x28
+ 8001592:	ee07 3a90 	vmov	s15, r3
+ 8001596:	eef8 7ae7 	vcvt.f32.s32	s15, s15
+ 800159a:	ee37 7aa7 	vadd.f32	s14, s15, s15
+ 800159e:	4b25      	ldr	r3, [pc, #148]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 80015a0:	edd3 7a0b 	vldr	s15, [r3, #44]	@ 0x2c
+ 80015a4:	ee37 7a27 	vadd.f32	s14, s14, s15
+ 80015a8:	4b22      	ldr	r3, [pc, #136]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 80015aa:	edd3 7a10 	vldr	s15, [r3, #64]	@ 0x40
+ 80015ae:	ee77 7a67 	vsub.f32	s15, s14, s15
+ 80015b2:	eeb7 7a08 	vmov.f32	s14, #120	@ 0x3fc00000  1.5
+ 80015b6:	ee77 7a87 	vadd.f32	s15, s15, s14
+ 80015ba:	4b1e      	ldr	r3, [pc, #120]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 80015bc:	edc3 7a0c 	vstr	s15, [r3, #48]	@ 0x30
     }
 
     /* 5. 降频计算物理速度与滤波 */
     EMA_DATA.Loop_count++;
- 8001574:	4b1c      	ldr	r3, [pc, #112]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 8001576:	789b      	ldrb	r3, [r3, #2]
- 8001578:	3301      	adds	r3, #1
- 800157a:	b2da      	uxtb	r2, r3
- 800157c:	4b1a      	ldr	r3, [pc, #104]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 800157e:	709a      	strb	r2, [r3, #2]
+ 80015c0:	4b1c      	ldr	r3, [pc, #112]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 80015c2:	789b      	ldrb	r3, [r3, #2]
+ 80015c4:	3301      	adds	r3, #1
+ 80015c6:	b2da      	uxtb	r2, r3
+ 80015c8:	4b1a      	ldr	r3, [pc, #104]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 80015ca:	709a      	strb	r2, [r3, #2]
     if (EMA_DATA.Loop_count >= 10)
- 8001580:	4b19      	ldr	r3, [pc, #100]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 8001582:	789b      	ldrb	r3, [r3, #2]
- 8001584:	2b09      	cmp	r3, #9
- 8001586:	d92c      	bls.n	80015e2 <App_Update_Position_Sensor_Data+0x11e>
+ 80015cc:	4b19      	ldr	r3, [pc, #100]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 80015ce:	789b      	ldrb	r3, [r3, #2]
+ 80015d0:	2b09      	cmp	r3, #9
+ 80015d2:	d92c      	bls.n	800162e <App_Update_Position_Sensor_Data+0x11e>
     {
         /* 1kHz 下降频 10 次为 100Hz，dt = 0.01s */
         EMA_DATA.speed = (EMA_DATA.position_mm - EMA_DATA.Last_position_mm) / 0.01f;
- 8001588:	4b17      	ldr	r3, [pc, #92]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 800158a:	ed93 7a0c 	vldr	s14, [r3, #48]	@ 0x30
- 800158e:	4b16      	ldr	r3, [pc, #88]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 8001590:	edd3 7a0d 	vldr	s15, [r3, #52]	@ 0x34
- 8001594:	ee37 7a67 	vsub.f32	s14, s14, s15
- 8001598:	eddf 6a15 	vldr	s13, [pc, #84]	@ 80015f0 <App_Update_Position_Sensor_Data+0x12c>
- 800159c:	eec7 7a26 	vdiv.f32	s15, s14, s13
- 80015a0:	4b11      	ldr	r3, [pc, #68]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80015a2:	edc3 7a0e 	vstr	s15, [r3, #56]	@ 0x38
+ 80015d4:	4b17      	ldr	r3, [pc, #92]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 80015d6:	ed93 7a0c 	vldr	s14, [r3, #48]	@ 0x30
+ 80015da:	4b16      	ldr	r3, [pc, #88]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 80015dc:	edd3 7a0d 	vldr	s15, [r3, #52]	@ 0x34
+ 80015e0:	ee37 7a67 	vsub.f32	s14, s14, s15
+ 80015e4:	eddf 6a15 	vldr	s13, [pc, #84]	@ 800163c <App_Update_Position_Sensor_Data+0x12c>
+ 80015e8:	eec7 7a26 	vdiv.f32	s15, s14, s13
+ 80015ec:	4b11      	ldr	r3, [pc, #68]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 80015ee:	edc3 7a0e 	vstr	s15, [r3, #56]	@ 0x38
 
         /* 一阶低通滤波 (当前权重 0.8，历史权重 0.2) */
         EMA_DATA.speed = 0.8f * EMA_DATA.speed + 0.2f * EMA_DATA.Last_speed;
- 80015a6:	4b10      	ldr	r3, [pc, #64]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80015a8:	edd3 7a0e 	vldr	s15, [r3, #56]	@ 0x38
- 80015ac:	ed9f 7a11 	vldr	s14, [pc, #68]	@ 80015f4 <App_Update_Position_Sensor_Data+0x130>
- 80015b0:	ee27 7a87 	vmul.f32	s14, s15, s14
- 80015b4:	4b0c      	ldr	r3, [pc, #48]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80015b6:	edd3 7a0f 	vldr	s15, [r3, #60]	@ 0x3c
- 80015ba:	eddf 6a0f 	vldr	s13, [pc, #60]	@ 80015f8 <App_Update_Position_Sensor_Data+0x134>
- 80015be:	ee67 7aa6 	vmul.f32	s15, s15, s13
- 80015c2:	ee77 7a27 	vadd.f32	s15, s14, s15
- 80015c6:	4b08      	ldr	r3, [pc, #32]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80015c8:	edc3 7a0e 	vstr	s15, [r3, #56]	@ 0x38
+ 80015f2:	4b10      	ldr	r3, [pc, #64]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 80015f4:	edd3 7a0e 	vldr	s15, [r3, #56]	@ 0x38
+ 80015f8:	ed9f 7a11 	vldr	s14, [pc, #68]	@ 8001640 <App_Update_Position_Sensor_Data+0x130>
+ 80015fc:	ee27 7a87 	vmul.f32	s14, s15, s14
+ 8001600:	4b0c      	ldr	r3, [pc, #48]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 8001602:	edd3 7a0f 	vldr	s15, [r3, #60]	@ 0x3c
+ 8001606:	eddf 6a0f 	vldr	s13, [pc, #60]	@ 8001644 <App_Update_Position_Sensor_Data+0x134>
+ 800160a:	ee67 7aa6 	vmul.f32	s15, s15, s13
+ 800160e:	ee77 7a27 	vadd.f32	s15, s14, s15
+ 8001612:	4b08      	ldr	r3, [pc, #32]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 8001614:	edc3 7a0e 	vstr	s15, [r3, #56]	@ 0x38
 
         /* 更新历史状态 */
         EMA_DATA.Last_speed = EMA_DATA.speed;
- 80015cc:	4b06      	ldr	r3, [pc, #24]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80015ce:	6b9b      	ldr	r3, [r3, #56]	@ 0x38
- 80015d0:	4a05      	ldr	r2, [pc, #20]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80015d2:	63d3      	str	r3, [r2, #60]	@ 0x3c
+ 8001618:	4b06      	ldr	r3, [pc, #24]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 800161a:	6b9b      	ldr	r3, [r3, #56]	@ 0x38
+ 800161c:	4a05      	ldr	r2, [pc, #20]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 800161e:	63d3      	str	r3, [r2, #60]	@ 0x3c
         EMA_DATA.Last_position_mm = EMA_DATA.position_mm;
- 80015d4:	4b04      	ldr	r3, [pc, #16]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80015d6:	6b1b      	ldr	r3, [r3, #48]	@ 0x30
- 80015d8:	4a03      	ldr	r2, [pc, #12]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80015da:	6353      	str	r3, [r2, #52]	@ 0x34
+ 8001620:	4b04      	ldr	r3, [pc, #16]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 8001622:	6b1b      	ldr	r3, [r3, #48]	@ 0x30
+ 8001624:	4a03      	ldr	r2, [pc, #12]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 8001626:	6353      	str	r3, [r2, #52]	@ 0x34
 
         /* 清零降频计数器 */
         EMA_DATA.Loop_count = 0;
- 80015dc:	4b02      	ldr	r3, [pc, #8]	@ (80015e8 <App_Update_Position_Sensor_Data+0x124>)
- 80015de:	2200      	movs	r2, #0
- 80015e0:	709a      	strb	r2, [r3, #2]
+ 8001628:	4b02      	ldr	r3, [pc, #8]	@ (8001634 <App_Update_Position_Sensor_Data+0x124>)
+ 800162a:	2200      	movs	r2, #0
+ 800162c:	709a      	strb	r2, [r3, #2]
     }
 }
- 80015e2:	bf00      	nop
- 80015e4:	bd80      	pop	{r7, pc}
- 80015e6:	bf00      	nop
- 80015e8:	200008cc 	.word	0x200008cc
- 80015ec:	43b40000 	.word	0x43b40000
- 80015f0:	3c23d70a 	.word	0x3c23d70a
- 80015f4:	3f4ccccd 	.word	0x3f4ccccd
- 80015f8:	3e4ccccd 	.word	0x3e4ccccd
+ 800162e:	bf00      	nop
+ 8001630:	bd80      	pop	{r7, pc}
+ 8001632:	bf00      	nop
+ 8001634:	200008c4 	.word	0x200008c4
+ 8001638:	43b40000 	.word	0x43b40000
+ 800163c:	3c23d70a 	.word	0x3c23d70a
+ 8001640:	3f4ccccd 	.word	0x3f4ccccd
+ 8001644:	3e4ccccd 	.word	0x3e4ccccd
 
-080015fc <App_Upate_Voltage_Current_Data>:
+08001648 <App_Upate_Voltage_Current_Data>:
 // 2. 算法工作变量
 uint16_t window_sample_counter = 0;   // 用于在窗口内计数的采样点计数器 (从0数到CHECK_WINDOW_SAMPLES)
 uint16_t spike_count_in_window = 0;   // 用于累计一个窗口期内的尖峰次数
 
 void App_Upate_Voltage_Current_Data(void)
 {
- 80015fc:	b580      	push	{r7, lr}
- 80015fe:	af00      	add	r7, sp, #0
+ 8001648:	b580      	push	{r7, lr}
+ 800164a:	af00      	add	r7, sp, #0
 	EMA_DATA.Hv_V_V = Mid_Get_Hv_V();
- 8001600:	f009 fdc6 	bl	800b190 <Mid_Get_Hv_V>
- 8001604:	eef0 7a40 	vmov.f32	s15, s0
- 8001608:	4b09      	ldr	r3, [pc, #36]	@ (8001630 <App_Upate_Voltage_Current_Data+0x34>)
- 800160a:	edc3 7a1b 	vstr	s15, [r3, #108]	@ 0x6c
+ 800164c:	f009 fda0 	bl	800b190 <Mid_Get_Hv_V>
+ 8001650:	eef0 7a40 	vmov.f32	s15, s0
+ 8001654:	4b09      	ldr	r3, [pc, #36]	@ (800167c <App_Upate_Voltage_Current_Data+0x34>)
+ 8001656:	edc3 7a1b 	vstr	s15, [r3, #108]	@ 0x6c
 	EMA_DATA.Hv_I_uA = Mid_Get_Hi_uA();
- 800160e:	f009 fddf 	bl	800b1d0 <Mid_Get_Hi_uA>
- 8001612:	eef0 7a40 	vmov.f32	s15, s0
- 8001616:	4b06      	ldr	r3, [pc, #24]	@ (8001630 <App_Upate_Voltage_Current_Data+0x34>)
- 8001618:	edc3 7a1c 	vstr	s15, [r3, #112]	@ 0x70
+ 800165a:	f009 fdb9 	bl	800b1d0 <Mid_Get_Hi_uA>
+ 800165e:	eef0 7a40 	vmov.f32	s15, s0
+ 8001662:	4b06      	ldr	r3, [pc, #24]	@ (800167c <App_Upate_Voltage_Current_Data+0x34>)
+ 8001664:	edc3 7a1c 	vstr	s15, [r3, #112]	@ 0x70
 	EMA_DATA.Dc_I_A = Mid_Get_Dc_I_A();
- 800161c:	f009 fdf8 	bl	800b210 <Mid_Get_Dc_I_A>
- 8001620:	eef0 7a40 	vmov.f32	s15, s0
- 8001624:	4b02      	ldr	r3, [pc, #8]	@ (8001630 <App_Upate_Voltage_Current_Data+0x34>)
- 8001626:	edc3 7a1d 	vstr	s15, [r3, #116]	@ 0x74
+ 8001668:	f009 fdd2 	bl	800b210 <Mid_Get_Dc_I_A>
+ 800166c:	eef0 7a40 	vmov.f32	s15, s0
+ 8001670:	4b02      	ldr	r3, [pc, #8]	@ (800167c <App_Upate_Voltage_Current_Data+0x34>)
+ 8001672:	edc3 7a1d 	vstr	s15, [r3, #116]	@ 0x74
 }
- 800162a:	bf00      	nop
- 800162c:	bd80      	pop	{r7, pc}
- 800162e:	bf00      	nop
- 8001630:	200008cc 	.word	0x200008cc
+ 8001676:	bf00      	nop
+ 8001678:	bd80      	pop	{r7, pc}
+ 800167a:	bf00      	nop
+ 800167c:	200008c4 	.word	0x200008c4
 
-08001634 <App_System_Safety_Monitor>:
+08001680 <App_System_Safety_Monitor>:
  * @note   负责监控高压母线与低压供电的电压/电流状态。
  * 包含滑动窗口滤波的软保护 (防误触)，以及绝对阈值的硬保护 (极速熔断)。
  * 建议在控制主循环或高频定时器任务中周期调用 (如 1kHz)。
  */
 void App_System_Safety_Monitor(void)
 {
- 8001634:	b580      	push	{r7, lr}
- 8001636:	af00      	add	r7, sp, #0
+ 8001680:	b580      	push	{r7, lr}
+ 8001682:	af00      	add	r7, sp, #0
     /* ========================================================================== *
      * 1. 软过流保护：滑动窗口尖峰计数 (针对瞬态干扰或早期过流的防误触设计)
      * ========================================================================== */
 
     /* 1.1 检查当前电流是否形成了一次尖峰 */
     if (EMA_DATA.Hv_I_uA > SPIKE_CURRENT_THRESHOLD)
- 8001638:	4b3e      	ldr	r3, [pc, #248]	@ (8001734 <App_System_Safety_Monitor+0x100>)
- 800163a:	edd3 7a1c 	vldr	s15, [r3, #112]	@ 0x70
- 800163e:	eeb3 7a00 	vmov.f32	s14, #48	@ 0x41800000  16.0
- 8001642:	eef4 7ac7 	vcmpe.f32	s15, s14
- 8001646:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 800164a:	dd05      	ble.n	8001658 <App_System_Safety_Monitor+0x24>
+ 8001684:	4b3e      	ldr	r3, [pc, #248]	@ (8001780 <App_System_Safety_Monitor+0x100>)
+ 8001686:	edd3 7a1c 	vldr	s15, [r3, #112]	@ 0x70
+ 800168a:	eeb3 7a00 	vmov.f32	s14, #48	@ 0x41800000  16.0
+ 800168e:	eef4 7ac7 	vcmpe.f32	s15, s14
+ 8001692:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 8001696:	dd05      	ble.n	80016a4 <App_System_Safety_Monitor+0x24>
     {
         spike_count_in_window++;
- 800164c:	4b3a      	ldr	r3, [pc, #232]	@ (8001738 <App_System_Safety_Monitor+0x104>)
- 800164e:	881b      	ldrh	r3, [r3, #0]
- 8001650:	3301      	adds	r3, #1
- 8001652:	b29a      	uxth	r2, r3
- 8001654:	4b38      	ldr	r3, [pc, #224]	@ (8001738 <App_System_Safety_Monitor+0x104>)
- 8001656:	801a      	strh	r2, [r3, #0]
+ 8001698:	4b3a      	ldr	r3, [pc, #232]	@ (8001784 <App_System_Safety_Monitor+0x104>)
+ 800169a:	881b      	ldrh	r3, [r3, #0]
+ 800169c:	3301      	adds	r3, #1
+ 800169e:	b29a      	uxth	r2, r3
+ 80016a0:	4b38      	ldr	r3, [pc, #224]	@ (8001784 <App_System_Safety_Monitor+0x104>)
+ 80016a2:	801a      	strh	r2, [r3, #0]
     }
 
     /* 1.2 采样点计数器自增 */
     window_sample_counter++;
- 8001658:	4b38      	ldr	r3, [pc, #224]	@ (800173c <App_System_Safety_Monitor+0x108>)
- 800165a:	881b      	ldrh	r3, [r3, #0]
- 800165c:	3301      	adds	r3, #1
- 800165e:	b29a      	uxth	r2, r3
- 8001660:	4b36      	ldr	r3, [pc, #216]	@ (800173c <App_System_Safety_Monitor+0x108>)
- 8001662:	801a      	strh	r2, [r3, #0]
+ 80016a4:	4b38      	ldr	r3, [pc, #224]	@ (8001788 <App_System_Safety_Monitor+0x108>)
+ 80016a6:	881b      	ldrh	r3, [r3, #0]
+ 80016a8:	3301      	adds	r3, #1
+ 80016aa:	b29a      	uxth	r2, r3
+ 80016ac:	4b36      	ldr	r3, [pc, #216]	@ (8001788 <App_System_Safety_Monitor+0x108>)
+ 80016ae:	801a      	strh	r2, [r3, #0]
 
     /* 1.3 判断一个检查窗口是否已经结束 */
     if (window_sample_counter >= CHECK_WINDOW_SAMPLES)
- 8001664:	4b35      	ldr	r3, [pc, #212]	@ (800173c <App_System_Safety_Monitor+0x108>)
- 8001666:	881b      	ldrh	r3, [r3, #0]
- 8001668:	223c      	movs	r2, #60	@ 0x3c
- 800166a:	4293      	cmp	r3, r2
- 800166c:	d316      	bcc.n	800169c <App_System_Safety_Monitor+0x68>
+ 80016b0:	4b35      	ldr	r3, [pc, #212]	@ (8001788 <App_System_Safety_Monitor+0x108>)
+ 80016b2:	881b      	ldrh	r3, [r3, #0]
+ 80016b4:	223c      	movs	r2, #60	@ 0x3c
+ 80016b6:	4293      	cmp	r3, r2
+ 80016b8:	d316      	bcc.n	80016e8 <App_System_Safety_Monitor+0x68>
     {
         /* 窗口结束，进行故障判定 */
         if (spike_count_in_window > MAX_SPIKES_IN_WINDOW)
- 800166e:	4b32      	ldr	r3, [pc, #200]	@ (8001738 <App_System_Safety_Monitor+0x104>)
- 8001670:	881b      	ldrh	r3, [r3, #0]
- 8001672:	2232      	movs	r2, #50	@ 0x32
- 8001674:	4293      	cmp	r3, r2
- 8001676:	d90b      	bls.n	8001690 <App_System_Safety_Monitor+0x5c>
+ 80016ba:	4b32      	ldr	r3, [pc, #200]	@ (8001784 <App_System_Safety_Monitor+0x104>)
+ 80016bc:	881b      	ldrh	r3, [r3, #0]
+ 80016be:	2232      	movs	r2, #50	@ 0x32
+ 80016c0:	4293      	cmp	r3, r2
+ 80016c2:	d90b      	bls.n	80016dc <App_System_Safety_Monitor+0x5c>
         {
             /* 在过去的 N 个采样点中，尖峰次数过多，判定为真实过流故障！ */
             EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;
- 8001678:	4b2e      	ldr	r3, [pc, #184]	@ (8001734 <App_System_Safety_Monitor+0x100>)
- 800167a:	220b      	movs	r2, #11
- 800167c:	701a      	strb	r2, [r3, #0]
+ 80016c4:	4b2e      	ldr	r3, [pc, #184]	@ (8001780 <App_System_Safety_Monitor+0x100>)
+ 80016c6:	220b      	movs	r2, #11
+ 80016c8:	701a      	strb	r2, [r3, #0]
 
             /* 紧急安全序列 */
             Close_output();         /* 1. 封锁 PWM 输出 */
- 800167e:	f00a fb85 	bl	800bd8c <Close_output>
+ 80016ca:	f00a fb5f 	bl	800bd8c <Close_output>
             DC_Power_CTR(false);    /* 2. 切断高压 DCDC 电源 */
- 8001682:	2000      	movs	r0, #0
- 8001684:	f00a fb5e 	bl	800bd44 <DC_Power_CTR>
+ 80016ce:	2000      	movs	r0, #0
+ 80016d0:	f00a fb38 	bl	800bd44 <DC_Power_CTR>
             Buzzer_ON;              /* 3. 蜂鸣器报警 */
- 8001688:	2100      	movs	r1, #0
- 800168a:	482d      	ldr	r0, [pc, #180]	@ (8001740 <App_System_Safety_Monitor+0x10c>)
- 800168c:	f006 fcba 	bl	8008004 <HAL_TIM_PWM_Start>
+ 80016d4:	2100      	movs	r1, #0
+ 80016d6:	482d      	ldr	r0, [pc, #180]	@ (800178c <App_System_Safety_Monitor+0x10c>)
+ 80016d8:	f006 fc94 	bl	8008004 <HAL_TIM_PWM_Start>
         }
 
         /* 1.4 重置计数器，为下一个检查窗口做准备 */
         window_sample_counter = 0;
- 8001690:	4b2a      	ldr	r3, [pc, #168]	@ (800173c <App_System_Safety_Monitor+0x108>)
- 8001692:	2200      	movs	r2, #0
- 8001694:	801a      	strh	r2, [r3, #0]
+ 80016dc:	4b2a      	ldr	r3, [pc, #168]	@ (8001788 <App_System_Safety_Monitor+0x108>)
+ 80016de:	2200      	movs	r2, #0
+ 80016e0:	801a      	strh	r2, [r3, #0]
         spike_count_in_window = 0;
- 8001696:	4b28      	ldr	r3, [pc, #160]	@ (8001738 <App_System_Safety_Monitor+0x104>)
- 8001698:	2200      	movs	r2, #0
- 800169a:	801a      	strh	r2, [r3, #0]
+ 80016e2:	4b28      	ldr	r3, [pc, #160]	@ (8001784 <App_System_Safety_Monitor+0x104>)
+ 80016e4:	2200      	movs	r2, #0
+ 80016e6:	801a      	strh	r2, [r3, #0]
     /* ========================================================================== *
      * 2. 硬件级绝对阈值保护：实时拦截 (针对严重短路或失控)
      * ========================================================================== */
 
     /* 2.1 高压母线过压保护 */
     if (EMA_DATA.Hv_V_V > MAX_HV_voltage)
- 800169c:	4b25      	ldr	r3, [pc, #148]	@ (8001734 <App_System_Safety_Monitor+0x100>)
- 800169e:	ed93 7a1b 	vldr	s14, [r3, #108]	@ 0x6c
- 80016a2:	4b28      	ldr	r3, [pc, #160]	@ (8001744 <App_System_Safety_Monitor+0x110>)
- 80016a4:	edd3 7a00 	vldr	s15, [r3]
- 80016a8:	eeb4 7ae7 	vcmpe.f32	s14, s15
- 80016ac:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 80016b0:	dd0b      	ble.n	80016ca <App_System_Safety_Monitor+0x96>
+ 80016e8:	4b25      	ldr	r3, [pc, #148]	@ (8001780 <App_System_Safety_Monitor+0x100>)
+ 80016ea:	ed93 7a1b 	vldr	s14, [r3, #108]	@ 0x6c
+ 80016ee:	4b28      	ldr	r3, [pc, #160]	@ (8001790 <App_System_Safety_Monitor+0x110>)
+ 80016f0:	edd3 7a00 	vldr	s15, [r3]
+ 80016f4:	eeb4 7ae7 	vcmpe.f32	s14, s15
+ 80016f8:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 80016fc:	dd0b      	ble.n	8001716 <App_System_Safety_Monitor+0x96>
     {
         EMA_DATA.Motor_mode = MOTOR_OVER_HV_VOLTAGE;
- 80016b2:	4b20      	ldr	r3, [pc, #128]	@ (8001734 <App_System_Safety_Monitor+0x100>)
- 80016b4:	220c      	movs	r2, #12
- 80016b6:	701a      	strb	r2, [r3, #0]
+ 80016fe:	4b20      	ldr	r3, [pc, #128]	@ (8001780 <App_System_Safety_Monitor+0x100>)
+ 8001700:	220c      	movs	r2, #12
+ 8001702:	701a      	strb	r2, [r3, #0]
         Close_output();
- 80016b8:	f00a fb68 	bl	800bd8c <Close_output>
+ 8001704:	f00a fb42 	bl	800bd8c <Close_output>
         DC_Power_CTR(false);
- 80016bc:	2000      	movs	r0, #0
- 80016be:	f00a fb41 	bl	800bd44 <DC_Power_CTR>
+ 8001708:	2000      	movs	r0, #0
+ 800170a:	f00a fb1b 	bl	800bd44 <DC_Power_CTR>
         Buzzer_ON;
- 80016c2:	2100      	movs	r1, #0
- 80016c4:	481e      	ldr	r0, [pc, #120]	@ (8001740 <App_System_Safety_Monitor+0x10c>)
- 80016c6:	f006 fc9d 	bl	8008004 <HAL_TIM_PWM_Start>
+ 800170e:	2100      	movs	r1, #0
+ 8001710:	481e      	ldr	r0, [pc, #120]	@ (800178c <App_System_Safety_Monitor+0x10c>)
+ 8001712:	f006 fc77 	bl	8008004 <HAL_TIM_PWM_Start>
     }
 
     /* 2.2 高压母线严重过流保护 (阈值为常规额定值的 3 倍) */
     if (EMA_DATA.Hv_I_uA > (MAX_HV_current * 3.0f))
- 80016ca:	4b1a      	ldr	r3, [pc, #104]	@ (8001734 <App_System_Safety_Monitor+0x100>)
- 80016cc:	ed93 7a1c 	vldr	s14, [r3, #112]	@ 0x70
- 80016d0:	4b1d      	ldr	r3, [pc, #116]	@ (8001748 <App_System_Safety_Monitor+0x114>)
- 80016d2:	edd3 7a00 	vldr	s15, [r3]
- 80016d6:	eef0 6a08 	vmov.f32	s13, #8	@ 0x40400000  3.0
- 80016da:	ee67 7aa6 	vmul.f32	s15, s15, s13
- 80016de:	eeb4 7ae7 	vcmpe.f32	s14, s15
- 80016e2:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 80016e6:	dd0b      	ble.n	8001700 <App_System_Safety_Monitor+0xcc>
+ 8001716:	4b1a      	ldr	r3, [pc, #104]	@ (8001780 <App_System_Safety_Monitor+0x100>)
+ 8001718:	ed93 7a1c 	vldr	s14, [r3, #112]	@ 0x70
+ 800171c:	4b1d      	ldr	r3, [pc, #116]	@ (8001794 <App_System_Safety_Monitor+0x114>)
+ 800171e:	edd3 7a00 	vldr	s15, [r3]
+ 8001722:	eef0 6a08 	vmov.f32	s13, #8	@ 0x40400000  3.0
+ 8001726:	ee67 7aa6 	vmul.f32	s15, s15, s13
+ 800172a:	eeb4 7ae7 	vcmpe.f32	s14, s15
+ 800172e:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 8001732:	dd0b      	ble.n	800174c <App_System_Safety_Monitor+0xcc>
     {
         EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;
- 80016e8:	4b12      	ldr	r3, [pc, #72]	@ (8001734 <App_System_Safety_Monitor+0x100>)
- 80016ea:	220b      	movs	r2, #11
- 80016ec:	701a      	strb	r2, [r3, #0]
+ 8001734:	4b12      	ldr	r3, [pc, #72]	@ (8001780 <App_System_Safety_Monitor+0x100>)
+ 8001736:	220b      	movs	r2, #11
+ 8001738:	701a      	strb	r2, [r3, #0]
         Close_output();
- 80016ee:	f00a fb4d 	bl	800bd8c <Close_output>
+ 800173a:	f00a fb27 	bl	800bd8c <Close_output>
         DC_Power_CTR(false);
- 80016f2:	2000      	movs	r0, #0
- 80016f4:	f00a fb26 	bl	800bd44 <DC_Power_CTR>
+ 800173e:	2000      	movs	r0, #0
+ 8001740:	f00a fb00 	bl	800bd44 <DC_Power_CTR>
         Buzzer_ON;
- 80016f8:	2100      	movs	r1, #0
- 80016fa:	4811      	ldr	r0, [pc, #68]	@ (8001740 <App_System_Safety_Monitor+0x10c>)
- 80016fc:	f006 fc82 	bl	8008004 <HAL_TIM_PWM_Start>
+ 8001744:	2100      	movs	r1, #0
+ 8001746:	4811      	ldr	r0, [pc, #68]	@ (800178c <App_System_Safety_Monitor+0x10c>)
+ 8001748:	f006 fc5c 	bl	8008004 <HAL_TIM_PWM_Start>
     }
 
     /* 2.3 低压直流输入过流保护 */
     if (EMA_DATA.Dc_I_A > MAX_DC_current)
- 8001700:	4b0c      	ldr	r3, [pc, #48]	@ (8001734 <App_System_Safety_Monitor+0x100>)
- 8001702:	ed93 7a1d 	vldr	s14, [r3, #116]	@ 0x74
- 8001706:	4b11      	ldr	r3, [pc, #68]	@ (800174c <App_System_Safety_Monitor+0x118>)
- 8001708:	edd3 7a00 	vldr	s15, [r3]
- 800170c:	eeb4 7ae7 	vcmpe.f32	s14, s15
- 8001710:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 8001714:	dc00      	bgt.n	8001718 <App_System_Safety_Monitor+0xe4>
+ 800174c:	4b0c      	ldr	r3, [pc, #48]	@ (8001780 <App_System_Safety_Monitor+0x100>)
+ 800174e:	ed93 7a1d 	vldr	s14, [r3, #116]	@ 0x74
+ 8001752:	4b11      	ldr	r3, [pc, #68]	@ (8001798 <App_System_Safety_Monitor+0x118>)
+ 8001754:	edd3 7a00 	vldr	s15, [r3]
+ 8001758:	eeb4 7ae7 	vcmpe.f32	s14, s15
+ 800175c:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 8001760:	dc00      	bgt.n	8001764 <App_System_Safety_Monitor+0xe4>
         Close_output();
         DC_Power_CTR(false);
         Buzzer_ON;
 
     }
 }
- 8001716:	e00b      	b.n	8001730 <App_System_Safety_Monitor+0xfc>
+ 8001762:	e00b      	b.n	800177c <App_System_Safety_Monitor+0xfc>
         EMA_DATA.Motor_mode = MOTOR_OVER_DC_IN_CURRENT;
- 8001718:	4b06      	ldr	r3, [pc, #24]	@ (8001734 <App_System_Safety_Monitor+0x100>)
- 800171a:	220d      	movs	r2, #13
- 800171c:	701a      	strb	r2, [r3, #0]
+ 8001764:	4b06      	ldr	r3, [pc, #24]	@ (8001780 <App_System_Safety_Monitor+0x100>)
+ 8001766:	220d      	movs	r2, #13
+ 8001768:	701a      	strb	r2, [r3, #0]
         Close_output();
- 800171e:	f00a fb35 	bl	800bd8c <Close_output>
+ 800176a:	f00a fb0f 	bl	800bd8c <Close_output>
         DC_Power_CTR(false);
- 8001722:	2000      	movs	r0, #0
- 8001724:	f00a fb0e 	bl	800bd44 <DC_Power_CTR>
+ 800176e:	2000      	movs	r0, #0
+ 8001770:	f00a fae8 	bl	800bd44 <DC_Power_CTR>
         Buzzer_ON;
- 8001728:	2100      	movs	r1, #0
- 800172a:	4805      	ldr	r0, [pc, #20]	@ (8001740 <App_System_Safety_Monitor+0x10c>)
- 800172c:	f006 fc6a 	bl	8008004 <HAL_TIM_PWM_Start>
+ 8001774:	2100      	movs	r1, #0
+ 8001776:	4805      	ldr	r0, [pc, #20]	@ (800178c <App_System_Safety_Monitor+0x10c>)
+ 8001778:	f006 fc44 	bl	8008004 <HAL_TIM_PWM_Start>
 }
- 8001730:	bf00      	nop
- 8001732:	bd80      	pop	{r7, pc}
- 8001734:	200008cc 	.word	0x200008cc
- 8001738:	2000024a 	.word	0x2000024a
- 800173c:	20000248 	.word	0x20000248
- 8001740:	20000c54 	.word	0x20000c54
- 8001744:	2000000c 	.word	0x2000000c
- 8001748:	20000010 	.word	0x20000010
- 800174c:	20000014 	.word	0x20000014
+ 800177c:	bf00      	nop
+ 800177e:	bd80      	pop	{r7, pc}
+ 8001780:	200008c4 	.word	0x200008c4
+ 8001784:	20000246 	.word	0x20000246
+ 8001788:	20000244 	.word	0x20000244
+ 800178c:	20000c4c 	.word	0x20000c4c
+ 8001790:	2000000c 	.word	0x2000000c
+ 8001794:	20000010 	.word	0x20000010
+ 8001798:	20000014 	.word	0x20000014
 
-08001750 <Bsp_Adc_Init>:
+0800179c <Bsp_Adc_Init>:
 /**
  * @brief  ADC 硬件初始化
  * @note   执行 ADC 校准，开启 DMA 数据搬运，并启动定时器触发采样
  */
 void Bsp_Adc_Init(void)
 {
- 8001750:	b580      	push	{r7, lr}
- 8001752:	af00      	add	r7, sp, #0
+ 800179c:	b580      	push	{r7, lr}
+ 800179e:	af00      	add	r7, sp, #0
     /* 1. ADC 校准 */
     HAL_ADCEx_Calibration_Start(&hadc1, ADC_DIFFERENTIAL_ENDED);
- 8001754:	490a      	ldr	r1, [pc, #40]	@ (8001780 <Bsp_Adc_Init+0x30>)
- 8001756:	480b      	ldr	r0, [pc, #44]	@ (8001784 <Bsp_Adc_Init+0x34>)
- 8001758:	f003 f8f0 	bl	800493c <HAL_ADCEx_Calibration_Start>
+ 80017a0:	490a      	ldr	r1, [pc, #40]	@ (80017cc <Bsp_Adc_Init+0x30>)
+ 80017a2:	480b      	ldr	r0, [pc, #44]	@ (80017d0 <Bsp_Adc_Init+0x34>)
+ 80017a4:	f003 f8ca 	bl	800493c <HAL_ADCEx_Calibration_Start>
     HAL_ADCEx_Calibration_Start(&hadc2, ADC_SINGLE_ENDED);
- 800175c:	217f      	movs	r1, #127	@ 0x7f
- 800175e:	480a      	ldr	r0, [pc, #40]	@ (8001788 <Bsp_Adc_Init+0x38>)
- 8001760:	f003 f8ec 	bl	800493c <HAL_ADCEx_Calibration_Start>
+ 80017a8:	217f      	movs	r1, #127	@ 0x7f
+ 80017aa:	480a      	ldr	r0, [pc, #40]	@ (80017d4 <Bsp_Adc_Init+0x38>)
+ 80017ac:	f003 f8c6 	bl	800493c <HAL_ADCEx_Calibration_Start>
 
     /* 2. 开启 ADC 数据 DMA 自动搬运
      * 注: (uint32_t *) 强制转换用于消除传递 volatile 指针时的编译器警告
      */
     /* 采集高压母线电压 (HV_V) 和电流 (HV_I) 数据 */
     HAL_ADC_Start_DMA(&hadc1, (uint32_t *)Adc1_Raw_Data, 2);
- 8001764:	2202      	movs	r2, #2
- 8001766:	4909      	ldr	r1, [pc, #36]	@ (800178c <Bsp_Adc_Init+0x3c>)
- 8001768:	4806      	ldr	r0, [pc, #24]	@ (8001784 <Bsp_Adc_Init+0x34>)
- 800176a:	f002 fa63 	bl	8003c34 <HAL_ADC_Start_DMA>
+ 80017b0:	2202      	movs	r2, #2
+ 80017b2:	4909      	ldr	r1, [pc, #36]	@ (80017d8 <Bsp_Adc_Init+0x3c>)
+ 80017b4:	4806      	ldr	r0, [pc, #24]	@ (80017d0 <Bsp_Adc_Init+0x34>)
+ 80017b6:	f002 fa3d 	bl	8003c34 <HAL_ADC_Start_DMA>
 
     /* 采集低压 DC 电流 (DC_I) 和磁栅传感器正交信号 (SIN, COS) 值 */
     HAL_ADC_Start_DMA(&hadc2, (uint32_t *)Adc2_Raw_Data, 3);
- 800176e:	2203      	movs	r2, #3
- 8001770:	4907      	ldr	r1, [pc, #28]	@ (8001790 <Bsp_Adc_Init+0x40>)
- 8001772:	4805      	ldr	r0, [pc, #20]	@ (8001788 <Bsp_Adc_Init+0x38>)
- 8001774:	f002 fa5e 	bl	8003c34 <HAL_ADC_Start_DMA>
+ 80017ba:	2203      	movs	r2, #3
+ 80017bc:	4907      	ldr	r1, [pc, #28]	@ (80017dc <Bsp_Adc_Init+0x40>)
+ 80017be:	4805      	ldr	r0, [pc, #20]	@ (80017d4 <Bsp_Adc_Init+0x38>)
+ 80017c0:	f002 fa38 	bl	8003c34 <HAL_ADC_Start_DMA>
 
     /* 3. 开启定时器触发 ADC DMA 自动采样和搬运 */
     Bsp_Adc_Trigger_Timer_Start();
- 8001778:	f000 f80c 	bl	8001794 <Bsp_Adc_Trigger_Timer_Start>
+ 80017c4:	f000 f80c 	bl	80017e0 <Bsp_Adc_Trigger_Timer_Start>
 }
- 800177c:	bf00      	nop
- 800177e:	bd80      	pop	{r7, pc}
- 8001780:	407f0000 	.word	0x407f0000
- 8001784:	2000094c 	.word	0x2000094c
- 8001788:	200009b8 	.word	0x200009b8
- 800178c:	2000024c 	.word	0x2000024c
- 8001790:	20000254 	.word	0x20000254
+ 80017c8:	bf00      	nop
+ 80017ca:	bd80      	pop	{r7, pc}
+ 80017cc:	407f0000 	.word	0x407f0000
+ 80017d0:	20000944 	.word	0x20000944
+ 80017d4:	200009b0 	.word	0x200009b0
+ 80017d8:	20000248 	.word	0x20000248
+ 80017dc:	20000250 	.word	0x20000250
 
-08001794 <Bsp_Adc_Trigger_Timer_Start>:
+080017e0 <Bsp_Adc_Trigger_Timer_Start>:
 /**
  * @brief  开启定时器以触发 ADC 采样
  * @note   使用 TIM7 作为 ADC DMA 的外部硬件触发源
  */
 void Bsp_Adc_Trigger_Timer_Start(void)
 {
- 8001794:	b580      	push	{r7, lr}
- 8001796:	af00      	add	r7, sp, #0
+ 80017e0:	b580      	push	{r7, lr}
+ 80017e2:	af00      	add	r7, sp, #0
     /* 启动 ADC DMA 外部触发定时器 */
     HAL_TIM_Base_Start_IT(&htim7);
- 8001798:	4802      	ldr	r0, [pc, #8]	@ (80017a4 <Bsp_Adc_Trigger_Timer_Start+0x10>)
- 800179a:	f006 fb67 	bl	8007e6c <HAL_TIM_Base_Start_IT>
+ 80017e4:	4802      	ldr	r0, [pc, #8]	@ (80017f0 <Bsp_Adc_Trigger_Timer_Start+0x10>)
+ 80017e6:	f006 fb41 	bl	8007e6c <HAL_TIM_Base_Start_IT>
 }
- 800179e:	bf00      	nop
- 80017a0:	bd80      	pop	{r7, pc}
- 80017a2:	bf00      	nop
- 80017a4:	20000cec 	.word	0x20000cec
+ 80017ea:	bf00      	nop
+ 80017ec:	bd80      	pop	{r7, pc}
+ 80017ee:	bf00      	nop
+ 80017f0:	20000ce4 	.word	0x20000ce4
 
-080017a8 <Bsp_Get_Hv_Raw_Data>:
+080017f4 <Bsp_Get_Hv_Raw_Data>:
 /**
  * @brief  获取高压母线电压原始数据
  * @retval uint16_t ADC 原始采样值 (通常为 12 位)
  */
 uint16_t Bsp_Get_Hv_Raw_Data(void)
 {
- 80017a8:	b480      	push	{r7}
- 80017aa:	af00      	add	r7, sp, #0
+ 80017f4:	b480      	push	{r7}
+ 80017f6:	af00      	add	r7, sp, #0
     return (uint16_t)Adc1_Raw_Data[0];
- 80017ac:	4b03      	ldr	r3, [pc, #12]	@ (80017bc <Bsp_Get_Hv_Raw_Data+0x14>)
- 80017ae:	681b      	ldr	r3, [r3, #0]
- 80017b0:	b29b      	uxth	r3, r3
+ 80017f8:	4b03      	ldr	r3, [pc, #12]	@ (8001808 <Bsp_Get_Hv_Raw_Data+0x14>)
+ 80017fa:	681b      	ldr	r3, [r3, #0]
+ 80017fc:	b29b      	uxth	r3, r3
 }
- 80017b2:	4618      	mov	r0, r3
- 80017b4:	46bd      	mov	sp, r7
- 80017b6:	f85d 7b04 	ldr.w	r7, [sp], #4
- 80017ba:	4770      	bx	lr
- 80017bc:	2000024c 	.word	0x2000024c
+ 80017fe:	4618      	mov	r0, r3
+ 8001800:	46bd      	mov	sp, r7
+ 8001802:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8001806:	4770      	bx	lr
+ 8001808:	20000248 	.word	0x20000248
 
-080017c0 <Bsp_Get_Hi_Raw_Data>:
+0800180c <Bsp_Get_Hi_Raw_Data>:
 /**
  * @brief  获取高压母线电流原始数据
  * @retval uint16_t ADC 原始采样值
  */
 uint16_t Bsp_Get_Hi_Raw_Data(void)
 {
- 80017c0:	b480      	push	{r7}
- 80017c2:	af00      	add	r7, sp, #0
+ 800180c:	b480      	push	{r7}
+ 800180e:	af00      	add	r7, sp, #0
     return (uint16_t)Adc1_Raw_Data[1];
- 80017c4:	4b03      	ldr	r3, [pc, #12]	@ (80017d4 <Bsp_Get_Hi_Raw_Data+0x14>)
- 80017c6:	685b      	ldr	r3, [r3, #4]
- 80017c8:	b29b      	uxth	r3, r3
+ 8001810:	4b03      	ldr	r3, [pc, #12]	@ (8001820 <Bsp_Get_Hi_Raw_Data+0x14>)
+ 8001812:	685b      	ldr	r3, [r3, #4]
+ 8001814:	b29b      	uxth	r3, r3
 }
- 80017ca:	4618      	mov	r0, r3
- 80017cc:	46bd      	mov	sp, r7
- 80017ce:	f85d 7b04 	ldr.w	r7, [sp], #4
- 80017d2:	4770      	bx	lr
- 80017d4:	2000024c 	.word	0x2000024c
+ 8001816:	4618      	mov	r0, r3
+ 8001818:	46bd      	mov	sp, r7
+ 800181a:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800181e:	4770      	bx	lr
+ 8001820:	20000248 	.word	0x20000248
 
-080017d8 <Bsp_Get_Dc_I_Raw_Data>:
+08001824 <Bsp_Get_Dc_I_Raw_Data>:
 /**
  * @brief  获取低压 DC 电流原始数据
  * @retval uint16_t ADC 原始采样值
  */
 uint16_t Bsp_Get_Dc_I_Raw_Data(void)
 {
- 80017d8:	b480      	push	{r7}
- 80017da:	af00      	add	r7, sp, #0
+ 8001824:	b480      	push	{r7}
+ 8001826:	af00      	add	r7, sp, #0
     return (uint16_t)Adc2_Raw_Data[0];
- 80017dc:	4b03      	ldr	r3, [pc, #12]	@ (80017ec <Bsp_Get_Dc_I_Raw_Data+0x14>)
- 80017de:	681b      	ldr	r3, [r3, #0]
- 80017e0:	b29b      	uxth	r3, r3
+ 8001828:	4b03      	ldr	r3, [pc, #12]	@ (8001838 <Bsp_Get_Dc_I_Raw_Data+0x14>)
+ 800182a:	681b      	ldr	r3, [r3, #0]
+ 800182c:	b29b      	uxth	r3, r3
 }
- 80017e2:	4618      	mov	r0, r3
- 80017e4:	46bd      	mov	sp, r7
- 80017e6:	f85d 7b04 	ldr.w	r7, [sp], #4
- 80017ea:	4770      	bx	lr
- 80017ec:	20000254 	.word	0x20000254
+ 800182e:	4618      	mov	r0, r3
+ 8001830:	46bd      	mov	sp, r7
+ 8001832:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8001836:	4770      	bx	lr
+ 8001838:	20000250 	.word	0x20000250
 
-080017f0 <Bsp_Get_Position_Sensor_Sin_Raw_Data>:
+0800183c <Bsp_Get_Position_Sensor_Sin_Raw_Data>:
 /**
  * @brief  获取磁栅传感器 SIN 信号原始数据
  * @retval uint16_t ADC 原始采样值
  */
 uint16_t Bsp_Get_Position_Sensor_Sin_Raw_Data(void)
 {
- 80017f0:	b480      	push	{r7}
- 80017f2:	af00      	add	r7, sp, #0
+ 800183c:	b480      	push	{r7}
+ 800183e:	af00      	add	r7, sp, #0
     return (uint16_t)Adc2_Raw_Data[1];
- 80017f4:	4b03      	ldr	r3, [pc, #12]	@ (8001804 <Bsp_Get_Position_Sensor_Sin_Raw_Data+0x14>)
- 80017f6:	685b      	ldr	r3, [r3, #4]
- 80017f8:	b29b      	uxth	r3, r3
+ 8001840:	4b03      	ldr	r3, [pc, #12]	@ (8001850 <Bsp_Get_Position_Sensor_Sin_Raw_Data+0x14>)
+ 8001842:	685b      	ldr	r3, [r3, #4]
+ 8001844:	b29b      	uxth	r3, r3
 }
- 80017fa:	4618      	mov	r0, r3
- 80017fc:	46bd      	mov	sp, r7
- 80017fe:	f85d 7b04 	ldr.w	r7, [sp], #4
- 8001802:	4770      	bx	lr
- 8001804:	20000254 	.word	0x20000254
+ 8001846:	4618      	mov	r0, r3
+ 8001848:	46bd      	mov	sp, r7
+ 800184a:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 800184e:	4770      	bx	lr
+ 8001850:	20000250 	.word	0x20000250
 
-08001808 <Bsp_Get_Position_Sensor_Cos_Raw_Data>:
+08001854 <Bsp_Get_Position_Sensor_Cos_Raw_Data>:
 /**
  * @brief  获取磁栅传感器 COS 信号原始数据
  * @retval uint16_t ADC 原始采样值
  */
 uint16_t Bsp_Get_Position_Sensor_Cos_Raw_Data(void)
 {
- 8001808:	b480      	push	{r7}
- 800180a:	af00      	add	r7, sp, #0
+ 8001854:	b480      	push	{r7}
+ 8001856:	af00      	add	r7, sp, #0
     return (uint16_t)Adc2_Raw_Data[2];
- 800180c:	4b03      	ldr	r3, [pc, #12]	@ (800181c <Bsp_Get_Position_Sensor_Cos_Raw_Data+0x14>)
- 800180e:	689b      	ldr	r3, [r3, #8]
- 8001810:	b29b      	uxth	r3, r3
+ 8001858:	4b03      	ldr	r3, [pc, #12]	@ (8001868 <Bsp_Get_Position_Sensor_Cos_Raw_Data+0x14>)
+ 800185a:	689b      	ldr	r3, [r3, #8]
+ 800185c:	b29b      	uxth	r3, r3
 }
- 8001812:	4618      	mov	r0, r3
- 8001814:	46bd      	mov	sp, r7
- 8001816:	f85d 7b04 	ldr.w	r7, [sp], #4
- 800181a:	4770      	bx	lr
- 800181c:	20000254 	.word	0x20000254
+ 800185e:	4618      	mov	r0, r3
+ 8001860:	46bd      	mov	sp, r7
+ 8001862:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8001866:	4770      	bx	lr
+ 8001868:	20000250 	.word	0x20000250
 
-08001820 <HAL_FDCAN_ErrorCallback>:
+0800186c <HAL_FDCAN_ErrorCallback>:
  * @brief  FDCAN 错误回调函数
  * @param  hfdcan FDCAN 句柄
  * @note   当 CAN 总线发生严重错误 (如 Bus-Off) 时由 HAL 库自动调用
  */
 void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan)
 {
- 8001820:	b580      	push	{r7, lr}
- 8001822:	b082      	sub	sp, #8
- 8001824:	af00      	add	r7, sp, #0
- 8001826:	6078      	str	r0, [r7, #4]
+ 800186c:	b580      	push	{r7, lr}
+ 800186e:	b082      	sub	sp, #8
+ 8001870:	af00      	add	r7, sp, #0
+ 8001872:	6078      	str	r0, [r7, #4]
     printf("!!! FATAL ERROR: CAN BUS-OFF DETECTED !!!\r\n");
- 8001828:	4806      	ldr	r0, [pc, #24]	@ (8001844 <HAL_FDCAN_ErrorCallback+0x24>)
- 800182a:	f00b fa2b 	bl	800cc84 <puts>
+ 8001874:	4806      	ldr	r0, [pc, #24]	@ (8001890 <HAL_FDCAN_ErrorCallback+0x24>)
+ 8001876:	f00b fa05 	bl	800cc84 <puts>
     printf("!!! 检查终端电阻、ACK应答节点、波特率 !!!\r\n");
- 800182e:	4806      	ldr	r0, [pc, #24]	@ (8001848 <HAL_FDCAN_ErrorCallback+0x28>)
- 8001830:	f00b fa28 	bl	800cc84 <puts>
+ 800187a:	4806      	ldr	r0, [pc, #24]	@ (8001894 <HAL_FDCAN_ErrorCallback+0x28>)
+ 800187c:	f00b fa02 	bl	800cc84 <puts>
     Buzzer_ON; /* 蜂鸣器报警 */
- 8001834:	2100      	movs	r1, #0
- 8001836:	4805      	ldr	r0, [pc, #20]	@ (800184c <HAL_FDCAN_ErrorCallback+0x2c>)
- 8001838:	f006 fbe4 	bl	8008004 <HAL_TIM_PWM_Start>
+ 8001880:	2100      	movs	r1, #0
+ 8001882:	4805      	ldr	r0, [pc, #20]	@ (8001898 <HAL_FDCAN_ErrorCallback+0x2c>)
+ 8001884:	f006 fbbe 	bl	8008004 <HAL_TIM_PWM_Start>
 }
- 800183c:	bf00      	nop
- 800183e:	3708      	adds	r7, #8
- 8001840:	46bd      	mov	sp, r7
- 8001842:	bd80      	pop	{r7, pc}
- 8001844:	0800ee80 	.word	0x0800ee80
- 8001848:	0800eeac 	.word	0x0800eeac
- 800184c:	20000c54 	.word	0x20000c54
+ 8001888:	bf00      	nop
+ 800188a:	3708      	adds	r7, #8
+ 800188c:	46bd      	mov	sp, r7
+ 800188e:	bd80      	pop	{r7, pc}
+ 8001890:	0800ee80 	.word	0x0800ee80
+ 8001894:	0800eeac 	.word	0x0800eeac
+ 8001898:	20000c4c 	.word	0x20000c4c
 
-08001850 <Bsp_Can_Init>:
+0800189c <Bsp_Can_Init>:
  * @brief  FDCAN 硬件初始化
  * @retval 0: 成功, -1: 失败
  * @note   配置双 ID 过滤器，启动外设，激活中断，并缓存发送报文头
  */
 int8_t Bsp_Can_Init(void)
 {
- 8001850:	b580      	push	{r7, lr}
- 8001852:	b088      	sub	sp, #32
- 8001854:	af00      	add	r7, sp, #0
+ 800189c:	b580      	push	{r7, lr}
+ 800189e:	b088      	sub	sp, #32
+ 80018a0:	af00      	add	r7, sp, #0
     HAL_StatusTypeDef status;
     FDCAN_FilterTypeDef sFilterConfig;
 
     /* 1. 配置 FDCAN 接收过滤器 */
     sFilterConfig.IdType       = FDCAN_STANDARD_ID;       /* 标准帧 (11-bit) */
- 8001856:	2300      	movs	r3, #0
- 8001858:	603b      	str	r3, [r7, #0]
+ 80018a2:	2300      	movs	r3, #0
+ 80018a4:	603b      	str	r3, [r7, #0]
     sFilterConfig.FilterIndex  = 0;                       /* 过滤器索引 0 */
- 800185a:	2300      	movs	r3, #0
- 800185c:	607b      	str	r3, [r7, #4]
+ 80018a6:	2300      	movs	r3, #0
+ 80018a8:	607b      	str	r3, [r7, #4]
     sFilterConfig.FilterType   = FDCAN_FILTER_DUAL;       /* 双 ID 过滤模式 (匹配 ID1 或 ID2) */
- 800185e:	2301      	movs	r3, #1
- 8001860:	60bb      	str	r3, [r7, #8]
+ 80018aa:	2301      	movs	r3, #1
+ 80018ac:	60bb      	str	r3, [r7, #8]
     sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0; /* 匹配成功后存入 Rx FIFO 0 */
- 8001862:	2301      	movs	r3, #1
- 8001864:	60fb      	str	r3, [r7, #12]
+ 80018ae:	2301      	movs	r3, #1
+ 80018b0:	60fb      	str	r3, [r7, #12]
     sFilterConfig.FilterID1    = MY_NODE_ID;              /* 匹配规则 1: 专属本机 ID */
- 8001866:	f44f 7382 	mov.w	r3, #260	@ 0x104
- 800186a:	613b      	str	r3, [r7, #16]
+ 80018b2:	f44f 7382 	mov.w	r3, #260	@ 0x104
+ 80018b6:	613b      	str	r3, [r7, #16]
     sFilterConfig.FilterID2    = BROADCAST_ID;            /* 匹配规则 2: 广播 ID */
- 800186c:	f44f 7380 	mov.w	r3, #256	@ 0x100
- 8001870:	617b      	str	r3, [r7, #20]
+ 80018b8:	f44f 7380 	mov.w	r3, #256	@ 0x100
+ 80018bc:	617b      	str	r3, [r7, #20]
 
     status = HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig);
- 8001872:	463b      	mov	r3, r7
- 8001874:	4619      	mov	r1, r3
- 8001876:	4832      	ldr	r0, [pc, #200]	@ (8001940 <Bsp_Can_Init+0xf0>)
- 8001878:	f004 fb1e 	bl	8005eb8 <HAL_FDCAN_ConfigFilter>
- 800187c:	4603      	mov	r3, r0
- 800187e:	76fb      	strb	r3, [r7, #27]
+ 80018be:	463b      	mov	r3, r7
+ 80018c0:	4619      	mov	r1, r3
+ 80018c2:	4832      	ldr	r0, [pc, #200]	@ (800198c <Bsp_Can_Init+0xf0>)
+ 80018c4:	f004 faf8 	bl	8005eb8 <HAL_FDCAN_ConfigFilter>
+ 80018c8:	4603      	mov	r3, r0
+ 80018ca:	76fb      	strb	r3, [r7, #27]
     if (status != HAL_OK)
- 8001880:	7efb      	ldrb	r3, [r7, #27]
- 8001882:	2b00      	cmp	r3, #0
- 8001884:	d007      	beq.n	8001896 <Bsp_Can_Init+0x46>
+ 80018cc:	7efb      	ldrb	r3, [r7, #27]
+ 80018ce:	2b00      	cmp	r3, #0
+ 80018d0:	d007      	beq.n	80018e2 <Bsp_Can_Init+0x46>
     {
         printf("[BSP CAN] ERROR: Filter Config Failed! (Code: %d)\r\n", status);
- 8001886:	7efb      	ldrb	r3, [r7, #27]
- 8001888:	4619      	mov	r1, r3
- 800188a:	482e      	ldr	r0, [pc, #184]	@ (8001944 <Bsp_Can_Init+0xf4>)
- 800188c:	f00b f992 	bl	800cbb4 <iprintf>
+ 80018d2:	7efb      	ldrb	r3, [r7, #27]
+ 80018d4:	4619      	mov	r1, r3
+ 80018d6:	482e      	ldr	r0, [pc, #184]	@ (8001990 <Bsp_Can_Init+0xf4>)
+ 80018d8:	f00b f96c 	bl	800cbb4 <iprintf>
         return -1;
- 8001890:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
- 8001894:	e050      	b.n	8001938 <Bsp_Can_Init+0xe8>
+ 80018dc:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 80018e0:	e050      	b.n	8001984 <Bsp_Can_Init+0xe8>
     }
 
     /* 2. 启动 FDCAN 外设 */
     status = HAL_FDCAN_Start(&hfdcan1);
- 8001896:	482a      	ldr	r0, [pc, #168]	@ (8001940 <Bsp_Can_Init+0xf0>)
- 8001898:	f004 fb68 	bl	8005f6c <HAL_FDCAN_Start>
- 800189c:	4603      	mov	r3, r0
- 800189e:	76fb      	strb	r3, [r7, #27]
+ 80018e2:	482a      	ldr	r0, [pc, #168]	@ (800198c <Bsp_Can_Init+0xf0>)
+ 80018e4:	f004 fb42 	bl	8005f6c <HAL_FDCAN_Start>
+ 80018e8:	4603      	mov	r3, r0
+ 80018ea:	76fb      	strb	r3, [r7, #27]
     if (status != HAL_OK)
- 80018a0:	7efb      	ldrb	r3, [r7, #27]
- 80018a2:	2b00      	cmp	r3, #0
- 80018a4:	d007      	beq.n	80018b6 <Bsp_Can_Init+0x66>
+ 80018ec:	7efb      	ldrb	r3, [r7, #27]
+ 80018ee:	2b00      	cmp	r3, #0
+ 80018f0:	d007      	beq.n	8001902 <Bsp_Can_Init+0x66>
     {
         /* 修复了原来代码中重复调用 Start 的 Bug */
         printf("[BSP CAN] FATAL: FDCAN Start Failed! (Code: %d)\r\n", status);
- 80018a6:	7efb      	ldrb	r3, [r7, #27]
- 80018a8:	4619      	mov	r1, r3
- 80018aa:	4827      	ldr	r0, [pc, #156]	@ (8001948 <Bsp_Can_Init+0xf8>)
- 80018ac:	f00b f982 	bl	800cbb4 <iprintf>
+ 80018f2:	7efb      	ldrb	r3, [r7, #27]
+ 80018f4:	4619      	mov	r1, r3
+ 80018f6:	4827      	ldr	r0, [pc, #156]	@ (8001994 <Bsp_Can_Init+0xf8>)
+ 80018f8:	f00b f95c 	bl	800cbb4 <iprintf>
         return -1;
- 80018b0:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
- 80018b4:	e040      	b.n	8001938 <Bsp_Can_Init+0xe8>
+ 80018fc:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8001900:	e040      	b.n	8001984 <Bsp_Can_Init+0xe8>
     }
     printf("[BSP CAN] INFO: FDCAN Started Successfully.\r\n");
- 80018b6:	4825      	ldr	r0, [pc, #148]	@ (800194c <Bsp_Can_Init+0xfc>)
- 80018b8:	f00b f9e4 	bl	800cc84 <puts>
+ 8001902:	4825      	ldr	r0, [pc, #148]	@ (8001998 <Bsp_Can_Init+0xfc>)
+ 8001904:	f00b f9be 	bl	800cc84 <puts>
 
     /* 3. 激活接收中断 (Rx FIFO 0 新消息通知) */
     status = HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
- 80018bc:	2200      	movs	r2, #0
- 80018be:	2101      	movs	r1, #1
- 80018c0:	481f      	ldr	r0, [pc, #124]	@ (8001940 <Bsp_Can_Init+0xf0>)
- 80018c2:	f004 fcd9 	bl	8006278 <HAL_FDCAN_ActivateNotification>
- 80018c6:	4603      	mov	r3, r0
- 80018c8:	76fb      	strb	r3, [r7, #27]
+ 8001908:	2200      	movs	r2, #0
+ 800190a:	2101      	movs	r1, #1
+ 800190c:	481f      	ldr	r0, [pc, #124]	@ (800198c <Bsp_Can_Init+0xf0>)
+ 800190e:	f004 fcb3 	bl	8006278 <HAL_FDCAN_ActivateNotification>
+ 8001912:	4603      	mov	r3, r0
+ 8001914:	76fb      	strb	r3, [r7, #27]
     if (status != HAL_OK)
- 80018ca:	7efb      	ldrb	r3, [r7, #27]
- 80018cc:	2b00      	cmp	r3, #0
- 80018ce:	d005      	beq.n	80018dc <Bsp_Can_Init+0x8c>
+ 8001916:	7efb      	ldrb	r3, [r7, #27]
+ 8001918:	2b00      	cmp	r3, #0
+ 800191a:	d005      	beq.n	8001928 <Bsp_Can_Init+0x8c>
     {
         printf("[BSP CAN] ERROR: Activate Notification Failed!\r\n");
- 80018d0:	481f      	ldr	r0, [pc, #124]	@ (8001950 <Bsp_Can_Init+0x100>)
- 80018d2:	f00b f9d7 	bl	800cc84 <puts>
+ 800191c:	481f      	ldr	r0, [pc, #124]	@ (800199c <Bsp_Can_Init+0x100>)
+ 800191e:	f00b f9b1 	bl	800cc84 <puts>
         return -1;
- 80018d6:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
- 80018da:	e02d      	b.n	8001938 <Bsp_Can_Init+0xe8>
+ 8001922:	f04f 33ff 	mov.w	r3, #4294967295	@ 0xffffffff
+ 8001926:	e02d      	b.n	8001984 <Bsp_Can_Init+0xe8>
     }
 
     /* 4. 预初始化默认的发送报文头 (TxHeader)
      * 以后在发送函数中，只需要修改 Identifier 和 DataLength 即可
      */
     s_Can_Tx_Header.Identifier          = MY_NODE_ID; /* 默认发件人是自己 */
- 80018dc:	4b1d      	ldr	r3, [pc, #116]	@ (8001954 <Bsp_Can_Init+0x104>)
- 80018de:	f44f 7282 	mov.w	r2, #260	@ 0x104
- 80018e2:	601a      	str	r2, [r3, #0]
+ 8001928:	4b1d      	ldr	r3, [pc, #116]	@ (80019a0 <Bsp_Can_Init+0x104>)
+ 800192a:	f44f 7282 	mov.w	r2, #260	@ 0x104
+ 800192e:	601a      	str	r2, [r3, #0]
     s_Can_Tx_Header.IdType              = FDCAN_STANDARD_ID;
- 80018e4:	4b1b      	ldr	r3, [pc, #108]	@ (8001954 <Bsp_Can_Init+0x104>)
- 80018e6:	2200      	movs	r2, #0
- 80018e8:	605a      	str	r2, [r3, #4]
+ 8001930:	4b1b      	ldr	r3, [pc, #108]	@ (80019a0 <Bsp_Can_Init+0x104>)
+ 8001932:	2200      	movs	r2, #0
+ 8001934:	605a      	str	r2, [r3, #4]
     s_Can_Tx_Header.TxFrameType         = FDCAN_DATA_FRAME;
- 80018ea:	4b1a      	ldr	r3, [pc, #104]	@ (8001954 <Bsp_Can_Init+0x104>)
- 80018ec:	2200      	movs	r2, #0
- 80018ee:	609a      	str	r2, [r3, #8]
+ 8001936:	4b1a      	ldr	r3, [pc, #104]	@ (80019a0 <Bsp_Can_Init+0x104>)
+ 8001938:	2200      	movs	r2, #0
+ 800193a:	609a      	str	r2, [r3, #8]
     s_Can_Tx_Header.DataLength          = FDCAN_DLC_BYTES_8; /* 默认8字节 */
- 80018f0:	4b18      	ldr	r3, [pc, #96]	@ (8001954 <Bsp_Can_Init+0x104>)
- 80018f2:	2208      	movs	r2, #8
- 80018f4:	60da      	str	r2, [r3, #12]
+ 800193c:	4b18      	ldr	r3, [pc, #96]	@ (80019a0 <Bsp_Can_Init+0x104>)
+ 800193e:	2208      	movs	r2, #8
+ 8001940:	60da      	str	r2, [r3, #12]
     s_Can_Tx_Header.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
- 80018f6:	4b17      	ldr	r3, [pc, #92]	@ (8001954 <Bsp_Can_Init+0x104>)
- 80018f8:	2200      	movs	r2, #0
- 80018fa:	611a      	str	r2, [r3, #16]
+ 8001942:	4b17      	ldr	r3, [pc, #92]	@ (80019a0 <Bsp_Can_Init+0x104>)
+ 8001944:	2200      	movs	r2, #0
+ 8001946:	611a      	str	r2, [r3, #16]
     s_Can_Tx_Header.BitRateSwitch       = FDCAN_BRS_OFF;     /* 根据需求，如果不跑 FD 高速段则设为 OFF */
- 80018fc:	4b15      	ldr	r3, [pc, #84]	@ (8001954 <Bsp_Can_Init+0x104>)
- 80018fe:	2200      	movs	r2, #0
- 8001900:	615a      	str	r2, [r3, #20]
+ 8001948:	4b15      	ldr	r3, [pc, #84]	@ (80019a0 <Bsp_Can_Init+0x104>)
+ 800194a:	2200      	movs	r2, #0
+ 800194c:	615a      	str	r2, [r3, #20]
     s_Can_Tx_Header.FDFormat            = FDCAN_FRAME_CLASSIC; /* 默认使用经典 CAN 格式 */
- 8001902:	4b14      	ldr	r3, [pc, #80]	@ (8001954 <Bsp_Can_Init+0x104>)
- 8001904:	2200      	movs	r2, #0
- 8001906:	619a      	str	r2, [r3, #24]
+ 800194e:	4b14      	ldr	r3, [pc, #80]	@ (80019a0 <Bsp_Can_Init+0x104>)
+ 8001950:	2200      	movs	r2, #0
+ 8001952:	619a      	str	r2, [r3, #24]
     s_Can_Tx_Header.TxEventFifoControl  = FDCAN_NO_TX_EVENTS;
- 8001908:	4b12      	ldr	r3, [pc, #72]	@ (8001954 <Bsp_Can_Init+0x104>)
- 800190a:	2200      	movs	r2, #0
- 800190c:	61da      	str	r2, [r3, #28]
+ 8001954:	4b12      	ldr	r3, [pc, #72]	@ (80019a0 <Bsp_Can_Init+0x104>)
+ 8001956:	2200      	movs	r2, #0
+ 8001958:	61da      	str	r2, [r3, #28]
     s_Can_Tx_Header.MessageMarker       = 0;
- 800190e:	4b11      	ldr	r3, [pc, #68]	@ (8001954 <Bsp_Can_Init+0x104>)
- 8001910:	2200      	movs	r2, #0
- 8001912:	621a      	str	r2, [r3, #32]
+ 800195a:	4b11      	ldr	r3, [pc, #68]	@ (80019a0 <Bsp_Can_Init+0x104>)
+ 800195c:	2200      	movs	r2, #0
+ 800195e:	621a      	str	r2, [r3, #32]
 
     /* 清空默认发送数据 */
     for (int i = 0; i < 8; i++)
- 8001914:	2300      	movs	r3, #0
- 8001916:	61fb      	str	r3, [r7, #28]
- 8001918:	e007      	b.n	800192a <Bsp_Can_Init+0xda>
+ 8001960:	2300      	movs	r3, #0
+ 8001962:	61fb      	str	r3, [r7, #28]
+ 8001964:	e007      	b.n	8001976 <Bsp_Can_Init+0xda>
     {
         s_can_tx_data[i] = 0;
- 800191a:	4a0f      	ldr	r2, [pc, #60]	@ (8001958 <Bsp_Can_Init+0x108>)
- 800191c:	69fb      	ldr	r3, [r7, #28]
- 800191e:	4413      	add	r3, r2
- 8001920:	2200      	movs	r2, #0
- 8001922:	701a      	strb	r2, [r3, #0]
+ 8001966:	4a0f      	ldr	r2, [pc, #60]	@ (80019a4 <Bsp_Can_Init+0x108>)
+ 8001968:	69fb      	ldr	r3, [r7, #28]
+ 800196a:	4413      	add	r3, r2
+ 800196c:	2200      	movs	r2, #0
+ 800196e:	701a      	strb	r2, [r3, #0]
     for (int i = 0; i < 8; i++)
- 8001924:	69fb      	ldr	r3, [r7, #28]
- 8001926:	3301      	adds	r3, #1
- 8001928:	61fb      	str	r3, [r7, #28]
- 800192a:	69fb      	ldr	r3, [r7, #28]
- 800192c:	2b07      	cmp	r3, #7
- 800192e:	ddf4      	ble.n	800191a <Bsp_Can_Init+0xca>
+ 8001970:	69fb      	ldr	r3, [r7, #28]
+ 8001972:	3301      	adds	r3, #1
+ 8001974:	61fb      	str	r3, [r7, #28]
+ 8001976:	69fb      	ldr	r3, [r7, #28]
+ 8001978:	2b07      	cmp	r3, #7
+ 800197a:	ddf4      	ble.n	8001966 <Bsp_Can_Init+0xca>
     }
 
     printf("[BSP CAN] INFO: Firmware Version 2.0 - CAN Init OK.\r\n");
- 8001930:	480a      	ldr	r0, [pc, #40]	@ (800195c <Bsp_Can_Init+0x10c>)
- 8001932:	f00b f9a7 	bl	800cc84 <puts>
+ 800197c:	480a      	ldr	r0, [pc, #40]	@ (80019a8 <Bsp_Can_Init+0x10c>)
+ 800197e:	f00b f981 	bl	800cc84 <puts>
     return 0; /* 初始化成功 */
- 8001936:	2300      	movs	r3, #0
+ 8001982:	2300      	movs	r3, #0
 }
- 8001938:	4618      	mov	r0, r3
- 800193a:	3720      	adds	r7, #32
- 800193c:	46bd      	mov	sp, r7
- 800193e:	bd80      	pop	{r7, pc}
- 8001940:	20000b40 	.word	0x20000b40
- 8001944:	0800eee8 	.word	0x0800eee8
- 8001948:	0800ef1c 	.word	0x0800ef1c
- 800194c:	0800ef50 	.word	0x0800ef50
- 8001950:	0800ef80 	.word	0x0800ef80
- 8001954:	20000260 	.word	0x20000260
- 8001958:	200002b4 	.word	0x200002b4
- 800195c:	0800efb0 	.word	0x0800efb0
+ 8001984:	4618      	mov	r0, r3
+ 8001986:	3720      	adds	r7, #32
+ 8001988:	46bd      	mov	sp, r7
+ 800198a:	bd80      	pop	{r7, pc}
+ 800198c:	20000b38 	.word	0x20000b38
+ 8001990:	0800eee8 	.word	0x0800eee8
+ 8001994:	0800ef1c 	.word	0x0800ef1c
+ 8001998:	0800ef50 	.word	0x0800ef50
+ 800199c:	0800ef80 	.word	0x0800ef80
+ 80019a0:	2000025c 	.word	0x2000025c
+ 80019a4:	200002b0 	.word	0x200002b0
+ 80019a8:	0800efb0 	.word	0x0800efb0
 
-08001960 <HAL_FDCAN_RxFifo0Callback>:
+080019ac <HAL_FDCAN_RxFifo0Callback>:
  * @param  RxFifo0ITs 中断标志位
  * @note   该函数在 CAN RX 中断内执行，必须做到极速、非阻塞。
  * 包含将接收到的数据推入环形接收队列的逻辑。
  */
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 {
- 8001960:	b5b0      	push	{r4, r5, r7, lr}
- 8001962:	b086      	sub	sp, #24
- 8001964:	af00      	add	r7, sp, #0
- 8001966:	6078      	str	r0, [r7, #4]
- 8001968:	6039      	str	r1, [r7, #0]
+ 80019ac:	b5b0      	push	{r4, r5, r7, lr}
+ 80019ae:	b086      	sub	sp, #24
+ 80019b0:	af00      	add	r7, sp, #0
+ 80019b2:	6078      	str	r0, [r7, #4]
+ 80019b4:	6039      	str	r1, [r7, #0]
     /* 检查是否是“新消息到达”中断 */
     if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
- 800196a:	683b      	ldr	r3, [r7, #0]
- 800196c:	f003 0301 	and.w	r3, r3, #1
- 8001970:	2b00      	cmp	r3, #0
- 8001972:	d04a      	beq.n	8001a0a <HAL_FDCAN_RxFifo0Callback+0xaa>
+ 80019b6:	683b      	ldr	r3, [r7, #0]
+ 80019b8:	f003 0301 	and.w	r3, r3, #1
+ 80019bc:	2b00      	cmp	r3, #0
+ 80019be:	d04a      	beq.n	8001a56 <HAL_FDCAN_RxFifo0Callback+0xaa>
         FDCAN_RxHeaderTypeDef TempRxHeader;
         uint8_t TempRxData[8];
         */
 
         /* 从 Rx FIFO 0 中获取消息，存入全局变量中 */
         if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &s_Can_Rx_Header, RxData) == HAL_OK)
- 8001974:	4b27      	ldr	r3, [pc, #156]	@ (8001a14 <HAL_FDCAN_RxFifo0Callback+0xb4>)
- 8001976:	4a28      	ldr	r2, [pc, #160]	@ (8001a18 <HAL_FDCAN_RxFifo0Callback+0xb8>)
- 8001978:	2140      	movs	r1, #64	@ 0x40
- 800197a:	6878      	ldr	r0, [r7, #4]
- 800197c:	f004 fb62 	bl	8006044 <HAL_FDCAN_GetRxMessage>
- 8001980:	4603      	mov	r3, r0
- 8001982:	2b00      	cmp	r3, #0
- 8001984:	d13c      	bne.n	8001a00 <HAL_FDCAN_RxFifo0Callback+0xa0>
+ 80019c0:	4b27      	ldr	r3, [pc, #156]	@ (8001a60 <HAL_FDCAN_RxFifo0Callback+0xb4>)
+ 80019c2:	4a28      	ldr	r2, [pc, #160]	@ (8001a64 <HAL_FDCAN_RxFifo0Callback+0xb8>)
+ 80019c4:	2140      	movs	r1, #64	@ 0x40
+ 80019c6:	6878      	ldr	r0, [r7, #4]
+ 80019c8:	f004 fb3c 	bl	8006044 <HAL_FDCAN_GetRxMessage>
+ 80019cc:	4603      	mov	r3, r0
+ 80019ce:	2b00      	cmp	r3, #0
+ 80019d0:	d13c      	bne.n	8001a4c <HAL_FDCAN_RxFifo0Callback+0xa0>
             printf("\r\n");
             */
             /* ========================================================== */
 
             /* 2. 计算环形队列的下一个 Head 写入位置 (位运算提速) */
             uint16_t NextHead = (g_Rx_Queue_Head + 1) & (RX_QUEUE_SIZE - 1);
- 8001986:	4b25      	ldr	r3, [pc, #148]	@ (8001a1c <HAL_FDCAN_RxFifo0Callback+0xbc>)
- 8001988:	881b      	ldrh	r3, [r3, #0]
- 800198a:	b29b      	uxth	r3, r3
- 800198c:	3301      	adds	r3, #1
- 800198e:	b29b      	uxth	r3, r3
- 8001990:	f003 030f 	and.w	r3, r3, #15
- 8001994:	827b      	strh	r3, [r7, #18]
+ 80019d2:	4b25      	ldr	r3, [pc, #148]	@ (8001a68 <HAL_FDCAN_RxFifo0Callback+0xbc>)
+ 80019d4:	881b      	ldrh	r3, [r3, #0]
+ 80019d6:	b29b      	uxth	r3, r3
+ 80019d8:	3301      	adds	r3, #1
+ 80019da:	b29b      	uxth	r3, r3
+ 80019dc:	f003 030f 	and.w	r3, r3, #15
+ 80019e0:	827b      	strh	r3, [r7, #18]
 
             /* 3. 检查队列是否已满 */
             if (NextHead == g_Rx_Queue_Tail)
- 8001996:	4b22      	ldr	r3, [pc, #136]	@ (8001a20 <HAL_FDCAN_RxFifo0Callback+0xc0>)
- 8001998:	881b      	ldrh	r3, [r3, #0]
- 800199a:	b29b      	uxth	r3, r3
- 800199c:	8a7a      	ldrh	r2, [r7, #18]
- 800199e:	429a      	cmp	r2, r3
- 80019a0:	d02e      	beq.n	8001a00 <HAL_FDCAN_RxFifo0Callback+0xa0>
+ 80019e2:	4b22      	ldr	r3, [pc, #136]	@ (8001a6c <HAL_FDCAN_RxFifo0Callback+0xc0>)
+ 80019e4:	881b      	ldrh	r3, [r3, #0]
+ 80019e6:	b29b      	uxth	r3, r3
+ 80019e8:	8a7a      	ldrh	r2, [r7, #18]
+ 80019ea:	429a      	cmp	r2, r3
+ 80019ec:	d02e      	beq.n	8001a4c <HAL_FDCAN_RxFifo0Callback+0xa0>
                 /* Error: 队列满，丢弃本次数据并记录溢出错误 */
             }
             else
             {
                 /* 4. 队列未满，获取 "head" 位置的“集装箱”指针 */
                 volatile CanRxMessage_t* Msg_To_Queue = &g_Rx_Queue[g_Rx_Queue_Head];
- 80019a2:	4b1e      	ldr	r3, [pc, #120]	@ (8001a1c <HAL_FDCAN_RxFifo0Callback+0xbc>)
- 80019a4:	881b      	ldrh	r3, [r3, #0]
- 80019a6:	b29b      	uxth	r3, r3
- 80019a8:	461a      	mov	r2, r3
- 80019aa:	4613      	mov	r3, r2
- 80019ac:	005b      	lsls	r3, r3, #1
- 80019ae:	4413      	add	r3, r2
- 80019b0:	011b      	lsls	r3, r3, #4
- 80019b2:	4a1c      	ldr	r2, [pc, #112]	@ (8001a24 <HAL_FDCAN_RxFifo0Callback+0xc4>)
- 80019b4:	4413      	add	r3, r2
- 80019b6:	60fb      	str	r3, [r7, #12]
+ 80019ee:	4b1e      	ldr	r3, [pc, #120]	@ (8001a68 <HAL_FDCAN_RxFifo0Callback+0xbc>)
+ 80019f0:	881b      	ldrh	r3, [r3, #0]
+ 80019f2:	b29b      	uxth	r3, r3
+ 80019f4:	461a      	mov	r2, r3
+ 80019f6:	4613      	mov	r3, r2
+ 80019f8:	005b      	lsls	r3, r3, #1
+ 80019fa:	4413      	add	r3, r2
+ 80019fc:	011b      	lsls	r3, r3, #4
+ 80019fe:	4a1c      	ldr	r2, [pc, #112]	@ (8001a70 <HAL_FDCAN_RxFifo0Callback+0xc4>)
+ 8001a00:	4413      	add	r3, r2
+ 8001a02:	60fb      	str	r3, [r7, #12]
 
                 /* 5. 将临时数据从 RxHeader/RxData 复制到队列中 */
                 Msg_To_Queue->Rx_Header = s_Can_Rx_Header; /* 复制整个报文头 (包含ID, DLC等) */
- 80019b8:	68fb      	ldr	r3, [r7, #12]
- 80019ba:	4a17      	ldr	r2, [pc, #92]	@ (8001a18 <HAL_FDCAN_RxFifo0Callback+0xb8>)
- 80019bc:	461c      	mov	r4, r3
- 80019be:	4615      	mov	r5, r2
- 80019c0:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
- 80019c2:	c40f      	stmia	r4!, {r0, r1, r2, r3}
- 80019c4:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
- 80019c6:	c40f      	stmia	r4!, {r0, r1, r2, r3}
- 80019c8:	e895 0003 	ldmia.w	r5, {r0, r1}
- 80019cc:	e884 0003 	stmia.w	r4, {r0, r1}
+ 8001a04:	68fb      	ldr	r3, [r7, #12]
+ 8001a06:	4a17      	ldr	r2, [pc, #92]	@ (8001a64 <HAL_FDCAN_RxFifo0Callback+0xb8>)
+ 8001a08:	461c      	mov	r4, r3
+ 8001a0a:	4615      	mov	r5, r2
+ 8001a0c:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
+ 8001a0e:	c40f      	stmia	r4!, {r0, r1, r2, r3}
+ 8001a10:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
+ 8001a12:	c40f      	stmia	r4!, {r0, r1, r2, r3}
+ 8001a14:	e895 0003 	ldmia.w	r5, {r0, r1}
+ 8001a18:	e884 0003 	stmia.w	r4, {r0, r1}
 
                 /* 【注意】：在 STM32G4 FDCAN 中，DataLength 是宏定义（如 0x00080000），
                  * 严格来说不能作为循环上限。这里遵照要求保持原样，后续需留意此处的越界隐患。 */
                 for (int i = 0; i < s_Can_Rx_Header.DataLength; i++)
- 80019d0:	2300      	movs	r3, #0
- 80019d2:	617b      	str	r3, [r7, #20]
- 80019d4:	e00c      	b.n	80019f0 <HAL_FDCAN_RxFifo0Callback+0x90>
+ 8001a1c:	2300      	movs	r3, #0
+ 8001a1e:	617b      	str	r3, [r7, #20]
+ 8001a20:	e00c      	b.n	8001a3c <HAL_FDCAN_RxFifo0Callback+0x90>
                 {
                     Msg_To_Queue->Data[i] = RxData[i];
- 80019d6:	4a0f      	ldr	r2, [pc, #60]	@ (8001a14 <HAL_FDCAN_RxFifo0Callback+0xb4>)
- 80019d8:	697b      	ldr	r3, [r7, #20]
- 80019da:	4413      	add	r3, r2
- 80019dc:	7819      	ldrb	r1, [r3, #0]
- 80019de:	68fa      	ldr	r2, [r7, #12]
- 80019e0:	697b      	ldr	r3, [r7, #20]
- 80019e2:	4413      	add	r3, r2
- 80019e4:	3328      	adds	r3, #40	@ 0x28
- 80019e6:	460a      	mov	r2, r1
- 80019e8:	701a      	strb	r2, [r3, #0]
+ 8001a22:	4a0f      	ldr	r2, [pc, #60]	@ (8001a60 <HAL_FDCAN_RxFifo0Callback+0xb4>)
+ 8001a24:	697b      	ldr	r3, [r7, #20]
+ 8001a26:	4413      	add	r3, r2
+ 8001a28:	7819      	ldrb	r1, [r3, #0]
+ 8001a2a:	68fa      	ldr	r2, [r7, #12]
+ 8001a2c:	697b      	ldr	r3, [r7, #20]
+ 8001a2e:	4413      	add	r3, r2
+ 8001a30:	3328      	adds	r3, #40	@ 0x28
+ 8001a32:	460a      	mov	r2, r1
+ 8001a34:	701a      	strb	r2, [r3, #0]
                 for (int i = 0; i < s_Can_Rx_Header.DataLength; i++)
- 80019ea:	697b      	ldr	r3, [r7, #20]
- 80019ec:	3301      	adds	r3, #1
- 80019ee:	617b      	str	r3, [r7, #20]
- 80019f0:	4b09      	ldr	r3, [pc, #36]	@ (8001a18 <HAL_FDCAN_RxFifo0Callback+0xb8>)
- 80019f2:	68da      	ldr	r2, [r3, #12]
- 80019f4:	697b      	ldr	r3, [r7, #20]
- 80019f6:	429a      	cmp	r2, r3
- 80019f8:	d8ed      	bhi.n	80019d6 <HAL_FDCAN_RxFifo0Callback+0x76>
+ 8001a36:	697b      	ldr	r3, [r7, #20]
+ 8001a38:	3301      	adds	r3, #1
+ 8001a3a:	617b      	str	r3, [r7, #20]
+ 8001a3c:	4b09      	ldr	r3, [pc, #36]	@ (8001a64 <HAL_FDCAN_RxFifo0Callback+0xb8>)
+ 8001a3e:	68da      	ldr	r2, [r3, #12]
+ 8001a40:	697b      	ldr	r3, [r7, #20]
+ 8001a42:	429a      	cmp	r2, r3
+ 8001a44:	d8ed      	bhi.n	8001a22 <HAL_FDCAN_RxFifo0Callback+0x76>
                 }
 
                 /* 6. 【原子操作】移动头指针，正式将消息放入队列 */
                 /* 这个赋值操作是原子的，main 循环现在就能看到新消息了 */
                 g_Rx_Queue_Head = NextHead;
- 80019fa:	4a08      	ldr	r2, [pc, #32]	@ (8001a1c <HAL_FDCAN_RxFifo0Callback+0xbc>)
- 80019fc:	8a7b      	ldrh	r3, [r7, #18]
- 80019fe:	8013      	strh	r3, [r2, #0]
+ 8001a46:	4a08      	ldr	r2, [pc, #32]	@ (8001a68 <HAL_FDCAN_RxFifo0Callback+0xbc>)
+ 8001a48:	8a7b      	ldrh	r3, [r7, #18]
+ 8001a4a:	8013      	strh	r3, [r2, #0]
             }
         }
 
         /* 7. 【非常重要】: 每次处理完中断后，必须重新激活通知，否则中断只会触发一次！ */
         if (HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
- 8001a00:	2200      	movs	r2, #0
- 8001a02:	2101      	movs	r1, #1
- 8001a04:	6878      	ldr	r0, [r7, #4]
- 8001a06:	f004 fc37 	bl	8006278 <HAL_FDCAN_ActivateNotification>
+ 8001a4c:	2200      	movs	r2, #0
+ 8001a4e:	2101      	movs	r1, #1
+ 8001a50:	6878      	ldr	r0, [r7, #4]
+ 8001a52:	f004 fc11 	bl	8006278 <HAL_FDCAN_ActivateNotification>
         {
             /* Error: 激活 CAN 失败 */
         }
     }
 }
- 8001a0a:	bf00      	nop
- 8001a0c:	3718      	adds	r7, #24
- 8001a0e:	46bd      	mov	sp, r7
- 8001a10:	bdb0      	pop	{r4, r5, r7, pc}
- 8001a12:	bf00      	nop
- 8001a14:	200002ac 	.word	0x200002ac
- 8001a18:	20000284 	.word	0x20000284
- 8001a1c:	20000882 	.word	0x20000882
- 8001a20:	20000886 	.word	0x20000886
- 8001a24:	20000580 	.word	0x20000580
+ 8001a56:	bf00      	nop
+ 8001a58:	3718      	adds	r7, #24
+ 8001a5a:	46bd      	mov	sp, r7
+ 8001a5c:	bdb0      	pop	{r4, r5, r7, pc}
+ 8001a5e:	bf00      	nop
+ 8001a60:	200002a8 	.word	0x200002a8
+ 8001a64:	20000280 	.word	0x20000280
+ 8001a68:	2000087e 	.word	0x2000087e
+ 8001a6c:	20000882 	.word	0x20000882
+ 8001a70:	2000057c 	.word	0x2000057c
 
-08001a28 <Queue_Reply_Request>:
+08001a74 <Queue_Reply_Request>:
  * @retval true    入队成功
  * @retval false   队列已满，入队失败
  * @note   在 main 循环或业务层中调用，非阻塞执行。
  */
 bool Queue_Reply_Request(uint8_t command, uint8_t status)
 {
- 8001a28:	b4b0      	push	{r4, r5, r7}
- 8001a2a:	b085      	sub	sp, #20
- 8001a2c:	af00      	add	r7, sp, #0
- 8001a2e:	4603      	mov	r3, r0
- 8001a30:	460a      	mov	r2, r1
- 8001a32:	71fb      	strb	r3, [r7, #7]
- 8001a34:	4613      	mov	r3, r2
- 8001a36:	71bb      	strb	r3, [r7, #6]
+ 8001a74:	b4b0      	push	{r4, r5, r7}
+ 8001a76:	b085      	sub	sp, #20
+ 8001a78:	af00      	add	r7, sp, #0
+ 8001a7a:	4603      	mov	r3, r0
+ 8001a7c:	460a      	mov	r2, r1
+ 8001a7e:	71fb      	strb	r3, [r7, #7]
+ 8001a80:	4613      	mov	r3, r2
+ 8001a82:	71bb      	strb	r3, [r7, #6]
     /* 1. 计算 g_tx_queue 队列的下一个 "head" 指针的位置 */
     uint16_t Next_Head = (g_Tx_Queue_Head + 1) & (TX_QUEUE_SIZE - 1);
- 8001a38:	4b1d      	ldr	r3, [pc, #116]	@ (8001ab0 <Queue_Reply_Request+0x88>)
- 8001a3a:	881b      	ldrh	r3, [r3, #0]
- 8001a3c:	b29b      	uxth	r3, r3
- 8001a3e:	3301      	adds	r3, #1
- 8001a40:	b29b      	uxth	r3, r3
- 8001a42:	f003 030f 	and.w	r3, r3, #15
- 8001a46:	81fb      	strh	r3, [r7, #14]
+ 8001a84:	4b1d      	ldr	r3, [pc, #116]	@ (8001afc <Queue_Reply_Request+0x88>)
+ 8001a86:	881b      	ldrh	r3, [r3, #0]
+ 8001a88:	b29b      	uxth	r3, r3
+ 8001a8a:	3301      	adds	r3, #1
+ 8001a8c:	b29b      	uxth	r3, r3
+ 8001a8e:	f003 030f 	and.w	r3, r3, #15
+ 8001a92:	81fb      	strh	r3, [r7, #14]
 
     /* 2. 检查 Tx 队列是否已满 */
     if (Next_Head == g_Tx_Queue_Tail)
- 8001a48:	4b1a      	ldr	r3, [pc, #104]	@ (8001ab4 <Queue_Reply_Request+0x8c>)
- 8001a4a:	881b      	ldrh	r3, [r3, #0]
- 8001a4c:	b29b      	uxth	r3, r3
- 8001a4e:	89fa      	ldrh	r2, [r7, #14]
- 8001a50:	429a      	cmp	r2, r3
- 8001a52:	d101      	bne.n	8001a58 <Queue_Reply_Request+0x30>
+ 8001a94:	4b1a      	ldr	r3, [pc, #104]	@ (8001b00 <Queue_Reply_Request+0x8c>)
+ 8001a96:	881b      	ldrh	r3, [r3, #0]
+ 8001a98:	b29b      	uxth	r3, r3
+ 8001a9a:	89fa      	ldrh	r2, [r7, #14]
+ 8001a9c:	429a      	cmp	r2, r3
+ 8001a9e:	d101      	bne.n	8001aa4 <Queue_Reply_Request+0x30>
     {
         /* 队列已满，本次应答被丢弃 */
         return false;
- 8001a54:	2300      	movs	r3, #0
- 8001a56:	e026      	b.n	8001aa6 <Queue_Reply_Request+0x7e>
+ 8001aa0:	2300      	movs	r3, #0
+ 8001aa2:	e026      	b.n	8001af2 <Queue_Reply_Request+0x7e>
     }
 
     /* 3. 队列未满，获取 "head" 位置的缓冲区指针 */
     volatile CanTxMessage_t* Msg_To_Queue = &g_Tx_Queue[g_Tx_Queue_Head];
- 8001a58:	4b15      	ldr	r3, [pc, #84]	@ (8001ab0 <Queue_Reply_Request+0x88>)
- 8001a5a:	881b      	ldrh	r3, [r3, #0]
- 8001a5c:	b29b      	uxth	r3, r3
- 8001a5e:	461a      	mov	r2, r3
- 8001a60:	232c      	movs	r3, #44	@ 0x2c
- 8001a62:	fb02 f303 	mul.w	r3, r2, r3
- 8001a66:	4a14      	ldr	r2, [pc, #80]	@ (8001ab8 <Queue_Reply_Request+0x90>)
- 8001a68:	4413      	add	r3, r2
- 8001a6a:	60bb      	str	r3, [r7, #8]
+ 8001aa4:	4b15      	ldr	r3, [pc, #84]	@ (8001afc <Queue_Reply_Request+0x88>)
+ 8001aa6:	881b      	ldrh	r3, [r3, #0]
+ 8001aa8:	b29b      	uxth	r3, r3
+ 8001aaa:	461a      	mov	r2, r3
+ 8001aac:	232c      	movs	r3, #44	@ 0x2c
+ 8001aae:	fb02 f303 	mul.w	r3, r2, r3
+ 8001ab2:	4a14      	ldr	r2, [pc, #80]	@ (8001b04 <Queue_Reply_Request+0x90>)
+ 8001ab4:	4413      	add	r3, r2
+ 8001ab6:	60bb      	str	r3, [r7, #8]
 
     /* 4. 填充报文头 (Tx_Header) */
     Msg_To_Queue->Tx_Header = s_Can_Tx_Header;              /* 复制模板报文头 */
- 8001a6c:	68bb      	ldr	r3, [r7, #8]
- 8001a6e:	4a13      	ldr	r2, [pc, #76]	@ (8001abc <Queue_Reply_Request+0x94>)
- 8001a70:	461c      	mov	r4, r3
- 8001a72:	4615      	mov	r5, r2
- 8001a74:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
- 8001a76:	c40f      	stmia	r4!, {r0, r1, r2, r3}
- 8001a78:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
- 8001a7a:	c40f      	stmia	r4!, {r0, r1, r2, r3}
- 8001a7c:	682b      	ldr	r3, [r5, #0]
- 8001a7e:	6023      	str	r3, [r4, #0]
+ 8001ab8:	68bb      	ldr	r3, [r7, #8]
+ 8001aba:	4a13      	ldr	r2, [pc, #76]	@ (8001b08 <Queue_Reply_Request+0x94>)
+ 8001abc:	461c      	mov	r4, r3
+ 8001abe:	4615      	mov	r5, r2
+ 8001ac0:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
+ 8001ac2:	c40f      	stmia	r4!, {r0, r1, r2, r3}
+ 8001ac4:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
+ 8001ac6:	c40f      	stmia	r4!, {r0, r1, r2, r3}
+ 8001ac8:	682b      	ldr	r3, [r5, #0]
+ 8001aca:	6023      	str	r3, [r4, #0]
     Msg_To_Queue->Tx_Header.Identifier = MESSAGE_ID;        /* 使用 MESSAGE_ID 宏 (0x201) */
- 8001a80:	68bb      	ldr	r3, [r7, #8]
- 8001a82:	f44f 7201 	mov.w	r2, #516	@ 0x204
- 8001a86:	601a      	str	r2, [r3, #0]
+ 8001acc:	68bb      	ldr	r3, [r7, #8]
+ 8001ace:	f44f 7201 	mov.w	r2, #516	@ 0x204
+ 8001ad2:	601a      	str	r2, [r3, #0]
     Msg_To_Queue->Tx_Header.DataLength = FDCAN_DLC_BYTES_2; /* 灵活 DLC，本次只发 2 字节 */
- 8001a88:	68bb      	ldr	r3, [r7, #8]
- 8001a8a:	2202      	movs	r2, #2
- 8001a8c:	60da      	str	r2, [r3, #12]
+ 8001ad4:	68bb      	ldr	r3, [r7, #8]
+ 8001ad6:	2202      	movs	r2, #2
+ 8001ad8:	60da      	str	r2, [r3, #12]
 
     /* 5. 填充报文数据 */
     Msg_To_Queue->Data[0] = command; /* Data[0] = 回显收到的命令 */
- 8001a8e:	68bb      	ldr	r3, [r7, #8]
- 8001a90:	79fa      	ldrb	r2, [r7, #7]
- 8001a92:	f883 2024 	strb.w	r2, [r3, #36]	@ 0x24
+ 8001ada:	68bb      	ldr	r3, [r7, #8]
+ 8001adc:	79fa      	ldrb	r2, [r7, #7]
+ 8001ade:	f883 2024 	strb.w	r2, [r3, #36]	@ 0x24
     Msg_To_Queue->Data[1] = status;  /* Data[1] = 执行状态码 */
- 8001a96:	68bb      	ldr	r3, [r7, #8]
- 8001a98:	79ba      	ldrb	r2, [r7, #6]
- 8001a9a:	f883 2025 	strb.w	r2, [r3, #37]	@ 0x25
+ 8001ae2:	68bb      	ldr	r3, [r7, #8]
+ 8001ae4:	79ba      	ldrb	r2, [r7, #6]
+ 8001ae6:	f883 2025 	strb.w	r2, [r3, #37]	@ 0x25
     /* (其余字节由于 DLC 设置为 2，会被底层硬件自动忽略) */
 
     /* 6. 【原子操作】移动头指针，正式将消息放入队列 */
     g_Tx_Queue_Head = Next_Head;
- 8001a9e:	4a04      	ldr	r2, [pc, #16]	@ (8001ab0 <Queue_Reply_Request+0x88>)
- 8001aa0:	89fb      	ldrh	r3, [r7, #14]
- 8001aa2:	8013      	strh	r3, [r2, #0]
+ 8001aea:	4a04      	ldr	r2, [pc, #16]	@ (8001afc <Queue_Reply_Request+0x88>)
+ 8001aec:	89fb      	ldrh	r3, [r7, #14]
+ 8001aee:	8013      	strh	r3, [r2, #0]
 
     return true;
- 8001aa4:	2301      	movs	r3, #1
+ 8001af0:	2301      	movs	r3, #1
 }
- 8001aa6:	4618      	mov	r0, r3
- 8001aa8:	3714      	adds	r7, #20
- 8001aaa:	46bd      	mov	sp, r7
- 8001aac:	bcb0      	pop	{r4, r5, r7}
- 8001aae:	4770      	bx	lr
- 8001ab0:	20000880 	.word	0x20000880
- 8001ab4:	20000884 	.word	0x20000884
- 8001ab8:	200002c0 	.word	0x200002c0
- 8001abc:	20000260 	.word	0x20000260
+ 8001af2:	4618      	mov	r0, r3
+ 8001af4:	3714      	adds	r7, #20
+ 8001af6:	46bd      	mov	sp, r7
+ 8001af8:	bcb0      	pop	{r4, r5, r7}
+ 8001afa:	4770      	bx	lr
+ 8001afc:	2000087c 	.word	0x2000087c
+ 8001b00:	20000880 	.word	0x20000880
+ 8001b04:	200002bc 	.word	0x200002bc
+ 8001b08:	2000025c 	.word	0x2000025c
 
-08001ac0 <Bsp_Can_Transmit_Message>:
+08001b0c <Bsp_Can_Transmit_Message>:
  * @brief  尝试将一条报文压入 CAN 硬件发送 FIFO (纯底层逻辑)
  * @param  msg 指向待发送报文结构体的指针
  * @retval bool 发送结果 (true: 成功压入硬件, false: 硬件 FIFO 满或错误)
  */
 bool Bsp_Can_Transmit_Message(CanTxMessage_t *msg)
 {
- 8001ac0:	b580      	push	{r7, lr}
- 8001ac2:	b082      	sub	sp, #8
- 8001ac4:	af00      	add	r7, sp, #0
- 8001ac6:	6078      	str	r0, [r7, #4]
+ 8001b0c:	b580      	push	{r7, lr}
+ 8001b0e:	b082      	sub	sp, #8
+ 8001b10:	af00      	add	r7, sp, #0
+ 8001b12:	6078      	str	r0, [r7, #4]
     /* 1. 检查 CAN 硬件 Tx FIFO 是否有空余空间 */
     if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) > 0)
- 8001ac8:	480b      	ldr	r0, [pc, #44]	@ (8001af8 <Bsp_Can_Transmit_Message+0x38>)
- 8001aca:	f004 fbc3 	bl	8006254 <HAL_FDCAN_GetTxFifoFreeLevel>
- 8001ace:	4603      	mov	r3, r0
- 8001ad0:	2b00      	cmp	r3, #0
- 8001ad2:	d00b      	beq.n	8001aec <Bsp_Can_Transmit_Message+0x2c>
+ 8001b14:	480b      	ldr	r0, [pc, #44]	@ (8001b44 <Bsp_Can_Transmit_Message+0x38>)
+ 8001b16:	f004 fb9d 	bl	8006254 <HAL_FDCAN_GetTxFifoFreeLevel>
+ 8001b1a:	4603      	mov	r3, r0
+ 8001b1c:	2b00      	cmp	r3, #0
+ 8001b1e:	d00b      	beq.n	8001b38 <Bsp_Can_Transmit_Message+0x2c>
     {
         /* 2. 调用 HAL 库，将消息放入硬件 FIFO */
         if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, (FDCAN_TxHeaderTypeDef*)&msg->Tx_Header, (uint8_t*)msg->Data) == HAL_OK)
- 8001ad4:	6879      	ldr	r1, [r7, #4]
- 8001ad6:	687b      	ldr	r3, [r7, #4]
- 8001ad8:	3324      	adds	r3, #36	@ 0x24
- 8001ada:	461a      	mov	r2, r3
- 8001adc:	4806      	ldr	r0, [pc, #24]	@ (8001af8 <Bsp_Can_Transmit_Message+0x38>)
- 8001ade:	f004 fa6d 	bl	8005fbc <HAL_FDCAN_AddMessageToTxFifoQ>
- 8001ae2:	4603      	mov	r3, r0
- 8001ae4:	2b00      	cmp	r3, #0
- 8001ae6:	d101      	bne.n	8001aec <Bsp_Can_Transmit_Message+0x2c>
+ 8001b20:	6879      	ldr	r1, [r7, #4]
+ 8001b22:	687b      	ldr	r3, [r7, #4]
+ 8001b24:	3324      	adds	r3, #36	@ 0x24
+ 8001b26:	461a      	mov	r2, r3
+ 8001b28:	4806      	ldr	r0, [pc, #24]	@ (8001b44 <Bsp_Can_Transmit_Message+0x38>)
+ 8001b2a:	f004 fa47 	bl	8005fbc <HAL_FDCAN_AddMessageToTxFifoQ>
+ 8001b2e:	4603      	mov	r3, r0
+ 8001b30:	2b00      	cmp	r3, #0
+ 8001b32:	d101      	bne.n	8001b38 <Bsp_Can_Transmit_Message+0x2c>
         {
             return true; /* 成功发送 */
- 8001ae8:	2301      	movs	r3, #1
- 8001aea:	e000      	b.n	8001aee <Bsp_Can_Transmit_Message+0x2e>
+ 8001b34:	2301      	movs	r3, #1
+ 8001b36:	e000      	b.n	8001b3a <Bsp_Can_Transmit_Message+0x2e>
         }
     }
     return false; /* 硬件忙或发送失败 */
- 8001aec:	2300      	movs	r3, #0
+ 8001b38:	2300      	movs	r3, #0
 }
- 8001aee:	4618      	mov	r0, r3
- 8001af0:	3708      	adds	r7, #8
- 8001af2:	46bd      	mov	sp, r7
- 8001af4:	bd80      	pop	{r7, pc}
- 8001af6:	bf00      	nop
- 8001af8:	20000b40 	.word	0x20000b40
+ 8001b3a:	4618      	mov	r0, r3
+ 8001b3c:	3708      	adds	r7, #8
+ 8001b3e:	46bd      	mov	sp, r7
+ 8001b40:	bd80      	pop	{r7, pc}
+ 8001b42:	bf00      	nop
+ 8001b44:	20000b38 	.word	0x20000b38
 
-08001afc <HAL_ADC_ConvCpltCallback>:
+08001b48 <HAL_ADC_ConvCpltCallback>:
  * @param  hadc ADC 句柄
  * @note   该函数由 HAL 库在 ADC DMA 转换完成后自动调用。
  * 目前包含将 ADC 原始值转换为物理量 (电压/电流) 的预留逻辑。
  */
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
- 8001afc:	b480      	push	{r7}
- 8001afe:	b083      	sub	sp, #12
- 8001b00:	af00      	add	r7, sp, #0
- 8001b02:	6078      	str	r0, [r7, #4]
+ 8001b48:	b480      	push	{r7}
+ 8001b4a:	b083      	sub	sp, #12
+ 8001b4c:	af00      	add	r7, sp, #0
+ 8001b4e:	6078      	str	r0, [r7, #4]
         /*
         // printf("%.3f,%ld,%ld\r\n", DC_I, ADC2_RAW_data[1], ADC2_RAW_data[2]);
         */
         /* ========================================================== */
     }
 }
- 8001b04:	bf00      	nop
- 8001b06:	370c      	adds	r7, #12
- 8001b08:	46bd      	mov	sp, r7
- 8001b0a:	f85d 7b04 	ldr.w	r7, [sp], #4
- 8001b0e:	4770      	bx	lr
+ 8001b50:	bf00      	nop
+ 8001b52:	370c      	adds	r7, #12
+ 8001b54:	46bd      	mov	sp, r7
+ 8001b56:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8001b5a:	4770      	bx	lr
 
-08001b10 <HAL_COMP_TriggerCallback>:
+08001b5c <HAL_COMP_TriggerCallback>:
  * @brief  模拟比较器 (COMP) 触发回调函数
  * @param  hcomp 比较器句柄
  * @note   用于极速的硬件级过压、过流保护响应。触发后直接切断输出并上报状态。
  */
 void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
 {
- 8001b10:	b580      	push	{r7, lr}
- 8001b12:	b082      	sub	sp, #8
- 8001b14:	af00      	add	r7, sp, #0
- 8001b16:	6078      	str	r0, [r7, #4]
+ 8001b5c:	b580      	push	{r7, lr}
+ 8001b5e:	b082      	sub	sp, #8
+ 8001b60:	af00      	add	r7, sp, #0
+ 8001b62:	6078      	str	r0, [r7, #4]
     /* 检查是否为比较器 1 触发 (过压保护) */
     if (hcomp == &hcomp1)
- 8001b18:	687b      	ldr	r3, [r7, #4]
- 8001b1a:	4a0c      	ldr	r2, [pc, #48]	@ (8001b4c <HAL_COMP_TriggerCallback+0x3c>)
- 8001b1c:	4293      	cmp	r3, r2
- 8001b1e:	d104      	bne.n	8001b2a <HAL_COMP_TriggerCallback+0x1a>
+ 8001b64:	687b      	ldr	r3, [r7, #4]
+ 8001b66:	4a0c      	ldr	r2, [pc, #48]	@ (8001b98 <HAL_COMP_TriggerCallback+0x3c>)
+ 8001b68:	4293      	cmp	r3, r2
+ 8001b6a:	d104      	bne.n	8001b76 <HAL_COMP_TriggerCallback+0x1a>
     {
         /* 1. 更新电机状态机为高压过压故障 */
         EMA_DATA.Motor_mode = MOTOR_OVER_HV_VOLTAGE;
- 8001b20:	4b0b      	ldr	r3, [pc, #44]	@ (8001b50 <HAL_COMP_TriggerCallback+0x40>)
- 8001b22:	220c      	movs	r2, #12
- 8001b24:	701a      	strb	r2, [r3, #0]
+ 8001b6c:	4b0b      	ldr	r3, [pc, #44]	@ (8001b9c <HAL_COMP_TriggerCallback+0x40>)
+ 8001b6e:	220c      	movs	r2, #12
+ 8001b70:	701a      	strb	r2, [r3, #0]
 
         /* 2. 紧急关闭 PWM 输出 */
         Close_output();
- 8001b26:	f00a f931 	bl	800bd8c <Close_output>
+ 8001b72:	f00a f90b 	bl	800bd8c <Close_output>
         */
         /* ========================================================== */
     }
 
     /* 检查是否为比较器 2 触发 (过流保护) */
     if (hcomp == &hcomp2)
- 8001b2a:	687b      	ldr	r3, [r7, #4]
- 8001b2c:	4a09      	ldr	r2, [pc, #36]	@ (8001b54 <HAL_COMP_TriggerCallback+0x44>)
- 8001b2e:	4293      	cmp	r3, r2
- 8001b30:	d108      	bne.n	8001b44 <HAL_COMP_TriggerCallback+0x34>
+ 8001b76:	687b      	ldr	r3, [r7, #4]
+ 8001b78:	4a09      	ldr	r2, [pc, #36]	@ (8001ba0 <HAL_COMP_TriggerCallback+0x44>)
+ 8001b7a:	4293      	cmp	r3, r2
+ 8001b7c:	d108      	bne.n	8001b90 <HAL_COMP_TriggerCallback+0x34>
     {
         /* 1. 更新电机状态机为高压过流故障 */
         EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;
- 8001b32:	4b07      	ldr	r3, [pc, #28]	@ (8001b50 <HAL_COMP_TriggerCallback+0x40>)
- 8001b34:	220b      	movs	r2, #11
- 8001b36:	701a      	strb	r2, [r3, #0]
+ 8001b7e:	4b07      	ldr	r3, [pc, #28]	@ (8001b9c <HAL_COMP_TriggerCallback+0x40>)
+ 8001b80:	220b      	movs	r2, #11
+ 8001b82:	701a      	strb	r2, [r3, #0]
 
         /* 2. 开启蜂鸣器报警 */
         Buzzer_ON; /* 【安全修复】：为你补上了分号，防止编译报错 */
- 8001b38:	2100      	movs	r1, #0
- 8001b3a:	4807      	ldr	r0, [pc, #28]	@ (8001b58 <HAL_COMP_TriggerCallback+0x48>)
- 8001b3c:	f006 fa62 	bl	8008004 <HAL_TIM_PWM_Start>
+ 8001b84:	2100      	movs	r1, #0
+ 8001b86:	4807      	ldr	r0, [pc, #28]	@ (8001ba4 <HAL_COMP_TriggerCallback+0x48>)
+ 8001b88:	f006 fa3c 	bl	8008004 <HAL_TIM_PWM_Start>
 
         /* 3. 紧急关闭 PWM 输出 */
         Close_output();
- 8001b40:	f00a f924 	bl	800bd8c <Close_output>
+ 8001b8c:	f00a f8fe 	bl	800bd8c <Close_output>
         // if(DC_ON_State == true) { DC_Power_CTR(false); }
         // printf("HV I \r\n");
         */
         /* ========================================================== */
     }
 }
- 8001b44:	bf00      	nop
- 8001b46:	3708      	adds	r7, #8
- 8001b48:	46bd      	mov	sp, r7
- 8001b4a:	bd80      	pop	{r7, pc}
- 8001b4c:	20000ae4 	.word	0x20000ae4
- 8001b50:	200008cc 	.word	0x200008cc
- 8001b54:	20000b08 	.word	0x20000b08
- 8001b58:	20000c54 	.word	0x20000c54
+ 8001b90:	bf00      	nop
+ 8001b92:	3708      	adds	r7, #8
+ 8001b94:	46bd      	mov	sp, r7
+ 8001b96:	bd80      	pop	{r7, pc}
+ 8001b98:	20000adc 	.word	0x20000adc
+ 8001b9c:	200008c4 	.word	0x200008c4
+ 8001ba0:	20000b00 	.word	0x20000b00
+ 8001ba4:	20000c4c 	.word	0x20000c4c
 
-08001b5c <Bsp_Usart_Init>:
- * @brief  USART 硬件初始化及 DMA 接收配置
- * @note   配置串口使用 DMA 方式接收数据，直到发生空闲中断 (IDLE line detection)。
- * 同时禁用了 DMA 的半传输中断 (HT)，防止长数据包被意外截断。
- */
-void Bsp_Usart_Init(void)
-{
- 8001b5c:	b580      	push	{r7, lr}
- 8001b5e:	af00      	add	r7, sp, #0
-    /* 1. 开启串口 DMA 空闲中断接收模式 */
-    /* 将接收到的数据自动搬运到 rx_buffer 中，最大监听长度为 RX_BUFFER_SIZE */
-    HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_buffer, RX_BUFFER_SIZE);
- 8001b60:	2240      	movs	r2, #64	@ 0x40
- 8001b62:	4907      	ldr	r1, [pc, #28]	@ (8001b80 <Bsp_Usart_Init+0x24>)
- 8001b64:	4807      	ldr	r0, [pc, #28]	@ (8001b84 <Bsp_Usart_Init+0x28>)
- 8001b66:	f009 fa71 	bl	800b04c <HAL_UARTEx_ReceiveToIdle_DMA>
-
-    /* 2. 禁用 DMA 半传输中断 (Half Transfer Interrupt) */
-    /* 【非常关键】：如果不禁用此中断，当接收数据量达到 RX_BUFFER_SIZE 的一半时，
-     * 底层也会触发一次回调，这会导致原本完整的一长帧指令被错误地劈成两半。 */
-    __HAL_DMA_DISABLE_IT(&hdma_usart1_rx, DMA_IT_HT);
- 8001b6a:	4b07      	ldr	r3, [pc, #28]	@ (8001b88 <Bsp_Usart_Init+0x2c>)
- 8001b6c:	681b      	ldr	r3, [r3, #0]
- 8001b6e:	681a      	ldr	r2, [r3, #0]
- 8001b70:	4b05      	ldr	r3, [pc, #20]	@ (8001b88 <Bsp_Usart_Init+0x2c>)
- 8001b72:	681b      	ldr	r3, [r3, #0]
- 8001b74:	f022 0204 	bic.w	r2, r2, #4
- 8001b78:	601a      	str	r2, [r3, #0]
-}
- 8001b7a:	bf00      	nop
- 8001b7c:	bd80      	pop	{r7, pc}
- 8001b7e:	bf00      	nop
- 8001b80:	20000888 	.word	0x20000888
- 8001b84:	20000dd0 	.word	0x20000dd0
- 8001b88:	20000e64 	.word	0x20000e64
-
-08001b8c <__io_putchar>:
+08001ba8 <__io_putchar>:
 #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
 #else
 #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
 #endif
 PUTCHAR_PROTOTYPE
 {
- 8001b8c:	b580      	push	{r7, lr}
- 8001b8e:	b082      	sub	sp, #8
- 8001b90:	af00      	add	r7, sp, #0
- 8001b92:	6078      	str	r0, [r7, #4]
+ 8001ba8:	b580      	push	{r7, lr}
+ 8001baa:	b082      	sub	sp, #8
+ 8001bac:	af00      	add	r7, sp, #0
+ 8001bae:	6078      	str	r0, [r7, #4]
     HAL_UART_Transmit(&huart1 , (uint8_t *)&ch, 1, 0xFFFF);
- 8001b94:	1d39      	adds	r1, r7, #4
- 8001b96:	f64f 73ff 	movw	r3, #65535	@ 0xffff
- 8001b9a:	2201      	movs	r2, #1
- 8001b9c:	4803      	ldr	r0, [pc, #12]	@ (8001bac <__io_putchar+0x20>)
- 8001b9e:	f007 fe8f 	bl	80098c0 <HAL_UART_Transmit>
+ 8001bb0:	1d39      	adds	r1, r7, #4
+ 8001bb2:	f64f 73ff 	movw	r3, #65535	@ 0xffff
+ 8001bb6:	2201      	movs	r2, #1
+ 8001bb8:	4803      	ldr	r0, [pc, #12]	@ (8001bc8 <__io_putchar+0x20>)
+ 8001bba:	f007 fe81 	bl	80098c0 <HAL_UART_Transmit>
     return ch;
- 8001ba2:	687b      	ldr	r3, [r7, #4]
+ 8001bbe:	687b      	ldr	r3, [r7, #4]
 }
- 8001ba4:	4618      	mov	r0, r3
- 8001ba6:	3708      	adds	r7, #8
- 8001ba8:	46bd      	mov	sp, r7
- 8001baa:	bd80      	pop	{r7, pc}
- 8001bac:	20000dd0 	.word	0x20000dd0
+ 8001bc0:	4618      	mov	r0, r3
+ 8001bc2:	3708      	adds	r7, #8
+ 8001bc4:	46bd      	mov	sp, r7
+ 8001bc6:	bd80      	pop	{r7, pc}
+ 8001bc8:	20000dc8 	.word	0x20000dc8
 
-08001bb0 <HAL_TIM_PeriodElapsedCallback>:
-/* USER CODE BEGIN 0 */
-
-extern volatile uint8_t g_uart_dma_transfer_complete;
-
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+08001bcc <Bsp_Usart_Init>:
+ * @brief  USART 硬件初始化及 DMA 接收配置
+ * @note   配置串口使用 DMA 方式接收数据，直到发生空闲中断 (IDLE line detection)。
+ * 同时禁用了 DMA 的半传输中断 (HT)，防止长数据包被意外截断。
+ */
+void Bsp_Usart_Init(void)
 {
- 8001bb0:	b580      	push	{r7, lr}
- 8001bb2:	b082      	sub	sp, #8
- 8001bb4:	af00      	add	r7, sp, #0
- 8001bb6:	6078      	str	r0, [r7, #4]
-	if(htim == &htim17)
- 8001bb8:	687b      	ldr	r3, [r7, #4]
- 8001bba:	4a0d      	ldr	r2, [pc, #52]	@ (8001bf0 <HAL_TIM_PeriodElapsedCallback+0x40>)
- 8001bbc:	4293      	cmp	r3, r2
- 8001bbe:	d101      	bne.n	8001bc4 <HAL_TIM_PeriodElapsedCallback+0x14>
-	{
-		App_Can_Heart_Send();//Can Heart
- 8001bc0:	f7ff fafe 	bl	80011c0 <App_Can_Heart_Send>
-	}
+ 8001bcc:	b580      	push	{r7, lr}
+ 8001bce:	af00      	add	r7, sp, #0
+    /* 1. 开启串口 DMA 空闲中断接收模式 */
+    /* 将接收到的数据自动搬运到 rx_buffer 中，最大监听长度为 RX_BUFFER_SIZE */
+    HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_buffer, RX_BUFFER_SIZE);
+ 8001bd0:	2240      	movs	r2, #64	@ 0x40
+ 8001bd2:	4907      	ldr	r1, [pc, #28]	@ (8001bf0 <Bsp_Usart_Init+0x24>)
+ 8001bd4:	4807      	ldr	r0, [pc, #28]	@ (8001bf4 <Bsp_Usart_Init+0x28>)
+ 8001bd6:	f009 fa39 	bl	800b04c <HAL_UARTEx_ReceiveToIdle_DMA>
 
-	if(htim == &htim16)//用于往复模式下打印往复次数以及电流电压等
- 8001bc4:	687b      	ldr	r3, [r7, #4]
- 8001bc6:	4a0b      	ldr	r2, [pc, #44]	@ (8001bf4 <HAL_TIM_PeriodElapsedCallback+0x44>)
- 8001bc8:	4293      	cmp	r3, r2
- 8001bca:	d101      	bne.n	8001bd0 <HAL_TIM_PeriodElapsedCallback+0x20>
-	{
-		App_Can_Send_Data();
- 8001bcc:	f7ff fb4a 	bl	8001264 <App_Can_Send_Data>
-	}
-	if(htim == &htim6)
- 8001bd0:	687b      	ldr	r3, [r7, #4]
- 8001bd2:	4a09      	ldr	r2, [pc, #36]	@ (8001bf8 <HAL_TIM_PeriodElapsedCallback+0x48>)
- 8001bd4:	4293      	cmp	r3, r2
- 8001bd6:	d107      	bne.n	8001be8 <HAL_TIM_PeriodElapsedCallback+0x38>
-	{
-
-		App_Upate_Voltage_Current_Data();
- 8001bd8:	f7ff fd10 	bl	80015fc <App_Upate_Voltage_Current_Data>
-
-		App_Update_Position_Sensor_Data();
- 8001bdc:	f7ff fc72 	bl	80014c4 <App_Update_Position_Sensor_Data>
-
-		App_System_Safety_Monitor();
- 8001be0:	f7ff fd28 	bl	8001634 <App_System_Safety_Monitor>
-
-		App_EMA_Commutation_Task();
- 8001be4:	f7ff fbcc 	bl	8001380 <App_EMA_Commutation_Task>
-
-	}
+    /* 2. 禁用 DMA 半传输中断 (Half Transfer Interrupt) */
+    /* 【非常关键】：如果不禁用此中断，当接收数据量达到 RX_BUFFER_SIZE 的一半时，
+     * 底层也会触发一次回调，这会导致原本完整的一长帧指令被错误地劈成两半。 */
+    __HAL_DMA_DISABLE_IT(&hdma_usart1_rx, DMA_IT_HT);
+ 8001bda:	4b07      	ldr	r3, [pc, #28]	@ (8001bf8 <Bsp_Usart_Init+0x2c>)
+ 8001bdc:	681b      	ldr	r3, [r3, #0]
+ 8001bde:	681a      	ldr	r2, [r3, #0]
+ 8001be0:	4b05      	ldr	r3, [pc, #20]	@ (8001bf8 <Bsp_Usart_Init+0x2c>)
+ 8001be2:	681b      	ldr	r3, [r3, #0]
+ 8001be4:	f022 0204 	bic.w	r2, r2, #4
+ 8001be8:	601a      	str	r2, [r3, #0]
 }
- 8001be8:	bf00      	nop
- 8001bea:	3708      	adds	r7, #8
- 8001bec:	46bd      	mov	sp, r7
- 8001bee:	bd80      	pop	{r7, pc}
- 8001bf0:	20000d84 	.word	0x20000d84
- 8001bf4:	20000d38 	.word	0x20000d38
- 8001bf8:	20000ca0 	.word	0x20000ca0
+ 8001bea:	bf00      	nop
+ 8001bec:	bd80      	pop	{r7, pc}
+ 8001bee:	bf00      	nop
+ 8001bf0:	20000884 	.word	0x20000884
+ 8001bf4:	20000dc8 	.word	0x20000dc8
+ 8001bf8:	20000e5c 	.word	0x20000e5c
 
 08001bfc <main>:
 /**
@@ -3269,20 +3269,20 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   Bsp_Usart_Init();
- 8001c48:	f7ff ff88 	bl	8001b5c <Bsp_Usart_Init>
+ 8001c48:	f7ff ffc0 	bl	8001bcc <Bsp_Usart_Init>
 
     Close_output();//关闭所有输出
  8001c4c:	f00a f89e 	bl	800bd8c <Close_output>
 
     Bsp_Adc_Init();//板载ADC初始化配置
- 8001c50:	f7ff fd7e 	bl	8001750 <Bsp_Adc_Init>
+ 8001c50:	f7ff fda4 	bl	800179c <Bsp_Adc_Init>
   //  HAL_DAC_Start(&hdac3, DAC_CHANNEL_1);
   //  HAL_DAC_Start(&hdac3, DAC_CHANNEL_2);
   //  HAL_COMP_Start(&hcomp1);
   //  HAL_COMP_Start(&hcomp2);
 
       Bsp_Can_Init();
- 8001c54:	f7ff fdfc 	bl	8001850 <Bsp_Can_Init>
+ 8001c54:	f7ff fe22 	bl	800189c <Bsp_Can_Init>
 
       EMA_DATA.sin_offset = 1.65f;
  8001c58:	4b08      	ldr	r3, [pc, #32]	@ (8001c7c <main+0x80>)
@@ -3313,10 +3313,10 @@ int main(void)
 	  	  Mid_Can_Tx_Task();
  8001c78:	bf00      	nop
  8001c7a:	e7f9      	b.n	8001c70 <main+0x74>
- 8001c7c:	200008cc 	.word	0x200008cc
+ 8001c7c:	200008c4 	.word	0x200008c4
  8001c80:	3fd33333 	.word	0x3fd33333
- 8001c84:	20000ca0 	.word	0x20000ca0
- 8001c88:	20000d84 	.word	0x20000d84
+ 8001c84:	20000c98 	.word	0x20000c98
+ 8001c88:	20000d7c 	.word	0x20000d7c
 
 08001c8c <SystemClock_Config>:
 /**
@@ -3632,7 +3632,7 @@ static void MX_ADC1_Init(void)
  8001e3a:	3730      	adds	r7, #48	@ 0x30
  8001e3c:	46bd      	mov	sp, r7
  8001e3e:	bd80      	pop	{r7, pc}
- 8001e40:	2000094c 	.word	0x2000094c
+ 8001e40:	20000944 	.word	0x20000944
  8001e44:	04300002 	.word	0x04300002
  8001e48:	407f0000 	.word	0x407f0000
  8001e4c:	0c900008 	.word	0x0c900008
@@ -3838,7 +3838,7 @@ static void MX_ADC2_Init(void)
  8001f5e:	46bd      	mov	sp, r7
  8001f60:	bd80      	pop	{r7, pc}
  8001f62:	bf00      	nop
- 8001f64:	200009b8 	.word	0x200009b8
+ 8001f64:	200009b0 	.word	0x200009b0
  8001f68:	50000100 	.word	0x50000100
  8001f6c:	0c900008 	.word	0x0c900008
  8001f70:	36902000 	.word	0x36902000
@@ -3903,7 +3903,7 @@ static void MX_COMP1_Init(void)
 }
  8001fb8:	bf00      	nop
  8001fba:	bd80      	pop	{r7, pc}
- 8001fbc:	20000ae4 	.word	0x20000ae4
+ 8001fbc:	20000adc 	.word	0x20000adc
  8001fc0:	40010200 	.word	0x40010200
 
 08001fc4 <MX_COMP2_Init>:
@@ -3966,7 +3966,7 @@ static void MX_COMP2_Init(void)
  8002006:	bf00      	nop
  8002008:	bd80      	pop	{r7, pc}
  800200a:	bf00      	nop
- 800200c:	20000b08 	.word	0x20000b08
+ 800200c:	20000b00 	.word	0x20000b00
  8002010:	40010204 	.word	0x40010204
 
 08002014 <MX_DAC3_Init>:
@@ -4077,7 +4077,7 @@ static void MX_DAC3_Init(void)
  800208e:	3730      	adds	r7, #48	@ 0x30
  8002090:	46bd      	mov	sp, r7
  8002092:	bd80      	pop	{r7, pc}
- 8002094:	20000b2c 	.word	0x20000b2c
+ 8002094:	20000b24 	.word	0x20000b24
  8002098:	50001000 	.word	0x50001000
 
 0800209c <MX_FDCAN1_Init>:
@@ -4183,7 +4183,7 @@ static void MX_FDCAN1_Init(void)
 }
  800211c:	bf00      	nop
  800211e:	bd80      	pop	{r7, pc}
- 8002120:	20000b40 	.word	0x20000b40
+ 8002120:	20000b38 	.word	0x20000b38
  8002124:	40006400 	.word	0x40006400
 
 08002128 <MX_SPI1_Init>:
@@ -4274,7 +4274,7 @@ static void MX_SPI1_Init(void)
  8002196:	bf00      	nop
  8002198:	bd80      	pop	{r7, pc}
  800219a:	bf00      	nop
- 800219c:	20000ba4 	.word	0x20000ba4
+ 800219c:	20000b9c 	.word	0x20000b9c
  80021a0:	40013000 	.word	0x40013000
 
 080021a4 <MX_TIM1_Init>:
@@ -4535,7 +4535,7 @@ static void MX_TIM1_Init(void)
  800232e:	3770      	adds	r7, #112	@ 0x70
  8002330:	46bd      	mov	sp, r7
  8002332:	bd80      	pop	{r7, pc}
- 8002334:	20000c08 	.word	0x20000c08
+ 8002334:	20000c00 	.word	0x20000c00
  8002338:	40012c00 	.word	0x40012c00
 
 0800233c <MX_TIM2_Init>:
@@ -4695,7 +4695,7 @@ static void MX_TIM2_Init(void)
  800241e:	46bd      	mov	sp, r7
  8002420:	bd80      	pop	{r7, pc}
  8002422:	bf00      	nop
- 8002424:	20000c54 	.word	0x20000c54
+ 8002424:	20000c4c 	.word	0x20000c4c
 
 08002428 <MX_TIM6_Init>:
   * @brief TIM6 Initialization Function
@@ -4779,7 +4779,7 @@ static void MX_TIM6_Init(void)
  8002486:	3710      	adds	r7, #16
  8002488:	46bd      	mov	sp, r7
  800248a:	bd80      	pop	{r7, pc}
- 800248c:	20000ca0 	.word	0x20000ca0
+ 800248c:	20000c98 	.word	0x20000c98
  8002490:	40001000 	.word	0x40001000
 
 08002494 <MX_TIM7_Init>:
@@ -4865,7 +4865,7 @@ static void MX_TIM7_Init(void)
  80024f2:	46bd      	mov	sp, r7
  80024f4:	bd80      	pop	{r7, pc}
  80024f6:	bf00      	nop
- 80024f8:	20000cec 	.word	0x20000cec
+ 80024f8:	20000ce4 	.word	0x20000ce4
  80024fc:	40001400 	.word	0x40001400
 
 08002500 <MX_TIM16_Init>:
@@ -4927,7 +4927,7 @@ static void MX_TIM16_Init(void)
 }
  8002540:	bf00      	nop
  8002542:	bd80      	pop	{r7, pc}
- 8002544:	20000d38 	.word	0x20000d38
+ 8002544:	20000d30 	.word	0x20000d30
  8002548:	40014400 	.word	0x40014400
 
 0800254c <MX_TIM17_Init>:
@@ -4990,7 +4990,7 @@ static void MX_TIM17_Init(void)
  800258e:	bf00      	nop
  8002590:	bd80      	pop	{r7, pc}
  8002592:	bf00      	nop
- 8002594:	20000d84 	.word	0x20000d84
+ 8002594:	20000d7c 	.word	0x20000d7c
  8002598:	40014800 	.word	0x40014800
 
 0800259c <MX_USART1_UART_Init>:
@@ -5100,7 +5100,7 @@ static void MX_USART1_UART_Init(void)
 }
  8002628:	bf00      	nop
  800262a:	bd80      	pop	{r7, pc}
- 800262c:	20000dd0 	.word	0x20000dd0
+ 800262c:	20000dc8 	.word	0x20000dc8
  8002630:	40013800 	.word	0x40013800
 
 08002634 <MX_DMA_Init>:
@@ -5740,12 +5740,12 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
  8002a16:	3770      	adds	r7, #112	@ 0x70
  8002a18:	46bd      	mov	sp, r7
  8002a1a:	bd80      	pop	{r7, pc}
- 8002a1c:	20000f24 	.word	0x20000f24
+ 8002a1c:	20000f1c 	.word	0x20000f1c
  8002a20:	40021000 	.word	0x40021000
- 8002a24:	20000a24 	.word	0x20000a24
+ 8002a24:	20000a1c 	.word	0x20000a1c
  8002a28:	40020008 	.word	0x40020008
  8002a2c:	50000100 	.word	0x50000100
- 8002a30:	20000a84 	.word	0x20000a84
+ 8002a30:	20000a7c 	.word	0x20000a7c
  8002a34:	4002001c 	.word	0x4002001c
 
 08002a38 <HAL_COMP_MspInit>:
@@ -6739,9 +6739,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
  800305c:	40013800 	.word	0x40013800
  8003060:	40021000 	.word	0x40021000
  8003064:	48000400 	.word	0x48000400
- 8003068:	20000e64 	.word	0x20000e64
+ 8003068:	20000e5c 	.word	0x20000e5c
  800306c:	40020030 	.word	0x40020030
- 8003070:	20000ec4 	.word	0x20000ec4
+ 8003070:	20000ebc 	.word	0x20000ebc
  8003074:	40020044 	.word	0x40020044
 
 08003078 <NMI_Handler>:
@@ -6929,7 +6929,7 @@ void DMA1_Channel1_IRQHandler(void)
  80030e2:	bf00      	nop
  80030e4:	bd80      	pop	{r7, pc}
  80030e6:	bf00      	nop
- 80030e8:	20000a24 	.word	0x20000a24
+ 80030e8:	20000a1c 	.word	0x20000a1c
 
 080030ec <DMA1_Channel2_IRQHandler>:
 
@@ -6953,7 +6953,7 @@ void DMA1_Channel2_IRQHandler(void)
  80030f6:	bf00      	nop
  80030f8:	bd80      	pop	{r7, pc}
  80030fa:	bf00      	nop
- 80030fc:	20000a84 	.word	0x20000a84
+ 80030fc:	20000a7c 	.word	0x20000a7c
 
 08003100 <DMA1_Channel3_IRQHandler>:
 
@@ -6977,7 +6977,7 @@ void DMA1_Channel3_IRQHandler(void)
  800310a:	bf00      	nop
  800310c:	bd80      	pop	{r7, pc}
  800310e:	bf00      	nop
- 8003110:	20000e64 	.word	0x20000e64
+ 8003110:	20000e5c 	.word	0x20000e5c
 
 08003114 <DMA1_Channel4_IRQHandler>:
 
@@ -7001,7 +7001,7 @@ void DMA1_Channel4_IRQHandler(void)
  800311e:	bf00      	nop
  8003120:	bd80      	pop	{r7, pc}
  8003122:	bf00      	nop
- 8003124:	20000ec4 	.word	0x20000ec4
+ 8003124:	20000ebc 	.word	0x20000ebc
 
 08003128 <FDCAN1_IT0_IRQHandler>:
 
@@ -7025,7 +7025,7 @@ void FDCAN1_IT0_IRQHandler(void)
  8003132:	bf00      	nop
  8003134:	bd80      	pop	{r7, pc}
  8003136:	bf00      	nop
- 8003138:	20000b40 	.word	0x20000b40
+ 8003138:	20000b38 	.word	0x20000b38
 
 0800313c <TIM1_UP_TIM16_IRQHandler>:
 
@@ -7051,8 +7051,8 @@ void TIM1_UP_TIM16_IRQHandler(void)
 }
  800314c:	bf00      	nop
  800314e:	bd80      	pop	{r7, pc}
- 8003150:	20000c08 	.word	0x20000c08
- 8003154:	20000d38 	.word	0x20000d38
+ 8003150:	20000c00 	.word	0x20000c00
+ 8003154:	20000d30 	.word	0x20000d30
 
 08003158 <TIM1_TRG_COM_TIM17_IRQHandler>:
 
@@ -7078,8 +7078,8 @@ void TIM1_TRG_COM_TIM17_IRQHandler(void)
 }
  8003168:	bf00      	nop
  800316a:	bd80      	pop	{r7, pc}
- 800316c:	20000c08 	.word	0x20000c08
- 8003170:	20000d84 	.word	0x20000d84
+ 800316c:	20000c00 	.word	0x20000c00
+ 8003170:	20000d7c 	.word	0x20000d7c
 
 08003174 <USART1_IRQHandler>:
 
@@ -7103,7 +7103,7 @@ void USART1_IRQHandler(void)
  800317e:	bf00      	nop
  8003180:	bd80      	pop	{r7, pc}
  8003182:	bf00      	nop
- 8003184:	20000dd0 	.word	0x20000dd0
+ 8003184:	20000dc8 	.word	0x20000dc8
 
 08003188 <TIM6_DAC_IRQHandler>:
 
@@ -7129,8 +7129,8 @@ void TIM6_DAC_IRQHandler(void)
 }
  8003198:	bf00      	nop
  800319a:	bd80      	pop	{r7, pc}
- 800319c:	20000ca0 	.word	0x20000ca0
- 80031a0:	20000b2c 	.word	0x20000b2c
+ 800319c:	20000c98 	.word	0x20000c98
+ 80031a0:	20000b24 	.word	0x20000b24
 
 080031a4 <COMP1_2_3_IRQHandler>:
 
@@ -7156,8 +7156,8 @@ void COMP1_2_3_IRQHandler(void)
 }
  80031b4:	bf00      	nop
  80031b6:	bd80      	pop	{r7, pc}
- 80031b8:	20000ae4 	.word	0x20000ae4
- 80031bc:	20000b08 	.word	0x20000b08
+ 80031b8:	20000adc 	.word	0x20000adc
+ 80031bc:	20000b00 	.word	0x20000b00
 
 080031c0 <_getpid>:
 void initialise_monitor_handles()
@@ -7285,7 +7285,7 @@ __attribute__((weak)) int _write(int file, char *ptr, int len)
  8003256:	60ba      	str	r2, [r7, #8]
  8003258:	781b      	ldrb	r3, [r3, #0]
  800325a:	4618      	mov	r0, r3
- 800325c:	f7fe fc96 	bl	8001b8c <__io_putchar>
+ 800325c:	f7fe fca4 	bl	8001ba8 <__io_putchar>
   for (DataIdx = 0; DataIdx < len; DataIdx++)
  8003260:	697b      	ldr	r3, [r7, #20]
  8003262:	3301      	adds	r3, #1
@@ -7463,8 +7463,8 @@ void *_sbrk(ptrdiff_t incr)
  800333a:	bd80      	pop	{r7, pc}
  800333c:	20008000 	.word	0x20008000
  8003340:	00000400 	.word	0x00000400
- 8003344:	20000f28 	.word	0x20000f28
- 8003348:	200010a8 	.word	0x200010a8
+ 8003344:	20000f20 	.word	0x20000f20
+ 8003348:	200010a0 	.word	0x200010a0
 
 0800334c <SystemInit>:
   * @param  None
@@ -7585,13 +7585,13 @@ LoopForever:
   ldr r0, =_sdata
  80033ac:	20000000 	.word	0x20000000
   ldr r1, =_edata
- 80033b0:	200001f4 	.word	0x200001f4
+ 80033b0:	200001f0 	.word	0x200001f0
   ldr r2, =_sidata
  80033b4:	0800f44c 	.word	0x0800f44c
   ldr r2, =_sbss
- 80033b8:	200001f4 	.word	0x200001f4
+ 80033b8:	200001f0 	.word	0x200001f0
   ldr r4, =_ebss
- 80033bc:	200010a4 	.word	0x200010a4
+ 80033bc:	200010a0 	.word	0x200010a0
 
 080033c0 <ADC1_2_IRQHandler>:
  * @retval : None
@@ -7739,9 +7739,9 @@ __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
  8003456:	3710      	adds	r7, #16
  8003458:	46bd      	mov	sp, r7
  800345a:	bd80      	pop	{r7, pc}
- 800345c:	20000024 	.word	0x20000024
- 8003460:	2000001c 	.word	0x2000001c
- 8003464:	20000020 	.word	0x20000020
+ 800345c:	20000020 	.word	0x20000020
+ 8003460:	20000018 	.word	0x20000018
+ 8003464:	2000001c 	.word	0x2000001c
 
 08003468 <HAL_IncTick>:
   * @note This function is declared as __weak to be overwritten in case of other
@@ -7765,8 +7765,8 @@ __weak void HAL_IncTick(void)
  800347c:	46bd      	mov	sp, r7
  800347e:	f85d 7b04 	ldr.w	r7, [sp], #4
  8003482:	4770      	bx	lr
- 8003484:	20000f2c 	.word	0x20000f2c
- 8003488:	20000024 	.word	0x20000024
+ 8003484:	20000f24 	.word	0x20000f24
+ 8003488:	20000020 	.word	0x20000020
 
 0800348c <HAL_GetTick>:
   * @note This function is declared as __weak to be overwritten in case of other
@@ -7786,7 +7786,7 @@ __weak uint32_t HAL_GetTick(void)
  8003498:	f85d 7b04 	ldr.w	r7, [sp], #4
  800349c:	4770      	bx	lr
  800349e:	bf00      	nop
- 80034a0:	20000f2c 	.word	0x20000f2c
+ 80034a0:	20000f24 	.word	0x20000f24
 
 080034a4 <LL_ADC_SetCommonClock>:
   *         @arg @ref LL_ADC_CLOCK_ASYNC_DIV128
@@ -9152,7 +9152,7 @@ HAL_StatusTypeDef HAL_ADC_Init(ADC_HandleTypeDef *hadc)
  8003c1a:	46bd      	mov	sp, r7
  8003c1c:	bd90      	pop	{r4, r7, pc}
  8003c1e:	bf00      	nop
- 8003c20:	2000001c 	.word	0x2000001c
+ 8003c20:	20000018 	.word	0x20000018
  8003c24:	053e2d63 	.word	0x053e2d63
  8003c28:	50000100 	.word	0x50000100
  8003c2c:	50000300 	.word	0x50000300
@@ -10574,7 +10574,7 @@ HAL_StatusTypeDef HAL_ADC_ConfigChannel(ADC_HandleTypeDef *hadc, const ADC_Chann
  8004584:	50000300 	.word	0x50000300
  8004588:	c3210000 	.word	0xc3210000
  800458c:	90c00010 	.word	0x90c00010
- 8004590:	2000001c 	.word	0x2000001c
+ 8004590:	20000018 	.word	0x20000018
  8004594:	053e2d63 	.word	0x053e2d63
  8004598:	c7520000 	.word	0xc7520000
  800459c:	50000100 	.word	0x50000100
@@ -10775,7 +10775,7 @@ HAL_StatusTypeDef ADC_Enable(ADC_HandleTypeDef *hadc)
  800469e:	bf00      	nop
  80046a0:	8000003f 	.word	0x8000003f
  80046a4:	50000300 	.word	0x50000300
- 80046a8:	2000001c 	.word	0x2000001c
+ 80046a8:	20000018 	.word	0x20000018
  80046ac:	053e2d63 	.word	0x053e2d63
 
 080046b0 <ADC_Disable>:
@@ -11042,7 +11042,7 @@ void ADC_DMAConvCplt(DMA_HandleTypeDef *hdma)
 #else
     HAL_ADC_ConvCpltCallback(hadc);
  8004818:	68f8      	ldr	r0, [r7, #12]
- 800481a:	f7fd f96f 	bl	8001afc <HAL_ADC_ConvCpltCallback>
+ 800481a:	f7fd f995 	bl	8001b48 <HAL_ADC_ConvCpltCallback>
     {
       /* Call ADC DMA error callback */
       hadc->DMA_Handle->XferErrorCallback(hdma);
@@ -12253,7 +12253,7 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
  8004e60:	46bd      	mov	sp, r7
  8004e62:	bd80      	pop	{r7, pc}
  8004e64:	ff007e0f 	.word	0xff007e0f
- 8004e68:	2000001c 	.word	0x2000001c
+ 8004e68:	20000018 	.word	0x20000018
  8004e6c:	053e2d63 	.word	0x053e2d63
  8004e70:	40010200 	.word	0x40010200
  8004e74:	40010204 	.word	0x40010204
@@ -12335,7 +12335,7 @@ void HAL_COMP_IRQHandler(COMP_HandleTypeDef *hcomp)
 #else
     HAL_COMP_TriggerCallback(hcomp);
  8004eda:	6878      	ldr	r0, [r7, #4]
- 8004edc:	f7fc fe18 	bl	8001b10 <HAL_COMP_TriggerCallback>
+ 8004edc:	f7fc fe3e 	bl	8001b5c <HAL_COMP_TriggerCallback>
 #endif /* USE_HAL_COMP_REGISTER_CALLBACKS */
   }
 }
@@ -16534,7 +16534,7 @@ void HAL_FDCAN_IRQHandler(FDCAN_HandleTypeDef *hfdcan)
     HAL_FDCAN_RxFifo0Callback(hfdcan, RxFifo0ITs);
  8006560:	6ab9      	ldr	r1, [r7, #40]	@ 0x28
  8006562:	6878      	ldr	r0, [r7, #4]
- 8006564:	f7fb f9fc 	bl	8001960 <HAL_FDCAN_RxFifo0Callback>
+ 8006564:	f7fb fa22 	bl	80019ac <HAL_FDCAN_RxFifo0Callback>
 #endif /* USE_HAL_FDCAN_REGISTER_CALLBACKS */
   }
 
@@ -16800,7 +16800,7 @@ void HAL_FDCAN_IRQHandler(FDCAN_HandleTypeDef *hfdcan)
     /* Error Callback */
     HAL_FDCAN_ErrorCallback(hfdcan);
  800669c:	6878      	ldr	r0, [r7, #4]
- 800669e:	f7fb f8bf 	bl	8001820 <HAL_FDCAN_ErrorCallback>
+ 800669e:	f7fb f8e5 	bl	800186c <HAL_FDCAN_ErrorCallback>
 #endif /* USE_HAL_FDCAN_REGISTER_CALLBACKS */
   }
 }
@@ -18082,7 +18082,7 @@ HAL_StatusTypeDef HAL_PWREx_ControlVoltageScaling(uint32_t VoltageScaling)
  8006daa:	f85d 7b04 	ldr.w	r7, [sp], #4
  8006dae:	4770      	bx	lr
  8006db0:	40007000 	.word	0x40007000
- 8006db4:	2000001c 	.word	0x2000001c
+ 8006db4:	20000018 	.word	0x20000018
  8006db8:	431bde83 	.word	0x431bde83
 
 08006dbc <HAL_PWREx_DisableUCPDDeadBattery>:
@@ -18566,7 +18566,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
  8007054:	e1ca      	b.n	80073ec <HAL_RCC_OscConfig+0x610>
  8007056:	bf00      	nop
  8007058:	40021000 	.word	0x40021000
- 800705c:	20000020 	.word	0x20000020
+ 800705c:	2000001c 	.word	0x2000001c
       while(READ_BIT(RCC->CSR, RCC_CSR_LSIRDY) != 0U)
  8007060:	4b8c      	ldr	r3, [pc, #560]	@ (8007294 <HAL_RCC_OscConfig+0x4b8>)
  8007062:	f8d3 3094 	ldr.w	r3, [r3, #148]	@ 0x94
@@ -19619,8 +19619,8 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
  8007664:	40021000 	.word	0x40021000
  8007668:	04c4b400 	.word	0x04c4b400
  800766c:	0800f03c 	.word	0x0800f03c
- 8007670:	2000001c 	.word	0x2000001c
- 8007674:	20000020 	.word	0x20000020
+ 8007670:	20000018 	.word	0x20000018
+ 8007674:	2000001c 	.word	0x2000001c
 
 08007678 <HAL_RCC_GetSysClockFreq>:
   *
@@ -19772,7 +19772,7 @@ uint32_t HAL_RCC_GetHCLKFreq(void)
  8007748:	f85d 7b04 	ldr.w	r7, [sp], #4
  800774c:	4770      	bx	lr
  800774e:	bf00      	nop
- 8007750:	2000001c 	.word	0x2000001c
+ 8007750:	20000018 	.word	0x20000018
 
 08007754 <HAL_RCC_GetPCLK1Freq>:
   * @note   Each time PCLK1 changes, this function must be called to update the
@@ -22025,7 +22025,7 @@ void HAL_TIM_IRQHandler(TIM_HandleTypeDef *htim)
 #else
       HAL_TIM_PeriodElapsedCallback(htim);
  8008496:	6878      	ldr	r0, [r7, #4]
- 8008498:	f7f9 fb8a 	bl	8001bb0 <HAL_TIM_PeriodElapsedCallback>
+ 8008498:	f7f8 ff72 	bl	8001380 <HAL_TIM_PeriodElapsedCallback>
 #endif /* USE_HAL_TIM_REGISTER_CALLBACKS */
     }
   }
@@ -29654,7 +29654,7 @@ float Mid_Get_Hv_V(void)
 
     /* 1. 提取交流量并消除 1.65V (2048) 的直流偏置 */
     temp_data = (2048 - Bsp_Get_Hv_Raw_Data()) * 2;
- 800b196:	f7f6 fb07 	bl	80017a8 <Bsp_Get_Hv_Raw_Data>
+ 800b196:	f7f6 fb2d 	bl	80017f4 <Bsp_Get_Hv_Raw_Data>
  800b19a:	4603      	mov	r3, r0
  800b19c:	f5c3 6300 	rsb	r3, r3, #2048	@ 0x800
  800b1a0:	005b      	lsls	r3, r3, #1
@@ -29698,7 +29698,7 @@ float Mid_Get_Hi_uA(void)
 
     /* 1. 提取交流量并消除 1.65V (2048) 的直流偏置 */
     temp_data = (2048 - Bsp_Get_Hi_Raw_Data()) * 2;
- 800b1d6:	f7f6 faf3 	bl	80017c0 <Bsp_Get_Hi_Raw_Data>
+ 800b1d6:	f7f6 fb19 	bl	800180c <Bsp_Get_Hi_Raw_Data>
  800b1da:	4603      	mov	r3, r0
  800b1dc:	f5c3 6300 	rsb	r3, r3, #2048	@ 0x800
  800b1e0:	005b      	lsls	r3, r3, #1
@@ -29743,7 +29743,7 @@ float Mid_Get_Dc_I_A(void)
      * 预结算常数  : 0.0008056640625f
      */
     Dc_I_A = Bsp_Get_Dc_I_Raw_Data() * 0.0008056640625f;
- 800b216:	f7f6 fadf 	bl	80017d8 <Bsp_Get_Dc_I_Raw_Data>
+ 800b216:	f7f6 fb05 	bl	8001824 <Bsp_Get_Dc_I_Raw_Data>
  800b21a:	4603      	mov	r3, r0
  800b21c:	ee07 3a90 	vmov	s15, r3
  800b220:	eef8 7ae7 	vcvt.f32.s32	s15, s15
@@ -30116,24 +30116,24 @@ void Can_message_process(void)
                     break;
  800b4cc:	e14f      	b.n	800b76e <Can_message_process+0x52a>
  800b4ce:	bf00      	nop
- 800b4d0:	20000882 	.word	0x20000882
- 800b4d4:	20000886 	.word	0x20000886
- 800b4d8:	20000580 	.word	0x20000580
+ 800b4d0:	2000087e 	.word	0x2000087e
+ 800b4d4:	20000882 	.word	0x20000882
+ 800b4d8:	2000057c 	.word	0x2000057c
  800b4dc:	48000400 	.word	0x48000400
- 800b4e0:	20000d38 	.word	0x20000d38
- 800b4e4:	200008cc 	.word	0x200008cc
- 800b4e8:	20000f34 	.word	0x20000f34
+ 800b4e0:	20000d30 	.word	0x20000d30
+ 800b4e4:	200008c4 	.word	0x200008c4
+ 800b4e8:	20000f2c 	.word	0x20000f2c
  800b4ec:	42c80000 	.word	0x42c80000
- 800b4f0:	20000f30 	.word	0x20000f30
+ 800b4f0:	20000f28 	.word	0x20000f28
  800b4f4:	20000004 	.word	0x20000004
  800b4f8:	20000008 	.word	0x20000008
  800b4fc:	0800efe8 	.word	0x0800efe8
- 800b500:	20000238 	.word	0x20000238
- 800b504:	2000023c 	.word	0x2000023c
- 800b508:	20000210 	.word	0x20000210
- 800b50c:	20000214 	.word	0x20000214
- 800b510:	20000218 	.word	0x20000218
- 800b514:	2000021c 	.word	0x2000021c
+ 800b500:	20000234 	.word	0x20000234
+ 800b504:	20000238 	.word	0x20000238
+ 800b508:	2000020c 	.word	0x2000020c
+ 800b50c:	20000210 	.word	0x20000210
+ 800b510:	20000214 	.word	0x20000214
+ 800b514:	20000218 	.word	0x20000218
  800b518:	0800f000 	.word	0x0800f000
                 }
 
@@ -30456,7 +30456,7 @@ void Can_message_process(void)
  800b77a:	79fb      	ldrb	r3, [r7, #7]
  800b77c:	4611      	mov	r1, r2
  800b77e:	4618      	mov	r0, r3
- 800b780:	f7f6 f952 	bl	8001a28 <Queue_Reply_Request>
+ 800b780:	f7f6 f978 	bl	8001a74 <Queue_Reply_Request>
 
                 /* 根据模式启停相关定时器功能 */
                 if (EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)
@@ -30497,21 +30497,21 @@ void Can_message_process(void)
  800b7b2:	46bd      	mov	sp, r7
  800b7b4:	bd90      	pop	{r4, r7, pc}
  800b7b6:	bf00      	nop
- 800b7b8:	200008cc 	.word	0x200008cc
- 800b7bc:	20000f34 	.word	0x20000f34
+ 800b7b8:	200008c4 	.word	0x200008c4
+ 800b7bc:	20000f2c 	.word	0x20000f2c
  800b7c0:	42c80000 	.word	0x42c80000
- 800b7c4:	20000f30 	.word	0x20000f30
+ 800b7c4:	20000f28 	.word	0x20000f28
  800b7c8:	20000004 	.word	0x20000004
  800b7cc:	20000008 	.word	0x20000008
- 800b7d0:	2000023c 	.word	0x2000023c
- 800b7d4:	20000f3c 	.word	0x20000f3c
- 800b7d8:	20000f40 	.word	0x20000f40
- 800b7dc:	200002bc 	.word	0x200002bc
+ 800b7d0:	20000238 	.word	0x20000238
+ 800b7d4:	20000f34 	.word	0x20000f34
+ 800b7d8:	20000f38 	.word	0x20000f38
+ 800b7dc:	200002b8 	.word	0x200002b8
  800b7e0:	20000000 	.word	0x20000000
- 800b7e4:	20000240 	.word	0x20000240
+ 800b7e4:	2000023c 	.word	0x2000023c
  800b7e8:	0800f024 	.word	0x0800f024
- 800b7ec:	20000d38 	.word	0x20000d38
- 800b7f0:	20000886 	.word	0x20000886
+ 800b7ec:	20000d30 	.word	0x20000d30
+ 800b7f0:	20000882 	.word	0x20000882
 
 0800b7f4 <Mid_Can_Tx_Task>:
  * @brief  CAN 发送队列清空任务 (MID 层)
@@ -30549,7 +30549,7 @@ void Mid_Can_Tx_Task(void)
         /* 3. 尝试调用 BSP 层硬件接口发送 */
         if (Bsp_Can_Transmit_Message(msg_to_send) == true)
  800b81e:	6878      	ldr	r0, [r7, #4]
- 800b820:	f7f6 f94e 	bl	8001ac0 <Bsp_Can_Transmit_Message>
+ 800b820:	f7f6 f974 	bl	8001b0c <Bsp_Can_Transmit_Message>
  800b824:	4603      	mov	r3, r0
  800b826:	2b00      	cmp	r3, #0
  800b828:	d00a      	beq.n	800b840 <Mid_Can_Tx_Task+0x4c>
@@ -30584,10 +30584,10 @@ void Mid_Can_Tx_Task(void)
  800b84e:	46bd      	mov	sp, r7
  800b850:	bd80      	pop	{r7, pc}
  800b852:	bf00      	nop
- 800b854:	20000880 	.word	0x20000880
- 800b858:	20000884 	.word	0x20000884
- 800b85c:	200002c0 	.word	0x200002c0
- 800b860:	20000f38 	.word	0x20000f38
+ 800b854:	2000087c 	.word	0x2000087c
+ 800b858:	20000880 	.word	0x20000880
+ 800b85c:	200002bc 	.word	0x200002bc
+ 800b860:	20000f30 	.word	0x20000f30
 
 0800b864 <HAL_UART_TxCpltCallback>:
  * @brief  UART DMA 发送完成回调函数
@@ -30621,7 +30621,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
  800b882:	f85d 7b04 	ldr.w	r7, [sp], #4
  800b886:	4770      	bx	lr
  800b888:	40013800 	.word	0x40013800
- 800b88c:	20000028 	.word	0x20000028
+ 800b88c:	20000024 	.word	0x20000024
 
 0800b890 <HAL_UARTEx_RxEventCallback>:
  * @param  huart UART 句柄指针
@@ -30687,7 +30687,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
  800b8e0:	46bd      	mov	sp, r7
  800b8e2:	bd80      	pop	{r7, pc}
  800b8e4:	40013800 	.word	0x40013800
- 800b8e8:	20000888 	.word	0x20000888
+ 800b8e8:	20000884 	.word	0x20000884
 
 0800b8ec <Mid_Process_Usart_Data>:
  * [4]     : 指令码 (Command)
@@ -31174,17 +31174,17 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
  800bc0a:	3718      	adds	r7, #24
  800bc0c:	46bd      	mov	sp, r7
  800bc0e:	bd80      	pop	{r7, pc}
- 800bc10:	200008cc 	.word	0x200008cc
+ 800bc10:	200008c4 	.word	0x200008c4
  800bc14:	48000400 	.word	0x48000400
- 800bc18:	20000f34 	.word	0x20000f34
- 800bc1c:	20000f30 	.word	0x20000f30
- 800bc20:	20000244 	.word	0x20000244
- 800bc24:	20000238 	.word	0x20000238
- 800bc28:	2000023c 	.word	0x2000023c
+ 800bc18:	20000f2c 	.word	0x20000f2c
+ 800bc1c:	20000f28 	.word	0x20000f28
+ 800bc20:	20000240 	.word	0x20000240
+ 800bc24:	20000234 	.word	0x20000234
+ 800bc28:	20000238 	.word	0x20000238
  800bc2c:	20000004 	.word	0x20000004
  800bc30:	51200000 	.word	0x51200000
  800bc34:	20000008 	.word	0x20000008
- 800bc38:	20000240 	.word	0x20000240
+ 800bc38:	2000023c 	.word	0x2000023c
 
 0800bc3c <move_to_position>:
  * @brief  设置电机移动到目标位置 (开环位置模式)
@@ -31233,8 +31233,8 @@ void move_to_position(int32_t target_steps, float speed_hz)
  800bc8a:	3708      	adds	r7, #8
  800bc8c:	46bd      	mov	sp, r7
  800bc8e:	bd80      	pop	{r7, pc}
- 800bc90:	200008cc 	.word	0x200008cc
- 800bc94:	2000023c 	.word	0x2000023c
+ 800bc90:	200008c4 	.word	0x200008c4
+ 800bc94:	20000238 	.word	0x20000238
  800bc98:	20000004 	.word	0x20000004
  800bc9c:	20000008 	.word	0x20000008
 
@@ -31319,12 +31319,12 @@ void move_repeatedly(int32_t pos1, int32_t pos2, uint32_t count, float speed_hz)
  800bd1e:	46bd      	mov	sp, r7
  800bd20:	bd80      	pop	{r7, pc}
  800bd22:	bf00      	nop
- 800bd24:	20000210 	.word	0x20000210
- 800bd28:	20000214 	.word	0x20000214
- 800bd2c:	20000218 	.word	0x20000218
- 800bd30:	2000021c 	.word	0x2000021c
- 800bd34:	200008cc 	.word	0x200008cc
- 800bd38:	2000023c 	.word	0x2000023c
+ 800bd24:	2000020c 	.word	0x2000020c
+ 800bd28:	20000210 	.word	0x20000210
+ 800bd2c:	20000214 	.word	0x20000214
+ 800bd30:	20000218 	.word	0x20000218
+ 800bd34:	200008c4 	.word	0x200008c4
+ 800bd38:	20000238 	.word	0x20000238
  800bd3c:	20000004 	.word	0x20000004
  800bd40:	20000008 	.word	0x20000008
 
@@ -31377,7 +31377,7 @@ void DC_Power_CTR(bool state)
  800bd80:	bd80      	pop	{r7, pc}
  800bd82:	bf00      	nop
  800bd84:	48000400 	.word	0x48000400
- 800bd88:	200008c8 	.word	0x200008c8
+ 800bd88:	20000f3c 	.word	0x20000f3c
 
 0800bd8c <Close_output>:
 
@@ -31426,9 +31426,9 @@ void Close_output(void)
  800bdd2:	bf00      	nop
  800bdd4:	bd80      	pop	{r7, pc}
  800bdd6:	bf00      	nop
- 800bdd8:	20000d38 	.word	0x20000d38
+ 800bdd8:	20000d30 	.word	0x20000d30
  800bddc:	48000400 	.word	0x48000400
- 800bde0:	20000c08 	.word	0x20000c08
+ 800bde0:	20000c00 	.word	0x20000c00
 
 0800bde4 <Update_output>:
  * @brief  三相无刷电机 (BLDC) 六步换向底层驱动
@@ -31756,8 +31756,8 @@ void Update_output(uint8_t new_step)
  800c016:	46bd      	mov	sp, r7
  800c018:	bd80      	pop	{r7, pc}
  800c01a:	bf00      	nop
- 800c01c:	20000c08 	.word	0x20000c08
- 800c020:	20000018 	.word	0x20000018
+ 800c01c:	20000c00 	.word	0x20000c00
+ 800c020:	20000026 	.word	0x20000026
 
 0800c024 <Mid_Encoder_Update>:
  * @brief  【核心流】抓取底层数据并完成角度与回绕解算
@@ -31773,7 +31773,7 @@ void Mid_Encoder_Update(float sin_offset, float cos_offset)
  800c02e:	edc7 0a00 	vstr	s1, [r7]
     /* 1. MID 层亲自去底层拿原始数据，并完成电压换算 (对 APP 屏蔽 ADC) */
     float sin_v = Bsp_Get_Position_Sensor_Sin_Raw_Data() * 0.0008056640625f;
- 800c032:	f7f5 fbdd 	bl	80017f0 <Bsp_Get_Position_Sensor_Sin_Raw_Data>
+ 800c032:	f7f5 fc03 	bl	800183c <Bsp_Get_Position_Sensor_Sin_Raw_Data>
  800c036:	4603      	mov	r3, r0
  800c038:	ee07 3a90 	vmov	s15, r3
  800c03c:	eef8 7ae7 	vcvt.f32.s32	s15, s15
@@ -31781,7 +31781,7 @@ void Mid_Encoder_Update(float sin_offset, float cos_offset)
  800c044:	ee67 7a87 	vmul.f32	s15, s15, s14
  800c048:	edc7 7a04 	vstr	s15, [r7, #16]
     float cos_v = Bsp_Get_Position_Sensor_Cos_Raw_Data() * 0.0008056640625f;
- 800c04c:	f7f5 fbdc 	bl	8001808 <Bsp_Get_Position_Sensor_Cos_Raw_Data>
+ 800c04c:	f7f5 fc02 	bl	8001854 <Bsp_Get_Position_Sensor_Cos_Raw_Data>
  800c050:	4603      	mov	r3, r0
  800c052:	ee07 3a90 	vmov	s15, r3
  800c056:	eef8 7ae7 	vcvt.f32.s32	s15, s15
@@ -31894,7 +31894,7 @@ void Mid_Encoder_Update(float sin_offset, float cos_offset)
  800c134:	46bd      	mov	sp, r7
  800c136:	bd80      	pop	{r7, pc}
  800c138:	3a533333 	.word	0x3a533333
- 800c13c:	20000f44 	.word	0x20000f44
+ 800c13c:	20000f40 	.word	0x20000f40
  800c140:	42652ee1 	.word	0x42652ee1
  800c144:	43b40000 	.word	0x43b40000
  800c148:	43340000 	.word	0x43340000
@@ -31918,7 +31918,7 @@ float Mid_Encoder_Get_Angle_Degrees(void)
  800c160:	46bd      	mov	sp, r7
  800c162:	f85d 7b04 	ldr.w	r7, [sp], #4
  800c166:	4770      	bx	lr
- 800c168:	20000f44 	.word	0x20000f44
+ 800c168:	20000f40 	.word	0x20000f40
 
 0800c16c <Mid_Encoder_Get_Cycle_Count>:
 
@@ -31938,7 +31938,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800c178:	f85d 7b04 	ldr.w	r7, [sp], #4
  800c17c:	4770      	bx	lr
  800c17e:	bf00      	nop
- 800c180:	20000f44 	.word	0x20000f44
+ 800c180:	20000f40 	.word	0x20000f40
 
 0800c184 <__cvt>:
  800c184:	e92d 47ff 	stmdb	sp!, {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, sl, lr}
@@ -32888,7 +32888,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800ca8c:	0800e637 	.word	0x0800e637
  800ca90:	0800e66f 	.word	0x0800e66f
  800ca94:	0800e693 	.word	0x0800e693
- 800ca98:	20000f58 	.word	0x20000f58
+ 800ca98:	20000f54 	.word	0x20000f54
 
 0800ca9c <stdio_exit_handler>:
  800ca9c:	4a02      	ldr	r2, [pc, #8]	@ (800caa8 <stdio_exit_handler+0xc>)
@@ -32896,9 +32896,9 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800caa0:	4803      	ldr	r0, [pc, #12]	@ (800cab0 <stdio_exit_handler+0x14>)
  800caa2:	f000 b869 	b.w	800cb78 <_fwalk_sglue>
  800caa6:	bf00      	nop
- 800caa8:	2000002c 	.word	0x2000002c
+ 800caa8:	20000028 	.word	0x20000028
  800caac:	0800deb9 	.word	0x0800deb9
- 800cab0:	2000003c 	.word	0x2000003c
+ 800cab0:	20000038 	.word	0x20000038
 
 0800cab4 <cleanup_stdio>:
  800cab4:	6841      	ldr	r1, [r0, #4]
@@ -32923,9 +32923,9 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800cae0:	f001 b9ea 	b.w	800deb8 <_fflush_r>
  800cae4:	bd10      	pop	{r4, pc}
  800cae6:	bf00      	nop
- 800cae8:	20000f58 	.word	0x20000f58
- 800caec:	20000fc0 	.word	0x20000fc0
- 800caf0:	20001028 	.word	0x20001028
+ 800cae8:	20000f54 	.word	0x20000f54
+ 800caec:	20000fbc 	.word	0x20000fbc
+ 800caf0:	20001024 	.word	0x20001024
 
 0800caf4 <global_stdio_init.part.0>:
  800caf4:	b510      	push	{r4, lr}
@@ -32946,21 +32946,21 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800cb1a:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
  800cb1e:	2112      	movs	r1, #18
  800cb20:	f7ff bf86 	b.w	800ca30 <std>
- 800cb24:	20001090 	.word	0x20001090
- 800cb28:	20000f58 	.word	0x20000f58
+ 800cb24:	2000108c 	.word	0x2000108c
+ 800cb28:	20000f54 	.word	0x20000f54
  800cb2c:	0800ca9d 	.word	0x0800ca9d
 
 0800cb30 <__sfp_lock_acquire>:
  800cb30:	4801      	ldr	r0, [pc, #4]	@ (800cb38 <__sfp_lock_acquire+0x8>)
  800cb32:	f000 b8e2 	b.w	800ccfa <__retarget_lock_acquire_recursive>
  800cb36:	bf00      	nop
- 800cb38:	20001095 	.word	0x20001095
+ 800cb38:	20001091 	.word	0x20001091
 
 0800cb3c <__sfp_lock_release>:
  800cb3c:	4801      	ldr	r0, [pc, #4]	@ (800cb44 <__sfp_lock_release+0x8>)
  800cb3e:	f000 b8dd 	b.w	800ccfc <__retarget_lock_release_recursive>
  800cb42:	bf00      	nop
- 800cb44:	20001095 	.word	0x20001095
+ 800cb44:	20001091 	.word	0x20001091
 
 0800cb48 <__sinit>:
  800cb48:	b510      	push	{r4, lr}
@@ -32980,7 +32980,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800cb6c:	e7f2      	b.n	800cb54 <__sinit+0xc>
  800cb6e:	bf00      	nop
  800cb70:	0800cab5 	.word	0x0800cab5
- 800cb74:	20001090 	.word	0x20001090
+ 800cb74:	2000108c 	.word	0x2000108c
 
 0800cb78 <_fwalk_sglue>:
  800cb78:	e92d 43f8 	stmdb	sp!, {r3, r4, r5, r6, r7, r8, r9, lr}
@@ -33023,7 +33023,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800cbcc:	f85d eb04 	ldr.w	lr, [sp], #4
  800cbd0:	b004      	add	sp, #16
  800cbd2:	4770      	bx	lr
- 800cbd4:	20000038 	.word	0x20000038
+ 800cbd4:	20000034 	.word	0x20000034
 
 0800cbd8 <_puts_r>:
  800cbd8:	6a03      	ldr	r3, [r0, #32]
@@ -33111,7 +33111,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800cc88:	6818      	ldr	r0, [r3, #0]
  800cc8a:	f7ff bfa5 	b.w	800cbd8 <_puts_r>
  800cc8e:	bf00      	nop
- 800cc90:	20000038 	.word	0x20000038
+ 800cc90:	20000034 	.word	0x20000034
 
 0800cc94 <memset>:
  800cc94:	4402      	add	r2, r0
@@ -33127,7 +33127,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800cca6:	6818      	ldr	r0, [r3, #0]
  800cca8:	4770      	bx	lr
  800ccaa:	bf00      	nop
- 800ccac:	20000038 	.word	0x20000038
+ 800ccac:	20000034 	.word	0x20000034
 
 0800ccb0 <__libc_init_array>:
  800ccb0:	b570      	push	{r4, r5, r6, lr}
@@ -33173,7 +33173,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
 0800cd00 <_localeconv_r>:
  800cd00:	4800      	ldr	r0, [pc, #0]	@ (800cd04 <_localeconv_r+0x4>)
  800cd02:	4770      	bx	lr
- 800cd04:	20000178 	.word	0x20000178
+ 800cd04:	20000174 	.word	0x20000174
 
 0800cd08 <memcpy>:
  800cd08:	440a      	add	r2, r1
@@ -34719,7 +34719,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800dc60:	6818      	ldr	r0, [r3, #0]
  800dc62:	f000 b825 	b.w	800dcb0 <_malloc_r>
  800dc66:	bf00      	nop
- 800dc68:	20000038 	.word	0x20000038
+ 800dc68:	20000034 	.word	0x20000034
 
 0800dc6c <sbrk_aligned>:
  800dc6c:	b570      	push	{r4, r5, r6, lr}
@@ -34749,7 +34749,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800dca6:	d1f2      	bne.n	800dc8e <sbrk_aligned+0x22>
  800dca8:	e7ef      	b.n	800dc8a <sbrk_aligned+0x1e>
  800dcaa:	bf00      	nop
- 800dcac:	20001098 	.word	0x20001098
+ 800dcac:	20001094 	.word	0x20001094
 
 0800dcb0 <_malloc_r>:
  800dcb0:	e92d 43f8 	stmdb	sp!, {r3, r4, r5, r6, r7, r8, r9, lr}
@@ -34859,7 +34859,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800dda6:	6005      	str	r5, [r0, #0]
  800dda8:	e7d6      	b.n	800dd58 <_malloc_r+0xa8>
  800ddaa:	bf00      	nop
- 800ddac:	2000109c 	.word	0x2000109c
+ 800ddac:	20001098 	.word	0x20001098
 
 0800ddb0 <__sflush_r>:
  800ddb0:	f9b1 200c 	ldrsh.w	r2, [r1, #12]
@@ -35022,13 +35022,13 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800df08:	4801      	ldr	r0, [pc, #4]	@ (800df10 <__malloc_lock+0x8>)
  800df0a:	f7fe bef6 	b.w	800ccfa <__retarget_lock_acquire_recursive>
  800df0e:	bf00      	nop
- 800df10:	20001094 	.word	0x20001094
+ 800df10:	20001090 	.word	0x20001090
 
 0800df14 <__malloc_unlock>:
  800df14:	4801      	ldr	r0, [pc, #4]	@ (800df1c <__malloc_unlock+0x8>)
  800df16:	f7fe bef1 	b.w	800ccfc <__retarget_lock_release_recursive>
  800df1a:	bf00      	nop
- 800df1c:	20001094 	.word	0x20001094
+ 800df1c:	20001090 	.word	0x20001090
 
 0800df20 <_Balloc>:
  800df20:	b570      	push	{r4, r5, r6, lr}
@@ -35923,7 +35923,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800e7ba:	e7f4      	b.n	800e7a6 <__swsetup_r+0x8e>
  800e7bc:	2000      	movs	r0, #0
  800e7be:	e7f7      	b.n	800e7b0 <__swsetup_r+0x98>
- 800e7c0:	20000038 	.word	0x20000038
+ 800e7c0:	20000034 	.word	0x20000034
 
 0800e7c4 <__swhatbuf_r>:
  800e7c4:	b570      	push	{r4, r5, r6, lr}
@@ -36021,7 +36021,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800e89e:	b103      	cbz	r3, 800e8a2 <_isatty_r+0x1a>
  800e8a0:	6023      	str	r3, [r4, #0]
  800e8a2:	bd38      	pop	{r3, r4, r5, pc}
- 800e8a4:	200010a0 	.word	0x200010a0
+ 800e8a4:	2000109c 	.word	0x2000109c
 
 0800e8a8 <_lseek_r>:
  800e8a8:	b538      	push	{r3, r4, r5, lr}
@@ -36039,7 +36039,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800e8c2:	b103      	cbz	r3, 800e8c6 <_lseek_r+0x1e>
  800e8c4:	6023      	str	r3, [r4, #0]
  800e8c6:	bd38      	pop	{r3, r4, r5, pc}
- 800e8c8:	200010a0 	.word	0x200010a0
+ 800e8c8:	2000109c 	.word	0x2000109c
 
 0800e8cc <_read_r>:
  800e8cc:	b538      	push	{r3, r4, r5, lr}
@@ -36057,7 +36057,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800e8e6:	b103      	cbz	r3, 800e8ea <_read_r+0x1e>
  800e8e8:	6023      	str	r3, [r4, #0]
  800e8ea:	bd38      	pop	{r3, r4, r5, pc}
- 800e8ec:	200010a0 	.word	0x200010a0
+ 800e8ec:	2000109c 	.word	0x2000109c
 
 0800e8f0 <_sbrk_r>:
  800e8f0:	b538      	push	{r3, r4, r5, lr}
@@ -36073,7 +36073,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800e906:	b103      	cbz	r3, 800e90a <_sbrk_r+0x1a>
  800e908:	6023      	str	r3, [r4, #0]
  800e90a:	bd38      	pop	{r3, r4, r5, pc}
- 800e90c:	200010a0 	.word	0x200010a0
+ 800e90c:	2000109c 	.word	0x2000109c
 
 0800e910 <_write_r>:
  800e910:	b538      	push	{r3, r4, r5, lr}
@@ -36091,7 +36091,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800e92a:	b103      	cbz	r3, 800e92e <_write_r+0x1e>
  800e92c:	6023      	str	r3, [r4, #0]
  800e92e:	bd38      	pop	{r3, r4, r5, pc}
- 800e930:	200010a0 	.word	0x200010a0
+ 800e930:	2000109c 	.word	0x2000109c
 
 0800e934 <_close_r>:
  800e934:	b538      	push	{r3, r4, r5, lr}
@@ -36107,7 +36107,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800e94a:	b103      	cbz	r3, 800e94e <_close_r+0x1a>
  800e94c:	6023      	str	r3, [r4, #0]
  800e94e:	bd38      	pop	{r3, r4, r5, pc}
- 800e950:	200010a0 	.word	0x200010a0
+ 800e950:	2000109c 	.word	0x2000109c
 
 0800e954 <_fstat_r>:
  800e954:	b538      	push	{r3, r4, r5, lr}
@@ -36125,7 +36125,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800e96e:	6023      	str	r3, [r4, #0]
  800e970:	bd38      	pop	{r3, r4, r5, pc}
  800e972:	bf00      	nop
- 800e974:	200010a0 	.word	0x200010a0
+ 800e974:	2000109c 	.word	0x2000109c
 
 0800e978 <__assert_func>:
  800e978:	b51f      	push	{r0, r1, r2, r3, r4, lr}
@@ -36147,7 +36147,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800e99e:	461c      	mov	r4, r3
  800e9a0:	e7f3      	b.n	800e98a <__assert_func+0x12>
  800e9a2:	bf00      	nop
- 800e9a4:	20000038 	.word	0x20000038
+ 800e9a4:	20000034 	.word	0x20000034
  800e9a8:	0800f1c1 	.word	0x0800f1c1
  800e9ac:	0800f1ce 	.word	0x0800f1ce
  800e9b0:	0800f1fc 	.word	0x0800f1fc
@@ -36240,7 +36240,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800ea66:	e7ca      	b.n	800e9fe <_free_r+0x22>
  800ea68:	bd38      	pop	{r3, r4, r5, pc}
  800ea6a:	bf00      	nop
- 800ea6c:	2000109c 	.word	0x2000109c
+ 800ea6c:	20001098 	.word	0x20001098
 
 0800ea70 <__ascii_mbtowc>:
  800ea70:	b082      	sub	sp, #8
@@ -36275,7 +36275,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800eaac:	f85d eb04 	ldr.w	lr, [sp], #4
  800eab0:	b003      	add	sp, #12
  800eab2:	4770      	bx	lr
- 800eab4:	20000038 	.word	0x20000038
+ 800eab4:	20000034 	.word	0x20000034
 
 0800eab8 <__ascii_wctomb>:
  800eab8:	4603      	mov	r3, r0
@@ -36340,7 +36340,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800eb34:	6818      	ldr	r0, [r3, #0]
  800eb36:	f7ff bfd3 	b.w	800eae0 <_raise_r>
  800eb3a:	bf00      	nop
- 800eb3c:	20000038 	.word	0x20000038
+ 800eb3c:	20000034 	.word	0x20000034
 
 0800eb40 <_kill_r>:
  800eb40:	b538      	push	{r3, r4, r5, lr}
@@ -36358,7 +36358,7 @@ int32_t Mid_Encoder_Get_Cycle_Count(void)
  800eb5a:	6023      	str	r3, [r4, #0]
  800eb5c:	bd38      	pop	{r3, r4, r5, pc}
  800eb5e:	bf00      	nop
- 800eb60:	200010a0 	.word	0x200010a0
+ 800eb60:	2000109c 	.word	0x2000109c
 
 0800eb64 <_getpid_r>:
  800eb64:	f7f4 bb2c 	b.w	80031c0 <_getpid>

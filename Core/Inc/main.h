@@ -67,11 +67,6 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-/* 在 main.h 的某个位置, 例如 USER CODE BEGIN EFP */
-// ====================================================================
-// ===         所有全局变量【声明】在这里 (使用 extern)           ===
-// ====================================================================
-extern uint16_t duty_TIM1;
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim6;
@@ -82,7 +77,6 @@ extern DMA_HandleTypeDef hdma_usart1_rx;
 extern FDCAN_HandleTypeDef hfdcan1;
 
 extern int16_t open_loop_velocity;
-
 
 // --- 电机控制状态变量 ---
 
@@ -101,12 +95,6 @@ extern volatile int32_t absolute_step_counter;
 extern volatile int32_t target_step_position;
 extern volatile uint32_t position_mode_increment;
 extern volatile uint32_t velocity_mode_increment;
-
-extern uint32_t ADC1_RAW_data[2];
-extern uint32_t ADC2_RAW_data[3];
-extern float HV_V,HV_I,DC_I;
-
-extern bool DC_ON_State;
 
 extern COMP_HandleTypeDef hcomp1;
 extern COMP_HandleTypeDef hcomp2;

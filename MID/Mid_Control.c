@@ -15,6 +15,9 @@
 
 #include "App_EMA.h"
 
+uint16_t duty_TIM1 = 1000;
+bool DC_ON_State = false;
+
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)
  * ========================================== */

@@ -34,7 +34,6 @@
 #include "Bsp_Usart.h"
 #include "Bsp_Can.h"
 
-//详细注释版本
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -42,15 +41,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-uint16_t duty_TIM1 = 1000;
 
-
-
-
-bool Sin_Velocity_Flag = false;
-float Omega_Sin_Velocity,Max_Velocity;
-
-#define AD7190_Force_sensor 0
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -61,17 +52,10 @@ float Omega_Sin_Velocity,Max_Velocity;
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 
-bool DC_ON_State = false;
-
-uint16_t ARR;
-uint32_t ADC1_RAW_data[2];
-uint32_t ADC2_RAW_data[3];
-
 /* USER CODE END PV */
 
 Motor EMA_DATA;
 
-int last_time_ms,time_gap;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -124,48 +108,11 @@ static void MX_TIM16_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_TIM17_Init(void);
 /* USER CODE BEGIN PFP */
-#ifdef __GNUC__									//串口重定向
-#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-#else
-#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#endif
-PUTCHAR_PROTOTYPE
-{
-    HAL_UART_Transmit(&huart1 , (uint8_t *)&ch, 1, 0xFFFF);
-    return ch;
-}
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-extern volatile uint8_t g_uart_dma_transfer_complete;
-
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-	if(htim == &htim17)
-	{
-		App_Can_Heart_Send();//Can Heart
-	}
-
-	if(htim == &htim16)//用于往复模式下打印往复次数以及电流电压等
-	{
-		App_Can_Send_Data();
-	}
-	if(htim == &htim6)
-	{
-
-		App_Upate_Voltage_Current_Data();
-
-		App_Update_Position_Sensor_Data();
-
-		App_System_Safety_Monitor();
-
-		App_EMA_Commutation_Task();
-
-	}
-}
 
 /* USER CODE END 0 */
 

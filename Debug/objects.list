@@ -1,4 +1,5 @@
 "./APP/App_Can.o"
+"./APP/App_Control.o"
 "./APP/App_EMA.o"
 "./APP/App_Position_Sensor.o"
 "./APP/App_Usart.o"
