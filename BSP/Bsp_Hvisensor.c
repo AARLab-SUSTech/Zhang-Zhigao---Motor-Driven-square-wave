@@ -83,12 +83,12 @@ void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
         EMA_DATA.Motor_mode = MOTOR_OVER_HV_VOLTAGE;
 
         /* 2. 紧急关闭 PWM 输出 */
-        Close_output();
+        Bsp_Close_All_Output();
 
         /* ========================================================== */
         /* [代码预留] 蜂鸣器报警与 DCDC 电源切断逻辑 */
         /*
-        // Buzzer_ON; // 提示：解除注释时请确保包含分号
+        // Bsp_Buzzer_Control(true); // 提示：解除注释时请确保包含分号
         // if(DC_ON_State == true) { DC_Power_CTR(false); }
         // printf("HV error\r\n");
         */
@@ -102,10 +102,10 @@ void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
         EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;
 
         /* 2. 开启蜂鸣器报警 */
-        Buzzer_ON; /* 【安全修复】：为你补上了分号，防止编译报错 */
+        Bsp_Buzzer_Control(true);
 
         /* 3. 紧急关闭 PWM 输出 */
-        Close_output();
+        Bsp_Close_All_Output();
 
         /* ========================================================== */
         /* [代码预留] DCDC 电源切断逻辑 */

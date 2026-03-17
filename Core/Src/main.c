@@ -33,6 +33,7 @@
 #include "Bsp_Adc.h"
 #include "Bsp_Usart.h"
 #include "Bsp_Can.h"
+#include "Bsp_Control.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -164,7 +165,7 @@ int main(void)
 
   Bsp_Usart_Init();
 
-    Close_output();//关闭所有输出
+  Bsp_Close_All_Output();//关闭所有输出
 
     Bsp_Adc_Init();//板载ADC初始化配置
 
@@ -187,7 +188,6 @@ int main(void)
 
   /* USER CODE END 2 */
 
-  /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
@@ -195,9 +195,9 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  	  Mid_Can_Tx_Task();
+	  Mid_Can_Tx_Task();
 
-	      Can_message_process();
+	  Can_message_process();
 
   }
   /* USER CODE END 3 */

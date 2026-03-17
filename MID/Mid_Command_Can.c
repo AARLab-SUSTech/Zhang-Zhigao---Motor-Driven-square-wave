@@ -14,6 +14,8 @@
 #include "Mid_Control.h"
 #include "App_EMA.h"
 
+#include "Bsp_Control.h"
+
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)
  * ========================================== */
@@ -115,9 +117,9 @@ void Can_message_process(void)
             switch (command)
             {
                 case 0x01: /* 命令: 紧急停止 */
-                    DC_Power_OFF;
+                    Bsp_Dc_Power_Control(false);
                     HAL_TIM_Base_Stop(&htim16);
-                    Close_output();
+                    Bsp_Close_All_Output();
                     if ((EMA_DATA.Motor_mode != MOTOR_OVER_HV_VOLTAGE) &&
                         (EMA_DATA.Motor_mode != MOTOR_OVER_HV_CURRENT) &&
                         (EMA_DATA.Motor_mode != MOTOR_OVER_DC_IN_CURRENT) &&
@@ -128,7 +130,7 @@ void Can_message_process(void)
                     break;
 
                 case 0x02: /* 命令: 高压上电 */
-                    DC_Power_ON;
+                    Bsp_Dc_Power_Control(true);
                     EMA_DATA.Motor_mode = MOTOR_READY;
                     break;
 

@@ -7,6 +7,7 @@
 "./BSP/Bsp_Ad7190.o"
 "./BSP/Bsp_Adc.o"
 "./BSP/Bsp_Can.o"
+"./BSP/Bsp_Control.o"
 "./BSP/Bsp_Force_Sensor.o"
 "./BSP/Bsp_Hvisensor.o"
 "./BSP/Bsp_Position.o"

@@ -1,5 +1,6 @@
 #include "App_EMA.h"
-#include <Mid_Control.h>
+#include "Mid_Control.h"
+#include "Bsp_Control.h"
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)
  * ========================================== */
@@ -256,7 +257,7 @@ void App_EMA_Commutation_Task(void)
          * 3.3 触发底层硬件执行换向
          * --------------------------------------------------- */
         step = new_step;         /* 更新全局当前步进状态 */
-        Update_output(step);     /* 【调用 BSP 层】真正改变 MOS 管的开关状态 */
+        Bsp_Update_Output(step);     /* 【调用 BSP 层】真正改变 MOS 管的开关状态 */
     }
 }
 

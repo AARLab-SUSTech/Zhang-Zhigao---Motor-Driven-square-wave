@@ -15,6 +15,8 @@
 #include "Bsp_Usart.h"
 #include "App_EMA.h"
 
+#include "Bsp_Control.h"
+
 /* 定义 Vofa+ JustFloat 协议的尾部帧 */
 const uint8_t JUST_FLOAT_TAIL[4] = {0x00, 0x00, 0x80, 0x7F};
 
@@ -74,7 +76,7 @@ void Mid_Float_Array_Dma_Send(float* arr, int count)
     /* 1. 检查 DMA 是否空闲 */
     if (g_uart_dma_transfer_complete == 0)
     {
-        Buzzer_ON; /* Error: DMA 发送错误，进入报错模式 */
+        Bsp_Buzzer_Control(true); ; /* Error: DMA 发送错误，进入报错模式 */
         return;    /* DMA 忙，直接返回 */
     }
 
@@ -106,7 +108,7 @@ void Mid_Float_Array_Dma_Send(float* arr, int count)
         /* 检查 snprintf 是否成功，以及是否超出缓冲区 */
         if (written_len <= 0 || written_len >= remaining_size)
         {
-            Buzzer_ON; /* Error: 超出缓存区 */
+            Bsp_Buzzer_Control(true); ; /* Error: 超出缓存区 */
             g_uart_dma_transfer_complete = 1; /* 释放 DMA */
             return;
         }
@@ -141,7 +143,7 @@ void Mid_Int16_Groups_Dma_Send(int16_t* arr, int total_count, int elements_per_g
     /* 1. 检查 DMA 是否空闲 */
     if (g_uart_dma_transfer_complete == 0)
     {
-        Buzzer_ON; /* Error: DMA 忙碌请检查 */
+        Bsp_Buzzer_Control(true); ; /* Error: DMA 忙碌请检查 */
         return;    /* DMA 忙，丢弃本次任务 */
     }
 
@@ -156,7 +158,7 @@ void Mid_Int16_Groups_Dma_Send(int16_t* arr, int total_count, int elements_per_g
      */
     if (total_count * 3 > UART_TX_BUFFER_SIZE)
     {
-        Buzzer_ON; /* Error: 缓存区溢出 */
+        Bsp_Buzzer_Control(true); ; /* Error: 缓存区溢出 */
         return;
     }
 
@@ -315,7 +317,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                 /* 7. 状态预处理：如果是运行指令，则打开电源并置位 Ready */
                 if(data[4] != 0x25)
                 {
-                    DC_Power_ON;
+                    Bsp_Dc_Power_Control(true); ;
                     EMA_DATA.Motor_mode = MOTOR_READY;
                 }
 
@@ -335,7 +337,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                         break;
 
                     case 0x25: /* 停止模式 (STOP) */
-                        DC_Power_OFF;
+                        Bsp_Dc_Power_Control(false); ;
                         /* 【安全修复】：逻辑非的并列必须用 && */
                         if((EMA_DATA.Motor_mode != MOTOR_OVER_HV_VOLTAGE) &&
                            (EMA_DATA.Motor_mode != MOTOR_OVER_HV_CURRENT) &&
@@ -344,7 +346,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                         {
                             EMA_DATA.Motor_mode = MOTOR_IDLE;
                         }
-                        Close_output();
+                        Bsp_Close_All_Output();
                         dma_print_flag = 0;
                         break;
 
@@ -442,7 +444,7 @@ void Mid_Usart_Send_JustFloat(float *pData, uint8_t count)
     uint16_t TotalBytes = (count * 4) + 4;
     if (TotalBytes > UART_TX_BUFFER_SIZE)
     {
-        Buzzer_ON; /* 数据超长报警 */
+        Bsp_Buzzer_Control(true); ; /* 数据超长报警 */
         return;
     }
 

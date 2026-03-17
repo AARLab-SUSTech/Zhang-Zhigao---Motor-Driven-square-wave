@@ -53,12 +53,6 @@ extern "C" {
 /* USER CODE BEGIN EM */
 #define TWO_PI 6.28318530718f             // 2 * PI
 #define PHASE_2_32 4294967296.0            // 2^32, 用 double 提高计算精度
-//#define DC_Power_ON  	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET)
-//#define DC_Power_OFF  	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET)
-#define DC_Power_ON  	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET)
-#define DC_Power_OFF  	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET)
-#define Buzzer_ON		  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-#define Buzzer_OFF		  HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 /* USER CODE END EM */
 
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);

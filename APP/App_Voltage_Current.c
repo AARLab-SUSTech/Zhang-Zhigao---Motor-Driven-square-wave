@@ -2,6 +2,7 @@
 #include "Mid_Adc.h"
 #include "App_EMA.h"
 #include "Mid_Control.h"
+#include "Bsp_Control.h"
 
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)
@@ -62,9 +63,8 @@ void App_System_Safety_Monitor(void)
             EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;
 
             /* 紧急安全序列 */
-            Close_output();         /* 1. 封锁 PWM 输出 */
-            DC_Power_CTR(false);    /* 2. 切断高压 DCDC 电源 */
-            Buzzer_ON;              /* 3. 蜂鸣器报警 */
+            Bsp_Close_All_Output();         /* 1. 封锁 PWM 输出 */
+            Bsp_Dc_Power_Control(false);    /* 2. 切断高压 DCDC 电源 */
         }
 
         /* 1.4 重置计数器，为下一个检查窗口做准备 */
@@ -80,27 +80,25 @@ void App_System_Safety_Monitor(void)
     if (EMA_DATA.Hv_V_V > MAX_HV_voltage)
     {
         EMA_DATA.Motor_mode = MOTOR_OVER_HV_VOLTAGE;
-        Close_output();
-        DC_Power_CTR(false);
-        Buzzer_ON;
+        Bsp_Close_All_Output();
+        Bsp_Dc_Power_Control(false);
     }
 
     /* 2.2 高压母线严重过流保护 (阈值为常规额定值的 3 倍) */
     if (EMA_DATA.Hv_I_uA > (MAX_HV_current * 3.0f))
     {
         EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;
-        Close_output();
-        DC_Power_CTR(false);
-        Buzzer_ON;
+        Bsp_Close_All_Output();
+        Bsp_Dc_Power_Control(false);
     }
 
     /* 2.3 低压直流输入过流保护 */
     if (EMA_DATA.Dc_I_A > MAX_DC_current)
     {
         EMA_DATA.Motor_mode = MOTOR_OVER_DC_IN_CURRENT;
-        Close_output();
-        DC_Power_CTR(false);
-        Buzzer_ON;
+        Bsp_Close_All_Output();
+        Bsp_Dc_Power_Control(false);
+        Bsp_Buzzer_Control(true);
 
     }
 }
