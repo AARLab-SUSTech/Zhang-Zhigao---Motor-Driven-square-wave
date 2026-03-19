@@ -27,7 +27,7 @@ const uint8_t JUST_FLOAT_TAIL[4] = {0x00, 0x00, 0x80, 0x7F};
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)
  * ========================================== */
-extern Motor EMA_DATA;
+extern Motor EFA_DATA;
 
 extern uint8_t rx_buffer[RX_BUFFER_SIZE];      /* 定义在 Bsp_Usart.c，256 字节 */
 extern uint8_t process_buffer[RX_BUFFER_SIZE]; /* 定义在 Bsp_Usart.c，256 字节 */
@@ -312,7 +312,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
 //                if(data[3] != 0x01) return; /* 不是发给本设备的，直接退出 */ 该功能预留，目前硬件不使用挂在Usart总线方案
 
 //                /* 6. 安全机制：如果电机正处于致命错误状态，拒绝执行任何指令 */
-                if(EMA_DATA.Fault_Flags != FAULT_NONE)
+                if(EFA_DATA.Fault_Flags != FAULT_NONE)
                 {
                     return; /* 不处理指令，直接退出 */
                 }
@@ -321,14 +321,14 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                 if(data[4] != 0x25)
                 {
                     Bsp_Dc_Power_Control(true); ;
-                    EMA_DATA.Motor_mode = MOTOR_READY;
+                    EFA_DATA.Motor_mode = MOTOR_READY;
                 }
 
                 /* 8. 业务逻辑分发 (Command Dispatcher) */
                 switch(data[4])
                 {
                     case 0x24: /* 往复运动模式 (Repeat Mode) */
-                        EMA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
+                        EFA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
                         /* 注意大小端拼接逻辑 */
                         temp_speed_int16 = (int16_t)((data[9] << 8) | data[8]);
                         temp_speed_float = (float)temp_speed_int16;
@@ -342,15 +342,15 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                     case 0x25: /* 停止模式 (STOP) */
                         Bsp_Dc_Power_Control(false);
                         Bsp_Close_All_Output();
-                        if (EMA_DATA.Fault_Flags == FAULT_NONE)
+                        if (EFA_DATA.Fault_Flags == FAULT_NONE)
                             {
-                                EMA_DATA.Motor_mode = MOTOR_IDLE;
+                                EFA_DATA.Motor_mode = MOTOR_IDLE;
                             }
                         dma_print_flag = 0;
                         break;
 
                     case 0x27: /* 开环位置模式 (Open Position) */
-                        EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+                        EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
                         temp_speed_int16 = (int16_t)((data[8] << 8) | data[7]);
                         temp_speed_float = (float)temp_speed_int16;
 
@@ -359,13 +359,13 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                         break;
 
                     case 0x28: /* 正向单步 (STEP+) */
-                        EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+                        EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
                         target_step_position = absolute_step_counter + 1;
                         position_mode_increment = (uint32_t)(((uint64_t)10.0f * 0x100000000ULL) / interrupt_freq_hz);
                         break;
 
                     case 0x29: /* 反向单步 (STEP-) */
-                        EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+                        EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
                         target_step_position = absolute_step_counter - 1;
                         position_mode_increment = (uint32_t)(((uint64_t)10.0f * 0x100000000ULL) / interrupt_freq_hz);
                         break;
@@ -374,7 +374,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                         break;
 
                     case 0x31: /* 开环速度模式 (Open Velocity Mode) */
-                        EMA_DATA.Motor_mode = MOTOR_OPEN_VELOCITY;
+                        EFA_DATA.Motor_mode = MOTOR_OPEN_VELOCITY;
                         temp_speed_int16 = (int16_t)((data[6] << 8) | data[5]);
                         temp_speed_float = (float)temp_speed_int16;
 
@@ -383,12 +383,12 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                         break;
 
                     case 0x32: /* 闭环位置模式 (Close Position Mode) */
-                        EMA_DATA.Motor_mode = MOTOR_CLOSE_POSITION;
+                        EFA_DATA.Motor_mode = MOTOR_CLOSE_POSITION;
                         // printf("close position\n");
                         break;
 
                     case 0x33: /* 闭环力矩模式 (Close Force Mode) */
-                        EMA_DATA.Motor_mode = MOTOR_CLOSE_FORCE;
+                        EFA_DATA.Motor_mode = MOTOR_CLOSE_FORCE;
                         // printf("close force\n");
                         break;
 
@@ -416,7 +416,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
     }
 
     /* 9. 状态联动：根据进入的模式控制打印输出的启停 */
-    if((EMA_DATA.Motor_mode == MOTOR_OPEN_POSITION) || (EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED))
+    if((EFA_DATA.Motor_mode == MOTOR_OPEN_POSITION) || (EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED))
     {
         dma_print_flag = 1;
         // HAL_TIM_Base_Start_IT(&htim6); // dma printf

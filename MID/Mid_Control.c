@@ -21,7 +21,7 @@ bool DC_ON_State = false;
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)
  * ========================================== */
-extern Motor EMA_DATA;
+extern Motor EFA_DATA;
 
 extern volatile MotorDirection_t motor_direction; /* 默认为正 */
 
@@ -104,7 +104,7 @@ float P_Control_Compute(P_Controller *ctrl, float target_pos, float current_pos)
 void set_speed(float speed_hz)
 {
     /* 明确设置模式为速度模式 */
-    EMA_DATA.Motor_mode = MOTOR_OPEN_SPEED;
+    EFA_DATA.Motor_mode = MOTOR_OPEN_SPEED;
 
     if (speed_hz >= 0)
     {
@@ -128,7 +128,7 @@ void set_speed(float speed_hz)
  */
 void move_to_position(int32_t target_steps, float speed_hz)
 {
-    EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+    EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
 
     /* 1. 更新目标位置 */
     target_step_position = target_steps;
@@ -159,7 +159,7 @@ void move_repeatedly(int32_t pos1, int32_t pos2, uint32_t count, float speed_hz)
     repeated_count_current = 0;
 
     /* 2. 切换到往复运动模式 */
-    EMA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
+    EFA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
 
     /* 3. 【关键修复】: 直接设置第一个目标和速度，避免模式冲突 */
     target_step_position = repeated_pos_A;
@@ -173,7 +173,7 @@ void move_repeatedly(int32_t pos1, int32_t pos2, uint32_t count, float speed_hz)
  */
 void start_move_to_position(int32_t target_steps, float speed_hz)
 {
-    EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+    EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
     move_to_position(target_steps, speed_hz);
 }
 

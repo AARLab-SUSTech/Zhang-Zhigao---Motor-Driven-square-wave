@@ -3,7 +3,7 @@
 #include "App_Led.h"
 #include "Bsp_Control.h"
 
-extern Motor EMA_DATA;
+extern Motor EFA_DATA;
 
 /**
  * @brief  上报故障 (只负责记录，不负责动作)
@@ -12,7 +12,7 @@ extern Motor EMA_DATA;
 void App_Fault_Report(uint32_t fault_code)
 {
     /* 使用按位或 (|) 记录故障，保护其他已存在的故障不被覆盖 */
-    EMA_DATA.Fault_Flags |= fault_code;
+    EFA_DATA.Fault_Flags |= fault_code;
 }
 
 /**
@@ -21,7 +21,7 @@ void App_Fault_Report(uint32_t fault_code)
 void App_Fault_Clear(uint32_t fault_code)
 {
     /* 使用按位与非 (& ~) 清除特定故障 */
-    EMA_DATA.Fault_Flags &= ~fault_code;
+    EFA_DATA.Fault_Flags &= ~fault_code;
     App_Led_Set_State(SYS_STAT_IDLE);
 }
 
@@ -31,15 +31,15 @@ void App_Fault_Clear(uint32_t fault_code)
 void App_Fault_Task_Handler(void)
 {
     /* 1. 如果没有任何故障，直接退出 */
-    if (EMA_DATA.Fault_Flags == FAULT_NONE)
+    if (EFA_DATA.Fault_Flags == FAULT_NONE)
     {
         return;
     }
 
     /* 2. 只要有故障，立刻强制系统进入 ERROR 模式 */
-    if (EMA_DATA.Motor_mode != MOTOR_ERROR)
+    if (EFA_DATA.Motor_mode != MOTOR_ERROR)
     {
-        EMA_DATA.Motor_mode = MOTOR_ERROR;
+        EFA_DATA.Motor_mode = MOTOR_ERROR;
 
         /* 执行统一的紧急安全动作序列 */
         App_Led_Set_State(SYS_STAT_ERROR);

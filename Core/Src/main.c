@@ -57,7 +57,7 @@
 
 /* USER CODE END PV */
 
-Motor EMA_DATA;
+Motor EFA_DATA;
 
 /* USER CODE END PM */
 
@@ -180,8 +180,8 @@ int main(void)
 
   Bsp_Can_Init();
 
-  EMA_DATA.sin_offset = 1.65f;
-  EMA_DATA.cos_offset = 1.65f;
+  EFA_DATA.sin_offset = 1.65f;
+  EFA_DATA.cos_offset = 1.65f;
 
   HAL_TIM_Base_Start_IT(&htim6);//高频计算中断
 

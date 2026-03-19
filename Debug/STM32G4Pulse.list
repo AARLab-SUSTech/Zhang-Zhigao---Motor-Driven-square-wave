@@ -27,25 +27,25 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  000111f0  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0002795a  00000000  00000000  00011220  2**0
+ 12 .debug_info   0002792b  00000000  00000000  00011220  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 0000556c  00000000  00000000  00038b7a  2**0
+ 13 .debug_abbrev 0000556d  00000000  00000000  00038b4b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 00002020  00000000  00000000  0003e0e8  2**3
+ 14 .debug_aranges 00002020  00000000  00000000  0003e0b8  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 000018b6  00000000  00000000  00040108  2**0
+ 15 .debug_rnglists 000018b6  00000000  00000000  000400d8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00027d3f  00000000  00000000  000419be  2**0
+ 16 .debug_macro  00027d3f  00000000  00000000  0004198e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0002b56f  00000000  00000000  000696fd  2**0
+ 17 .debug_line   0002b56f  00000000  00000000  000696cd  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000f008c  00000000  00000000  00094c6c  2**0
+ 18 .debug_str    000f007d  00000000  00000000  00094c3c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  00184cf8  2**0
+ 19 .comment      00000043  00000000  00000000  00184cb9  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  0000970c  00000000  00000000  00184d3c  2**2
+ 20 .debug_frame  0000970c  00000000  00000000  00184cfc  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000004c  00000000  00000000  0018e448  2**0
+ 21 .debug_line_str 0000004c  00000000  00000000  0018e408  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1537,7 +1537,7 @@ void App_Can_Heart_Send(void)
  8001216:	60da      	str	r2, [r3, #12]
 
         /* 5. 填充报文数据 (Payload) */
-        msg_to_queue->Data[0] = (uint8_t)EMA_DATA.Motor_mode;       /* 填入当前模式/故障码 */
+        msg_to_queue->Data[0] = (uint8_t)EFA_DATA.Motor_mode;       /* 填入当前模式/故障码 */
  8001218:	4b11      	ldr	r3, [pc, #68]	@ (8001260 <App_Can_Heart_Send+0xa0>)
  800121a:	781a      	ldrb	r2, [r3, #0]
  800121c:	687b      	ldr	r3, [r7, #4]
@@ -1683,7 +1683,7 @@ void App_Can_Send_Data(void)
  80012ee:	f883 2027 	strb.w	r2, [r3, #39]	@ 0x27
 
         /* Data[4..5]: 高压母线电压 (放大 10 倍保留 1 位小数, 16-bit, 大端模式) */
-        TempData = (uint16_t)(EMA_DATA.Hv_V_V * 10);
+        TempData = (uint16_t)(EFA_DATA.Hv_V_V * 10);
  80012f2:	4b21      	ldr	r3, [pc, #132]	@ (8001378 <App_Can_Send_Data+0x114>)
  80012f4:	edd3 7a1b 	vldr	s15, [r3, #108]	@ 0x6c
  80012f8:	eeb2 7a04 	vmov.f32	s14, #36	@ 0x41200000  10.0
@@ -1705,7 +1705,7 @@ void App_Can_Send_Data(void)
  800131e:	f883 2029 	strb.w	r2, [r3, #41]	@ 0x29
 
         /* Data[6..7]: 高压母线电流 (放大 100 倍保留 2 位小数, 16-bit, 大端模式) */
-        TempData = (uint16_t)(EMA_DATA.Hv_I_mA * 100);
+        TempData = (uint16_t)(EFA_DATA.Hv_I_mA * 100);
  8001322:	4b15      	ldr	r3, [pc, #84]	@ (8001378 <App_Can_Send_Data+0x114>)
  8001324:	edd3 7a1c 	vldr	s15, [r3, #112]	@ 0x70
  8001328:	ed9f 7a14 	vldr	s14, [pc, #80]	@ 800137c <App_Can_Send_Data+0x118>
@@ -1838,21 +1838,21 @@ void App_EMA_Motion_Task(void)
 	/* ========================================================================== *
 	     * 1. 终极安全检查层：处理最高优先级的 IDLE, ERROR 和任何硬件故障状态
 	     * ========================================================================== */
-	    if (EMA_DATA.Motor_mode == MOTOR_IDLE ||
+	    if (EFA_DATA.Motor_mode == MOTOR_IDLE ||
  80013e6:	4b61      	ldr	r3, [pc, #388]	@ (800156c <App_EMA_Motion_Task+0x18c>)
  80013e8:	781b      	ldrb	r3, [r3, #0]
  80013ea:	2b00      	cmp	r3, #0
  80013ec:	d008      	beq.n	8001400 <App_EMA_Motion_Task+0x20>
-	        EMA_DATA.Motor_mode == MOTOR_ERROR ||
+	        EFA_DATA.Motor_mode == MOTOR_ERROR ||
  80013ee:	4b5f      	ldr	r3, [pc, #380]	@ (800156c <App_EMA_Motion_Task+0x18c>)
  80013f0:	781b      	ldrb	r3, [r3, #0]
-	    if (EMA_DATA.Motor_mode == MOTOR_IDLE ||
+	    if (EFA_DATA.Motor_mode == MOTOR_IDLE ||
  80013f2:	2b02      	cmp	r3, #2
  80013f4:	d004      	beq.n	8001400 <App_EMA_Motion_Task+0x20>
-	        EMA_DATA.Fault_Flags != FAULT_NONE)
+	        EFA_DATA.Fault_Flags != FAULT_NONE)
  80013f6:	4b5d      	ldr	r3, [pc, #372]	@ (800156c <App_EMA_Motion_Task+0x18c>)
  80013f8:	f8d3 3080 	ldr.w	r3, [r3, #128]	@ 0x80
-	        EMA_DATA.Motor_mode == MOTOR_ERROR ||
+	        EFA_DATA.Motor_mode == MOTOR_ERROR ||
  80013fc:	2b00      	cmp	r3, #0
  80013fe:	d003      	beq.n	8001408 <App_EMA_Motion_Task+0x28>
 	    {
@@ -1869,7 +1869,7 @@ void App_EMA_Motion_Task(void)
     /* ========================================================================== *
      * 2. 状态决策层：处理复合运动模式的逻辑流转 (如往复模式)
      * ========================================================================== */
-    if (EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)
+    if (EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)
  8001408:	4b58      	ldr	r3, [pc, #352]	@ (800156c <App_EMA_Motion_Task+0x18c>)
  800140a:	781b      	ldrb	r3, [r3, #0]
  800140c:	2b05      	cmp	r3, #5
@@ -1891,7 +1891,7 @@ void App_EMA_Motion_Task(void)
  8001422:	d303      	bcc.n	800142c <App_EMA_Motion_Task+0x4c>
             {
                 /* 检查总次数是否已完成：任务结束，切换到空闲模式 */
-                EMA_DATA.Motor_mode = MOTOR_IDLE;
+                EFA_DATA.Motor_mode = MOTOR_IDLE;
  8001424:	4b51      	ldr	r3, [pc, #324]	@ (800156c <App_EMA_Motion_Task+0x18c>)
  8001426:	2200      	movs	r2, #0
  8001428:	701a      	strb	r2, [r3, #0]
@@ -1946,21 +1946,21 @@ void App_EMA_Motion_Task(void)
      * ========================================================================== */
 
     /* A. 位置控制类模式 (单次定位、往复、同步) */
-    if (EMA_DATA.Motor_mode == MOTOR_OPEN_POSITION ||
+    if (EFA_DATA.Motor_mode == MOTOR_OPEN_POSITION ||
  8001460:	4b42      	ldr	r3, [pc, #264]	@ (800156c <App_EMA_Motion_Task+0x18c>)
  8001462:	781b      	ldrb	r3, [r3, #0]
  8001464:	2b04      	cmp	r3, #4
  8001466:	d007      	beq.n	8001478 <App_EMA_Motion_Task+0x98>
-        EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED ||
+        EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED ||
  8001468:	4b40      	ldr	r3, [pc, #256]	@ (800156c <App_EMA_Motion_Task+0x18c>)
  800146a:	781b      	ldrb	r3, [r3, #0]
-    if (EMA_DATA.Motor_mode == MOTOR_OPEN_POSITION ||
+    if (EFA_DATA.Motor_mode == MOTOR_OPEN_POSITION ||
  800146c:	2b05      	cmp	r3, #5
  800146e:	d003      	beq.n	8001478 <App_EMA_Motion_Task+0x98>
-        EMA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
+        EFA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
  8001470:	4b3e      	ldr	r3, [pc, #248]	@ (800156c <App_EMA_Motion_Task+0x18c>)
  8001472:	781b      	ldrb	r3, [r3, #0]
-        EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED ||
+        EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED ||
  8001474:	2b0a      	cmp	r3, #10
  8001476:	d11f      	bne.n	80014b8 <App_EMA_Motion_Task+0xd8>
     {
@@ -2017,7 +2017,7 @@ void App_EMA_Motion_Task(void)
     }
 
     /* B. 开环速度控制模式 */
-    else if (EMA_DATA.Motor_mode == MOTOR_OPEN_VELOCITY)
+    else if (EFA_DATA.Motor_mode == MOTOR_OPEN_VELOCITY)
  80014b8:	4b2c      	ldr	r3, [pc, #176]	@ (800156c <App_EMA_Motion_Task+0x18c>)
  80014ba:	781b      	ldrb	r3, [r3, #0]
  80014bc:	2b06      	cmp	r3, #6
@@ -2032,14 +2032,14 @@ void App_EMA_Motion_Task(void)
     }
 
     /* C. 闭环位置控制模式 (PID) */
-    else if (EMA_DATA.Motor_mode == MOTOR_CLOSE_POSITION)
+    else if (EFA_DATA.Motor_mode == MOTOR_CLOSE_POSITION)
  80014ca:	4b28      	ldr	r3, [pc, #160]	@ (800156c <App_EMA_Motion_Task+0x18c>)
  80014cc:	781b      	ldrb	r3, [r3, #0]
  80014ce:	2b07      	cmp	r3, #7
  80014d0:	d148      	bne.n	8001564 <App_EMA_Motion_Task+0x184>
     {
         /* 调用 MID 层的 PID 算法，获取输出量 */
-        float output = P_Control_Compute(&Motor_Position_Controller, Motor_Position_Controller.TargetPos, EMA_DATA.position_mm);
+        float output = P_Control_Compute(&Motor_Position_Controller, Motor_Position_Controller.TargetPos, EFA_DATA.position_mm);
  80014d2:	4b31      	ldr	r3, [pc, #196]	@ (8001598 <App_EMA_Motion_Task+0x1b8>)
  80014d4:	edd3 7a02 	vldr	s15, [r3, #8]
  80014d8:	4b24      	ldr	r3, [pc, #144]	@ (800156c <App_EMA_Motion_Task+0x18c>)
@@ -2284,7 +2284,7 @@ void App_Fault_Report(uint32_t fault_code)
  8001680:	af00      	add	r7, sp, #0
  8001682:	6078      	str	r0, [r7, #4]
     /* 使用按位或 (|) 记录故障，保护其他已存在的故障不被覆盖 */
-    EMA_DATA.Fault_Flags |= fault_code;
+    EFA_DATA.Fault_Flags |= fault_code;
  8001684:	4b06      	ldr	r3, [pc, #24]	@ (80016a0 <App_Fault_Report+0x24>)
  8001686:	f8d3 2080 	ldr.w	r2, [r3, #128]	@ 0x80
  800168a:	687b      	ldr	r3, [r7, #4]
@@ -2309,7 +2309,7 @@ void App_Fault_Task_Handler(void)
  80016a4:	b580      	push	{r7, lr}
  80016a6:	af00      	add	r7, sp, #0
     /* 1. 如果没有任何故障，直接退出 */
-    if (EMA_DATA.Fault_Flags == FAULT_NONE)
+    if (EFA_DATA.Fault_Flags == FAULT_NONE)
  80016a8:	4b0b      	ldr	r3, [pc, #44]	@ (80016d8 <App_Fault_Task_Handler+0x34>)
  80016aa:	f8d3 3080 	ldr.w	r3, [r3, #128]	@ 0x80
  80016ae:	2b00      	cmp	r3, #0
@@ -2319,13 +2319,13 @@ void App_Fault_Task_Handler(void)
     }
 
     /* 2. 只要有故障，立刻强制系统进入 ERROR 模式 */
-    if (EMA_DATA.Motor_mode != MOTOR_ERROR)
+    if (EFA_DATA.Motor_mode != MOTOR_ERROR)
  80016b2:	4b09      	ldr	r3, [pc, #36]	@ (80016d8 <App_Fault_Task_Handler+0x34>)
  80016b4:	781b      	ldrb	r3, [r3, #0]
  80016b6:	2b02      	cmp	r3, #2
  80016b8:	d00c      	beq.n	80016d4 <App_Fault_Task_Handler+0x30>
     {
-        EMA_DATA.Motor_mode = MOTOR_ERROR;
+        EFA_DATA.Motor_mode = MOTOR_ERROR;
  80016ba:	4b07      	ldr	r3, [pc, #28]	@ (80016d8 <App_Fault_Task_Handler+0x34>)
  80016bc:	2202      	movs	r2, #2
  80016be:	701a      	strb	r2, [r3, #0]
@@ -2545,7 +2545,7 @@ void App_Update_Position_Sensor_Data(void)
     /* 1. 触发 MID 层更新传感器数据
      * (APP 层把自己的偏置参数传给 MID 层算，但不管它是怎么去底层拿ADC的)
      */
-    Mid_Encoder_Update(EMA_DATA.sin_offset, EMA_DATA.cos_offset);
+    Mid_Encoder_Update(EFA_DATA.sin_offset, EFA_DATA.cos_offset);
  80017e4:	4b47      	ldr	r3, [pc, #284]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  80017e6:	edd3 7a05 	vldr	s15, [r3, #20]
  80017ea:	4b46      	ldr	r3, [pc, #280]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
@@ -2555,19 +2555,19 @@ void App_Update_Position_Sensor_Data(void)
  80017f8:	f00a fee6 	bl	800c5c8 <Mid_Encoder_Update>
 
     /* 2. 直接从 MID 层拿走已经算好的、干干净净的角度和圈数！ */
-    EMA_DATA.theta_degrees = Mid_Encoder_Get_Angle_Degrees();
+    EFA_DATA.theta_degrees = Mid_Encoder_Get_Angle_Degrees();
  80017fc:	f00a ff7a 	bl	800c6f4 <Mid_Encoder_Get_Angle_Degrees>
  8001800:	eef0 7a40 	vmov.f32	s15, s0
  8001804:	4b3f      	ldr	r3, [pc, #252]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  8001806:	edc3 7a08 	vstr	s15, [r3, #32]
-    EMA_DATA.cycle_count   = Mid_Encoder_Get_Cycle_Count();
+    EFA_DATA.cycle_count   = Mid_Encoder_Get_Cycle_Count();
  800180a:	f00a ff81 	bl	800c710 <Mid_Encoder_Get_Cycle_Count>
  800180e:	4603      	mov	r3, r0
  8001810:	4a3c      	ldr	r2, [pc, #240]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  8001812:	6293      	str	r3, [r2, #40]	@ 0x28
 
     /* 3. 运动学转换：角度转直线位移 (极距 2.0mm) */
-    EMA_DATA.current_displacement_within_cycle_mm = (EMA_DATA.theta_degrees / 360.0f) * 2.0f;
+    EFA_DATA.current_displacement_within_cycle_mm = (EFA_DATA.theta_degrees / 360.0f) * 2.0f;
  8001814:	4b3b      	ldr	r3, [pc, #236]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  8001816:	ed93 7a08 	vldr	s14, [r3, #32]
  800181a:	eddf 6a3b 	vldr	s13, [pc, #236]	@ 8001908 <App_Update_Position_Sensor_Data+0x128>
@@ -2577,7 +2577,7 @@ void App_Update_Position_Sensor_Data(void)
  8001828:	edc3 7a0b 	vstr	s15, [r3, #44]	@ 0x2c
 
     /* 4. 应用标定偏置，计算绝对物理位置 */
-    if (EMA_DATA.Min_Max_cal_status == false)
+    if (EFA_DATA.Min_Max_cal_status == false)
  800182c:	4b35      	ldr	r3, [pc, #212]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  800182e:	f893 304c 	ldrb.w	r3, [r3, #76]	@ 0x4c
  8001832:	f083 0301 	eor.w	r3, r3, #1
@@ -2585,7 +2585,7 @@ void App_Update_Position_Sensor_Data(void)
  8001838:	2b00      	cmp	r3, #0
  800183a:	d010      	beq.n	800185e <App_Update_Position_Sensor_Data+0x7e>
     {
-        EMA_DATA.position_mm = (float)EMA_DATA.cycle_count * 2.0f + EMA_DATA.current_displacement_within_cycle_mm;
+        EFA_DATA.position_mm = (float)EFA_DATA.cycle_count * 2.0f + EFA_DATA.current_displacement_within_cycle_mm;
  800183c:	4b31      	ldr	r3, [pc, #196]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  800183e:	6a9b      	ldr	r3, [r3, #40]	@ 0x28
  8001840:	ee07 3a90 	vmov	s15, r3
@@ -2600,7 +2600,7 @@ void App_Update_Position_Sensor_Data(void)
     }
     else
     {
-        EMA_DATA.position_mm = (float)EMA_DATA.cycle_count * 2.0f + EMA_DATA.current_displacement_within_cycle_mm - EMA_DATA.min_position_mm + 1.5f;
+        EFA_DATA.position_mm = (float)EFA_DATA.cycle_count * 2.0f + EFA_DATA.current_displacement_within_cycle_mm - EFA_DATA.min_position_mm + 1.5f;
  800185e:	4b29      	ldr	r3, [pc, #164]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  8001860:	6a9b      	ldr	r3, [r3, #40]	@ 0x28
  8001862:	ee07 3a90 	vmov	s15, r3
@@ -2619,21 +2619,21 @@ void App_Update_Position_Sensor_Data(void)
     }
 
     /* 5. 降频计算物理速度与滤波 */
-    EMA_DATA.Loop_count++;
+    EFA_DATA.Loop_count++;
  8001890:	4b1c      	ldr	r3, [pc, #112]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  8001892:	789b      	ldrb	r3, [r3, #2]
  8001894:	3301      	adds	r3, #1
  8001896:	b2da      	uxtb	r2, r3
  8001898:	4b1a      	ldr	r3, [pc, #104]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  800189a:	709a      	strb	r2, [r3, #2]
-    if (EMA_DATA.Loop_count >= 10)
+    if (EFA_DATA.Loop_count >= 10)
  800189c:	4b19      	ldr	r3, [pc, #100]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  800189e:	789b      	ldrb	r3, [r3, #2]
  80018a0:	2b09      	cmp	r3, #9
  80018a2:	d92c      	bls.n	80018fe <App_Update_Position_Sensor_Data+0x11e>
     {
         /* 1kHz 下降频 10 次为 100Hz，dt = 0.01s */
-        EMA_DATA.speed = (EMA_DATA.position_mm - EMA_DATA.Last_position_mm) / 0.01f;
+        EFA_DATA.speed = (EFA_DATA.position_mm - EFA_DATA.Last_position_mm) / 0.01f;
  80018a4:	4b17      	ldr	r3, [pc, #92]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  80018a6:	ed93 7a0c 	vldr	s14, [r3, #48]	@ 0x30
  80018aa:	4b16      	ldr	r3, [pc, #88]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
@@ -2645,7 +2645,7 @@ void App_Update_Position_Sensor_Data(void)
  80018be:	edc3 7a0e 	vstr	s15, [r3, #56]	@ 0x38
 
         /* 一阶低通滤波 (当前权重 0.8，历史权重 0.2) */
-        EMA_DATA.speed = 0.8f * EMA_DATA.speed + 0.2f * EMA_DATA.Last_speed;
+        EFA_DATA.speed = 0.8f * EFA_DATA.speed + 0.2f * EFA_DATA.Last_speed;
  80018c2:	4b10      	ldr	r3, [pc, #64]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  80018c4:	edd3 7a0e 	vldr	s15, [r3, #56]	@ 0x38
  80018c8:	ed9f 7a11 	vldr	s14, [pc, #68]	@ 8001910 <App_Update_Position_Sensor_Data+0x130>
@@ -2659,19 +2659,19 @@ void App_Update_Position_Sensor_Data(void)
  80018e4:	edc3 7a0e 	vstr	s15, [r3, #56]	@ 0x38
 
         /* 更新历史状态 */
-        EMA_DATA.Last_speed = EMA_DATA.speed;
+        EFA_DATA.Last_speed = EFA_DATA.speed;
  80018e8:	4b06      	ldr	r3, [pc, #24]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  80018ea:	6b9b      	ldr	r3, [r3, #56]	@ 0x38
  80018ec:	4a05      	ldr	r2, [pc, #20]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  80018ee:	63d3      	str	r3, [r2, #60]	@ 0x3c
-        EMA_DATA.Last_position_mm = EMA_DATA.position_mm;
+        EFA_DATA.Last_position_mm = EFA_DATA.position_mm;
  80018f0:	4b04      	ldr	r3, [pc, #16]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  80018f2:	6b1b      	ldr	r3, [r3, #48]	@ 0x30
  80018f4:	4a03      	ldr	r2, [pc, #12]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  80018f6:	6353      	str	r3, [r2, #52]	@ 0x34
 
         /* 清零降频计数器 */
-        EMA_DATA.Loop_count = 0;
+        EFA_DATA.Loop_count = 0;
  80018f8:	4b02      	ldr	r3, [pc, #8]	@ (8001904 <App_Update_Position_Sensor_Data+0x124>)
  80018fa:	2200      	movs	r2, #0
  80018fc:	709a      	strb	r2, [r3, #2]
@@ -2695,17 +2695,17 @@ void App_Upate_Voltage_Current_Data(void)
 {
  8001918:	b580      	push	{r7, lr}
  800191a:	af00      	add	r7, sp, #0
-	EMA_DATA.Hv_V_V = Mid_Get_Hv_V();
+	EFA_DATA.Hv_V_V = Mid_Get_Hv_V();
  800191c:	f00a f82e 	bl	800b97c <Mid_Get_Hv_V>
  8001920:	eef0 7a40 	vmov.f32	s15, s0
  8001924:	4b09      	ldr	r3, [pc, #36]	@ (800194c <App_Upate_Voltage_Current_Data+0x34>)
  8001926:	edc3 7a1b 	vstr	s15, [r3, #108]	@ 0x6c
-	EMA_DATA.Hv_I_mA = Mid_Get_Hi_uA();
+	EFA_DATA.Hv_I_mA = Mid_Get_Hi_uA();
  800192a:	f00a f847 	bl	800b9bc <Mid_Get_Hi_uA>
  800192e:	eef0 7a40 	vmov.f32	s15, s0
  8001932:	4b06      	ldr	r3, [pc, #24]	@ (800194c <App_Upate_Voltage_Current_Data+0x34>)
  8001934:	edc3 7a1c 	vstr	s15, [r3, #112]	@ 0x70
-	EMA_DATA.Dc_I_A = Mid_Get_Dc_I_A();
+	EFA_DATA.Dc_I_A = Mid_Get_Dc_I_A();
  8001938:	f00a f860 	bl	800b9fc <Mid_Get_Dc_I_A>
  800193c:	eef0 7a40 	vmov.f32	s15, s0
  8001940:	4b02      	ldr	r3, [pc, #8]	@ (800194c <App_Upate_Voltage_Current_Data+0x34>)
@@ -2730,7 +2730,7 @@ void App_System_Safety_Monitor(void)
      * ========================================================================== */
 
     /* 1.1 高压母线过压保护 */
-    if (EMA_DATA.Hv_V_V > MAX_HV_voltage)
+    if (EFA_DATA.Hv_V_V > MAX_HV_voltage)
  8001954:	4b37      	ldr	r3, [pc, #220]	@ (8001a34 <App_System_Safety_Monitor+0xe4>)
  8001956:	ed93 7a1b 	vldr	s14, [r3, #108]	@ 0x6c
  800195a:	4b37      	ldr	r3, [pc, #220]	@ (8001a38 <App_System_Safety_Monitor+0xe8>)
@@ -2750,7 +2750,7 @@ void App_System_Safety_Monitor(void)
     }
 
     /* 1.2 高压母线严重过流保护 (阈值为常规额定值的 3 倍) */
-    if (EMA_DATA.Hv_I_mA > (MAX_HV_current * 3.0f))
+    if (EFA_DATA.Hv_I_mA > (MAX_HV_current * 3.0f))
  800197a:	4b2e      	ldr	r3, [pc, #184]	@ (8001a34 <App_System_Safety_Monitor+0xe4>)
  800197c:	ed93 7a1c 	vldr	s14, [r3, #112]	@ 0x70
  8001980:	4b2e      	ldr	r3, [pc, #184]	@ (8001a3c <App_System_Safety_Monitor+0xec>)
@@ -2775,7 +2775,7 @@ void App_System_Safety_Monitor(void)
     }
 
     /* 1.3 低压直流输入过流保护 */
-    if (EMA_DATA.Dc_I_A > MAX_DC_current)
+    if (EFA_DATA.Dc_I_A > MAX_DC_current)
  80019ae:	4b21      	ldr	r3, [pc, #132]	@ (8001a34 <App_System_Safety_Monitor+0xe4>)
  80019b0:	ed93 7a1d 	vldr	s14, [r3, #116]	@ 0x74
  80019b4:	4b22      	ldr	r3, [pc, #136]	@ (8001a40 <App_System_Safety_Monitor+0xf0>)
@@ -2797,7 +2797,7 @@ void App_System_Safety_Monitor(void)
      * ========================================================================== */
 
     /* 2.1 检查当前电流是否形成了一次尖峰 */
-    if (EMA_DATA.Hv_I_mA > SPIKE_CURRENT_THRESHOLD)
+    if (EFA_DATA.Hv_I_mA > SPIKE_CURRENT_THRESHOLD)
  80019d4:	4b17      	ldr	r3, [pc, #92]	@ (8001a34 <App_System_Safety_Monitor+0xe4>)
  80019d6:	edd3 7a1c 	vldr	s15, [r3, #112]	@ 0x70
  80019da:	eeb3 7a00 	vmov.f32	s14, #48	@ 0x41800000  16.0
@@ -4253,11 +4253,11 @@ int main(void)
   Bsp_Can_Init();
  800221c:	f7ff fc90 	bl	8001b40 <Bsp_Can_Init>
 
-  EMA_DATA.sin_offset = 1.65f;
+  EFA_DATA.sin_offset = 1.65f;
  8002220:	4b0e      	ldr	r3, [pc, #56]	@ (800225c <main+0xa0>)
  8002222:	4a0f      	ldr	r2, [pc, #60]	@ (8002260 <main+0xa4>)
  8002224:	615a      	str	r2, [r3, #20]
-  EMA_DATA.cos_offset = 1.65f;
+  EFA_DATA.cos_offset = 1.65f;
  8002226:	4b0d      	ldr	r3, [pc, #52]	@ (800225c <main+0xa0>)
  8002228:	4a0d      	ldr	r2, [pc, #52]	@ (8002260 <main+0xa4>)
  800222a:	619a      	str	r2, [r3, #24]
@@ -31270,19 +31270,19 @@ void Can_message_process(void)
  800bafc:	f7fc fd84 	bl	8008608 <HAL_TIM_Base_Stop>
                     Bsp_Close_All_Output();
  800bb00:	f7f6 f974 	bl	8001dec <Bsp_Close_All_Output>
-                    if ((EMA_DATA.Fault_Flags != FAULT_NONE) ||
+                    if ((EFA_DATA.Fault_Flags != FAULT_NONE) ||
  800bb04:	4b7c      	ldr	r3, [pc, #496]	@ (800bcf8 <Can_message_process+0x2c8>)
  800bb06:	f8d3 3080 	ldr.w	r3, [r3, #128]	@ 0x80
  800bb0a:	2b00      	cmp	r3, #0
  800bb0c:	d104      	bne.n	800bb18 <Can_message_process+0xe8>
-                        (EMA_DATA.Motor_mode != MOTOR_ERROR))
+                        (EFA_DATA.Motor_mode != MOTOR_ERROR))
  800bb0e:	4b7a      	ldr	r3, [pc, #488]	@ (800bcf8 <Can_message_process+0x2c8>)
  800bb10:	781b      	ldrb	r3, [r3, #0]
-                    if ((EMA_DATA.Fault_Flags != FAULT_NONE) ||
+                    if ((EFA_DATA.Fault_Flags != FAULT_NONE) ||
  800bb12:	2b02      	cmp	r3, #2
  800bb14:	f000 8222 	beq.w	800bf5c <Can_message_process+0x52c>
                     {
-                        EMA_DATA.Motor_mode = MOTOR_IDLE;
+                        EFA_DATA.Motor_mode = MOTOR_IDLE;
  800bb18:	4b77      	ldr	r3, [pc, #476]	@ (800bcf8 <Can_message_process+0x2c8>)
  800bb1a:	2200      	movs	r2, #0
  800bb1c:	701a      	strb	r2, [r3, #0]
@@ -31294,7 +31294,7 @@ void Can_message_process(void)
                     Bsp_Dc_Power_Control(true);
  800bb20:	2001      	movs	r0, #1
  800bb22:	f7f6 faa9 	bl	8002078 <Bsp_Dc_Power_Control>
-                    EMA_DATA.Motor_mode = MOTOR_READY;
+                    EFA_DATA.Motor_mode = MOTOR_READY;
  800bb26:	4b74      	ldr	r3, [pc, #464]	@ (800bcf8 <Can_message_process+0x2c8>)
  800bb28:	2201      	movs	r2, #1
  800bb2a:	701a      	strb	r2, [r3, #0]
@@ -31350,7 +31350,7 @@ void Can_message_process(void)
  800bb9a:	ee17 2a90 	vmov	r2, s15
  800bb9e:	4b5b      	ldr	r3, [pc, #364]	@ (800bd0c <Can_message_process+0x2dc>)
  800bba0:	601a      	str	r2, [r3, #0]
-                    EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+                    EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
  800bba2:	4b55      	ldr	r3, [pc, #340]	@ (800bcf8 <Can_message_process+0x2c8>)
  800bba4:	2204      	movs	r2, #4
  800bba6:	701a      	strb	r2, [r3, #0]
@@ -31397,7 +31397,7 @@ void Can_message_process(void)
 
                 case 0x05: /* 命令: 往复模式 */
                 {
-                    EMA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
+                    EFA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
  800bbde:	4b46      	ldr	r3, [pc, #280]	@ (800bcf8 <Can_message_process+0x2c8>)
  800bbe0:	2205      	movs	r2, #5
  800bbe2:	701a      	strb	r2, [r3, #0]
@@ -31543,7 +31543,7 @@ void Can_message_process(void)
 
                 case 0x06: /* 命令: 绝对位置模式 */
                 {
-                    EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+                    EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
  800bd30:	4b9f      	ldr	r3, [pc, #636]	@ (800bfb0 <Can_message_process+0x580>)
  800bd32:	2204      	movs	r2, #4
  800bd34:	701a      	strb	r2, [r3, #0]
@@ -31621,7 +31621,7 @@ void Can_message_process(void)
  800bdd2:	4293      	cmp	r3, r2
  800bdd4:	f040 80c4 	bne.w	800bf60 <Can_message_process+0x530>
                     {
-                            EMA_DATA.Motor_mode = MOTOR_SYNC_POSITION;
+                            EFA_DATA.Motor_mode = MOTOR_SYNC_POSITION;
  800bdd8:	4b75      	ldr	r3, [pc, #468]	@ (800bfb0 <Can_message_process+0x580>)
  800bdda:	220a      	movs	r2, #10
  800bddc:	701a      	strb	r2, [r3, #0]
@@ -31681,7 +31681,7 @@ void Can_message_process(void)
  800be42:	f5b3 7f80 	cmp.w	r3, #256	@ 0x100
  800be46:	f040 808d 	bne.w	800bf64 <Can_message_process+0x534>
                     {
-                        if (EMA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
+                        if (EFA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
  800be4a:	4b59      	ldr	r3, [pc, #356]	@ (800bfb0 <Can_message_process+0x580>)
  800be4c:	781b      	ldrb	r3, [r3, #0]
  800be4e:	2b0a      	cmp	r3, #10
@@ -31721,7 +31721,7 @@ void Can_message_process(void)
 
                 case 0x09: /* 命令: 开环速度模式 */
                 {
-                    EMA_DATA.Motor_mode = MOTOR_OPEN_VELOCITY;
+                    EFA_DATA.Motor_mode = MOTOR_OPEN_VELOCITY;
  800be98:	4b45      	ldr	r3, [pc, #276]	@ (800bfb0 <Can_message_process+0x580>)
  800be9a:	2206      	movs	r2, #6
  800be9c:	701a      	strb	r2, [r3, #0]
@@ -31844,7 +31844,7 @@ void Can_message_process(void)
  800bf78:	f7f5 fece 	bl	8001d18 <Queue_Reply_Request>
 
                 /* 根据模式启停相关定时器功能 */
-                if (EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)
+                if (EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)
  800bf7c:	4b0c      	ldr	r3, [pc, #48]	@ (800bfb0 <Can_message_process+0x580>)
  800bf7e:	781b      	ldrb	r3, [r3, #0]
  800bf80:	2b05      	cmp	r3, #5
@@ -32174,7 +32174,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
 //                if(data[3] != 0x01) return; /* 不是发给本设备的，直接退出 */ 该功能预留，目前硬件不使用挂在Usart总线方案
 
 //                /* 6. 安全机制：如果电机正处于致命错误状态，拒绝执行任何指令 */
-                if(EMA_DATA.Fault_Flags != FAULT_NONE)
+                if(EFA_DATA.Fault_Flags != FAULT_NONE)
  800c164:	4b97      	ldr	r3, [pc, #604]	@ (800c3c4 <Mid_Process_Usart_Data+0x2e0>)
  800c166:	f8d3 3080 	ldr.w	r3, [r3, #128]	@ 0x80
  800c16a:	2b00      	cmp	r3, #0
@@ -32194,7 +32194,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                     Bsp_Dc_Power_Control(true); ;
  800c17a:	2001      	movs	r0, #1
  800c17c:	f7f5 ff7c 	bl	8002078 <Bsp_Dc_Power_Control>
-                    EMA_DATA.Motor_mode = MOTOR_READY;
+                    EFA_DATA.Motor_mode = MOTOR_READY;
  800c180:	4b90      	ldr	r3, [pc, #576]	@ (800c3c4 <Mid_Process_Usart_Data+0x2e0>)
  800c182:	2201      	movs	r2, #1
  800c184:	701a      	strb	r2, [r3, #0]
@@ -32229,7 +32229,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
  800c1d8:	0800c397 	.word	0x0800c397
                 {
                     case 0x24: /* 往复运动模式 (Repeat Mode) */
-                        EMA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
+                        EFA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
  800c1dc:	4b79      	ldr	r3, [pc, #484]	@ (800c3c4 <Mid_Process_Usart_Data+0x2e0>)
  800c1de:	2205      	movs	r2, #5
  800c1e0:	701a      	strb	r2, [r3, #0]
@@ -32299,13 +32299,13 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
  800c256:	f7f5 ff0f 	bl	8002078 <Bsp_Dc_Power_Control>
                         Bsp_Close_All_Output();
  800c25a:	f7f5 fdc7 	bl	8001dec <Bsp_Close_All_Output>
-                        if (EMA_DATA.Fault_Flags == FAULT_NONE)
+                        if (EFA_DATA.Fault_Flags == FAULT_NONE)
  800c25e:	4b59      	ldr	r3, [pc, #356]	@ (800c3c4 <Mid_Process_Usart_Data+0x2e0>)
  800c260:	f8d3 3080 	ldr.w	r3, [r3, #128]	@ 0x80
  800c264:	2b00      	cmp	r3, #0
  800c266:	d102      	bne.n	800c26e <Mid_Process_Usart_Data+0x18a>
                             {
-                                EMA_DATA.Motor_mode = MOTOR_IDLE;
+                                EFA_DATA.Motor_mode = MOTOR_IDLE;
  800c268:	4b56      	ldr	r3, [pc, #344]	@ (800c3c4 <Mid_Process_Usart_Data+0x2e0>)
  800c26a:	2200      	movs	r2, #0
  800c26c:	701a      	strb	r2, [r3, #0]
@@ -32318,7 +32318,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
  800c274:	e094      	b.n	800c3a0 <Mid_Process_Usart_Data+0x2bc>
 
                     case 0x27: /* 开环位置模式 (Open Position) */
-                        EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+                        EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
  800c276:	4b53      	ldr	r3, [pc, #332]	@ (800c3c4 <Mid_Process_Usart_Data+0x2e0>)
  800c278:	2204      	movs	r2, #4
  800c27a:	701a      	strb	r2, [r3, #0]
@@ -32360,7 +32360,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
  800c2c4:	e06c      	b.n	800c3a0 <Mid_Process_Usart_Data+0x2bc>
 
                     case 0x28: /* 正向单步 (STEP+) */
-                        EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+                        EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
  800c2c6:	4b3f      	ldr	r3, [pc, #252]	@ (800c3c4 <Mid_Process_Usart_Data+0x2e0>)
  800c2c8:	2204      	movs	r2, #4
  800c2ca:	701a      	strb	r2, [r3, #0]
@@ -32383,7 +32383,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
  800c2f0:	e056      	b.n	800c3a0 <Mid_Process_Usart_Data+0x2bc>
 
                     case 0x29: /* 反向单步 (STEP-) */
-                        EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+                        EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
  800c2f2:	4b34      	ldr	r3, [pc, #208]	@ (800c3c4 <Mid_Process_Usart_Data+0x2e0>)
  800c2f4:	2204      	movs	r2, #4
  800c2f6:	701a      	strb	r2, [r3, #0]
@@ -32409,7 +32409,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                         break;
 
                     case 0x31: /* 开环速度模式 (Open Velocity Mode) */
-                        EMA_DATA.Motor_mode = MOTOR_OPEN_VELOCITY;
+                        EFA_DATA.Motor_mode = MOTOR_OPEN_VELOCITY;
  800c31e:	4b29      	ldr	r3, [pc, #164]	@ (800c3c4 <Mid_Process_Usart_Data+0x2e0>)
  800c320:	2206      	movs	r2, #6
  800c322:	701a      	strb	r2, [r3, #0]
@@ -32461,7 +32461,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
  800c38c:	e008      	b.n	800c3a0 <Mid_Process_Usart_Data+0x2bc>
 
                     case 0x32: /* 闭环位置模式 (Close Position Mode) */
-                        EMA_DATA.Motor_mode = MOTOR_CLOSE_POSITION;
+                        EFA_DATA.Motor_mode = MOTOR_CLOSE_POSITION;
  800c38e:	4b0d      	ldr	r3, [pc, #52]	@ (800c3c4 <Mid_Process_Usart_Data+0x2e0>)
  800c390:	2207      	movs	r2, #7
  800c392:	701a      	strb	r2, [r3, #0]
@@ -32470,7 +32470,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
  800c394:	e004      	b.n	800c3a0 <Mid_Process_Usart_Data+0x2bc>
 
                     case 0x33: /* 闭环力矩模式 (Close Force Mode) */
-                        EMA_DATA.Motor_mode = MOTOR_CLOSE_FORCE;
+                        EFA_DATA.Motor_mode = MOTOR_CLOSE_FORCE;
  800c396:	4b0b      	ldr	r3, [pc, #44]	@ (800c3c4 <Mid_Process_Usart_Data+0x2e0>)
  800c398:	2208      	movs	r2, #8
  800c39a:	701a      	strb	r2, [r3, #0]
@@ -32487,7 +32487,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
     }
 
     /* 9. 状态联动：根据进入的模式控制打印输出的启停 */
-    if((EMA_DATA.Motor_mode == MOTOR_OPEN_POSITION) || (EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED))
+    if((EFA_DATA.Motor_mode == MOTOR_OPEN_POSITION) || (EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED))
  800c3a0:	4b08      	ldr	r3, [pc, #32]	@ (800c3c4 <Mid_Process_Usart_Data+0x2e0>)
  800c3a2:	781b      	ldrb	r3, [r3, #0]
  800c3a4:	2b04      	cmp	r3, #4
@@ -32650,7 +32650,7 @@ void move_to_position(int32_t target_steps, float speed_hz)
  800c4c4:	af00      	add	r7, sp, #0
  800c4c6:	6078      	str	r0, [r7, #4]
  800c4c8:	ed87 0a00 	vstr	s0, [r7]
-    EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+    EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
  800c4cc:	4b11      	ldr	r3, [pc, #68]	@ (800c514 <move_to_position+0x54>)
  800c4ce:	2204      	movs	r2, #4
  800c4d0:	701a      	strb	r2, [r3, #0]
@@ -32736,7 +32736,7 @@ void move_repeatedly(int32_t pos1, int32_t pos2, uint32_t count, float speed_hz)
  800c55a:	601a      	str	r2, [r3, #0]
 
     /* 2. 切换到往复运动模式 */
-    EMA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
+    EFA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
  800c55c:	4b16      	ldr	r3, [pc, #88]	@ (800c5b8 <move_repeatedly+0x94>)
  800c55e:	2205      	movs	r2, #5
  800c560:	701a      	strb	r2, [r3, #0]

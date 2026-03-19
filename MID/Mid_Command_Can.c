@@ -19,7 +19,7 @@
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)
  * ========================================== */
-extern Motor EMA_DATA;
+extern Motor EFA_DATA;
 
 /* ==========================================
  * 全局变量定义 (Global Variables)
@@ -120,16 +120,16 @@ void Can_message_process(void)
                     Bsp_Dc_Power_Control(false);
                     HAL_TIM_Base_Stop(&htim16);
                     Bsp_Close_All_Output();
-                    if ((EMA_DATA.Fault_Flags != FAULT_NONE) ||
-                        (EMA_DATA.Motor_mode != MOTOR_ERROR))
+                    if ((EFA_DATA.Fault_Flags != FAULT_NONE) ||
+                        (EFA_DATA.Motor_mode != MOTOR_ERROR))
                     {
-                        EMA_DATA.Motor_mode = MOTOR_IDLE;
+                        EFA_DATA.Motor_mode = MOTOR_IDLE;
                     }
                     break;
 
                 case 0x02: /* 命令: 高压上电 */
                     Bsp_Dc_Power_Control(true);
-                    EMA_DATA.Motor_mode = MOTOR_READY;
+                    EFA_DATA.Motor_mode = MOTOR_READY;
                     break;
 
                 case 0x03: /* 命令: 步进+ */
@@ -140,7 +140,7 @@ void Can_message_process(void)
                     temp_speed_float = temp_speed_int16 / 100.0f;
 
                     position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
-                    EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+                    EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
 
                     printf("command:%d,speed %.2f\r\n", command, temp_speed_float);
 
@@ -157,7 +157,7 @@ void Can_message_process(void)
 
                 case 0x05: /* 命令: 往复模式 */
                 {
-                    EMA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
+                    EFA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
 
                     temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
                     temp_speed_float = temp_speed_int16 / 100.0f;
@@ -180,7 +180,7 @@ void Can_message_process(void)
 
                 case 0x06: /* 命令: 绝对位置模式 */
                 {
-                    EMA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
+                    EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
 
                     temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
                     temp_speed_float = temp_speed_int16 / 100.0f;
@@ -195,7 +195,7 @@ void Can_message_process(void)
                 {
                     if (msg->Rx_Header.Identifier == MY_NODE_ID)
                     {
-                            EMA_DATA.Motor_mode = MOTOR_SYNC_POSITION;
+                            EFA_DATA.Motor_mode = MOTOR_SYNC_POSITION;
 
                             temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
                             temp_speed_float = temp_speed_int16 / 100.0f;
@@ -210,7 +210,7 @@ void Can_message_process(void)
                 {
                     if (msg->Rx_Header.Identifier == BROADCAST_ID)
                     {
-                        if (EMA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
+                        if (EFA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
                         {
                             position_mode_increment = (uint32_t)(((uint64_t)Sync_Motor_Speed * 0x100000000) / interrupt_freq_hz);
                             target_step_position = Sync_Motor_position;
@@ -221,7 +221,7 @@ void Can_message_process(void)
 
                 case 0x09: /* 命令: 开环速度模式 */
                 {
-                    EMA_DATA.Motor_mode = MOTOR_OPEN_VELOCITY;
+                    EFA_DATA.Motor_mode = MOTOR_OPEN_VELOCITY;
 
                     temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
                     temp_speed_float = temp_speed_int16 / 100.0f;
@@ -254,7 +254,7 @@ void Can_message_process(void)
                 Queue_Reply_Request(command, status_code);
 
                 /* 根据模式启停相关定时器功能 */
-                if (EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)
+                if (EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)
                 {
                     HAL_TIM_Base_Start_IT(&htim16);
                 }

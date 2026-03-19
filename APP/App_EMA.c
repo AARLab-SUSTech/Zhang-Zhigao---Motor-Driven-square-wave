@@ -5,7 +5,7 @@
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)
  * ========================================== */
-extern Motor EMA_DATA;
+extern Motor EFA_DATA;
 
 P_Controller Motor_Position_Controller;// 定义控制器实例
 
@@ -18,7 +18,6 @@ volatile uint32_t repeated_count_current = 0; // 当前已完成的次数
 volatile float repeated_speed_hz = 0.0f;    // 往复运动时使用的速度
 volatile uint32_t phase_accumulator = 0;
 volatile uint32_t phase_increment = 0;
-volatile uint16_t pwm_duty_value = 0;
 volatile uint8_t step = 0;
 float interrupt_freq_hz = 10000.0f; // 您TIM6中断的频率 (1 / 0.00005s)
 
@@ -45,9 +44,9 @@ void App_EMA_Motion_Task(void)
 	/* ========================================================================== *
 	     * 1. 终极安全检查层：处理最高优先级的 IDLE, ERROR 和任何硬件故障状态
 	     * ========================================================================== */
-	    if (EMA_DATA.Motor_mode == MOTOR_IDLE ||
-	        EMA_DATA.Motor_mode == MOTOR_ERROR ||
-	        EMA_DATA.Fault_Flags != FAULT_NONE)
+	    if (EFA_DATA.Motor_mode == MOTOR_IDLE ||
+	        EFA_DATA.Motor_mode == MOTOR_ERROR ||
+	        EFA_DATA.Fault_Flags != FAULT_NONE)
 	    {
 	        /* 发生致命错误、系统存在未复位故障，或进入空闲模式。
 	         * 强制将相位增量清零，确保电机物理静止！ */
@@ -58,7 +57,7 @@ void App_EMA_Motion_Task(void)
     /* ========================================================================== *
      * 2. 状态决策层：处理复合运动模式的逻辑流转 (如往复模式)
      * ========================================================================== */
-    if (EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)
+    if (EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)
     {
         /* 在往复模式下，检查上一个移动是否已完成 (表现为电机已停止) */
         if (phase_increment == 0)
@@ -66,7 +65,7 @@ void App_EMA_Motion_Task(void)
             if (repeated_count_current >= repeated_count_total)
             {
                 /* 检查总次数是否已完成：任务结束，切换到空闲模式 */
-                EMA_DATA.Motor_mode = MOTOR_IDLE;
+                EFA_DATA.Motor_mode = MOTOR_IDLE;
 
                 /* 向总线报告往复任务完成 (指令码 0x06, 状态 0x10) */
                 //Queue_Reply_Request(0x06, 0x10);
@@ -99,9 +98,9 @@ void App_EMA_Motion_Task(void)
      * ========================================================================== */
 
     /* A. 位置控制类模式 (单次定位、往复、同步) */
-    if (EMA_DATA.Motor_mode == MOTOR_OPEN_POSITION ||
-        EMA_DATA.Motor_mode == MOTOR_OPEN_REPEATED ||
-        EMA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
+    if (EFA_DATA.Motor_mode == MOTOR_OPEN_POSITION ||
+        EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED ||
+        EFA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
     {
         if (absolute_step_counter < target_step_position)
         {
@@ -121,16 +120,16 @@ void App_EMA_Motion_Task(void)
     }
 
     /* B. 开环速度控制模式 */
-    else if (EMA_DATA.Motor_mode == MOTOR_OPEN_VELOCITY)
+    else if (EFA_DATA.Motor_mode == MOTOR_OPEN_VELOCITY)
     {
         phase_increment = velocity_mode_increment;
     }
 
     /* C. 闭环位置控制模式 (PID) */
-    else if (EMA_DATA.Motor_mode == MOTOR_CLOSE_POSITION)
+    else if (EFA_DATA.Motor_mode == MOTOR_CLOSE_POSITION)
     {
         /* 调用 MID 层的 PID 算法，获取输出量 */
-        float output = P_Control_Compute(&Motor_Position_Controller, Motor_Position_Controller.TargetPos, EMA_DATA.position_mm);
+        float output = P_Control_Compute(&Motor_Position_Controller, Motor_Position_Controller.TargetPos, EFA_DATA.position_mm);
 
         if (output >= 0)
         {
@@ -147,7 +146,7 @@ void App_EMA_Motion_Task(void)
     }
 
     /* D. 闭环力矩/推力控制模式 (预留) */
-    else if (EMA_DATA.Motor_mode == MOTOR_CLOSE_FORCE)
+    else if (EFA_DATA.Motor_mode == MOTOR_CLOSE_FORCE)
     {
         /*
         float output = P_Control_Compute(&Motor_Force_Controller, Motor_Force_Controller.TargetPos, Force_Sensor1.weight_g);

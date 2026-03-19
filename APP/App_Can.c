@@ -16,7 +16,7 @@
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)
  * ========================================== */
-extern Motor EMA_DATA;
+extern Motor EFA_DATA;
 
 /* ==========================================
  * 函数实现 (Function Implementations)
@@ -52,7 +52,7 @@ void App_Can_Heart_Send(void)
         msg_to_queue->Tx_Header.DataLength = FDCAN_DLC_BYTES_1;     /* 【灵活 DLC】只需发送 1 字节 */
 
         /* 5. 填充报文数据 (Payload) */
-        msg_to_queue->Data[0] = (uint8_t)EMA_DATA.Motor_mode;       /* 填入当前模式/故障码 */
+        msg_to_queue->Data[0] = (uint8_t)EFA_DATA.Motor_mode;       /* 填入当前模式/故障码 */
 
         /* 清空其余数据位 (良好习惯：防止发送未知的内存残留脏数据) */
         for (int i = 1; i < 8; i++)
@@ -105,12 +105,12 @@ void App_Can_Send_Data(void)
         MsgToQueue->Data[3] = (uint8_t)(repeated_count_current & 0xFF);
 
         /* Data[4..5]: 高压母线电压 (放大 10 倍保留 1 位小数, 16-bit, 大端模式) */
-        TempData = (uint16_t)(EMA_DATA.Hv_V_V * 10);
+        TempData = (uint16_t)(EFA_DATA.Hv_V_V * 10);
         MsgToQueue->Data[4] = (uint8_t)(TempData >> 8);
         MsgToQueue->Data[5] = (uint8_t)(TempData & 0xFF);
 
         /* Data[6..7]: 高压母线电流 (放大 100 倍保留 2 位小数, 16-bit, 大端模式) */
-        TempData = (uint16_t)(EMA_DATA.Hv_I_mA * 100);
+        TempData = (uint16_t)(EFA_DATA.Hv_I_mA * 100);
         MsgToQueue->Data[6] = (uint8_t)(TempData >> 8);
         MsgToQueue->Data[7] = (uint8_t)(TempData & 0xFF);
 

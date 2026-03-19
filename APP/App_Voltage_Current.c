@@ -9,7 +9,7 @@
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)
  * ========================================== */
-extern Motor EMA_DATA;
+extern Motor EFA_DATA;
 
 float MAX_HV_voltage=2600;
 float MAX_HV_current=12;
@@ -26,9 +26,9 @@ uint16_t spike_count_in_window = 0;   // 用于累计一个窗口期内的尖峰
 
 void App_Upate_Voltage_Current_Data(void)
 {
-	EMA_DATA.Hv_V_V = Mid_Get_Hv_V();
-	EMA_DATA.Hv_I_mA = Mid_Get_Hi_uA();
-	EMA_DATA.Dc_I_A = Mid_Get_Dc_I_A();
+	EFA_DATA.Hv_V_V = Mid_Get_Hv_V();
+	EFA_DATA.Hv_I_mA = Mid_Get_Hi_uA();
+	EFA_DATA.Dc_I_A = Mid_Get_Dc_I_A();
 }
 
 /**
@@ -44,7 +44,7 @@ void App_System_Safety_Monitor(void)
      * ========================================================================== */
 
     /* 1.1 高压母线过压保护 */
-    if (EMA_DATA.Hv_V_V > MAX_HV_voltage)
+    if (EFA_DATA.Hv_V_V > MAX_HV_voltage)
     {
         App_Fault_Report(FAULT_HV_OVER_VOLTAGE);
         Bsp_Close_All_Output();
@@ -52,7 +52,7 @@ void App_System_Safety_Monitor(void)
     }
 
     /* 1.2 高压母线严重过流保护 (阈值为常规额定值的 3 倍) */
-    if (EMA_DATA.Hv_I_mA > (MAX_HV_current * 3.0f))
+    if (EFA_DATA.Hv_I_mA > (MAX_HV_current * 3.0f))
     {
         App_Fault_Report(FAULT_HV_OVER_CURRENT);
         Bsp_Close_All_Output();
@@ -61,7 +61,7 @@ void App_System_Safety_Monitor(void)
     }
 
     /* 1.3 低压直流输入过流保护 */
-    if (EMA_DATA.Dc_I_A > MAX_DC_current)
+    if (EFA_DATA.Dc_I_A > MAX_DC_current)
     {
         App_Fault_Report(FAULT_DC_OVER_CURRENT);
         Bsp_Close_All_Output();
@@ -73,7 +73,7 @@ void App_System_Safety_Monitor(void)
      * ========================================================================== */
 
     /* 2.1 检查当前电流是否形成了一次尖峰 */
-    if (EMA_DATA.Hv_I_mA > SPIKE_CURRENT_THRESHOLD)
+    if (EFA_DATA.Hv_I_mA > SPIKE_CURRENT_THRESHOLD)
     {
         spike_count_in_window++;
     }
