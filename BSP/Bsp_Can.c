@@ -66,7 +66,6 @@ void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan)
 {
     printf("!!! FATAL ERROR: CAN BUS-OFF DETECTED !!!\r\n");
     printf("!!! 检查终端电阻、ACK应答节点、波特率 !!!\r\n");
-    Bsp_Buzzer_Control(true); /* 蜂鸣器报警 */
 }
 
 // ... (预留的 HAL_TIM_PeriodElapsedCallback) ...

@@ -12,6 +12,7 @@
 #include <Mid_Command_Usart.h>
 #include <Mid_Control.h>
 #include "string.h"
+#include "Stdio.h"
 #include "Bsp_Usart.h"
 #include "App_EMA.h"
 
@@ -261,11 +262,11 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
     /* ========================================================== */
     /* [DEBUG 预留] 打印接收到的原始数据 */
 
-    printf("Received data (size = %d): \r\n", size);
-    for (uint16_t i = 0; i < size; i++) {
-        printf("%02X ", data[i]);
-    }
-    printf("\r\n");
+//    printf("Received data (size = %d): \r\n", size);
+//    for (uint16_t i = 0; i < size; i++) {
+//        printf("%02X ", data[i]);
+//    }
+//    printf("\r\n");
 
     /* ========================================================== */
 
@@ -294,25 +295,25 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
             {
                 /* ========================================================== */
                 /* [DEBUG 预留] 打印解析成功的指令 */
-                /*
+
                 printf("ID: %02X, Command: %02X, Index: %02X Data: ", data[3], data[4], data[5]);
                 for (uint8_t i = 0; i < data_length-2; i++) {
                     printf("%02X ", data[6 + i]);
                 }
                 printf("\r\n");
-                */
+
                 /* ========================================================== */
 
                 /* 5. 设备 ID 校验 */
-                if(data[3] != 0x01) return; /* 不是发给本设备的，直接退出 */
+//                if(data[3] != 0x01) return; /* 不是发给本设备的，直接退出 */ 该功能预留，目前硬件不使用挂在Usart总线方案
 
-                /* 6. 安全机制：如果电机正处于致命错误状态，拒绝执行任何指令 */
-                if((EMA_DATA.Motor_mode == MOTOR_OVER_HV_VOLTAGE) ||
-                   (EMA_DATA.Motor_mode == MOTOR_OVER_HV_CURRENT) ||
-                   (EMA_DATA.Motor_mode == MOTOR_OVER_DC_IN_CURRENT))
-                {
-                    return; /* 不处理指令，直接退出 */
-                }
+//                /* 6. 安全机制：如果电机正处于致命错误状态，拒绝执行任何指令 */
+//                if((EMA_DATA.Motor_mode == MOTOR_OVER_HV_VOLTAGE) ||
+//                   (EMA_DATA.Motor_mode == MOTOR_OVER_HV_CURRENT) ||
+//                   (EMA_DATA.Motor_mode == MOTOR_OVER_DC_IN_CURRENT))
+//                {
+//                    return; /* 不处理指令，直接退出 */
+//                }
 
                 /* 7. 状态预处理：如果是运行指令，则打开电源并置位 Ready */
                 if(data[4] != 0x25)
@@ -356,7 +357,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                         temp_speed_float = (float)temp_speed_int16;
 
                         move_to_position(data[6], temp_speed_float);
-                        // printf("speed:%.f step:%d\r\n", temp_speed_float, data[6]);
+                        //printf("speed:%.f step:%d\r\n", temp_speed_float, data[6]);
                         break;
 
                     case 0x28: /* 正向单步 (STEP+) */

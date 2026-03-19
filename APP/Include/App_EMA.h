@@ -137,6 +137,16 @@ extern Motor EMA_DATA;
 void App_EMA_Position_Control(void);
 
 /**
+ * @brief  EMA 核心运动规划与状态机执行任务 (APP 层)
+ * @note   该函数是电机的“小脑”，负责根据当前模式 (Motor_mode) 计算
+ * 每一刻的运动方向和步进增量 (phase_increment)。
+ * 【执行上下文】：必须在固定的控制环定时器中断中周期调用 (例如 1kHz 甚至 10kHz)，
+ * 且必须放在位置传感器读取 (App_Update_Position_Sensor_Data) 之后执行。
+ */
+void App_EMA_Motion_Task(void);
+
+
+/**
  * @brief  EMA 电机六步换向与相位执行任务 (APP 层 / 算法底层)
  * @note   该函数是电机的“心脏起搏器”，基于数控振荡器 (NCO) 原理。
  * 它消费运动规划层产生的 phase_increment，将其转化为 0~5 的六步换向扇区，

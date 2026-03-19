@@ -24,11 +24,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim == &htim6)
 	{
 
-		App_Upate_Voltage_Current_Data();
+		//App_Upate_Voltage_Current_Data();
 
-		App_Update_Position_Sensor_Data();
+		//App_Update_Position_Sensor_Data();
 
-		App_System_Safety_Monitor();
+		//App_System_Safety_Monitor();
+
+		App_EMA_Motion_Task();
 
 		App_EMA_Commutation_Task();
 

@@ -90,11 +90,11 @@ void Can_message_process(void)
 
         /* ========================================================== */
         /* [DEBUG 预留] 打印原始报文 */
-        /*
-        // printf("Rx ID:0x%lX,Data ", msg->Rx_Header.Identifier);
-        // for(int i=0; i < msg->Rx_Header.DataLength; i++) { printf("%02X ", msg->Data[i]); }
-        // printf("\r\n");
-        */
+
+         printf("Rx ID:0x%lX,Data ", msg->Rx_Header.Identifier);
+         for(int i=0; i < msg->Rx_Header.DataLength; i++) { printf("%02X ", msg->Data[i]); }
+         printf("\r\n");
+
         /* ========================================================== */
 
         /* 3. 检查 ID (软件滤波器) */

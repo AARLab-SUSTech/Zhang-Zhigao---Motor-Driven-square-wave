@@ -21,12 +21,6 @@ volatile uint16_t pwm_duty_value = 0;
 volatile uint8_t step = 0;
 float interrupt_freq_hz = 10000.0f; // 您TIM6中断的频率 (1 / 0.00005s)
 
-// 周期平均功率相关
-float hv_power_accumulator = 0.0f; // 用于累加一个电周期内的瞬时功率
-uint32_t hv_power_sample_count = 0;   // 用于计算一个电周期内的采样点数
-float hv_average_power_cycle = 0.0f;  // 存储每个电周期计算出的平均功率
-float last_hv_average_power_cycle = 0.0f;  // 存储上个电周期计算出的平均功率
-
 // --- 新增：用于累计步数的全局变量 ---
 // 使用 signed 32-bit 整数，可以记录正反转，且范围足够大
 // 使用 volatile 关键字，确保在中断和主循环中安全访问
@@ -189,6 +183,7 @@ void App_EMA_Position_Control(void)
  */
 void App_EMA_Commutation_Task(void)
 {
+
     /* ========================================================================== *
      * 1. NCO 相位累加器 (Phase Accumulator) 更新
      * ========================================================================== */
@@ -221,26 +216,6 @@ void App_EMA_Commutation_Task(void)
     /* 只有当计算出的扇区发生变化时，才进行底层硬件操作，避免无意义的频繁刷新 */
     if (step != new_step)
     {
-        /* [DEBUG] 翻转测试引脚，方便用示波器测量真实的换向频率和中断延迟 */
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-
-        /* --------------------------------------------------- *
-         * 3.1 完整电气周期结束检测 (用于平均功率计算)
-         * --------------------------------------------------- */
-        /* 同时捕捉正转 (5 -> 0) 和反转 (0 -> 5) 的过零点 */
-        if ((step == 5 && new_step == 0) || (step == 0 && new_step == 5))
-        {
-            if (hv_power_sample_count > 0)
-            {
-                /* 计算并更新上个完整电气周期的平均功率 */
-                last_hv_average_power_cycle = hv_power_accumulator / hv_power_sample_count;
-            }
-
-            /* 重置累加器，为下一个电气周期做准备 */
-            hv_power_accumulator = 0.0f;
-            hv_power_sample_count = 0;
-        }
-
         /* --------------------------------------------------- *
          * 3.2 更新绝对步进计数器 (全局物理位置的基础)
          * --------------------------------------------------- */
