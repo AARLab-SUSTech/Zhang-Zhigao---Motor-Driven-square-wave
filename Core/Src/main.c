@@ -178,14 +178,6 @@ int main(void)
 
   Bsp_Adc_Init();//板载ADC初始化配置
 
-    //（ 10M + 20K )/20K = 501  ---- AMC1350 * 0.4   1/（（1/501）*0.4 ） = 501/0.4 = 1252.5   2400/1252.5 = 1.916167664670659V
-  //  HAL_DAC_SetValue(&hdac3, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 460);//HVOUTPUT set MAX V  2500V  --  4.99001996007984V    5*0.4 = 2V  报警电压1.4 +- 1 V = 2.4V/0.4V
-  //  HAL_DAC_SetValue(&hdac3, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 3000);//10ma max
-  //  HAL_DAC_Start(&hdac3, DAC_CHANNEL_1);
-  //  HAL_DAC_Start(&hdac3, DAC_CHANNEL_2);
-  //  HAL_COMP_Start(&hcomp1);
-  //  HAL_COMP_Start(&hcomp2);
-
   Bsp_Can_Init();
 
   EMA_DATA.sin_offset = 1.65f;
@@ -195,7 +187,7 @@ int main(void)
 
   HAL_TIM_Base_Start_IT(&htim15);//用于LED状态修改
 
-  HAL_TIM_Base_Start_IT(&htim16);
+  //HAL_TIM_Base_Start_IT(&htim16);//周期性返回CAN报文
 
   HAL_TIM_Base_Start_IT(&htim17);//CAN Heart中断
 
