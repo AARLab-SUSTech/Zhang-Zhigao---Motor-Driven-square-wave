@@ -51,6 +51,7 @@ Core/Src/main.o: ../Core/Src/main.c \
  /Users/letian/git/stm32-g4-hv/MID/Include/Mid_Adc.h \
  /Users/letian/git/stm32-g4-hv/APP/Include/App_Led.h \
  /Users/letian/git/stm32-g4-hv/APP/Include/App_Can.h \
+ /Users/letian/git/stm32-g4-hv/APP/Include/App_Fault.h \
  /Users/letian/git/stm32-g4-hv/APP/Include/App_Position_Sensor.h \
  /Users/letian/git/stm32-g4-hv/APP/Include/App_Voltage_Current.h \
  /Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Adc.h \
@@ -108,6 +109,7 @@ Core/Src/main.o: ../Core/Src/main.c \
 /Users/letian/git/stm32-g4-hv/MID/Include/Mid_Adc.h:
 /Users/letian/git/stm32-g4-hv/APP/Include/App_Led.h:
 /Users/letian/git/stm32-g4-hv/APP/Include/App_Can.h:
+/Users/letian/git/stm32-g4-hv/APP/Include/App_Fault.h:
 /Users/letian/git/stm32-g4-hv/APP/Include/App_Position_Sensor.h:
 /Users/letian/git/stm32-g4-hv/APP/Include/App_Voltage_Current.h:
 /Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Adc.h:

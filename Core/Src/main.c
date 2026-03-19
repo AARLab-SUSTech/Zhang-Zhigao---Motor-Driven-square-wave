@@ -32,6 +32,7 @@
 
 #include "App_Led.h"
 #include "App_Can.h"
+#include "App_Fault.h"
 #include "App_Position_Sensor.h"
 #include "App_Voltage_Current.h"
 
@@ -198,7 +199,7 @@ int main(void)
 
   HAL_TIM_Base_Start_IT(&htim17);//CAN Heart中断
 
-  App_Led_Set_State(SYS_STAT_IDLE);
+  App_Led_Set_State(SYS_STAT_IDLE);//  SYS_STAT_IDLE  SYS_STAT_WORKING, SYS_STAT_ERROR,
 
   /* USER CODE END 2 */
 
@@ -215,6 +216,8 @@ int main(void)
 	  Mid_Can_Tx_Task();
 
 	  Can_message_process();
+
+	  App_Fault_Task_Handler();
 
   }
   /* USER CODE END 3 */

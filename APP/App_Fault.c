@@ -1,5 +1,6 @@
 #include "App_Fault.h"
 #include "App_EMA.h"
+#include "App_Led.h"
 #include "Bsp_Control.h"
 
 extern Motor EMA_DATA;
@@ -21,6 +22,7 @@ void App_Fault_Clear(uint32_t fault_code)
 {
     /* 使用按位与非 (& ~) 清除特定故障 */
     EMA_DATA.Fault_Flags &= ~fault_code;
+    App_Led_Set_State(SYS_STAT_IDLE);
 }
 
 /**
@@ -40,14 +42,11 @@ void App_Fault_Task_Handler(void)
         EMA_DATA.Motor_mode = MOTOR_ERROR;
 
         /* 执行统一的紧急安全动作序列 */
+        App_Led_Set_State(SYS_STAT_ERROR);
         Bsp_Close_All_Output();           /* 封锁 PWM */
         Bsp_Dc_Power_Control(false);      /* 切断高压 */
-        Bsp_Buzzer_Control(true);         /* 鸣叫报警 */
+        //Bsp_Buzzer_Control(true);         /* 鸣叫报警 */
     }
 
-    /* 3. (可选进阶) 针对特定故障执行特定的救援逻辑 */
-    if (EMA_DATA.Fault_Flags & FAULT_CAN_OFFLINE)
-    {
-        /* 比如 CAN 掉线了，尝试重启 CAN 控制器 */
-    }
+
 }

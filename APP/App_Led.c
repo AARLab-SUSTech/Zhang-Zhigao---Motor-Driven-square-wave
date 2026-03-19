@@ -10,7 +10,7 @@ static const Led_Pattern_t Led_Config_Table[] = {
     [SYS_STAT_INIT]    = {1000, 0,    0, 0},    /* 常亮 (配置为亮1000ms, 灭0ms) */
     [SYS_STAT_IDLE]    = {100,  900, 0, 0},    /* 心跳：亮 100ms，灭 1900ms，无限循环 */
     [SYS_STAT_WORKING] = {600,  600,  0, 0},    /* 狂闪：亮 250ms，灭 250ms，无限循环 */
-    [SYS_STAT_ERROR] = {100,  100,  6, 600}, /* 报故障 2：短闪 2 下，长停 500ms */
+    [SYS_STAT_ERROR] = {100,  100,  6, 100},   /* 报故障 2：短闪 6 下，长停 100ms */
 };
 
 /* 当前正在执行的状态 */
