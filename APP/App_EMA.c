@@ -1,4 +1,5 @@
 #include "App_EMA.h"
+#include "App_Fault.h"
 #include "Mid_Control.h"
 #include "Bsp_Control.h"
 /* ==========================================
@@ -41,19 +42,18 @@ volatile uint32_t velocity_mode_increment = 0;
  */
 void App_EMA_Motion_Task(void)
 {
-    /* ========================================================================== *
-     * 1. 安全检查层：处理最高优先级的 IDLE, ERROR 和硬件故障状态
-     * ========================================================================== */
-    if (EMA_DATA.Motor_mode == MOTOR_IDLE ||
-        EMA_DATA.Motor_mode == MOTOR_ERROR ||
-        EMA_DATA.Motor_mode == MOTOR_OVER_HV_CURRENT ||
-        EMA_DATA.Motor_mode == MOTOR_OVER_HV_VOLTAGE ||
-        EMA_DATA.Motor_mode == MOTOR_OVER_DC_IN_CURRENT)
-    {
-        /* 发生致命错误或进入空闲，强制速度增量为 0，确保电机静止 */
-        phase_increment = 0;
-        return; /* 直接退出，不执行后续运动规划 */
-    }
+	/* ========================================================================== *
+	     * 1. 终极安全检查层：处理最高优先级的 IDLE, ERROR 和任何硬件故障状态
+	     * ========================================================================== */
+	    if (EMA_DATA.Motor_mode == MOTOR_IDLE ||
+	        EMA_DATA.Motor_mode == MOTOR_ERROR ||
+	        EMA_DATA.Fault_Flags != FAULT_NONE)
+	    {
+	        /* 发生致命错误、系统存在未复位故障，或进入空闲模式。
+	         * 强制将相位增量清零，确保电机物理静止！ */
+	        phase_increment = 0;
+	        return; /* 直接退出，绝对不执行后续运动规划 */
+	    }
 
     /* ========================================================================== *
      * 2. 状态决策层：处理复合运动模式的逻辑流转 (如往复模式)

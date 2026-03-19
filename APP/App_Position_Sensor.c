@@ -38,7 +38,7 @@ void App_Update_Position_Sensor_Data(void)
     EMA_DATA.theta_degrees = Mid_Encoder_Get_Angle_Degrees();
     EMA_DATA.cycle_count   = Mid_Encoder_Get_Cycle_Count();
 
-    /* 3. 【APP 层专属业务】运动学转换：角度转直线位移 (极距 2.0mm) */
+    /* 3. 运动学转换：角度转直线位移 (极距 2.0mm) */
     EMA_DATA.current_displacement_within_cycle_mm = (EMA_DATA.theta_degrees / 360.0f) * 2.0f;
 
     /* 4. 应用标定偏置，计算绝对物理位置 */

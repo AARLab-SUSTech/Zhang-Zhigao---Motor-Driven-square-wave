@@ -12,7 +12,7 @@
 #include "main.h"
 #include "Bsp_Control.h"
 #include "App_EMA.h"
-
+#include "App_Fault.h"
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)
  * ========================================== */
@@ -80,8 +80,7 @@ void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
     if (hcomp == &hcomp1)
     {
         /* 1. 更新电机状态机为高压过压故障 */
-        EMA_DATA.Motor_mode = MOTOR_OVER_HV_VOLTAGE;
-
+    	App_Fault_Report(FAULT_HV_OVER_VOLTAGE);
         /* 2. 紧急关闭 PWM 输出 */
         Bsp_Close_All_Output();
 
@@ -99,7 +98,7 @@ void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
     if (hcomp == &hcomp2)
     {
         /* 1. 更新电机状态机为高压过流故障 */
-        EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;
+        App_Fault_Report(FAULT_HV_OVER_CURRENT);
 
         /* 2. 开启蜂鸣器报警 */
         Bsp_Buzzer_Control(true);

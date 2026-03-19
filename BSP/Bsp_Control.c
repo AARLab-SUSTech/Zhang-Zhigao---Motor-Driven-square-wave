@@ -35,7 +35,7 @@ extern TIM_HandleTypeDef htim16;
  */
 void Bsp_Close_All_Output(void)
 {
-    /* 1. 停止 DMA 打印定时器 (如需) */
+    /* 1. 停止 DMA 打印定时器 */
     HAL_TIM_Base_Stop(&htim16);
 
     /* 2. 切断高压电源 */

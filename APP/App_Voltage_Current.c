@@ -1,6 +1,8 @@
 #include "App_Voltage_Current.h"
 #include "Mid_Adc.h"
+#include "App_Led.h"
 #include "App_EMA.h"
+#include "App_Fault.h"
 #include "Mid_Control.h"
 #include "Bsp_Control.h"
 
@@ -25,12 +27,9 @@ uint16_t spike_count_in_window = 0;   // 用于累计一个窗口期内的尖峰
 void App_Upate_Voltage_Current_Data(void)
 {
 	EMA_DATA.Hv_V_V = Mid_Get_Hv_V();
-	EMA_DATA.Hv_I_uA = Mid_Get_Hi_uA();
+	EMA_DATA.Hv_I_mA = Mid_Get_Hi_uA();
 	EMA_DATA.Dc_I_A = Mid_Get_Dc_I_A();
 }
-
-
-
 
 /**
  * @brief  系统级安全与故障监控任务 (APP 层)
@@ -41,26 +40,55 @@ void App_Upate_Voltage_Current_Data(void)
 void App_System_Safety_Monitor(void)
 {
     /* ========================================================================== *
-     * 1. 软过流保护：滑动窗口尖峰计数 (针对瞬态干扰或早期过流的防误触设计)
+     * 1. 硬件级绝对阈值保护：实时拦截 (针对严重短路或失控)
      * ========================================================================== */
 
-    /* 1.1 检查当前电流是否形成了一次尖峰 */
-    if (EMA_DATA.Hv_I_uA > SPIKE_CURRENT_THRESHOLD)
+    /* 1.1 高压母线过压保护 */
+    if (EMA_DATA.Hv_V_V > MAX_HV_voltage)
+    {
+        App_Fault_Report(FAULT_HV_OVER_VOLTAGE);
+        Bsp_Close_All_Output();
+        App_Led_Set_State(SYS_STAT_ERROR);
+    }
+
+    /* 1.2 高压母线严重过流保护 (阈值为常规额定值的 3 倍) */
+    if (EMA_DATA.Hv_I_mA > (MAX_HV_current * 3.0f))
+    {
+        App_Fault_Report(FAULT_HV_OVER_CURRENT);
+        Bsp_Close_All_Output();
+        Bsp_Buzzer_Control(true);
+        App_Led_Set_State(SYS_STAT_ERROR);
+    }
+
+    /* 1.3 低压直流输入过流保护 */
+    if (EMA_DATA.Dc_I_A > MAX_DC_current)
+    {
+        App_Fault_Report(FAULT_DC_OVER_CURRENT);
+        Bsp_Close_All_Output();
+        App_Led_Set_State(SYS_STAT_ERROR);
+    }
+
+    /* ========================================================================== *
+     * 2. 软过流保护：滑动窗口尖峰计数 (针对瞬态干扰或早期过流的防误触设计)
+     * ========================================================================== */
+
+    /* 2.1 检查当前电流是否形成了一次尖峰 */
+    if (EMA_DATA.Hv_I_mA > SPIKE_CURRENT_THRESHOLD)
     {
         spike_count_in_window++;
     }
 
-    /* 1.2 采样点计数器自增 */
+    /* 2.2 采样点计数器自增 */
     window_sample_counter++;
 
-    /* 1.3 判断一个检查窗口是否已经结束 */
+    /* 2.3 判断一个检查窗口是否已经结束 */
     if (window_sample_counter >= CHECK_WINDOW_SAMPLES)
     {
         /* 窗口结束，进行故障判定 */
         if (spike_count_in_window > MAX_SPIKES_IN_WINDOW)
         {
             /* 在过去的 N 个采样点中，尖峰次数过多，判定为真实过流故障！ */
-            EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;
+        	App_Fault_Report(FAULT_HV_OVER_CURRENT);
 
             /* 紧急安全序列 */
             Bsp_Close_All_Output();         /* 1. 封锁 PWM 输出 */
@@ -72,35 +100,6 @@ void App_System_Safety_Monitor(void)
         spike_count_in_window = 0;
     }
 
-    /* ========================================================================== *
-     * 2. 硬件级绝对阈值保护：实时拦截 (针对严重短路或失控)
-     * ========================================================================== */
-
-    /* 2.1 高压母线过压保护 */
-    if (EMA_DATA.Hv_V_V > MAX_HV_voltage)
-    {
-        EMA_DATA.Motor_mode = MOTOR_OVER_HV_VOLTAGE;
-        Bsp_Close_All_Output();
-        Bsp_Dc_Power_Control(false);
-    }
-
-    /* 2.2 高压母线严重过流保护 (阈值为常规额定值的 3 倍) */
-    if (EMA_DATA.Hv_I_uA > (MAX_HV_current * 3.0f))
-    {
-        EMA_DATA.Motor_mode = MOTOR_OVER_HV_CURRENT;
-        Bsp_Close_All_Output();
-        Bsp_Dc_Power_Control(false);
-    }
-
-    /* 2.3 低压直流输入过流保护 */
-    if (EMA_DATA.Dc_I_A > MAX_DC_current)
-    {
-        EMA_DATA.Motor_mode = MOTOR_OVER_DC_IN_CURRENT;
-        Bsp_Close_All_Output();
-        Bsp_Dc_Power_Control(false);
-        Bsp_Buzzer_Control(true);
-
-    }
 }
 
 

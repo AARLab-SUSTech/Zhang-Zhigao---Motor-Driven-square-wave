@@ -15,6 +15,9 @@
 #include "Stdio.h"
 #include "Bsp_Usart.h"
 #include "App_EMA.h"
+#include "App_Fault.h"
+
+#include "Mid_Config.h"
 
 #include "Bsp_Control.h"
 
@@ -295,12 +298,13 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
             {
                 /* ========================================================== */
                 /* [DEBUG 预留] 打印解析成功的指令 */
-
+					#if ENABLE_USART_DEBUG_MODE
                 printf("ID: %02X, Command: %02X, Index: %02X Data: ", data[3], data[4], data[5]);
                 for (uint8_t i = 0; i < data_length-2; i++) {
                     printf("%02X ", data[6 + i]);
                 }
                 printf("\r\n");
+					#endif
 
                 /* ========================================================== */
 
@@ -308,12 +312,10 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
 //                if(data[3] != 0x01) return; /* 不是发给本设备的，直接退出 */ 该功能预留，目前硬件不使用挂在Usart总线方案
 
 //                /* 6. 安全机制：如果电机正处于致命错误状态，拒绝执行任何指令 */
-//                if((EMA_DATA.Motor_mode == MOTOR_OVER_HV_VOLTAGE) ||
-//                   (EMA_DATA.Motor_mode == MOTOR_OVER_HV_CURRENT) ||
-//                   (EMA_DATA.Motor_mode == MOTOR_OVER_DC_IN_CURRENT))
-//                {
-//                    return; /* 不处理指令，直接退出 */
-//                }
+                if(EMA_DATA.Fault_Flags != FAULT_NONE)
+                {
+                    return; /* 不处理指令，直接退出 */
+                }
 
                 /* 7. 状态预处理：如果是运行指令，则打开电源并置位 Ready */
                 if(data[4] != 0x25)
@@ -338,16 +340,12 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                         break;
 
                     case 0x25: /* 停止模式 (STOP) */
-                        Bsp_Dc_Power_Control(false); ;
-                        /* 【安全修复】：逻辑非的并列必须用 && */
-                        if((EMA_DATA.Motor_mode != MOTOR_OVER_HV_VOLTAGE) &&
-                           (EMA_DATA.Motor_mode != MOTOR_OVER_HV_CURRENT) &&
-                           (EMA_DATA.Motor_mode != MOTOR_OVER_DC_IN_CURRENT) &&
-                           (EMA_DATA.Motor_mode != MOTOR_ERROR))
-                        {
-                            EMA_DATA.Motor_mode = MOTOR_IDLE;
-                        }
+                        Bsp_Dc_Power_Control(false);
                         Bsp_Close_All_Output();
+                        if (EMA_DATA.Fault_Flags == FAULT_NONE)
+                            {
+                                EMA_DATA.Motor_mode = MOTOR_IDLE;
+                            }
                         dma_print_flag = 0;
                         break;
 

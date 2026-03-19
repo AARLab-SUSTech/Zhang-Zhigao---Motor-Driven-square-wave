@@ -27,7 +27,7 @@ typedef enum {
     /* --- 基础与系统状态 --- */
     MOTOR_IDLE = 0,              /* 空闲模式 (完全下电/释放) */
     MOTOR_READY,                 /* 待机模式 (高压已上电，等待指令) */
-    MOTOR_ERROR,                 /* 错误/急停模式 */
+	MOTOR_ERROR,                 /* 错误/急停模式 (具体故障原因请查阅 Fault_Flags) */
 
     /* --- 开环控制模式 --- */
     MOTOR_OPEN_SPEED,            /* 开环速度模式 (基于定频/占空比) */
@@ -43,10 +43,6 @@ typedef enum {
     /* --- 高级与特定功能模式 --- */
     MOTOR_SYNC_POSITION,         /* 多电机同步位置模式 */
 
-    /* --- 硬件故障保护状态 --- */
-    MOTOR_OVER_HV_CURRENT,       /* 故障: 高压母线过流保护 */
-    MOTOR_OVER_HV_VOLTAGE,       /* 故障: 高压母线过压保护 */
-    MOTOR_OVER_DC_IN_CURRENT     /* 故障: 低压供电过流保护 */
 } Motor_Control_Mode_e;
 
 typedef enum {
@@ -116,11 +112,14 @@ typedef struct {
     /* --- 8. 电压电流参数  Hv_V Hv_I Dc_I --- */
 
     float                Hv_V_V; 				 /* 高压母线电压 (V)  */
-    float                Hv_I_uA; 				 /* 高压母线电流 (uA)  */
+    float                Hv_I_mA; 				 /* 高压母线电流 (mA)  */
     float                Dc_I_A; 				 /* 低压母线电流 (A)  */
 
     float                Id_ref;             /* d 轴期望目标电流 (mA) - 励磁分量 */
     float                Iq_ref;             /* q 轴期望目标电流 (mA) - 转矩分量 */
+
+    /* --- 9. --- 故障记录本 --- */
+        uint32_t Fault_Flags;   // 全局故障标志位 (0 表示无故障，非 0 表示有故障)
 
 } Motor;
 

@@ -110,7 +110,7 @@ void App_Can_Send_Data(void)
         MsgToQueue->Data[5] = (uint8_t)(TempData & 0xFF);
 
         /* Data[6..7]: 高压母线电流 (放大 100 倍保留 2 位小数, 16-bit, 大端模式) */
-        TempData = (uint16_t)(EMA_DATA.Hv_I_uA * 100);
+        TempData = (uint16_t)(EMA_DATA.Hv_I_mA * 100);
         MsgToQueue->Data[6] = (uint8_t)(TempData >> 8);
         MsgToQueue->Data[7] = (uint8_t)(TempData & 0xFF);
 

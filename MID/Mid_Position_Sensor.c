@@ -20,7 +20,6 @@
 /* 【安全修复】：加上 static 关键字，使其作用域仅限当前文件，真正做到信息隐蔽 */
 static MagEncoder_State_t s_MagSensor;
 
-
 /* ==========================================
  * 算法核心实现 (Core Implementations)
  * ========================================== */
@@ -44,7 +43,7 @@ void Mid_Encoder_Init(void)
  */
 void Mid_Encoder_Update(float sin_offset, float cos_offset)
 {
-    /* 1. MID 层亲自去底层拿原始数据，并完成电压换算 (对 APP 屏蔽 ADC) */
+    /* 1. MID 层亲自去底层拿原始数据，并完成电压换算 */
     float sin_v = Bsp_Get_Position_Sensor_Sin_Raw_Data() * 0.0008056640625f;
     float cos_v = Bsp_Get_Position_Sensor_Cos_Raw_Data() * 0.0008056640625f;
 

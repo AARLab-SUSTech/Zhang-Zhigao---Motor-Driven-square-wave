@@ -30,6 +30,7 @@ Core/Src/system_stm32g4xx.o: ../Core/Src/system_stm32g4xx.c \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash_ex.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash_ramfunc.h \
+ /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_iwdg.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h \
@@ -69,6 +70,7 @@ Core/Src/system_stm32g4xx.o: ../Core/Src/system_stm32g4xx.c \
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash_ex.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash_ramfunc.h:
+/Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_iwdg.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h:

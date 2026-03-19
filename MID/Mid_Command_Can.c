@@ -13,6 +13,7 @@
 #include "Bsp_Can.h"
 #include "Mid_Control.h"
 #include "App_EMA.h"
+#include "App_Fault.h"
 #include "Bsp_Control.h"
 
 /* ==========================================
@@ -119,9 +120,7 @@ void Can_message_process(void)
                     Bsp_Dc_Power_Control(false);
                     HAL_TIM_Base_Stop(&htim16);
                     Bsp_Close_All_Output();
-                    if ((EMA_DATA.Motor_mode != MOTOR_OVER_HV_VOLTAGE) &&
-                        (EMA_DATA.Motor_mode != MOTOR_OVER_HV_CURRENT) &&
-                        (EMA_DATA.Motor_mode != MOTOR_OVER_DC_IN_CURRENT) &&
+                    if ((EMA_DATA.Fault_Flags != FAULT_NONE) ||
                         (EMA_DATA.Motor_mode != MOTOR_ERROR))
                     {
                         EMA_DATA.Motor_mode = MOTOR_IDLE;
@@ -196,11 +195,6 @@ void Can_message_process(void)
                 {
                     if (msg->Rx_Header.Identifier == MY_NODE_ID)
                     {
-                        /* 【安全修复】：将位运算 '|' 修正为逻辑运算 '&&' */
-                        if ((EMA_DATA.Motor_mode != MOTOR_OVER_HV_CURRENT) &&
-                            (EMA_DATA.Motor_mode != MOTOR_OVER_HV_VOLTAGE) &&
-                            (EMA_DATA.Motor_mode != MOTOR_OVER_DC_IN_CURRENT))
-                        {
                             EMA_DATA.Motor_mode = MOTOR_SYNC_POSITION;
 
                             temp_speed_int16 = (uint16_t)msg->Data[1] | (uint16_t)(msg->Data[2] << 8);
@@ -208,7 +202,6 @@ void Can_message_process(void)
                             Sync_Motor_Speed = temp_speed_float;
 
                             Sync_Motor_position = (uint32_t)msg->Data[3] | (uint32_t)msg->Data[4] << 8;
-                        }
                     }
                     break;
                 }
