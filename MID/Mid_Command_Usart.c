@@ -260,13 +260,13 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
 
     /* ========================================================== */
     /* [DEBUG 预留] 打印接收到的原始数据 */
-    /*
+
     printf("Received data (size = %d): \r\n", size);
     for (uint16_t i = 0; i < size; i++) {
         printf("%02X ", data[i]);
     }
     printf("\r\n");
-    */
+
     /* ========================================================== */
 
     /* 2. 验证帧头 */

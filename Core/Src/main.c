@@ -17,6 +17,9 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 #include <App_EMA.h>
 #include <Bsp_Ad7190.h>
 #include <Bsp_Can.h>
@@ -34,10 +37,6 @@
 #include "Bsp_Usart.h"
 #include "Bsp_Can.h"
 #include "Bsp_Control.h"
-
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
