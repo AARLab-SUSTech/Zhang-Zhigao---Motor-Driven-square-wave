@@ -17,18 +17,18 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include <App_EFA.h>
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <Bsp_Ad7190.h>
 #include <Bsp_Can.h>
 #include <Mid_Command_Usart.h>
 #include <Mid_Command_Can.h>
 #include <Mid_Control.h>
 #include "Mid_Adc.h"
 #include "main.h"
+
+#include "APP_EFA.h"
 
 #include "App_Led.h"
 #include "App_Can.h"
@@ -81,8 +81,6 @@ FDCAN_HandleTypeDef hfdcan1;
 
 IWDG_HandleTypeDef hiwdg;
 
-SPI_HandleTypeDef hspi1;
-
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim6;
@@ -116,7 +114,6 @@ static void MX_DAC3_Init(void);
 static void MX_TIM6_Init(void);
 static void MX_FDCAN1_Init(void);
 static void MX_TIM16_Init(void);
-static void MX_SPI1_Init(void);
 static void MX_TIM17_Init(void);
 static void MX_IWDG_Init(void);
 static void MX_TIM15_Init(void);
@@ -171,7 +168,6 @@ int main(void)
   MX_TIM6_Init();
   MX_FDCAN1_Init();
   MX_TIM16_Init();
-  MX_SPI1_Init();
   MX_TIM17_Init();
   MX_IWDG_Init();
   MX_TIM15_Init();
@@ -628,46 +624,6 @@ static void MX_IWDG_Init(void)
 }
 
 /**
-  * @brief SPI1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_SPI1_Init(void)
-{
-
-  /* USER CODE BEGIN SPI1_Init 0 */
-
-  /* USER CODE END SPI1_Init 0 */
-
-  /* USER CODE BEGIN SPI1_Init 1 */
-
-  /* USER CODE END SPI1_Init 1 */
-  /* SPI1 parameter configuration*/
-  hspi1.Instance = SPI1;
-  hspi1.Init.Mode = SPI_MODE_MASTER;
-  hspi1.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
-  hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
-  hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
-  hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
-  hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
-  hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  hspi1.Init.CRCPolynomial = 7;
-  hspi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  hspi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
-  if (HAL_SPI_Init(&hspi1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN SPI1_Init 2 */
-
-  /* USER CODE END SPI1_Init 2 */
-
-}
-
-/**
   * @brief TIM1 Initialization Function
   * @param None
   * @retval None
@@ -1102,7 +1058,8 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOF, GPIO_PIN_1, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, SPI1_CS_Pin|Power_ON_Pin|CH1__CTR_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, SPI1_CS_Pin|Power_ON_Pin|GPIO_PIN_3|GPIO_PIN_4
+                          |GPIO_PIN_5|CH1__CTR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : PC13 */
   GPIO_InitStruct.Pin = GPIO_PIN_13;
@@ -1118,8 +1075,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SPI1_CS_Pin CH1__CTR_Pin */
-  GPIO_InitStruct.Pin = SPI1_CS_Pin|CH1__CTR_Pin;
+  /*Configure GPIO pins : SPI1_CS_Pin PB3 PB4 PB5
+                           CH1__CTR_Pin */
+  GPIO_InitStruct.Pin = SPI1_CS_Pin|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
+                          |CH1__CTR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

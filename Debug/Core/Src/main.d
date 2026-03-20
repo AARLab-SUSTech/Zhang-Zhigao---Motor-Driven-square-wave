@@ -1,5 +1,4 @@
 Core/Src/main.o: ../Core/Src/main.c \
- /Users/letian/git/stm32-g4-hv/APP/Include/App_EFA.h \
  /Users/letian/git/stm32-g4-hv/Core/Inc/main.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h \
  /Users/letian/git/stm32-g4-hv/Core/Inc/stm32g4xx_hal_conf.h \
@@ -35,20 +34,18 @@ Core/Src/main.o: ../Core/Src/main.c \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_iwdg.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h \
- /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h \
- /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
  /Users/letian/git/stm32-g4-hv/Middlewares/ST/ARM/DSP/Inc/arm_math.h \
  /Users/letian/git/stm32-g4-hv/Drivers/CMSIS/Include/cmsis_compiler.h \
- /Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Ad7190.h \
  /Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Can.h \
  /Users/letian/git/stm32-g4-hv/MID/Include/Mid_Command_Usart.h \
  /Users/letian/git/stm32-g4-hv/MID/Include/Mid_Command_Can.h \
  /Users/letian/git/stm32-g4-hv/MID/Include/Mid_Control.h \
  /Users/letian/git/stm32-g4-hv/MID/Include/Mid_Adc.h \
+ /Users/letian/git/stm32-g4-hv/APP/Include/APP_EFA.h \
  /Users/letian/git/stm32-g4-hv/APP/Include/App_Led.h \
  /Users/letian/git/stm32-g4-hv/APP/Include/App_Can.h \
  /Users/letian/git/stm32-g4-hv/APP/Include/App_Fault.h \
@@ -60,7 +57,6 @@ Core/Src/main.o: ../Core/Src/main.c \
  /Users/letian/git/stm32-g4-hv/BSP/Include/lcd_init.h \
  /Users/letian/git/stm32-g4-hv/BSP/Include/lcd.h \
  /Users/letian/git/stm32-g4-hv/BSP/Include/pic.h
-/Users/letian/git/stm32-g4-hv/APP/Include/App_EFA.h:
 /Users/letian/git/stm32-g4-hv/Core/Inc/main.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
 /Users/letian/git/stm32-g4-hv/Core/Inc/stm32g4xx_hal_conf.h:
@@ -96,20 +92,18 @@ Core/Src/main.o: ../Core/Src/main.c \
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_iwdg.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_pwr_ex.h:
-/Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi.h:
-/Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_spi_ex.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h:
 /Users/letian/git/stm32-g4-hv/Middlewares/ST/ARM/DSP/Inc/arm_math.h:
 /Users/letian/git/stm32-g4-hv/Drivers/CMSIS/Include/cmsis_compiler.h:
-/Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Ad7190.h:
 /Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Can.h:
 /Users/letian/git/stm32-g4-hv/MID/Include/Mid_Command_Usart.h:
 /Users/letian/git/stm32-g4-hv/MID/Include/Mid_Command_Can.h:
 /Users/letian/git/stm32-g4-hv/MID/Include/Mid_Control.h:
 /Users/letian/git/stm32-g4-hv/MID/Include/Mid_Adc.h:
+/Users/letian/git/stm32-g4-hv/APP/Include/APP_EFA.h:
 /Users/letian/git/stm32-g4-hv/APP/Include/App_Led.h:
 /Users/letian/git/stm32-g4-hv/APP/Include/App_Can.h:
 /Users/letian/git/stm32-g4-hv/APP/Include/App_Fault.h:
