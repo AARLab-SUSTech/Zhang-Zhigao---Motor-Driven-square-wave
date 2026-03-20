@@ -9,10 +9,10 @@
  ******************************************************************************
  */
 
+#include <App_EFA.h>
 #include "Mid_Command_Can.h"
 #include "Bsp_Can.h"
 #include "Mid_Control.h"
-#include "App_EMA.h"
 #include "App_Fault.h"
 #include "Bsp_Control.h"
 
@@ -77,7 +77,7 @@ extern volatile uint16_t g_Rx_Queue_Tail;
  * 0x08: 多电机同步模式 - 广播同步触发
  * 0x09: 开环速度模式
  */
-void Can_message_process(void)
+void Mid_Can_Message_Process(void)
 {
     /*----------------------------------------------------------------*/
     /* --- 消费者 (Consumer) #1: 处理接收队列 (g_Rx_Queue) --- */

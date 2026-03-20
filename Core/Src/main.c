@@ -17,11 +17,11 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <App_EFA.h>
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <App_EMA.h>
 #include <Bsp_Ad7190.h>
 #include <Bsp_Can.h>
 #include <Mid_Command_Usart.h>
@@ -172,16 +172,16 @@ int main(void)
   MX_TIM15_Init();
   /* USER CODE BEGIN 2 */
 
-  Bsp_Usart_Init();
+  Bsp_Usart_Init();//板载串口Usart初始化
 
   Bsp_Close_All_Output();//关闭所有输出
 
   Bsp_Adc_Init();//板载ADC初始化配置
 
-  Bsp_Can_Init();
+  Bsp_Can_Init();//板载Can接口初始化
 
   EFA_DATA.sin_offset = 1.65f;
-  EFA_DATA.cos_offset = 1.65f;
+  EFA_DATA.cos_offset = 1.65f;//磁栅传感器设置
 
   HAL_TIM_Base_Start_IT(&htim6);//高频计算中断
 
@@ -191,7 +191,7 @@ int main(void)
 
   HAL_TIM_Base_Start_IT(&htim17);//CAN Heart中断
 
-  App_Led_Set_State(SYS_STAT_IDLE);//  SYS_STAT_IDLE  SYS_STAT_WORKING, SYS_STAT_ERROR,
+  App_Led_Set_State(SYS_STAT_IDLE);//Led灯状态    SYS_STAT_IDLE  SYS_STAT_WORKING, SYS_STAT_ERROR,
 
   /* USER CODE END 2 */
 
@@ -205,11 +205,11 @@ int main(void)
 
 	  HAL_IWDG_Refresh(&hiwdg);//刷新看门狗
 
-	  Mid_Can_Tx_Task();
+	  Mid_Can_Tx_Task();//Can报文发送任务
 
-	  Can_message_process();
+	  Mid_Can_Message_Process();//Can报文接收数据处理
 
-	  App_Fault_Task_Handler();
+	  App_Fault_Task_Handler();//错误处理函数
 
   }
   /* USER CODE END 3 */

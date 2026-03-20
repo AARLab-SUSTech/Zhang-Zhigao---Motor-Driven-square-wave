@@ -9,8 +9,8 @@
  ******************************************************************************
  */
 
-#ifndef _APP_EMA_H_
-#define _APP_EMA_H_
+#ifndef _APP_EFA_H_
+#define _APP_EFA_H_
 
 /* 包含头文件 ----------------------------------------------------------------*/
 #include <stdbool.h>
@@ -133,7 +133,7 @@ typedef struct {
  */
 extern Motor EMA_DATA;
 
-void App_EMA_Position_Control(void);
+void App_EFA_Position_Control(void);
 
 /**
  * @brief  EMA 核心运动规划与状态机执行任务 (APP 层)
@@ -142,7 +142,7 @@ void App_EMA_Position_Control(void);
  * 【执行上下文】：必须在固定的控制环定时器中断中周期调用 (例如 1kHz 甚至 10kHz)，
  * 且必须放在位置传感器读取 (App_Update_Position_Sensor_Data) 之后执行。
  */
-void App_EMA_Motion_Task(void);
+void App_EFA_Motion_Task(void);
 
 
 /**
@@ -152,6 +152,6 @@ void App_EMA_Motion_Task(void);
  * 并触发底层硬件进行实际的 PWM 切换。
  * 【执行上下文】：必须在控制环定时器中断中调用，且必须位于 App_EMA_Motion_Task() 之后！
  */
-void App_EMA_Commutation_Task(void);
+void App_EFA_Commutation_Task(void);
 
 #endif /* _APP_EMA_H_ */

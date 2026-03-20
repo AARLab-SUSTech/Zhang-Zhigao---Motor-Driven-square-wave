@@ -13,7 +13,7 @@
 #include <Mid_Command_Usart.h>
 #include "main.h"
 
-#include "App_EMA.h"
+#include "App_EFA.h"
 
 uint16_t duty_TIM1 = 1000;
 bool DC_ON_State = false;

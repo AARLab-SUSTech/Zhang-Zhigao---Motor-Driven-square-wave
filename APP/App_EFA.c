@@ -1,4 +1,4 @@
-#include "App_EMA.h"
+#include "App_EFA.h"
 #include "App_Fault.h"
 #include "Mid_Control.h"
 #include "Bsp_Control.h"
@@ -39,7 +39,7 @@ volatile uint32_t velocity_mode_increment = 0;
  * 【执行上下文】：必须在固定的控制环定时器中断中周期调用 (例如 1kHz 甚至 10kHz)，
  * 且必须放在位置传感器读取 (App_Update_Position_Sensor_Data) 之后执行。
  */
-void App_EMA_Motion_Task(void)
+void App_EFA_Motion_Task(void)
 {
 	/* ========================================================================== *
 	     * 1. 终极安全检查层：处理最高优先级的 IDLE, ERROR 和任何硬件故障状态
@@ -166,7 +166,7 @@ void App_EMA_Motion_Task(void)
     }
 }
 
-void App_EMA_Position_Control(void)
+void App_EFA_Position_Control(void)
 {
 	      Motor_Position_Controller.Kp = 100;
 	      Motor_Position_Controller.MaxSpeed = 100;
@@ -180,7 +180,7 @@ void App_EMA_Position_Control(void)
  * 并触发底层硬件进行实际的 PWM 切换。
  * 【执行上下文】：必须在控制环定时器中断中调用，且必须位于 App_EMA_Motion_Task() 之后！
  */
-void App_EMA_Commutation_Task(void)
+void App_EFA_Commutation_Task(void)
 {
 
     /* ========================================================================== *

@@ -1,15 +1,15 @@
-# STM32G4 Pulse Motor Control System 🚀
+STM32G4 Pulse Motor Control System 
 
-## 📖 项目简介 (Overview)
-本项目是一个基于 **STM32G431CBTX** 微控制器的高性能、高压脉冲电机驱动与控制系统。
-系统采用了严格的 **大厂级三层解耦架构 (APP - MID - BSP)**，实现了业务逻辑、中间件算法与底层硬件的彻底分离，具备极高的代码复用性、可维护性以及工业级的系统鲁棒性。
+##  项目简介 (Overview)
+本项目是一个基于STM32G431微控制器的高性能、高压静电薄膜电机驱动与控制系统。
+系统采用了（APP - MID - BSP)架构，实现了业务逻辑、中间件算法与底层硬件的分离。
 
-## ⚙️ 硬件平台 (Hardware Platform)
+## 硬件平台 (Hardware Platform)
 * **MCU:** STMicroelectronics STM32G431CBTX
-* **外设依赖:** 高级定时器 (PWM 六步换向)、CAN总线、USART DMA、高精度 ADC、外部 ADC (AD7190 用于力传感器)
+* **外设依赖:** 高级定时器 (PWM 六步换向)、CAN总线、USART DMA、ADC、外部 ADC (AD7190 用于力传感器)
 * **开发工具链:** STM32CubeIDE
 
-## 🏗️ 软件架构设计 (Software Architecture)
+## 软件架构设计 (Software Architecture)
 项目严格遵循垂直单向依赖原则：`APP` -> `MID` -> `BSP`，严禁越级穿透。
 
 ### 1. 顶层应用层 (APP Layer)
@@ -29,15 +29,12 @@
 最底层的硬件驱动层，直接操作 STM32 寄存器或 HAL 库，对外提供极简的 API 接口。
 * `Bsp_Control`: 电源时序控制、PWM 六步换向底层驱动与紧急封锁 (Close Output)。
 * `Bsp_Can` / `Bsp_Usart`: CAN/串口底层收发接口与中断回调包装。
-* `Bsp_Ad7190` / `Bsp_Force_Sensor`: 外部高精度传感器 SPI/I2C 通信底层时序。
+* `Bsp_Ad7190` / `Bsp_Force_Sensor`: 外部高精度传感器 SPI通信底层时序。
 * `Bsp_Led`: 极简的 GPIO 亮灭控制。
 
 ## 🛡️ 核心安全机制 (Safety Features)
-1.  **双重看门狗防护:**
-    * **IWDG (独立看门狗):** 部署于主循环，提供系统级死机兜底重启。
+1.  * **IWDG (独立看门狗):** 部署于主循环，提供系统级死机兜底重启。
 2.  **极速过流急停:** 中断级硬件状态监控，一旦触发阈值，微秒级切断高压 DCDC 与 PWM 桥臂输出。
-3.  **防误动机制:** 在存在未复位故障 (Fault Flags != 0) 时，强行锁定系统，拒绝响应任何运动指令。
-
 
 ---
 *Maintained by Letian && Gemini.*

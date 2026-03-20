@@ -287,15 +287,16 @@ Discarded input sections
  .data          0x00000000        0x0 ./APP/App_Control.o
  .bss           0x00000000        0x0 ./APP/App_Control.o
  .debug_macro   0x00000000      0xad8 ./APP/App_Control.o
- .debug_macro   0x00000000      0x17f ./APP/App_Control.o
- .debug_macro   0x00000000       0x2e ./APP/App_Control.o
- .debug_macro   0x00000000       0x28 ./APP/App_Control.o
+ .debug_macro   0x00000000       0x22 ./APP/App_Control.o
  .debug_macro   0x00000000       0x22 ./APP/App_Control.o
  .debug_macro   0x00000000       0x8e ./APP/App_Control.o
  .debug_macro   0x00000000       0x51 ./APP/App_Control.o
  .debug_macro   0x00000000      0x103 ./APP/App_Control.o
  .debug_macro   0x00000000       0x6a ./APP/App_Control.o
  .debug_macro   0x00000000      0x1df ./APP/App_Control.o
+ .debug_macro   0x00000000      0x17f ./APP/App_Control.o
+ .debug_macro   0x00000000       0x2e ./APP/App_Control.o
+ .debug_macro   0x00000000       0x28 ./APP/App_Control.o
  .debug_macro   0x00000000       0x1c ./APP/App_Control.o
  .debug_macro   0x00000000       0x22 ./APP/App_Control.o
  .debug_macro   0x00000000       0xfb ./APP/App_Control.o
@@ -334,171 +335,170 @@ Discarded input sections
  .debug_macro   0x00000000      0x693 ./APP/App_Control.o
  .debug_macro   0x00000000       0xa6 ./APP/App_Control.o
  .debug_macro   0x00000000      0x306 ./APP/App_Control.o
- .debug_macro   0x00000000       0x22 ./APP/App_Control.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .group         0x00000000        0xc ./APP/App_EMA.o
- .text          0x00000000        0x0 ./APP/App_EMA.o
- .data          0x00000000        0x0 ./APP/App_EMA.o
- .bss           0x00000000        0x0 ./APP/App_EMA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .group         0x00000000        0xc ./APP/App_EFA.o
+ .text          0x00000000        0x0 ./APP/App_EFA.o
+ .data          0x00000000        0x0 ./APP/App_EFA.o
+ .bss           0x00000000        0x0 ./APP/App_EFA.o
  .bss.repeated_speed_hz
-                0x00000000        0x4 ./APP/App_EMA.o
- .text.App_EMA_Position_Control
-                0x00000000       0x24 ./APP/App_EMA.o
+                0x00000000        0x4 ./APP/App_EFA.o
+ .text.App_EFA_Position_Control
+                0x00000000       0x24 ./APP/App_EFA.o
  .text.App_Singal_Set
-                0x00000000        0xe ./APP/App_EMA.o
- .debug_macro   0x00000000      0xad8 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x22 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x22 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x8e ./APP/App_EMA.o
- .debug_macro   0x00000000       0x51 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x103 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x6a ./APP/App_EMA.o
- .debug_macro   0x00000000      0x1df ./APP/App_EMA.o
- .debug_macro   0x00000000      0x17f ./APP/App_EMA.o
- .debug_macro   0x00000000       0x2e ./APP/App_EMA.o
- .debug_macro   0x00000000       0x28 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x1c ./APP/App_EMA.o
- .debug_macro   0x00000000       0x22 ./APP/App_EMA.o
- .debug_macro   0x00000000       0xfb ./APP/App_EMA.o
- .debug_macro   0x00000000     0x1011 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x11f ./APP/App_EMA.o
- .debug_macro   0x00000000    0x1138f ./APP/App_EMA.o
- .debug_macro   0x00000000       0x6d ./APP/App_EMA.o
- .debug_macro   0x00000000     0x3558 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x190 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x5c ./APP/App_EMA.o
- .debug_macro   0x00000000     0x141d ./APP/App_EMA.o
- .debug_macro   0x00000000      0x535 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x1b6 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x288 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x41d ./APP/App_EMA.o
- .debug_macro   0x00000000      0x18b ./APP/App_EMA.o
- .debug_macro   0x00000000       0x43 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x23d ./APP/App_EMA.o
- .debug_macro   0x00000000     0x1112 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x72e ./APP/App_EMA.o
- .debug_macro   0x00000000      0x391 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x11d ./APP/App_EMA.o
- .debug_macro   0x00000000      0x401 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x209 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x108 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x211 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x6bd ./APP/App_EMA.o
- .debug_macro   0x00000000      0x401 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x107 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x85 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x122 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x3d1 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x2fe ./APP/App_EMA.o
- .debug_macro   0x00000000      0xbda ./APP/App_EMA.o
- .debug_macro   0x00000000      0x47e ./APP/App_EMA.o
- .debug_macro   0x00000000      0x693 ./APP/App_EMA.o
- .debug_macro   0x00000000       0xa6 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x306 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x61 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x2a ./APP/App_EMA.o
- .debug_macro   0x00000000       0x43 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x34 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x16 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x3c ./APP/App_EMA.o
- .debug_macro   0x00000000      0x370 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x10 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x16 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x4a ./APP/App_EMA.o
- .debug_macro   0x00000000       0x34 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x10 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x58 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x8e ./APP/App_EMA.o
- .debug_macro   0x00000000       0x1c ./APP/App_EMA.o
- .debug_macro   0x00000000      0x185 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x16 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x16 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x146 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x16 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x20 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x19b ./APP/App_EMA.o
- .debug_macro   0x00000000      0x201 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x7c ./APP/App_EMA.o
- .debug_macro   0x00000000       0x17 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x118 ./APP/App_EMA.o
- .debug_macro   0x00000000      0x169 ./APP/App_EMA.o
- .debug_macro   0x00000000       0x94 ./APP/App_EMA.o
+                0x00000000        0xe ./APP/App_EFA.o
+ .debug_macro   0x00000000      0xad8 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x22 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x22 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x8e ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x51 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x103 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x6a ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x1df ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x17f ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x2e ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x28 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x1c ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x22 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0xfb ./APP/App_EFA.o
+ .debug_macro   0x00000000     0x1011 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x11f ./APP/App_EFA.o
+ .debug_macro   0x00000000    0x1138f ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x6d ./APP/App_EFA.o
+ .debug_macro   0x00000000     0x3558 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x190 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x5c ./APP/App_EFA.o
+ .debug_macro   0x00000000     0x141d ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x535 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x1b6 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x288 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x41d ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x18b ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x43 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x23d ./APP/App_EFA.o
+ .debug_macro   0x00000000     0x1112 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x72e ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x391 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x11d ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x401 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x209 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x108 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x211 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x6bd ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x401 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x107 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x85 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x122 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x3d1 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x2fe ./APP/App_EFA.o
+ .debug_macro   0x00000000      0xbda ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x47e ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x693 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0xa6 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x306 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x61 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x2a ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x43 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x34 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x16 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x3c ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x370 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x10 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x16 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x4a ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x34 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x10 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x58 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x8e ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x1c ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x185 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x16 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x16 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x146 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x16 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x20 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x19b ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x201 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x7c ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x17 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x118 ./APP/App_EFA.o
+ .debug_macro   0x00000000      0x169 ./APP/App_EFA.o
+ .debug_macro   0x00000000       0x94 ./APP/App_EFA.o
  .group         0x00000000        0xc ./APP/App_Fault.o
  .group         0x00000000        0xc ./APP/App_Fault.o
  .group         0x00000000        0xc ./APP/App_Fault.o
@@ -2054,15 +2054,16 @@ Discarded input sections
  .data          0x00000000        0x0 ./Core/Src/main.o
  .bss           0x00000000        0x0 ./Core/Src/main.o
  .debug_macro   0x00000000      0xad8 ./Core/Src/main.o
- .debug_macro   0x00000000      0x17f ./Core/Src/main.o
- .debug_macro   0x00000000       0x2e ./Core/Src/main.o
- .debug_macro   0x00000000       0x28 ./Core/Src/main.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/main.o
  .debug_macro   0x00000000       0x22 ./Core/Src/main.o
  .debug_macro   0x00000000       0x8e ./Core/Src/main.o
  .debug_macro   0x00000000       0x51 ./Core/Src/main.o
  .debug_macro   0x00000000      0x103 ./Core/Src/main.o
  .debug_macro   0x00000000       0x6a ./Core/Src/main.o
  .debug_macro   0x00000000      0x1df ./Core/Src/main.o
+ .debug_macro   0x00000000      0x17f ./Core/Src/main.o
+ .debug_macro   0x00000000       0x2e ./Core/Src/main.o
+ .debug_macro   0x00000000       0x28 ./Core/Src/main.o
  .debug_macro   0x00000000       0x1c ./Core/Src/main.o
  .debug_macro   0x00000000       0x22 ./Core/Src/main.o
  .debug_macro   0x00000000       0xfb ./Core/Src/main.o
@@ -2120,7 +2121,6 @@ Discarded input sections
  .debug_macro   0x00000000       0x16 ./Core/Src/main.o
  .debug_macro   0x00000000       0x16 ./Core/Src/main.o
  .debug_macro   0x00000000      0x146 ./Core/Src/main.o
- .debug_macro   0x00000000       0x22 ./Core/Src/main.o
  .debug_macro   0x00000000       0x16 ./Core/Src/main.o
  .debug_macro   0x00000000       0x20 ./Core/Src/main.o
  .debug_macro   0x00000000      0x19b ./Core/Src/main.o
@@ -6759,15 +6759,16 @@ Discarded input sections
  .data          0x00000000        0x0 ./MID/Mid_Command_Can.o
  .bss           0x00000000        0x0 ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000      0xad8 ./MID/Mid_Command_Can.o
- .debug_macro   0x00000000      0x17f ./MID/Mid_Command_Can.o
- .debug_macro   0x00000000       0x2e ./MID/Mid_Command_Can.o
- .debug_macro   0x00000000       0x28 ./MID/Mid_Command_Can.o
+ .debug_macro   0x00000000       0x22 ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000       0x22 ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000       0x8e ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000       0x51 ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000      0x103 ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000       0x6a ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000      0x1df ./MID/Mid_Command_Can.o
+ .debug_macro   0x00000000      0x17f ./MID/Mid_Command_Can.o
+ .debug_macro   0x00000000       0x2e ./MID/Mid_Command_Can.o
+ .debug_macro   0x00000000       0x28 ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000       0x1c ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000       0x22 ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000       0xfb ./MID/Mid_Command_Can.o
@@ -6825,7 +6826,6 @@ Discarded input sections
  .debug_macro   0x00000000       0x16 ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000       0x16 ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000      0x146 ./MID/Mid_Command_Can.o
- .debug_macro   0x00000000       0x22 ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000       0x16 ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000       0x20 ./MID/Mid_Command_Can.o
  .debug_macro   0x00000000      0x19b ./MID/Mid_Command_Can.o
@@ -7590,7 +7590,7 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
 LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.macos64_1.0.0.202411102158/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o
 LOAD ./APP/App_Can.o
 LOAD ./APP/App_Control.o
-LOAD ./APP/App_EMA.o
+LOAD ./APP/App_EFA.o
 LOAD ./APP/App_Fault.o
 LOAD ./APP/App_Led.o
 LOAD ./APP/App_Position_Sensor.o
@@ -7764,12 +7764,12 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .text.HAL_TIM_PeriodElapsedCallback
                 0x08001380       0x60 ./APP/App_Control.o
                 0x08001380                HAL_TIM_PeriodElapsedCallback
- .text.App_EMA_Motion_Task
-                0x080013e0      0x1c4 ./APP/App_EMA.o
-                0x080013e0                App_EMA_Motion_Task
- .text.App_EMA_Commutation_Task
-                0x080015a4       0xd8 ./APP/App_EMA.o
-                0x080015a4                App_EMA_Commutation_Task
+ .text.App_EFA_Motion_Task
+                0x080013e0      0x1c4 ./APP/App_EFA.o
+                0x080013e0                App_EFA_Motion_Task
+ .text.App_EFA_Commutation_Task
+                0x080015a4       0xd8 ./APP/App_EFA.o
+                0x080015a4                App_EFA_Commutation_Task
  .text.App_Fault_Report
                 0x0800167c       0x28 ./APP/App_Fault.o
                 0x0800167c                App_Fault_Report
@@ -8566,9 +8566,9 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .text.Mid_Get_Dc_I_A
                 0x0800b9fc       0x34 ./MID/Mid_Adc.o
                 0x0800b9fc                Mid_Get_Dc_I_A
- .text.Can_message_process
+ .text.Mid_Can_Message_Process
                 0x0800ba30      0x5bc ./MID/Mid_Command_Can.o
-                0x0800ba30                Can_message_process
+                0x0800ba30                Mid_Can_Message_Process
  .text.Mid_Can_Tx_Task
                 0x0800bfec       0x70 ./MID/Mid_Command_Can.o
                 0x0800bfec                Mid_Can_Tx_Task
@@ -8953,14 +8953,14 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  *(.data)
  *(.data*)
  .data.motor_direction
-                0x20000000        0x1 ./APP/App_EMA.o
+                0x20000000        0x1 ./APP/App_EFA.o
                 0x20000000                motor_direction
  *fill*         0x20000001        0x3 
  .data.interrupt_freq_hz
-                0x20000004        0x4 ./APP/App_EMA.o
+                0x20000004        0x4 ./APP/App_EFA.o
                 0x20000004                interrupt_freq_hz
  .data.position_mode_increment
-                0x20000008        0x4 ./APP/App_EMA.o
+                0x20000008        0x4 ./APP/App_EFA.o
                 0x20000008                position_mode_increment
  .data.MAX_HV_voltage
                 0x2000000c        0x4 ./APP/App_Voltage_Current.o
@@ -9014,37 +9014,37 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .bss           0x200001f0       0x1c /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.macos64_1.0.0.202411102158/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard/crtbegin.o
  *(.bss*)
  .bss.Motor_Position_Controller
-                0x2000020c       0x18 ./APP/App_EMA.o
+                0x2000020c       0x18 ./APP/App_EFA.o
                 0x2000020c                Motor_Position_Controller
  .bss.repeated_pos_A
-                0x20000224        0x4 ./APP/App_EMA.o
+                0x20000224        0x4 ./APP/App_EFA.o
                 0x20000224                repeated_pos_A
  .bss.repeated_pos_B
-                0x20000228        0x4 ./APP/App_EMA.o
+                0x20000228        0x4 ./APP/App_EFA.o
                 0x20000228                repeated_pos_B
  .bss.repeated_count_total
-                0x2000022c        0x4 ./APP/App_EMA.o
+                0x2000022c        0x4 ./APP/App_EFA.o
                 0x2000022c                repeated_count_total
  .bss.repeated_count_current
-                0x20000230        0x4 ./APP/App_EMA.o
+                0x20000230        0x4 ./APP/App_EFA.o
                 0x20000230                repeated_count_current
  .bss.phase_accumulator
-                0x20000234        0x4 ./APP/App_EMA.o
+                0x20000234        0x4 ./APP/App_EFA.o
                 0x20000234                phase_accumulator
  .bss.phase_increment
-                0x20000238        0x4 ./APP/App_EMA.o
+                0x20000238        0x4 ./APP/App_EFA.o
                 0x20000238                phase_increment
- .bss.step      0x2000023c        0x1 ./APP/App_EMA.o
+ .bss.step      0x2000023c        0x1 ./APP/App_EFA.o
                 0x2000023c                step
  *fill*         0x2000023d        0x3 
  .bss.absolute_step_counter
-                0x20000240        0x4 ./APP/App_EMA.o
+                0x20000240        0x4 ./APP/App_EFA.o
                 0x20000240                absolute_step_counter
  .bss.target_step_position
-                0x20000244        0x4 ./APP/App_EMA.o
+                0x20000244        0x4 ./APP/App_EFA.o
                 0x20000244                target_step_position
  .bss.velocity_mode_increment
-                0x20000248        0x4 ./APP/App_EMA.o
+                0x20000248        0x4 ./APP/App_EFA.o
                 0x20000248                velocity_mode_increment
  .bss.Current_Sys_State
                 0x2000024c        0x1 ./APP/App_Led.o
@@ -9230,7 +9230,7 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .ARM.attributes
                 0x0000008a       0x34 ./APP/App_Control.o
  .ARM.attributes
-                0x000000be       0x34 ./APP/App_EMA.o
+                0x000000be       0x34 ./APP/App_EFA.o
  .ARM.attributes
                 0x000000f2       0x34 ./APP/App_Fault.o
  .ARM.attributes
@@ -9446,7 +9446,7 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
 .debug_info     0x00000000    0x2792b
  .debug_info    0x00000000      0x541 ./APP/App_Can.o
  .debug_info    0x00000541      0x844 ./APP/App_Control.o
- .debug_info    0x00000d85      0x678 ./APP/App_EMA.o
+ .debug_info    0x00000d85      0x678 ./APP/App_EFA.o
  .debug_info    0x000013fd      0x3e9 ./APP/App_Fault.o
  .debug_info    0x000017e6      0x1f4 ./APP/App_Led.o
  .debug_info    0x000019da      0x379 ./APP/App_Position_Sensor.o
@@ -9493,7 +9493,7 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
 .debug_abbrev   0x00000000     0x556d
  .debug_abbrev  0x00000000      0x11f ./APP/App_Can.o
  .debug_abbrev  0x0000011f      0x1a6 ./APP/App_Control.o
- .debug_abbrev  0x000002c5      0x18c ./APP/App_EMA.o
+ .debug_abbrev  0x000002c5      0x18c ./APP/App_EFA.o
  .debug_abbrev  0x00000451      0x143 ./APP/App_Fault.o
  .debug_abbrev  0x00000594      0x100 ./APP/App_Led.o
  .debug_abbrev  0x00000694       0xfc ./APP/App_Position_Sensor.o
@@ -9543,7 +9543,7 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .debug_aranges
                 0x00000028       0x20 ./APP/App_Control.o
  .debug_aranges
-                0x00000048       0x38 ./APP/App_EMA.o
+                0x00000048       0x38 ./APP/App_EFA.o
  .debug_aranges
                 0x00000080       0x30 ./APP/App_Fault.o
  .debug_aranges
@@ -9636,7 +9636,7 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .debug_rnglists
                 0x0000001b       0x13 ./APP/App_Control.o
  .debug_rnglists
-                0x0000002e       0x27 ./APP/App_EMA.o
+                0x0000002e       0x27 ./APP/App_EFA.o
  .debug_rnglists
                 0x00000055       0x1f ./APP/App_Fault.o
  .debug_rnglists
@@ -9803,8 +9803,8 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .debug_macro   0x0001fdb2       0x94 ./APP/App_Can.o
  .debug_macro   0x0001fe46       0x2e ./APP/App_Can.o
  .debug_macro   0x0001fe74      0x28c ./APP/App_Control.o
- .debug_macro   0x00020100      0x3ff ./APP/App_EMA.o
- .debug_macro   0x000204ff       0x40 ./APP/App_EMA.o
+ .debug_macro   0x00020100      0x3ff ./APP/App_EFA.o
+ .debug_macro   0x000204ff       0x40 ./APP/App_EFA.o
  .debug_macro   0x0002053f       0x99 ./APP/App_Fault.o
  .debug_macro   0x000205d8       0x3a ./APP/App_Fault.o
  .debug_macro   0x00020612       0x80 ./APP/App_Led.o
@@ -9883,7 +9883,7 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
 .debug_line     0x00000000    0x2b56f
  .debug_line    0x00000000      0xbcd ./APP/App_Can.o
  .debug_line    0x00000bcd      0x92a ./APP/App_Control.o
- .debug_line    0x000014f7      0xc8f ./APP/App_EMA.o
+ .debug_line    0x000014f7      0xc8f ./APP/App_EFA.o
  .debug_line    0x00002186      0x489 ./APP/App_Fault.o
  .debug_line    0x0000260f      0x4a5 ./APP/App_Led.o
  .debug_line    0x00002ab4      0x4db ./APP/App_Position_Sensor.o
@@ -9927,59 +9927,59 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
  .debug_line    0x0002a2b5      0xc8e ./MID/Mid_Control.o
  .debug_line    0x0002af43      0x62c ./MID/Mid_Position_Sensor.o
 
-.debug_str      0x00000000    0xf007d
- .debug_str     0x00000000    0xf007d ./APP/App_Can.o
+.debug_str      0x00000000    0xf0081
+ .debug_str     0x00000000    0xf0081 ./APP/App_Can.o
                               0xe39e8 (size before relaxing)
- .debug_str     0x000f007d    0xde730 ./APP/App_Control.o
- .debug_str     0x000f007d    0xe3b37 ./APP/App_EMA.o
- .debug_str     0x000f007d     0x42f5 ./APP/App_Fault.o
- .debug_str     0x000f007d     0x3f27 ./APP/App_Led.o
- .debug_str     0x000f007d     0x41aa ./APP/App_Position_Sensor.o
- .debug_str     0x000f007d    0xe3527 ./APP/App_Usart.o
- .debug_str     0x000f007d    0xe3af2 ./APP/App_Voltage_Current.o
- .debug_str     0x000f007d    0xde9de ./BSP/Bsp_Adc.o
- .debug_str     0x000f007d    0xe3ce1 ./BSP/Bsp_Can.o
- .debug_str     0x000f007d    0xde77f ./BSP/Bsp_Control.o
- .debug_str     0x000f007d    0xe3d6f ./BSP/Bsp_Hvisensor.o
- .debug_str     0x000f007d    0xde011 ./BSP/Bsp_Led.o
- .debug_str     0x000f007d    0xde60b ./BSP/Bsp_Usart.o
- .debug_str     0x000f007d    0xe667f ./Core/Src/main.o
- .debug_str     0x000f007d    0xe50af ./Core/Src/stm32g4xx_hal_msp.o
- .debug_str     0x000f007d    0xe4571 ./Core/Src/stm32g4xx_it.o
- .debug_str     0x000f007d     0x99c8 ./Core/Src/syscalls.o
- .debug_str     0x000f007d     0x7766 ./Core/Src/sysmem.o
- .debug_str     0x000f007d    0xde19a ./Core/Src/system_stm32g4xx.o
- .debug_str     0x000f007d       0x68 ./Core/Startup/startup_stm32g431cbtx.o
- .debug_str     0x000f007d    0xdecd9 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.o
- .debug_str     0x000f007d    0xdf1c7 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_adc.o
- .debug_str     0x000f007d    0xdf16d ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_adc_ex.o
- .debug_str     0x000f007d    0xde45c ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_comp.o
- .debug_str     0x000f007d    0xde995 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_cortex.o
- .debug_str     0x000f007d    0xde86f ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dac.o
- .debug_str     0x000f007d    0xde89e ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dac_ex.o
- .debug_str     0x000f007d    0xde574 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma.o
- .debug_str     0x000f007d    0xdf749 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_fdcan.o
- .debug_str     0x000f007d    0xde325 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.o
- .debug_str     0x000f007d    0xde10c ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_iwdg.o
- .debug_str     0x000f007d    0xde688 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr_ex.o
- .debug_str     0x000f007d    0xde893 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc.o
- .debug_str     0x000f007d    0xde894 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc_ex.o
- .debug_str     0x000f007d    0xdeacc ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_spi.o
- .debug_str     0x000f007d    0xdf698 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.o
- .debug_str     0x000f007d    0xdf30c ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.o
- .debug_str     0x000f007d    0xdf155 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.o
- .debug_str     0x000f007d    0xde953 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
- .debug_str     0x000f007d     0x3e28 ./MID/Mid_Adc.o
- .debug_str     0x000f007d    0xe43e6 ./MID/Mid_Command_Can.o
- .debug_str     0x000f007d    0xe4232 ./MID/Mid_Command_Usart.o
- .debug_str     0x000f007d    0xe3a51 ./MID/Mid_Control.o
- .debug_str     0x000f007d     0x7c4d ./MID/Mid_Position_Sensor.o
+ .debug_str     0x000f0081    0xde730 ./APP/App_Control.o
+ .debug_str     0x000f0081    0xe3b37 ./APP/App_EFA.o
+ .debug_str     0x000f0081     0x42f5 ./APP/App_Fault.o
+ .debug_str     0x000f0081     0x3f27 ./APP/App_Led.o
+ .debug_str     0x000f0081     0x41aa ./APP/App_Position_Sensor.o
+ .debug_str     0x000f0081    0xe3527 ./APP/App_Usart.o
+ .debug_str     0x000f0081    0xe3af2 ./APP/App_Voltage_Current.o
+ .debug_str     0x000f0081    0xde9de ./BSP/Bsp_Adc.o
+ .debug_str     0x000f0081    0xe3ce1 ./BSP/Bsp_Can.o
+ .debug_str     0x000f0081    0xde77f ./BSP/Bsp_Control.o
+ .debug_str     0x000f0081    0xe3d6f ./BSP/Bsp_Hvisensor.o
+ .debug_str     0x000f0081    0xde011 ./BSP/Bsp_Led.o
+ .debug_str     0x000f0081    0xde60b ./BSP/Bsp_Usart.o
+ .debug_str     0x000f0081    0xe6683 ./Core/Src/main.o
+ .debug_str     0x000f0081    0xe50af ./Core/Src/stm32g4xx_hal_msp.o
+ .debug_str     0x000f0081    0xe4571 ./Core/Src/stm32g4xx_it.o
+ .debug_str     0x000f0081     0x99c8 ./Core/Src/syscalls.o
+ .debug_str     0x000f0081     0x7766 ./Core/Src/sysmem.o
+ .debug_str     0x000f0081    0xde19a ./Core/Src/system_stm32g4xx.o
+ .debug_str     0x000f0081       0x68 ./Core/Startup/startup_stm32g431cbtx.o
+ .debug_str     0x000f0081    0xdecd9 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.o
+ .debug_str     0x000f0081    0xdf1c7 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_adc.o
+ .debug_str     0x000f0081    0xdf16d ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_adc_ex.o
+ .debug_str     0x000f0081    0xde45c ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_comp.o
+ .debug_str     0x000f0081    0xde995 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_cortex.o
+ .debug_str     0x000f0081    0xde86f ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dac.o
+ .debug_str     0x000f0081    0xde89e ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dac_ex.o
+ .debug_str     0x000f0081    0xde574 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma.o
+ .debug_str     0x000f0081    0xdf749 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_fdcan.o
+ .debug_str     0x000f0081    0xde325 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.o
+ .debug_str     0x000f0081    0xde10c ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_iwdg.o
+ .debug_str     0x000f0081    0xde688 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr_ex.o
+ .debug_str     0x000f0081    0xde893 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc.o
+ .debug_str     0x000f0081    0xde894 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc_ex.o
+ .debug_str     0x000f0081    0xdeacc ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_spi.o
+ .debug_str     0x000f0081    0xdf698 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.o
+ .debug_str     0x000f0081    0xdf30c ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.o
+ .debug_str     0x000f0081    0xdf155 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.o
+ .debug_str     0x000f0081    0xde953 ./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o
+ .debug_str     0x000f0081     0x3e28 ./MID/Mid_Adc.o
+ .debug_str     0x000f0081    0xe43ea ./MID/Mid_Command_Can.o
+ .debug_str     0x000f0081    0xe4232 ./MID/Mid_Command_Usart.o
+ .debug_str     0x000f0081    0xe3a51 ./MID/Mid_Control.o
+ .debug_str     0x000f0081     0x7c4d ./MID/Mid_Position_Sensor.o
 
 .comment        0x00000000       0x43
  .comment       0x00000000       0x43 ./APP/App_Can.o
                                  0x44 (size before relaxing)
  .comment       0x00000043       0x44 ./APP/App_Control.o
- .comment       0x00000043       0x44 ./APP/App_EMA.o
+ .comment       0x00000043       0x44 ./APP/App_EFA.o
  .comment       0x00000043       0x44 ./APP/App_Fault.o
  .comment       0x00000043       0x44 ./APP/App_Led.o
  .comment       0x00000043       0x44 ./APP/App_Position_Sensor.o
@@ -10025,7 +10025,7 @@ LOAD /Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.id
 .debug_frame    0x00000000     0x970c
  .debug_frame   0x00000000       0x68 ./APP/App_Can.o
  .debug_frame   0x00000068       0x34 ./APP/App_Control.o
- .debug_frame   0x0000009c       0xa4 ./APP/App_EMA.o
+ .debug_frame   0x0000009c       0xa4 ./APP/App_EFA.o
  .debug_frame   0x00000140       0x78 ./APP/App_Fault.o
  .debug_frame   0x000001b8       0x5c ./APP/App_Led.o
  .debug_frame   0x00000214       0x2c ./APP/App_Position_Sensor.o

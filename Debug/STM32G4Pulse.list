@@ -39,13 +39,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_line   0002b56f  00000000  00000000  000696cd  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000f007d  00000000  00000000  00094c3c  2**0
+ 18 .debug_str    000f0081  00000000  00000000  00094c3c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  00184cb9  2**0
+ 19 .comment      00000043  00000000  00000000  00184cbd  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  0000970c  00000000  00000000  00184cfc  2**2
+ 20 .debug_frame  0000970c  00000000  00000000  00184d00  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000004c  00000000  00000000  0018e408  2**0
+ 21 .debug_line_str 0000004c  00000000  00000000  0018e40c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1767,7 +1767,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  800138c:	4293      	cmp	r3, r2
  800138e:	d101      	bne.n	8001394 <HAL_TIM_PeriodElapsedCallback+0x14>
 	{
-		App_Led_Task_1ms();
+		App_Led_Task_1ms();//Led任务 1Khz中断
  8001390:	f000 f9a4 	bl	80016dc <App_Led_Task_1ms>
 	}
 
@@ -1777,7 +1777,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  8001398:	4293      	cmp	r3, r2
  800139a:	d101      	bne.n	80013a0 <HAL_TIM_PeriodElapsedCallback+0x20>
 	{
-		App_Can_Send_Data();
+		App_Can_Send_Data();//Can报文定时反馈
  800139c:	f7ff ff62 	bl	8001264 <App_Can_Send_Data>
 	}
 
@@ -1788,20 +1788,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  80013a6:	d109      	bne.n	80013bc <HAL_TIM_PeriodElapsedCallback+0x3c>
 	{
 
-		App_Upate_Voltage_Current_Data();
+		App_Upate_Voltage_Current_Data();//更新电压电流数据
  80013a8:	f000 fab6 	bl	8001918 <App_Upate_Voltage_Current_Data>
 
-		App_System_Safety_Monitor();
+		App_System_Safety_Monitor();//安全监测
  80013ac:	f000 fad0 	bl	8001950 <App_System_Safety_Monitor>
 
-		App_Update_Position_Sensor_Data();
+		App_Update_Position_Sensor_Data();//磁栅尺位移传感器数据更新
  80013b0:	f000 fa16 	bl	80017e0 <App_Update_Position_Sensor_Data>
 
-		App_EMA_Motion_Task();
- 80013b4:	f000 f814 	bl	80013e0 <App_EMA_Motion_Task>
+		App_EFA_Motion_Task();//输出计算
+ 80013b4:	f000 f814 	bl	80013e0 <App_EFA_Motion_Task>
 
-		App_EMA_Commutation_Task();
- 80013b8:	f000 f8f4 	bl	80015a4 <App_EMA_Commutation_Task>
+		App_EFA_Commutation_Task();//更新输出
+ 80013b8:	f000 f8f4 	bl	80015a4 <App_EFA_Commutation_Task>
 
 	}
 
@@ -1811,7 +1811,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  80013c0:	4293      	cmp	r3, r2
  80013c2:	d101      	bne.n	80013c8 <HAL_TIM_PeriodElapsedCallback+0x48>
 	{
-		App_Can_Heart_Send();//Can Heart
+		App_Can_Heart_Send();//Can心跳发送
  80013c4:	f7ff fefc 	bl	80011c0 <App_Can_Heart_Send>
 	}
 
@@ -1825,12 +1825,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  80013d8:	20000cc0 	.word	0x20000cc0
  80013dc:	20000df0 	.word	0x20000df0
 
-080013e0 <App_EMA_Motion_Task>:
+080013e0 <App_EFA_Motion_Task>:
  * 每一刻的运动方向和步进增量 (phase_increment)。
  * 【执行上下文】：必须在固定的控制环定时器中断中周期调用 (例如 1kHz 甚至 10kHz)，
  * 且必须放在位置传感器读取 (App_Update_Position_Sensor_Data) 之后执行。
  */
-void App_EMA_Motion_Task(void)
+void App_EFA_Motion_Task(void)
 {
  80013e0:	b580      	push	{r7, lr}
  80013e2:	b084      	sub	sp, #16
@@ -1839,107 +1839,107 @@ void App_EMA_Motion_Task(void)
 	     * 1. 终极安全检查层：处理最高优先级的 IDLE, ERROR 和任何硬件故障状态
 	     * ========================================================================== */
 	    if (EFA_DATA.Motor_mode == MOTOR_IDLE ||
- 80013e6:	4b61      	ldr	r3, [pc, #388]	@ (800156c <App_EMA_Motion_Task+0x18c>)
+ 80013e6:	4b61      	ldr	r3, [pc, #388]	@ (800156c <App_EFA_Motion_Task+0x18c>)
  80013e8:	781b      	ldrb	r3, [r3, #0]
  80013ea:	2b00      	cmp	r3, #0
- 80013ec:	d008      	beq.n	8001400 <App_EMA_Motion_Task+0x20>
+ 80013ec:	d008      	beq.n	8001400 <App_EFA_Motion_Task+0x20>
 	        EFA_DATA.Motor_mode == MOTOR_ERROR ||
- 80013ee:	4b5f      	ldr	r3, [pc, #380]	@ (800156c <App_EMA_Motion_Task+0x18c>)
+ 80013ee:	4b5f      	ldr	r3, [pc, #380]	@ (800156c <App_EFA_Motion_Task+0x18c>)
  80013f0:	781b      	ldrb	r3, [r3, #0]
 	    if (EFA_DATA.Motor_mode == MOTOR_IDLE ||
  80013f2:	2b02      	cmp	r3, #2
- 80013f4:	d004      	beq.n	8001400 <App_EMA_Motion_Task+0x20>
+ 80013f4:	d004      	beq.n	8001400 <App_EFA_Motion_Task+0x20>
 	        EFA_DATA.Fault_Flags != FAULT_NONE)
- 80013f6:	4b5d      	ldr	r3, [pc, #372]	@ (800156c <App_EMA_Motion_Task+0x18c>)
+ 80013f6:	4b5d      	ldr	r3, [pc, #372]	@ (800156c <App_EFA_Motion_Task+0x18c>)
  80013f8:	f8d3 3080 	ldr.w	r3, [r3, #128]	@ 0x80
 	        EFA_DATA.Motor_mode == MOTOR_ERROR ||
  80013fc:	2b00      	cmp	r3, #0
- 80013fe:	d003      	beq.n	8001408 <App_EMA_Motion_Task+0x28>
+ 80013fe:	d003      	beq.n	8001408 <App_EFA_Motion_Task+0x28>
 	    {
 	        /* 发生致命错误、系统存在未复位故障，或进入空闲模式。
 	         * 强制将相位增量清零，确保电机物理静止！ */
 	        phase_increment = 0;
- 8001400:	4b5b      	ldr	r3, [pc, #364]	@ (8001570 <App_EMA_Motion_Task+0x190>)
+ 8001400:	4b5b      	ldr	r3, [pc, #364]	@ (8001570 <App_EFA_Motion_Task+0x190>)
  8001402:	2200      	movs	r2, #0
  8001404:	601a      	str	r2, [r3, #0]
 	        return; /* 直接退出，绝对不执行后续运动规划 */
- 8001406:	e0ad      	b.n	8001564 <App_EMA_Motion_Task+0x184>
+ 8001406:	e0ad      	b.n	8001564 <App_EFA_Motion_Task+0x184>
 	    }
 
     /* ========================================================================== *
      * 2. 状态决策层：处理复合运动模式的逻辑流转 (如往复模式)
      * ========================================================================== */
     if (EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)
- 8001408:	4b58      	ldr	r3, [pc, #352]	@ (800156c <App_EMA_Motion_Task+0x18c>)
+ 8001408:	4b58      	ldr	r3, [pc, #352]	@ (800156c <App_EFA_Motion_Task+0x18c>)
  800140a:	781b      	ldrb	r3, [r3, #0]
  800140c:	2b05      	cmp	r3, #5
- 800140e:	d127      	bne.n	8001460 <App_EMA_Motion_Task+0x80>
+ 800140e:	d127      	bne.n	8001460 <App_EFA_Motion_Task+0x80>
     {
         /* 在往复模式下，检查上一个移动是否已完成 (表现为电机已停止) */
         if (phase_increment == 0)
- 8001410:	4b57      	ldr	r3, [pc, #348]	@ (8001570 <App_EMA_Motion_Task+0x190>)
+ 8001410:	4b57      	ldr	r3, [pc, #348]	@ (8001570 <App_EFA_Motion_Task+0x190>)
  8001412:	681b      	ldr	r3, [r3, #0]
  8001414:	2b00      	cmp	r3, #0
- 8001416:	d123      	bne.n	8001460 <App_EMA_Motion_Task+0x80>
+ 8001416:	d123      	bne.n	8001460 <App_EFA_Motion_Task+0x80>
         {
             if (repeated_count_current >= repeated_count_total)
- 8001418:	4b56      	ldr	r3, [pc, #344]	@ (8001574 <App_EMA_Motion_Task+0x194>)
+ 8001418:	4b56      	ldr	r3, [pc, #344]	@ (8001574 <App_EFA_Motion_Task+0x194>)
  800141a:	681a      	ldr	r2, [r3, #0]
- 800141c:	4b56      	ldr	r3, [pc, #344]	@ (8001578 <App_EMA_Motion_Task+0x198>)
+ 800141c:	4b56      	ldr	r3, [pc, #344]	@ (8001578 <App_EFA_Motion_Task+0x198>)
  800141e:	681b      	ldr	r3, [r3, #0]
  8001420:	429a      	cmp	r2, r3
- 8001422:	d303      	bcc.n	800142c <App_EMA_Motion_Task+0x4c>
+ 8001422:	d303      	bcc.n	800142c <App_EFA_Motion_Task+0x4c>
             {
                 /* 检查总次数是否已完成：任务结束，切换到空闲模式 */
                 EFA_DATA.Motor_mode = MOTOR_IDLE;
- 8001424:	4b51      	ldr	r3, [pc, #324]	@ (800156c <App_EMA_Motion_Task+0x18c>)
+ 8001424:	4b51      	ldr	r3, [pc, #324]	@ (800156c <App_EFA_Motion_Task+0x18c>)
  8001426:	2200      	movs	r2, #0
  8001428:	701a      	strb	r2, [r3, #0]
- 800142a:	e019      	b.n	8001460 <App_EMA_Motion_Task+0x80>
+ 800142a:	e019      	b.n	8001460 <App_EFA_Motion_Task+0x80>
                 //Queue_Reply_Request(0x06, 0x10);
             }
             else
             {
                 /* 任务未完成，决定下一个目标点 */
                 if (absolute_step_counter == repeated_pos_A)
- 800142c:	4b53      	ldr	r3, [pc, #332]	@ (800157c <App_EMA_Motion_Task+0x19c>)
+ 800142c:	4b53      	ldr	r3, [pc, #332]	@ (800157c <App_EFA_Motion_Task+0x19c>)
  800142e:	681a      	ldr	r2, [r3, #0]
- 8001430:	4b53      	ldr	r3, [pc, #332]	@ (8001580 <App_EMA_Motion_Task+0x1a0>)
+ 8001430:	4b53      	ldr	r3, [pc, #332]	@ (8001580 <App_EFA_Motion_Task+0x1a0>)
  8001432:	681b      	ldr	r3, [r3, #0]
  8001434:	429a      	cmp	r2, r3
- 8001436:	d104      	bne.n	8001442 <App_EMA_Motion_Task+0x62>
+ 8001436:	d104      	bne.n	8001442 <App_EFA_Motion_Task+0x62>
                 {
                     /* 当前在 A 点，下一个目标是 B 点 */
                     target_step_position = repeated_pos_B;
- 8001438:	4b52      	ldr	r3, [pc, #328]	@ (8001584 <App_EMA_Motion_Task+0x1a4>)
+ 8001438:	4b52      	ldr	r3, [pc, #328]	@ (8001584 <App_EFA_Motion_Task+0x1a4>)
  800143a:	681b      	ldr	r3, [r3, #0]
- 800143c:	4a52      	ldr	r2, [pc, #328]	@ (8001588 <App_EMA_Motion_Task+0x1a8>)
+ 800143c:	4a52      	ldr	r2, [pc, #328]	@ (8001588 <App_EFA_Motion_Task+0x1a8>)
  800143e:	6013      	str	r3, [r2, #0]
- 8001440:	e00e      	b.n	8001460 <App_EMA_Motion_Task+0x80>
+ 8001440:	e00e      	b.n	8001460 <App_EFA_Motion_Task+0x80>
                 }
                 else /* 当前在 B 点 (或者刚初始化的未知位置) */
                 {
                     /* 下一个目标是 A 点 */
                     target_step_position = repeated_pos_A;
- 8001442:	4b4f      	ldr	r3, [pc, #316]	@ (8001580 <App_EMA_Motion_Task+0x1a0>)
+ 8001442:	4b4f      	ldr	r3, [pc, #316]	@ (8001580 <App_EFA_Motion_Task+0x1a0>)
  8001444:	681b      	ldr	r3, [r3, #0]
- 8001446:	4a50      	ldr	r2, [pc, #320]	@ (8001588 <App_EMA_Motion_Task+0x1a8>)
+ 8001446:	4a50      	ldr	r2, [pc, #320]	@ (8001588 <App_EFA_Motion_Task+0x1a8>)
  8001448:	6013      	str	r3, [r2, #0]
 
                     /* 完成一次 B->A 的移动，才算一个完整的往复周期 */
                     if (absolute_step_counter == repeated_pos_B)
- 800144a:	4b4c      	ldr	r3, [pc, #304]	@ (800157c <App_EMA_Motion_Task+0x19c>)
+ 800144a:	4b4c      	ldr	r3, [pc, #304]	@ (800157c <App_EFA_Motion_Task+0x19c>)
  800144c:	681a      	ldr	r2, [r3, #0]
- 800144e:	4b4d      	ldr	r3, [pc, #308]	@ (8001584 <App_EMA_Motion_Task+0x1a4>)
+ 800144e:	4b4d      	ldr	r3, [pc, #308]	@ (8001584 <App_EFA_Motion_Task+0x1a4>)
  8001450:	681b      	ldr	r3, [r3, #0]
  8001452:	429a      	cmp	r2, r3
- 8001454:	d104      	bne.n	8001460 <App_EMA_Motion_Task+0x80>
+ 8001454:	d104      	bne.n	8001460 <App_EFA_Motion_Task+0x80>
                     {
                         repeated_count_current++;
- 8001456:	4b47      	ldr	r3, [pc, #284]	@ (8001574 <App_EMA_Motion_Task+0x194>)
+ 8001456:	4b47      	ldr	r3, [pc, #284]	@ (8001574 <App_EFA_Motion_Task+0x194>)
  8001458:	681b      	ldr	r3, [r3, #0]
  800145a:	3301      	adds	r3, #1
- 800145c:	4a45      	ldr	r2, [pc, #276]	@ (8001574 <App_EMA_Motion_Task+0x194>)
+ 800145c:	4a45      	ldr	r2, [pc, #276]	@ (8001574 <App_EFA_Motion_Task+0x194>)
  800145e:	6013      	str	r3, [r2, #0]
     /* ========================================================================== *
      * 3. 运动执行层：根据当前模式与目标，计算底层的物理驱动参数
@@ -1947,106 +1947,106 @@ void App_EMA_Motion_Task(void)
 
     /* A. 位置控制类模式 (单次定位、往复、同步) */
     if (EFA_DATA.Motor_mode == MOTOR_OPEN_POSITION ||
- 8001460:	4b42      	ldr	r3, [pc, #264]	@ (800156c <App_EMA_Motion_Task+0x18c>)
+ 8001460:	4b42      	ldr	r3, [pc, #264]	@ (800156c <App_EFA_Motion_Task+0x18c>)
  8001462:	781b      	ldrb	r3, [r3, #0]
  8001464:	2b04      	cmp	r3, #4
- 8001466:	d007      	beq.n	8001478 <App_EMA_Motion_Task+0x98>
+ 8001466:	d007      	beq.n	8001478 <App_EFA_Motion_Task+0x98>
         EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED ||
- 8001468:	4b40      	ldr	r3, [pc, #256]	@ (800156c <App_EMA_Motion_Task+0x18c>)
+ 8001468:	4b40      	ldr	r3, [pc, #256]	@ (800156c <App_EFA_Motion_Task+0x18c>)
  800146a:	781b      	ldrb	r3, [r3, #0]
     if (EFA_DATA.Motor_mode == MOTOR_OPEN_POSITION ||
  800146c:	2b05      	cmp	r3, #5
- 800146e:	d003      	beq.n	8001478 <App_EMA_Motion_Task+0x98>
+ 800146e:	d003      	beq.n	8001478 <App_EFA_Motion_Task+0x98>
         EFA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
- 8001470:	4b3e      	ldr	r3, [pc, #248]	@ (800156c <App_EMA_Motion_Task+0x18c>)
+ 8001470:	4b3e      	ldr	r3, [pc, #248]	@ (800156c <App_EFA_Motion_Task+0x18c>)
  8001472:	781b      	ldrb	r3, [r3, #0]
         EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED ||
  8001474:	2b0a      	cmp	r3, #10
- 8001476:	d11f      	bne.n	80014b8 <App_EMA_Motion_Task+0xd8>
+ 8001476:	d11f      	bne.n	80014b8 <App_EFA_Motion_Task+0xd8>
     {
         if (absolute_step_counter < target_step_position)
- 8001478:	4b40      	ldr	r3, [pc, #256]	@ (800157c <App_EMA_Motion_Task+0x19c>)
+ 8001478:	4b40      	ldr	r3, [pc, #256]	@ (800157c <App_EFA_Motion_Task+0x19c>)
  800147a:	681a      	ldr	r2, [r3, #0]
- 800147c:	4b42      	ldr	r3, [pc, #264]	@ (8001588 <App_EMA_Motion_Task+0x1a8>)
+ 800147c:	4b42      	ldr	r3, [pc, #264]	@ (8001588 <App_EFA_Motion_Task+0x1a8>)
  800147e:	681b      	ldr	r3, [r3, #0]
  8001480:	429a      	cmp	r2, r3
- 8001482:	da07      	bge.n	8001494 <App_EMA_Motion_Task+0xb4>
+ 8001482:	da07      	bge.n	8001494 <App_EFA_Motion_Task+0xb4>
         {
             motor_direction = MOTOR_FORWARD;
- 8001484:	4b41      	ldr	r3, [pc, #260]	@ (800158c <App_EMA_Motion_Task+0x1ac>)
+ 8001484:	4b41      	ldr	r3, [pc, #260]	@ (800158c <App_EFA_Motion_Task+0x1ac>)
  8001486:	2201      	movs	r2, #1
  8001488:	701a      	strb	r2, [r3, #0]
             phase_increment = position_mode_increment;
- 800148a:	4b41      	ldr	r3, [pc, #260]	@ (8001590 <App_EMA_Motion_Task+0x1b0>)
+ 800148a:	4b41      	ldr	r3, [pc, #260]	@ (8001590 <App_EFA_Motion_Task+0x1b0>)
  800148c:	681b      	ldr	r3, [r3, #0]
- 800148e:	4a38      	ldr	r2, [pc, #224]	@ (8001570 <App_EMA_Motion_Task+0x190>)
+ 800148e:	4a38      	ldr	r2, [pc, #224]	@ (8001570 <App_EFA_Motion_Task+0x190>)
  8001490:	6013      	str	r3, [r2, #0]
         if (absolute_step_counter < target_step_position)
- 8001492:	e067      	b.n	8001564 <App_EMA_Motion_Task+0x184>
+ 8001492:	e067      	b.n	8001564 <App_EFA_Motion_Task+0x184>
         }
         else if (absolute_step_counter > target_step_position)
- 8001494:	4b39      	ldr	r3, [pc, #228]	@ (800157c <App_EMA_Motion_Task+0x19c>)
+ 8001494:	4b39      	ldr	r3, [pc, #228]	@ (800157c <App_EFA_Motion_Task+0x19c>)
  8001496:	681a      	ldr	r2, [r3, #0]
- 8001498:	4b3b      	ldr	r3, [pc, #236]	@ (8001588 <App_EMA_Motion_Task+0x1a8>)
+ 8001498:	4b3b      	ldr	r3, [pc, #236]	@ (8001588 <App_EFA_Motion_Task+0x1a8>)
  800149a:	681b      	ldr	r3, [r3, #0]
  800149c:	429a      	cmp	r2, r3
- 800149e:	dd07      	ble.n	80014b0 <App_EMA_Motion_Task+0xd0>
+ 800149e:	dd07      	ble.n	80014b0 <App_EFA_Motion_Task+0xd0>
         {
             motor_direction = MOTOR_REVERSE;
- 80014a0:	4b3a      	ldr	r3, [pc, #232]	@ (800158c <App_EMA_Motion_Task+0x1ac>)
+ 80014a0:	4b3a      	ldr	r3, [pc, #232]	@ (800158c <App_EFA_Motion_Task+0x1ac>)
  80014a2:	2200      	movs	r2, #0
  80014a4:	701a      	strb	r2, [r3, #0]
             phase_increment = position_mode_increment;
- 80014a6:	4b3a      	ldr	r3, [pc, #232]	@ (8001590 <App_EMA_Motion_Task+0x1b0>)
+ 80014a6:	4b3a      	ldr	r3, [pc, #232]	@ (8001590 <App_EFA_Motion_Task+0x1b0>)
  80014a8:	681b      	ldr	r3, [r3, #0]
- 80014aa:	4a31      	ldr	r2, [pc, #196]	@ (8001570 <App_EMA_Motion_Task+0x190>)
+ 80014aa:	4a31      	ldr	r2, [pc, #196]	@ (8001570 <App_EFA_Motion_Task+0x190>)
  80014ac:	6013      	str	r3, [r2, #0]
         if (absolute_step_counter < target_step_position)
- 80014ae:	e059      	b.n	8001564 <App_EMA_Motion_Task+0x184>
+ 80014ae:	e059      	b.n	8001564 <App_EFA_Motion_Task+0x184>
         }
         else
         {
             /* 已到达目标，停止发脉冲/步进 */
             phase_increment = 0;
- 80014b0:	4b2f      	ldr	r3, [pc, #188]	@ (8001570 <App_EMA_Motion_Task+0x190>)
+ 80014b0:	4b2f      	ldr	r3, [pc, #188]	@ (8001570 <App_EFA_Motion_Task+0x190>)
  80014b2:	2200      	movs	r2, #0
  80014b4:	601a      	str	r2, [r3, #0]
         if (absolute_step_counter < target_step_position)
- 80014b6:	e055      	b.n	8001564 <App_EMA_Motion_Task+0x184>
+ 80014b6:	e055      	b.n	8001564 <App_EFA_Motion_Task+0x184>
         }
     }
 
     /* B. 开环速度控制模式 */
     else if (EFA_DATA.Motor_mode == MOTOR_OPEN_VELOCITY)
- 80014b8:	4b2c      	ldr	r3, [pc, #176]	@ (800156c <App_EMA_Motion_Task+0x18c>)
+ 80014b8:	4b2c      	ldr	r3, [pc, #176]	@ (800156c <App_EFA_Motion_Task+0x18c>)
  80014ba:	781b      	ldrb	r3, [r3, #0]
  80014bc:	2b06      	cmp	r3, #6
- 80014be:	d104      	bne.n	80014ca <App_EMA_Motion_Task+0xea>
+ 80014be:	d104      	bne.n	80014ca <App_EFA_Motion_Task+0xea>
     {
         phase_increment = velocity_mode_increment;
- 80014c0:	4b34      	ldr	r3, [pc, #208]	@ (8001594 <App_EMA_Motion_Task+0x1b4>)
+ 80014c0:	4b34      	ldr	r3, [pc, #208]	@ (8001594 <App_EFA_Motion_Task+0x1b4>)
  80014c2:	681b      	ldr	r3, [r3, #0]
- 80014c4:	4a2a      	ldr	r2, [pc, #168]	@ (8001570 <App_EMA_Motion_Task+0x190>)
+ 80014c4:	4a2a      	ldr	r2, [pc, #168]	@ (8001570 <App_EFA_Motion_Task+0x190>)
  80014c6:	6013      	str	r3, [r2, #0]
- 80014c8:	e04c      	b.n	8001564 <App_EMA_Motion_Task+0x184>
+ 80014c8:	e04c      	b.n	8001564 <App_EFA_Motion_Task+0x184>
     }
 
     /* C. 闭环位置控制模式 (PID) */
     else if (EFA_DATA.Motor_mode == MOTOR_CLOSE_POSITION)
- 80014ca:	4b28      	ldr	r3, [pc, #160]	@ (800156c <App_EMA_Motion_Task+0x18c>)
+ 80014ca:	4b28      	ldr	r3, [pc, #160]	@ (800156c <App_EFA_Motion_Task+0x18c>)
  80014cc:	781b      	ldrb	r3, [r3, #0]
  80014ce:	2b07      	cmp	r3, #7
- 80014d0:	d148      	bne.n	8001564 <App_EMA_Motion_Task+0x184>
+ 80014d0:	d148      	bne.n	8001564 <App_EFA_Motion_Task+0x184>
     {
         /* 调用 MID 层的 PID 算法，获取输出量 */
         float output = P_Control_Compute(&Motor_Position_Controller, Motor_Position_Controller.TargetPos, EFA_DATA.position_mm);
- 80014d2:	4b31      	ldr	r3, [pc, #196]	@ (8001598 <App_EMA_Motion_Task+0x1b8>)
+ 80014d2:	4b31      	ldr	r3, [pc, #196]	@ (8001598 <App_EFA_Motion_Task+0x1b8>)
  80014d4:	edd3 7a02 	vldr	s15, [r3, #8]
- 80014d8:	4b24      	ldr	r3, [pc, #144]	@ (800156c <App_EMA_Motion_Task+0x18c>)
+ 80014d8:	4b24      	ldr	r3, [pc, #144]	@ (800156c <App_EFA_Motion_Task+0x18c>)
  80014da:	ed93 7a0c 	vldr	s14, [r3, #48]	@ 0x30
  80014de:	eef0 0a47 	vmov.f32	s1, s14
  80014e2:	eeb0 0a67 	vmov.f32	s0, s15
- 80014e6:	482c      	ldr	r0, [pc, #176]	@ (8001598 <App_EMA_Motion_Task+0x1b8>)
+ 80014e6:	482c      	ldr	r0, [pc, #176]	@ (8001598 <App_EFA_Motion_Task+0x1b8>)
  80014e8:	f00a ff80 	bl	800c3ec <P_Control_Compute>
  80014ec:	ed87 0a03 	vstr	s0, [r7, #12]
 
@@ -2054,48 +2054,48 @@ void App_EMA_Motion_Task(void)
  80014f0:	edd7 7a03 	vldr	s15, [r7, #12]
  80014f4:	eef5 7ac0 	vcmpe.f32	s15, #0.0
  80014f8:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 80014fc:	db18      	blt.n	8001530 <App_EMA_Motion_Task+0x150>
+ 80014fc:	db18      	blt.n	8001530 <App_EFA_Motion_Task+0x150>
         {
             motor_direction = MOTOR_REVERSE;
- 80014fe:	4b23      	ldr	r3, [pc, #140]	@ (800158c <App_EMA_Motion_Task+0x1ac>)
+ 80014fe:	4b23      	ldr	r3, [pc, #140]	@ (800158c <App_EFA_Motion_Task+0x1ac>)
  8001500:	2200      	movs	r2, #0
  8001502:	701a      	strb	r2, [r3, #0]
             float increment_f = (output / interrupt_freq_hz) * PHASE_2_32;
- 8001504:	4b25      	ldr	r3, [pc, #148]	@ (800159c <App_EMA_Motion_Task+0x1bc>)
+ 8001504:	4b25      	ldr	r3, [pc, #148]	@ (800159c <App_EFA_Motion_Task+0x1bc>)
  8001506:	ed93 7a00 	vldr	s14, [r3]
  800150a:	edd7 6a03 	vldr	s13, [r7, #12]
  800150e:	eec6 7a87 	vdiv.f32	s15, s13, s14
- 8001512:	ed9f 7a23 	vldr	s14, [pc, #140]	@ 80015a0 <App_EMA_Motion_Task+0x1c0>
+ 8001512:	ed9f 7a23 	vldr	s14, [pc, #140]	@ 80015a0 <App_EFA_Motion_Task+0x1c0>
  8001516:	ee67 7a87 	vmul.f32	s15, s15, s14
  800151a:	edc7 7a01 	vstr	s15, [r7, #4]
             phase_increment = (uint32_t)increment_f;
  800151e:	edd7 7a01 	vldr	s15, [r7, #4]
  8001522:	eefc 7ae7 	vcvt.u32.f32	s15, s15
  8001526:	ee17 2a90 	vmov	r2, s15
- 800152a:	4b11      	ldr	r3, [pc, #68]	@ (8001570 <App_EMA_Motion_Task+0x190>)
+ 800152a:	4b11      	ldr	r3, [pc, #68]	@ (8001570 <App_EFA_Motion_Task+0x190>)
  800152c:	601a      	str	r2, [r3, #0]
- 800152e:	e019      	b.n	8001564 <App_EMA_Motion_Task+0x184>
+ 800152e:	e019      	b.n	8001564 <App_EFA_Motion_Task+0x184>
         }
         else
         {
             motor_direction = MOTOR_FORWARD;
- 8001530:	4b16      	ldr	r3, [pc, #88]	@ (800158c <App_EMA_Motion_Task+0x1ac>)
+ 8001530:	4b16      	ldr	r3, [pc, #88]	@ (800158c <App_EFA_Motion_Task+0x1ac>)
  8001532:	2201      	movs	r2, #1
  8001534:	701a      	strb	r2, [r3, #0]
             float increment_f = (-output / interrupt_freq_hz) * PHASE_2_32;
  8001536:	edd7 7a03 	vldr	s15, [r7, #12]
  800153a:	eef1 6a67 	vneg.f32	s13, s15
- 800153e:	4b17      	ldr	r3, [pc, #92]	@ (800159c <App_EMA_Motion_Task+0x1bc>)
+ 800153e:	4b17      	ldr	r3, [pc, #92]	@ (800159c <App_EFA_Motion_Task+0x1bc>)
  8001540:	ed93 7a00 	vldr	s14, [r3]
  8001544:	eec6 7a87 	vdiv.f32	s15, s13, s14
- 8001548:	ed9f 7a15 	vldr	s14, [pc, #84]	@ 80015a0 <App_EMA_Motion_Task+0x1c0>
+ 8001548:	ed9f 7a15 	vldr	s14, [pc, #84]	@ 80015a0 <App_EFA_Motion_Task+0x1c0>
  800154c:	ee67 7a87 	vmul.f32	s15, s15, s14
  8001550:	edc7 7a02 	vstr	s15, [r7, #8]
             phase_increment = (uint32_t)increment_f;
  8001554:	edd7 7a02 	vldr	s15, [r7, #8]
  8001558:	eefc 7ae7 	vcvt.u32.f32	s15, s15
  800155c:	ee17 2a90 	vmov	r2, s15
- 8001560:	4b03      	ldr	r3, [pc, #12]	@ (8001570 <App_EMA_Motion_Task+0x190>)
+ 8001560:	4b03      	ldr	r3, [pc, #12]	@ (8001570 <App_EFA_Motion_Task+0x190>)
  8001562:	601a      	str	r2, [r3, #0]
             float increment_f = (-output / interrupt_freq_hz) * PHASE_2_32;
             phase_increment = (uint32_t)increment_f;
@@ -2122,12 +2122,12 @@ void App_EMA_Motion_Task(void)
  800159c:	20000004 	.word	0x20000004
  80015a0:	4f800000 	.word	0x4f800000
 
-080015a4 <App_EMA_Commutation_Task>:
+080015a4 <App_EFA_Commutation_Task>:
  * 它消费运动规划层产生的 phase_increment，将其转化为 0~5 的六步换向扇区，
  * 并触发底层硬件进行实际的 PWM 切换。
  * 【执行上下文】：必须在控制环定时器中断中调用，且必须位于 App_EMA_Motion_Task() 之后！
  */
-void App_EMA_Commutation_Task(void)
+void App_EFA_Commutation_Task(void)
 {
  80015a4:	e92d 4fb0 	stmdb	sp!, {r4, r5, r7, r8, r9, sl, fp, lr}
  80015a8:	b082      	sub	sp, #8
@@ -2138,31 +2138,31 @@ void App_EMA_Commutation_Task(void)
      * ========================================================================== */
     /* 无论何种模式，都基于上一级状态机计算出的 phase_increment 进行累加/累减 */
     if (motor_direction == MOTOR_FORWARD)
- 80015ac:	492e      	ldr	r1, [pc, #184]	@ (8001668 <App_EMA_Commutation_Task+0xc4>)
+ 80015ac:	492e      	ldr	r1, [pc, #184]	@ (8001668 <App_EFA_Commutation_Task+0xc4>)
  80015ae:	7809      	ldrb	r1, [r1, #0]
  80015b0:	b2c9      	uxtb	r1, r1
  80015b2:	2901      	cmp	r1, #1
- 80015b4:	d107      	bne.n	80015c6 <App_EMA_Commutation_Task+0x22>
+ 80015b4:	d107      	bne.n	80015c6 <App_EFA_Commutation_Task+0x22>
     {
         phase_accumulator += phase_increment;
- 80015b6:	492d      	ldr	r1, [pc, #180]	@ (800166c <App_EMA_Commutation_Task+0xc8>)
+ 80015b6:	492d      	ldr	r1, [pc, #180]	@ (800166c <App_EFA_Commutation_Task+0xc8>)
  80015b8:	6808      	ldr	r0, [r1, #0]
- 80015ba:	492d      	ldr	r1, [pc, #180]	@ (8001670 <App_EMA_Commutation_Task+0xcc>)
+ 80015ba:	492d      	ldr	r1, [pc, #180]	@ (8001670 <App_EFA_Commutation_Task+0xcc>)
  80015bc:	6809      	ldr	r1, [r1, #0]
  80015be:	4401      	add	r1, r0
- 80015c0:	482b      	ldr	r0, [pc, #172]	@ (8001670 <App_EMA_Commutation_Task+0xcc>)
+ 80015c0:	482b      	ldr	r0, [pc, #172]	@ (8001670 <App_EFA_Commutation_Task+0xcc>)
  80015c2:	6001      	str	r1, [r0, #0]
- 80015c4:	e006      	b.n	80015d4 <App_EMA_Commutation_Task+0x30>
+ 80015c4:	e006      	b.n	80015d4 <App_EFA_Commutation_Task+0x30>
     }
     else
     {
         phase_accumulator -= phase_increment;
- 80015c6:	4929      	ldr	r1, [pc, #164]	@ (800166c <App_EMA_Commutation_Task+0xc8>)
+ 80015c6:	4929      	ldr	r1, [pc, #164]	@ (800166c <App_EFA_Commutation_Task+0xc8>)
  80015c8:	6809      	ldr	r1, [r1, #0]
- 80015ca:	4829      	ldr	r0, [pc, #164]	@ (8001670 <App_EMA_Commutation_Task+0xcc>)
+ 80015ca:	4829      	ldr	r0, [pc, #164]	@ (8001670 <App_EFA_Commutation_Task+0xcc>)
  80015cc:	6800      	ldr	r0, [r0, #0]
  80015ce:	1a41      	subs	r1, r0, r1
- 80015d0:	4827      	ldr	r0, [pc, #156]	@ (8001670 <App_EMA_Commutation_Task+0xcc>)
+ 80015d0:	4827      	ldr	r0, [pc, #156]	@ (8001670 <App_EFA_Commutation_Task+0xcc>)
  80015d2:	6001      	str	r1, [r0, #0]
     /* ========================================================================== *
      * 2. 相位到电气扇区 (0~5) 的高速映射
@@ -2170,7 +2170,7 @@ void App_EMA_Commutation_Task(void)
     /* 【神级优化】：将 0x00000000 ~ 0xFFFFFFFF 的全量程等分成 6 份。
      * 使用 64 位整数乘法后右移 32 位，完美避开了耗时的浮点除法，单周期即可完成！ */
     uint8_t new_step = (uint8_t)(((uint64_t)phase_accumulator * 6) >> 32);
- 80015d4:	4926      	ldr	r1, [pc, #152]	@ (8001670 <App_EMA_Commutation_Task+0xcc>)
+ 80015d4:	4926      	ldr	r1, [pc, #152]	@ (8001670 <App_EFA_Commutation_Task+0xcc>)
  80015d6:	6809      	ldr	r1, [r1, #0]
  80015d8:	2000      	movs	r0, #0
  80015da:	460c      	mov	r4, r1
@@ -2200,7 +2200,7 @@ void App_EMA_Commutation_Task(void)
     if (new_step > 5)
  8001614:	79fb      	ldrb	r3, [r7, #7]
  8001616:	2b05      	cmp	r3, #5
- 8001618:	d901      	bls.n	800161e <App_EMA_Commutation_Task+0x7a>
+ 8001618:	d901      	bls.n	800161e <App_EFA_Commutation_Task+0x7a>
     {
         new_step = 5;
  800161a:	2305      	movs	r3, #5
@@ -2211,38 +2211,38 @@ void App_EMA_Commutation_Task(void)
      * ========================================================================== */
     /* 只有当计算出的扇区发生变化时，才进行底层硬件操作，避免无意义的频繁刷新 */
     if (step != new_step)
- 800161e:	4b15      	ldr	r3, [pc, #84]	@ (8001674 <App_EMA_Commutation_Task+0xd0>)
+ 800161e:	4b15      	ldr	r3, [pc, #84]	@ (8001674 <App_EFA_Commutation_Task+0xd0>)
  8001620:	781b      	ldrb	r3, [r3, #0]
  8001622:	b2db      	uxtb	r3, r3
  8001624:	79fa      	ldrb	r2, [r7, #7]
  8001626:	429a      	cmp	r2, r3
- 8001628:	d018      	beq.n	800165c <App_EMA_Commutation_Task+0xb8>
+ 8001628:	d018      	beq.n	800165c <App_EFA_Commutation_Task+0xb8>
     {
         /* --------------------------------------------------- *
          * 3.2 更新绝对步进计数器 (全局物理位置的基础)
          * --------------------------------------------------- */
         if (motor_direction == MOTOR_FORWARD)
- 800162a:	4b0f      	ldr	r3, [pc, #60]	@ (8001668 <App_EMA_Commutation_Task+0xc4>)
+ 800162a:	4b0f      	ldr	r3, [pc, #60]	@ (8001668 <App_EFA_Commutation_Task+0xc4>)
  800162c:	781b      	ldrb	r3, [r3, #0]
  800162e:	b2db      	uxtb	r3, r3
  8001630:	2b01      	cmp	r3, #1
- 8001632:	d105      	bne.n	8001640 <App_EMA_Commutation_Task+0x9c>
+ 8001632:	d105      	bne.n	8001640 <App_EFA_Commutation_Task+0x9c>
         {
             absolute_step_counter++;
- 8001634:	4b10      	ldr	r3, [pc, #64]	@ (8001678 <App_EMA_Commutation_Task+0xd4>)
+ 8001634:	4b10      	ldr	r3, [pc, #64]	@ (8001678 <App_EFA_Commutation_Task+0xd4>)
  8001636:	681b      	ldr	r3, [r3, #0]
  8001638:	3301      	adds	r3, #1
- 800163a:	4a0f      	ldr	r2, [pc, #60]	@ (8001678 <App_EMA_Commutation_Task+0xd4>)
+ 800163a:	4a0f      	ldr	r2, [pc, #60]	@ (8001678 <App_EFA_Commutation_Task+0xd4>)
  800163c:	6013      	str	r3, [r2, #0]
- 800163e:	e004      	b.n	800164a <App_EMA_Commutation_Task+0xa6>
+ 800163e:	e004      	b.n	800164a <App_EFA_Commutation_Task+0xa6>
         }
         else
         {
             absolute_step_counter--;
- 8001640:	4b0d      	ldr	r3, [pc, #52]	@ (8001678 <App_EMA_Commutation_Task+0xd4>)
+ 8001640:	4b0d      	ldr	r3, [pc, #52]	@ (8001678 <App_EFA_Commutation_Task+0xd4>)
  8001642:	681b      	ldr	r3, [r3, #0]
  8001644:	3b01      	subs	r3, #1
- 8001646:	4a0c      	ldr	r2, [pc, #48]	@ (8001678 <App_EMA_Commutation_Task+0xd4>)
+ 8001646:	4a0c      	ldr	r2, [pc, #48]	@ (8001678 <App_EFA_Commutation_Task+0xd4>)
  8001648:	6013      	str	r3, [r2, #0]
         }
 
@@ -2250,11 +2250,11 @@ void App_EMA_Commutation_Task(void)
          * 3.3 触发底层硬件执行换向
          * --------------------------------------------------- */
         step = new_step;         /* 更新全局当前步进状态 */
- 800164a:	4a0a      	ldr	r2, [pc, #40]	@ (8001674 <App_EMA_Commutation_Task+0xd0>)
+ 800164a:	4a0a      	ldr	r2, [pc, #40]	@ (8001674 <App_EFA_Commutation_Task+0xd0>)
  800164c:	79fb      	ldrb	r3, [r7, #7]
  800164e:	7013      	strb	r3, [r2, #0]
         Bsp_Update_Output(step);     /* 【调用 BSP 层】真正改变 MOS 管的开关状态 */
- 8001650:	4b08      	ldr	r3, [pc, #32]	@ (8001674 <App_EMA_Commutation_Task+0xd0>)
+ 8001650:	4b08      	ldr	r3, [pc, #32]	@ (8001674 <App_EFA_Commutation_Task+0xd0>)
  8001652:	781b      	ldrb	r3, [r3, #0]
  8001654:	b2db      	uxtb	r3, r3
  8001656:	4618      	mov	r0, r3
@@ -4241,7 +4241,7 @@ int main(void)
  800220c:	f000 fc8c 	bl	8002b28 <MX_TIM15_Init>
   /* USER CODE BEGIN 2 */
 
-  Bsp_Usart_Init();
+  Bsp_Usart_Init();//板载串口Usart初始化
  8002210:	f7ff ffbc 	bl	800218c <Bsp_Usart_Init>
 
   Bsp_Close_All_Output();//关闭所有输出
@@ -4250,14 +4250,14 @@ int main(void)
   Bsp_Adc_Init();//板载ADC初始化配置
  8002218:	f7ff fc18 	bl	8001a4c <Bsp_Adc_Init>
 
-  Bsp_Can_Init();
+  Bsp_Can_Init();//板载Can接口初始化
  800221c:	f7ff fc90 	bl	8001b40 <Bsp_Can_Init>
 
   EFA_DATA.sin_offset = 1.65f;
  8002220:	4b0e      	ldr	r3, [pc, #56]	@ (800225c <main+0xa0>)
  8002222:	4a0f      	ldr	r2, [pc, #60]	@ (8002260 <main+0xa4>)
  8002224:	615a      	str	r2, [r3, #20]
-  EFA_DATA.cos_offset = 1.65f;
+  EFA_DATA.cos_offset = 1.65f;//磁栅传感器设置
  8002226:	4b0d      	ldr	r3, [pc, #52]	@ (800225c <main+0xa0>)
  8002228:	4a0d      	ldr	r2, [pc, #52]	@ (8002260 <main+0xa4>)
  800222a:	619a      	str	r2, [r3, #24]
@@ -4276,7 +4276,7 @@ int main(void)
  8002238:	480c      	ldr	r0, [pc, #48]	@ (800226c <main+0xb0>)
  800223a:	f006 fa0d 	bl	8008658 <HAL_TIM_Base_Start_IT>
 
-  App_Led_Set_State(SYS_STAT_IDLE);//  SYS_STAT_IDLE  SYS_STAT_WORKING, SYS_STAT_ERROR,
+  App_Led_Set_State(SYS_STAT_IDLE);//Led灯状态    SYS_STAT_IDLE  SYS_STAT_WORKING, SYS_STAT_ERROR,
  800223e:	2001      	movs	r0, #1
  8002240:	f7ff fab8 	bl	80017b4 <App_Led_Set_State>
   {
@@ -4288,13 +4288,13 @@ int main(void)
  8002244:	480a      	ldr	r0, [pc, #40]	@ (8002270 <main+0xb4>)
  8002246:	f005 f8fa 	bl	800743e <HAL_IWDG_Refresh>
 
-	  Mid_Can_Tx_Task();
+	  Mid_Can_Tx_Task();//Can报文发送任务
  800224a:	f009 fecf 	bl	800bfec <Mid_Can_Tx_Task>
 
-	  Can_message_process();
- 800224e:	f009 fbef 	bl	800ba30 <Can_message_process>
+	  Mid_Can_Message_Process();//Can报文接收数据处理
+ 800224e:	f009 fbef 	bl	800ba30 <Mid_Can_Message_Process>
 
-	  App_Fault_Task_Handler();
+	  App_Fault_Task_Handler();//错误处理函数
  8002252:	f7ff fa27 	bl	80016a4 <App_Fault_Task_Handler>
 	  HAL_IWDG_Refresh(&hiwdg);//刷新看门狗
  8002256:	bf00      	nop
@@ -31144,12 +31144,12 @@ float Mid_Get_Dc_I_A(void)
  800ba2a:	bd80      	pop	{r7, pc}
  800ba2c:	3a533333 	.word	0x3a533333
 
-0800ba30 <Can_message_process>:
+0800ba30 <Mid_Can_Message_Process>:
  * 0x07: 多电机同步模式 - 仅接收数据
  * 0x08: 多电机同步模式 - 广播同步触发
  * 0x09: 开环速度模式
  */
-void Can_message_process(void)
+void Mid_Can_Message_Process(void)
 {
  800ba30:	b590      	push	{r4, r7, lr}
  800ba32:	b089      	sub	sp, #36	@ 0x24
@@ -31160,18 +31160,18 @@ void Can_message_process(void)
 
     /* 1. 检查队列是否为空 */
     if (g_Rx_Queue_Head != g_Rx_Queue_Tail)
- 800ba36:	4ba9      	ldr	r3, [pc, #676]	@ (800bcdc <Can_message_process+0x2ac>)
+ 800ba36:	4ba9      	ldr	r3, [pc, #676]	@ (800bcdc <Mid_Can_Message_Process+0x2ac>)
  800ba38:	881b      	ldrh	r3, [r3, #0]
  800ba3a:	b29a      	uxth	r2, r3
- 800ba3c:	4ba8      	ldr	r3, [pc, #672]	@ (800bce0 <Can_message_process+0x2b0>)
+ 800ba3c:	4ba8      	ldr	r3, [pc, #672]	@ (800bce0 <Mid_Can_Message_Process+0x2b0>)
  800ba3e:	881b      	ldrh	r3, [r3, #0]
  800ba40:	b29b      	uxth	r3, r3
  800ba42:	429a      	cmp	r2, r3
- 800ba44:	f000 82af 	beq.w	800bfa6 <Can_message_process+0x576>
+ 800ba44:	f000 82af 	beq.w	800bfa6 <Mid_Can_Message_Process+0x576>
     {
         /* 2. 队列不为空，从 "tail" 处取出消息 */
         volatile CanRxMessage_t* msg = &g_Rx_Queue[g_Rx_Queue_Tail];
- 800ba48:	4ba5      	ldr	r3, [pc, #660]	@ (800bce0 <Can_message_process+0x2b0>)
+ 800ba48:	4ba5      	ldr	r3, [pc, #660]	@ (800bce0 <Mid_Can_Message_Process+0x2b0>)
  800ba4a:	881b      	ldrh	r3, [r3, #0]
  800ba4c:	b29b      	uxth	r3, r3
  800ba4e:	461a      	mov	r2, r3
@@ -31179,7 +31179,7 @@ void Can_message_process(void)
  800ba52:	005b      	lsls	r3, r3, #1
  800ba54:	4413      	add	r3, r2
  800ba56:	011b      	lsls	r3, r3, #4
- 800ba58:	4aa2      	ldr	r2, [pc, #648]	@ (800bce4 <Can_message_process+0x2b4>)
+ 800ba58:	4aa2      	ldr	r2, [pc, #648]	@ (800bce4 <Mid_Can_Message_Process+0x2b4>)
  800ba5a:	4413      	add	r3, r2
  800ba5c:	60fb      	str	r3, [r7, #12]
 
@@ -31190,12 +31190,12 @@ void Can_message_process(void)
  800ba5e:	68fb      	ldr	r3, [r7, #12]
  800ba60:	681b      	ldr	r3, [r3, #0]
  800ba62:	4619      	mov	r1, r3
- 800ba64:	48a0      	ldr	r0, [pc, #640]	@ (800bce8 <Can_message_process+0x2b8>)
+ 800ba64:	48a0      	ldr	r0, [pc, #640]	@ (800bce8 <Mid_Can_Message_Process+0x2b8>)
  800ba66:	f001 fb77 	bl	800d158 <iprintf>
          for(int i=0; i < msg->Rx_Header.DataLength; i++) { printf("%02X ", msg->Data[i]); }
  800ba6a:	2300      	movs	r3, #0
  800ba6c:	617b      	str	r3, [r7, #20]
- 800ba6e:	e00c      	b.n	800ba8a <Can_message_process+0x5a>
+ 800ba6e:	e00c      	b.n	800ba8a <Mid_Can_Message_Process+0x5a>
  800ba70:	68fa      	ldr	r2, [r7, #12]
  800ba72:	697b      	ldr	r3, [r7, #20]
  800ba74:	4413      	add	r3, r2
@@ -31203,7 +31203,7 @@ void Can_message_process(void)
  800ba78:	781b      	ldrb	r3, [r3, #0]
  800ba7a:	b2db      	uxtb	r3, r3
  800ba7c:	4619      	mov	r1, r3
- 800ba7e:	489b      	ldr	r0, [pc, #620]	@ (800bcec <Can_message_process+0x2bc>)
+ 800ba7e:	489b      	ldr	r0, [pc, #620]	@ (800bcec <Mid_Can_Message_Process+0x2bc>)
  800ba80:	f001 fb6a 	bl	800d158 <iprintf>
  800ba84:	697b      	ldr	r3, [r7, #20]
  800ba86:	3301      	adds	r3, #1
@@ -31212,9 +31212,9 @@ void Can_message_process(void)
  800ba8c:	68da      	ldr	r2, [r3, #12]
  800ba8e:	697b      	ldr	r3, [r7, #20]
  800ba90:	429a      	cmp	r2, r3
- 800ba92:	d8ed      	bhi.n	800ba70 <Can_message_process+0x40>
+ 800ba92:	d8ed      	bhi.n	800ba70 <Mid_Can_Message_Process+0x40>
          printf("\r\n");
- 800ba94:	4896      	ldr	r0, [pc, #600]	@ (800bcf0 <Can_message_process+0x2c0>)
+ 800ba94:	4896      	ldr	r0, [pc, #600]	@ (800bcf0 <Mid_Can_Message_Process+0x2c0>)
  800ba96:	f001 fbc7 	bl	800d228 <puts>
 
         /* ========================================================== */
@@ -31225,11 +31225,11 @@ void Can_message_process(void)
  800ba9c:	681b      	ldr	r3, [r3, #0]
  800ba9e:	f240 1201 	movw	r2, #257	@ 0x101
  800baa2:	4293      	cmp	r3, r2
- 800baa4:	d005      	beq.n	800bab2 <Can_message_process+0x82>
+ 800baa4:	d005      	beq.n	800bab2 <Mid_Can_Message_Process+0x82>
  800baa6:	68fb      	ldr	r3, [r7, #12]
  800baa8:	681b      	ldr	r3, [r3, #0]
  800baaa:	f5b3 7f80 	cmp.w	r3, #256	@ 0x100
- 800baae:	f040 8270 	bne.w	800bf92 <Can_message_process+0x562>
+ 800baae:	f040 8270 	bne.w	800bf92 <Mid_Can_Message_Process+0x562>
         {
             uint8_t command = msg->Data[0];
  800bab2:	68fb      	ldr	r3, [r7, #12]
@@ -31247,8 +31247,8 @@ void Can_message_process(void)
  800babe:	7afb      	ldrb	r3, [r7, #11]
  800bac0:	3b01      	subs	r3, #1
  800bac2:	2b08      	cmp	r3, #8
- 800bac4:	f200 8244 	bhi.w	800bf50 <Can_message_process+0x520>
- 800bac8:	a201      	add	r2, pc, #4	@ (adr r2, 800bad0 <Can_message_process+0xa0>)
+ 800bac4:	f200 8244 	bhi.w	800bf50 <Mid_Can_Message_Process+0x520>
+ 800bac8:	a201      	add	r2, pc, #4	@ (adr r2, 800bad0 <Mid_Can_Message_Process+0xa0>)
  800baca:	f852 f023 	ldr.w	pc, [r2, r3, lsl #2]
  800bace:	bf00      	nop
  800bad0:	0800baf5 	.word	0x0800baf5
@@ -31266,40 +31266,40 @@ void Can_message_process(void)
  800baf4:	2000      	movs	r0, #0
  800baf6:	f7f6 fabf 	bl	8002078 <Bsp_Dc_Power_Control>
                     HAL_TIM_Base_Stop(&htim16);
- 800bafa:	487e      	ldr	r0, [pc, #504]	@ (800bcf4 <Can_message_process+0x2c4>)
+ 800bafa:	487e      	ldr	r0, [pc, #504]	@ (800bcf4 <Mid_Can_Message_Process+0x2c4>)
  800bafc:	f7fc fd84 	bl	8008608 <HAL_TIM_Base_Stop>
                     Bsp_Close_All_Output();
  800bb00:	f7f6 f974 	bl	8001dec <Bsp_Close_All_Output>
                     if ((EFA_DATA.Fault_Flags != FAULT_NONE) ||
- 800bb04:	4b7c      	ldr	r3, [pc, #496]	@ (800bcf8 <Can_message_process+0x2c8>)
+ 800bb04:	4b7c      	ldr	r3, [pc, #496]	@ (800bcf8 <Mid_Can_Message_Process+0x2c8>)
  800bb06:	f8d3 3080 	ldr.w	r3, [r3, #128]	@ 0x80
  800bb0a:	2b00      	cmp	r3, #0
- 800bb0c:	d104      	bne.n	800bb18 <Can_message_process+0xe8>
+ 800bb0c:	d104      	bne.n	800bb18 <Mid_Can_Message_Process+0xe8>
                         (EFA_DATA.Motor_mode != MOTOR_ERROR))
- 800bb0e:	4b7a      	ldr	r3, [pc, #488]	@ (800bcf8 <Can_message_process+0x2c8>)
+ 800bb0e:	4b7a      	ldr	r3, [pc, #488]	@ (800bcf8 <Mid_Can_Message_Process+0x2c8>)
  800bb10:	781b      	ldrb	r3, [r3, #0]
                     if ((EFA_DATA.Fault_Flags != FAULT_NONE) ||
  800bb12:	2b02      	cmp	r3, #2
- 800bb14:	f000 8222 	beq.w	800bf5c <Can_message_process+0x52c>
+ 800bb14:	f000 8222 	beq.w	800bf5c <Mid_Can_Message_Process+0x52c>
                     {
                         EFA_DATA.Motor_mode = MOTOR_IDLE;
- 800bb18:	4b77      	ldr	r3, [pc, #476]	@ (800bcf8 <Can_message_process+0x2c8>)
+ 800bb18:	4b77      	ldr	r3, [pc, #476]	@ (800bcf8 <Mid_Can_Message_Process+0x2c8>)
  800bb1a:	2200      	movs	r2, #0
  800bb1c:	701a      	strb	r2, [r3, #0]
                     }
                     break;
- 800bb1e:	e21d      	b.n	800bf5c <Can_message_process+0x52c>
+ 800bb1e:	e21d      	b.n	800bf5c <Mid_Can_Message_Process+0x52c>
 
                 case 0x02: /* 命令: 高压上电 */
                     Bsp_Dc_Power_Control(true);
  800bb20:	2001      	movs	r0, #1
  800bb22:	f7f6 faa9 	bl	8002078 <Bsp_Dc_Power_Control>
                     EFA_DATA.Motor_mode = MOTOR_READY;
- 800bb26:	4b74      	ldr	r3, [pc, #464]	@ (800bcf8 <Can_message_process+0x2c8>)
+ 800bb26:	4b74      	ldr	r3, [pc, #464]	@ (800bcf8 <Mid_Can_Message_Process+0x2c8>)
  800bb28:	2201      	movs	r2, #1
  800bb2a:	701a      	strb	r2, [r3, #0]
                     break;
- 800bb2c:	e21b      	b.n	800bf66 <Can_message_process+0x536>
+ 800bb2c:	e21b      	b.n	800bf66 <Mid_Can_Message_Process+0x536>
 
                 case 0x03: /* 命令: 步进+ */
                 case 0x04: /* 命令: 步进- */
@@ -31318,20 +31318,20 @@ void Can_message_process(void)
  800bb44:	4313      	orrs	r3, r2
  800bb46:	b29b      	uxth	r3, r3
  800bb48:	b21a      	sxth	r2, r3
- 800bb4a:	4b6c      	ldr	r3, [pc, #432]	@ (800bcfc <Can_message_process+0x2cc>)
+ 800bb4a:	4b6c      	ldr	r3, [pc, #432]	@ (800bcfc <Mid_Can_Message_Process+0x2cc>)
  800bb4c:	801a      	strh	r2, [r3, #0]
                     temp_speed_float = temp_speed_int16 / 100.0f;
- 800bb4e:	4b6b      	ldr	r3, [pc, #428]	@ (800bcfc <Can_message_process+0x2cc>)
+ 800bb4e:	4b6b      	ldr	r3, [pc, #428]	@ (800bcfc <Mid_Can_Message_Process+0x2cc>)
  800bb50:	f9b3 3000 	ldrsh.w	r3, [r3]
  800bb54:	ee07 3a90 	vmov	s15, r3
  800bb58:	eeb8 7ae7 	vcvt.f32.s32	s14, s15
- 800bb5c:	eddf 6a68 	vldr	s13, [pc, #416]	@ 800bd00 <Can_message_process+0x2d0>
+ 800bb5c:	eddf 6a68 	vldr	s13, [pc, #416]	@ 800bd00 <Mid_Can_Message_Process+0x2d0>
  800bb60:	eec7 7a26 	vdiv.f32	s15, s14, s13
- 800bb64:	4b67      	ldr	r3, [pc, #412]	@ (800bd04 <Can_message_process+0x2d4>)
+ 800bb64:	4b67      	ldr	r3, [pc, #412]	@ (800bd04 <Mid_Can_Message_Process+0x2d4>)
  800bb66:	edc3 7a00 	vstr	s15, [r3]
 
                     position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
- 800bb6a:	4b66      	ldr	r3, [pc, #408]	@ (800bd04 <Can_message_process+0x2d4>)
+ 800bb6a:	4b66      	ldr	r3, [pc, #408]	@ (800bd04 <Mid_Can_Message_Process+0x2d4>)
  800bb6c:	681b      	ldr	r3, [r3, #0]
  800bb6e:	4618      	mov	r0, r3
  800bb70:	f7f5 f968 	bl	8000e44 <__aeabi_f2ulz>
@@ -31343,40 +31343,40 @@ void Can_message_process(void)
  800bb82:	4619      	mov	r1, r3
  800bb84:	f7f5 f900 	bl	8000d88 <__aeabi_ul2f>
  800bb88:	ee06 0a90 	vmov	s13, r0
- 800bb8c:	4b5e      	ldr	r3, [pc, #376]	@ (800bd08 <Can_message_process+0x2d8>)
+ 800bb8c:	4b5e      	ldr	r3, [pc, #376]	@ (800bd08 <Mid_Can_Message_Process+0x2d8>)
  800bb8e:	ed93 7a00 	vldr	s14, [r3]
  800bb92:	eec6 7a87 	vdiv.f32	s15, s13, s14
  800bb96:	eefc 7ae7 	vcvt.u32.f32	s15, s15
  800bb9a:	ee17 2a90 	vmov	r2, s15
- 800bb9e:	4b5b      	ldr	r3, [pc, #364]	@ (800bd0c <Can_message_process+0x2dc>)
+ 800bb9e:	4b5b      	ldr	r3, [pc, #364]	@ (800bd0c <Mid_Can_Message_Process+0x2dc>)
  800bba0:	601a      	str	r2, [r3, #0]
                     EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
- 800bba2:	4b55      	ldr	r3, [pc, #340]	@ (800bcf8 <Can_message_process+0x2c8>)
+ 800bba2:	4b55      	ldr	r3, [pc, #340]	@ (800bcf8 <Mid_Can_Message_Process+0x2c8>)
  800bba4:	2204      	movs	r2, #4
  800bba6:	701a      	strb	r2, [r3, #0]
 
                     printf("command:%d,speed %.2f\r\n", command, temp_speed_float);
  800bba8:	7afc      	ldrb	r4, [r7, #11]
- 800bbaa:	4b56      	ldr	r3, [pc, #344]	@ (800bd04 <Can_message_process+0x2d4>)
+ 800bbaa:	4b56      	ldr	r3, [pc, #344]	@ (800bd04 <Mid_Can_Message_Process+0x2d4>)
  800bbac:	681b      	ldr	r3, [r3, #0]
  800bbae:	4618      	mov	r0, r3
  800bbb0:	f7f4 fcf2 	bl	8000598 <__aeabi_f2d>
  800bbb4:	4602      	mov	r2, r0
  800bbb6:	460b      	mov	r3, r1
  800bbb8:	4621      	mov	r1, r4
- 800bbba:	4855      	ldr	r0, [pc, #340]	@ (800bd10 <Can_message_process+0x2e0>)
+ 800bbba:	4855      	ldr	r0, [pc, #340]	@ (800bd10 <Mid_Can_Message_Process+0x2e0>)
  800bbbc:	f001 facc 	bl	800d158 <iprintf>
 
                     if (command == 0x03) /* 正向 */
  800bbc0:	7afb      	ldrb	r3, [r7, #11]
  800bbc2:	2b03      	cmp	r3, #3
- 800bbc4:	d105      	bne.n	800bbd2 <Can_message_process+0x1a2>
+ 800bbc4:	d105      	bne.n	800bbd2 <Mid_Can_Message_Process+0x1a2>
                     {
                         target_step_position = absolute_step_counter + 1;
- 800bbc6:	4b53      	ldr	r3, [pc, #332]	@ (800bd14 <Can_message_process+0x2e4>)
+ 800bbc6:	4b53      	ldr	r3, [pc, #332]	@ (800bd14 <Mid_Can_Message_Process+0x2e4>)
  800bbc8:	681b      	ldr	r3, [r3, #0]
  800bbca:	3301      	adds	r3, #1
- 800bbcc:	4a52      	ldr	r2, [pc, #328]	@ (800bd18 <Can_message_process+0x2e8>)
+ 800bbcc:	4a52      	ldr	r2, [pc, #328]	@ (800bd18 <Mid_Can_Message_Process+0x2e8>)
  800bbce:	6013      	str	r3, [r2, #0]
                     }
                     else /* 反向 (command == 0x04) */
@@ -31384,21 +31384,21 @@ void Can_message_process(void)
                         target_step_position = absolute_step_counter - 1;
                     }
                     break;
- 800bbd0:	e1c9      	b.n	800bf66 <Can_message_process+0x536>
+ 800bbd0:	e1c9      	b.n	800bf66 <Mid_Can_Message_Process+0x536>
                         target_step_position = absolute_step_counter - 1;
- 800bbd2:	4b50      	ldr	r3, [pc, #320]	@ (800bd14 <Can_message_process+0x2e4>)
+ 800bbd2:	4b50      	ldr	r3, [pc, #320]	@ (800bd14 <Mid_Can_Message_Process+0x2e4>)
  800bbd4:	681b      	ldr	r3, [r3, #0]
  800bbd6:	3b01      	subs	r3, #1
- 800bbd8:	4a4f      	ldr	r2, [pc, #316]	@ (800bd18 <Can_message_process+0x2e8>)
+ 800bbd8:	4a4f      	ldr	r2, [pc, #316]	@ (800bd18 <Mid_Can_Message_Process+0x2e8>)
  800bbda:	6013      	str	r3, [r2, #0]
                     break;
- 800bbdc:	e1c3      	b.n	800bf66 <Can_message_process+0x536>
+ 800bbdc:	e1c3      	b.n	800bf66 <Mid_Can_Message_Process+0x536>
                 }
 
                 case 0x05: /* 命令: 往复模式 */
                 {
                     EFA_DATA.Motor_mode = MOTOR_OPEN_REPEATED;
- 800bbde:	4b46      	ldr	r3, [pc, #280]	@ (800bcf8 <Can_message_process+0x2c8>)
+ 800bbde:	4b46      	ldr	r3, [pc, #280]	@ (800bcf8 <Mid_Can_Message_Process+0x2c8>)
  800bbe0:	2205      	movs	r2, #5
  800bbe2:	701a      	strb	r2, [r3, #0]
 
@@ -31415,19 +31415,19 @@ void Can_message_process(void)
  800bbfa:	4313      	orrs	r3, r2
  800bbfc:	b29b      	uxth	r3, r3
  800bbfe:	b21a      	sxth	r2, r3
- 800bc00:	4b3e      	ldr	r3, [pc, #248]	@ (800bcfc <Can_message_process+0x2cc>)
+ 800bc00:	4b3e      	ldr	r3, [pc, #248]	@ (800bcfc <Mid_Can_Message_Process+0x2cc>)
  800bc02:	801a      	strh	r2, [r3, #0]
                     temp_speed_float = temp_speed_int16 / 100.0f;
- 800bc04:	4b3d      	ldr	r3, [pc, #244]	@ (800bcfc <Can_message_process+0x2cc>)
+ 800bc04:	4b3d      	ldr	r3, [pc, #244]	@ (800bcfc <Mid_Can_Message_Process+0x2cc>)
  800bc06:	f9b3 3000 	ldrsh.w	r3, [r3]
  800bc0a:	ee07 3a90 	vmov	s15, r3
  800bc0e:	eeb8 7ae7 	vcvt.f32.s32	s14, s15
- 800bc12:	eddf 6a3b 	vldr	s13, [pc, #236]	@ 800bd00 <Can_message_process+0x2d0>
+ 800bc12:	eddf 6a3b 	vldr	s13, [pc, #236]	@ 800bd00 <Mid_Can_Message_Process+0x2d0>
  800bc16:	eec7 7a26 	vdiv.f32	s15, s14, s13
- 800bc1a:	4b3a      	ldr	r3, [pc, #232]	@ (800bd04 <Can_message_process+0x2d4>)
+ 800bc1a:	4b3a      	ldr	r3, [pc, #232]	@ (800bd04 <Mid_Can_Message_Process+0x2d4>)
  800bc1c:	edc3 7a00 	vstr	s15, [r3]
                     position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
- 800bc20:	4b38      	ldr	r3, [pc, #224]	@ (800bd04 <Can_message_process+0x2d4>)
+ 800bc20:	4b38      	ldr	r3, [pc, #224]	@ (800bd04 <Mid_Can_Message_Process+0x2d4>)
  800bc22:	681b      	ldr	r3, [r3, #0]
  800bc24:	4618      	mov	r0, r3
  800bc26:	f7f5 f90d 	bl	8000e44 <__aeabi_f2ulz>
@@ -31439,12 +31439,12 @@ void Can_message_process(void)
  800bc38:	4619      	mov	r1, r3
  800bc3a:	f7f5 f8a5 	bl	8000d88 <__aeabi_ul2f>
  800bc3e:	ee06 0a90 	vmov	s13, r0
- 800bc42:	4b31      	ldr	r3, [pc, #196]	@ (800bd08 <Can_message_process+0x2d8>)
+ 800bc42:	4b31      	ldr	r3, [pc, #196]	@ (800bd08 <Mid_Can_Message_Process+0x2d8>)
  800bc44:	ed93 7a00 	vldr	s14, [r3]
  800bc48:	eec6 7a87 	vdiv.f32	s15, s13, s14
  800bc4c:	eefc 7ae7 	vcvt.u32.f32	s15, s15
  800bc50:	ee17 2a90 	vmov	r2, s15
- 800bc54:	4b2d      	ldr	r3, [pc, #180]	@ (800bd0c <Can_message_process+0x2dc>)
+ 800bc54:	4b2d      	ldr	r3, [pc, #180]	@ (800bd0c <Mid_Can_Message_Process+0x2dc>)
  800bc56:	601a      	str	r2, [r3, #0]
 
                     repeated_pos_A = (int32_t)((uint16_t)msg->Data[3] | (uint16_t)(msg->Data[4] << 8));
@@ -31458,7 +31458,7 @@ void Can_message_process(void)
  800bc6a:	021b      	lsls	r3, r3, #8
  800bc6c:	b29b      	uxth	r3, r3
  800bc6e:	4313      	orrs	r3, r2
- 800bc70:	4a2a      	ldr	r2, [pc, #168]	@ (800bd1c <Can_message_process+0x2ec>)
+ 800bc70:	4a2a      	ldr	r2, [pc, #168]	@ (800bd1c <Mid_Can_Message_Process+0x2ec>)
  800bc72:	6013      	str	r3, [r2, #0]
                     repeated_pos_B = (int32_t)((uint16_t)msg->Data[5] | (uint16_t)(msg->Data[6] << 8));
  800bc74:	68fb      	ldr	r3, [r7, #12]
@@ -31471,52 +31471,52 @@ void Can_message_process(void)
  800bc86:	021b      	lsls	r3, r3, #8
  800bc88:	b29b      	uxth	r3, r3
  800bc8a:	4313      	orrs	r3, r2
- 800bc8c:	4a24      	ldr	r2, [pc, #144]	@ (800bd20 <Can_message_process+0x2f0>)
+ 800bc8c:	4a24      	ldr	r2, [pc, #144]	@ (800bd20 <Mid_Can_Message_Process+0x2f0>)
  800bc8e:	6013      	str	r3, [r2, #0]
                     repeated_count_total = (uint32_t)msg->Data[7];
  800bc90:	68fb      	ldr	r3, [r7, #12]
  800bc92:	f893 302f 	ldrb.w	r3, [r3, #47]	@ 0x2f
  800bc96:	b2db      	uxtb	r3, r3
  800bc98:	461a      	mov	r2, r3
- 800bc9a:	4b22      	ldr	r3, [pc, #136]	@ (800bd24 <Can_message_process+0x2f4>)
+ 800bc9a:	4b22      	ldr	r3, [pc, #136]	@ (800bd24 <Mid_Can_Message_Process+0x2f4>)
  800bc9c:	601a      	str	r2, [r3, #0]
 
                     /* 如果往复次数为 0，则设定为无穷往复 */
                     if(repeated_count_total == 0)
- 800bc9e:	4b21      	ldr	r3, [pc, #132]	@ (800bd24 <Can_message_process+0x2f4>)
+ 800bc9e:	4b21      	ldr	r3, [pc, #132]	@ (800bd24 <Mid_Can_Message_Process+0x2f4>)
  800bca0:	681b      	ldr	r3, [r3, #0]
  800bca2:	2b00      	cmp	r3, #0
- 800bca4:	d103      	bne.n	800bcae <Can_message_process+0x27e>
+ 800bca4:	d103      	bne.n	800bcae <Mid_Can_Message_Process+0x27e>
                     {
                         repeated_count_total = 0xFFFFFFFF;
- 800bca6:	4b1f      	ldr	r3, [pc, #124]	@ (800bd24 <Can_message_process+0x2f4>)
+ 800bca6:	4b1f      	ldr	r3, [pc, #124]	@ (800bd24 <Mid_Can_Message_Process+0x2f4>)
  800bca8:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
  800bcac:	601a      	str	r2, [r3, #0]
                     }
                     repeated_count_current = 0;
- 800bcae:	4b1e      	ldr	r3, [pc, #120]	@ (800bd28 <Can_message_process+0x2f8>)
+ 800bcae:	4b1e      	ldr	r3, [pc, #120]	@ (800bd28 <Mid_Can_Message_Process+0x2f8>)
  800bcb0:	2200      	movs	r2, #0
  800bcb2:	601a      	str	r2, [r3, #0]
 
                     printf("command:%d,speed_hz %.2f,%ld,%ld\r\n", command, temp_speed_float, repeated_pos_A, repeated_pos_B);
  800bcb4:	7afc      	ldrb	r4, [r7, #11]
- 800bcb6:	4b13      	ldr	r3, [pc, #76]	@ (800bd04 <Can_message_process+0x2d4>)
+ 800bcb6:	4b13      	ldr	r3, [pc, #76]	@ (800bd04 <Mid_Can_Message_Process+0x2d4>)
  800bcb8:	681b      	ldr	r3, [r3, #0]
  800bcba:	4618      	mov	r0, r3
  800bcbc:	f7f4 fc6c 	bl	8000598 <__aeabi_f2d>
  800bcc0:	4602      	mov	r2, r0
  800bcc2:	460b      	mov	r3, r1
- 800bcc4:	4915      	ldr	r1, [pc, #84]	@ (800bd1c <Can_message_process+0x2ec>)
+ 800bcc4:	4915      	ldr	r1, [pc, #84]	@ (800bd1c <Mid_Can_Message_Process+0x2ec>)
  800bcc6:	6809      	ldr	r1, [r1, #0]
- 800bcc8:	4815      	ldr	r0, [pc, #84]	@ (800bd20 <Can_message_process+0x2f0>)
+ 800bcc8:	4815      	ldr	r0, [pc, #84]	@ (800bd20 <Mid_Can_Message_Process+0x2f0>)
  800bcca:	6800      	ldr	r0, [r0, #0]
  800bccc:	9001      	str	r0, [sp, #4]
  800bcce:	9100      	str	r1, [sp, #0]
  800bcd0:	4621      	mov	r1, r4
- 800bcd2:	4816      	ldr	r0, [pc, #88]	@ (800bd2c <Can_message_process+0x2fc>)
+ 800bcd2:	4816      	ldr	r0, [pc, #88]	@ (800bd2c <Mid_Can_Message_Process+0x2fc>)
  800bcd4:	f001 fa40 	bl	800d158 <iprintf>
                     break;
- 800bcd8:	e145      	b.n	800bf66 <Can_message_process+0x536>
+ 800bcd8:	e145      	b.n	800bf66 <Mid_Can_Message_Process+0x536>
  800bcda:	bf00      	nop
  800bcdc:	20000892 	.word	0x20000892
  800bce0:	20000896 	.word	0x20000896
@@ -31544,7 +31544,7 @@ void Can_message_process(void)
                 case 0x06: /* 命令: 绝对位置模式 */
                 {
                     EFA_DATA.Motor_mode = MOTOR_OPEN_POSITION;
- 800bd30:	4b9f      	ldr	r3, [pc, #636]	@ (800bfb0 <Can_message_process+0x580>)
+ 800bd30:	4b9f      	ldr	r3, [pc, #636]	@ (800bfb0 <Mid_Can_Message_Process+0x580>)
  800bd32:	2204      	movs	r2, #4
  800bd34:	701a      	strb	r2, [r3, #0]
 
@@ -31561,19 +31561,19 @@ void Can_message_process(void)
  800bd4c:	4313      	orrs	r3, r2
  800bd4e:	b29b      	uxth	r3, r3
  800bd50:	b21a      	sxth	r2, r3
- 800bd52:	4b98      	ldr	r3, [pc, #608]	@ (800bfb4 <Can_message_process+0x584>)
+ 800bd52:	4b98      	ldr	r3, [pc, #608]	@ (800bfb4 <Mid_Can_Message_Process+0x584>)
  800bd54:	801a      	strh	r2, [r3, #0]
                     temp_speed_float = temp_speed_int16 / 100.0f;
- 800bd56:	4b97      	ldr	r3, [pc, #604]	@ (800bfb4 <Can_message_process+0x584>)
+ 800bd56:	4b97      	ldr	r3, [pc, #604]	@ (800bfb4 <Mid_Can_Message_Process+0x584>)
  800bd58:	f9b3 3000 	ldrsh.w	r3, [r3]
  800bd5c:	ee07 3a90 	vmov	s15, r3
  800bd60:	eeb8 7ae7 	vcvt.f32.s32	s14, s15
- 800bd64:	eddf 6a94 	vldr	s13, [pc, #592]	@ 800bfb8 <Can_message_process+0x588>
+ 800bd64:	eddf 6a94 	vldr	s13, [pc, #592]	@ 800bfb8 <Mid_Can_Message_Process+0x588>
  800bd68:	eec7 7a26 	vdiv.f32	s15, s14, s13
- 800bd6c:	4b93      	ldr	r3, [pc, #588]	@ (800bfbc <Can_message_process+0x58c>)
+ 800bd6c:	4b93      	ldr	r3, [pc, #588]	@ (800bfbc <Mid_Can_Message_Process+0x58c>)
  800bd6e:	edc3 7a00 	vstr	s15, [r3]
                     position_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
- 800bd72:	4b92      	ldr	r3, [pc, #584]	@ (800bfbc <Can_message_process+0x58c>)
+ 800bd72:	4b92      	ldr	r3, [pc, #584]	@ (800bfbc <Mid_Can_Message_Process+0x58c>)
  800bd74:	681b      	ldr	r3, [r3, #0]
  800bd76:	4618      	mov	r0, r3
  800bd78:	f7f5 f864 	bl	8000e44 <__aeabi_f2ulz>
@@ -31585,12 +31585,12 @@ void Can_message_process(void)
  800bd8a:	4619      	mov	r1, r3
  800bd8c:	f7f4 fffc 	bl	8000d88 <__aeabi_ul2f>
  800bd90:	ee06 0a90 	vmov	s13, r0
- 800bd94:	4b8a      	ldr	r3, [pc, #552]	@ (800bfc0 <Can_message_process+0x590>)
+ 800bd94:	4b8a      	ldr	r3, [pc, #552]	@ (800bfc0 <Mid_Can_Message_Process+0x590>)
  800bd96:	ed93 7a00 	vldr	s14, [r3]
  800bd9a:	eec6 7a87 	vdiv.f32	s15, s13, s14
  800bd9e:	eefc 7ae7 	vcvt.u32.f32	s15, s15
  800bda2:	ee17 2a90 	vmov	r2, s15
- 800bda6:	4b87      	ldr	r3, [pc, #540]	@ (800bfc4 <Can_message_process+0x594>)
+ 800bda6:	4b87      	ldr	r3, [pc, #540]	@ (800bfc4 <Mid_Can_Message_Process+0x594>)
  800bda8:	601a      	str	r2, [r3, #0]
 
                     uint32_t absolute_pos = (uint32_t)msg->Data[3] | (uint32_t)msg->Data[4] << 8;
@@ -31606,10 +31606,10 @@ void Can_message_process(void)
  800bdc0:	607b      	str	r3, [r7, #4]
                     target_step_position = absolute_pos;
  800bdc2:	687b      	ldr	r3, [r7, #4]
- 800bdc4:	4a80      	ldr	r2, [pc, #512]	@ (800bfc8 <Can_message_process+0x598>)
+ 800bdc4:	4a80      	ldr	r2, [pc, #512]	@ (800bfc8 <Mid_Can_Message_Process+0x598>)
  800bdc6:	6013      	str	r3, [r2, #0]
                     break;
- 800bdc8:	e0cd      	b.n	800bf66 <Can_message_process+0x536>
+ 800bdc8:	e0cd      	b.n	800bf66 <Mid_Can_Message_Process+0x536>
                 }
 
                 case 0x07: /* 命令: 多电机同步模式 (参数接收) */
@@ -31619,10 +31619,10 @@ void Can_message_process(void)
  800bdcc:	681b      	ldr	r3, [r3, #0]
  800bdce:	f240 1201 	movw	r2, #257	@ 0x101
  800bdd2:	4293      	cmp	r3, r2
- 800bdd4:	f040 80c4 	bne.w	800bf60 <Can_message_process+0x530>
+ 800bdd4:	f040 80c4 	bne.w	800bf60 <Mid_Can_Message_Process+0x530>
                     {
                             EFA_DATA.Motor_mode = MOTOR_SYNC_POSITION;
- 800bdd8:	4b75      	ldr	r3, [pc, #468]	@ (800bfb0 <Can_message_process+0x580>)
+ 800bdd8:	4b75      	ldr	r3, [pc, #468]	@ (800bfb0 <Mid_Can_Message_Process+0x580>)
  800bdda:	220a      	movs	r2, #10
  800bddc:	701a      	strb	r2, [r3, #0]
 
@@ -31639,21 +31639,21 @@ void Can_message_process(void)
  800bdf4:	4313      	orrs	r3, r2
  800bdf6:	b29b      	uxth	r3, r3
  800bdf8:	b21a      	sxth	r2, r3
- 800bdfa:	4b6e      	ldr	r3, [pc, #440]	@ (800bfb4 <Can_message_process+0x584>)
+ 800bdfa:	4b6e      	ldr	r3, [pc, #440]	@ (800bfb4 <Mid_Can_Message_Process+0x584>)
  800bdfc:	801a      	strh	r2, [r3, #0]
                             temp_speed_float = temp_speed_int16 / 100.0f;
- 800bdfe:	4b6d      	ldr	r3, [pc, #436]	@ (800bfb4 <Can_message_process+0x584>)
+ 800bdfe:	4b6d      	ldr	r3, [pc, #436]	@ (800bfb4 <Mid_Can_Message_Process+0x584>)
  800be00:	f9b3 3000 	ldrsh.w	r3, [r3]
  800be04:	ee07 3a90 	vmov	s15, r3
  800be08:	eeb8 7ae7 	vcvt.f32.s32	s14, s15
- 800be0c:	eddf 6a6a 	vldr	s13, [pc, #424]	@ 800bfb8 <Can_message_process+0x588>
+ 800be0c:	eddf 6a6a 	vldr	s13, [pc, #424]	@ 800bfb8 <Mid_Can_Message_Process+0x588>
  800be10:	eec7 7a26 	vdiv.f32	s15, s14, s13
- 800be14:	4b69      	ldr	r3, [pc, #420]	@ (800bfbc <Can_message_process+0x58c>)
+ 800be14:	4b69      	ldr	r3, [pc, #420]	@ (800bfbc <Mid_Can_Message_Process+0x58c>)
  800be16:	edc3 7a00 	vstr	s15, [r3]
                             Sync_Motor_Speed = temp_speed_float;
- 800be1a:	4b68      	ldr	r3, [pc, #416]	@ (800bfbc <Can_message_process+0x58c>)
+ 800be1a:	4b68      	ldr	r3, [pc, #416]	@ (800bfbc <Mid_Can_Message_Process+0x58c>)
  800be1c:	681b      	ldr	r3, [r3, #0]
- 800be1e:	4a6b      	ldr	r2, [pc, #428]	@ (800bfcc <Can_message_process+0x59c>)
+ 800be1e:	4a6b      	ldr	r2, [pc, #428]	@ (800bfcc <Mid_Can_Message_Process+0x59c>)
  800be20:	6013      	str	r3, [r2, #0]
 
                             Sync_Motor_position = (uint32_t)msg->Data[3] | (uint32_t)msg->Data[4] << 8;
@@ -31666,11 +31666,11 @@ void Can_message_process(void)
  800be32:	b2db      	uxtb	r3, r3
  800be34:	021b      	lsls	r3, r3, #8
  800be36:	4313      	orrs	r3, r2
- 800be38:	4a65      	ldr	r2, [pc, #404]	@ (800bfd0 <Can_message_process+0x5a0>)
+ 800be38:	4a65      	ldr	r2, [pc, #404]	@ (800bfd0 <Mid_Can_Message_Process+0x5a0>)
  800be3a:	6013      	str	r3, [r2, #0]
                     }
                     break;
- 800be3c:	e090      	b.n	800bf60 <Can_message_process+0x530>
+ 800be3c:	e090      	b.n	800bf60 <Mid_Can_Message_Process+0x530>
                 }
 
                 case 0x08: /* 命令: 多电机同步模式 (广播同步执行) */
@@ -31679,16 +31679,16 @@ void Can_message_process(void)
  800be3e:	68fb      	ldr	r3, [r7, #12]
  800be40:	681b      	ldr	r3, [r3, #0]
  800be42:	f5b3 7f80 	cmp.w	r3, #256	@ 0x100
- 800be46:	f040 808d 	bne.w	800bf64 <Can_message_process+0x534>
+ 800be46:	f040 808d 	bne.w	800bf64 <Mid_Can_Message_Process+0x534>
                     {
                         if (EFA_DATA.Motor_mode == MOTOR_SYNC_POSITION)
- 800be4a:	4b59      	ldr	r3, [pc, #356]	@ (800bfb0 <Can_message_process+0x580>)
+ 800be4a:	4b59      	ldr	r3, [pc, #356]	@ (800bfb0 <Mid_Can_Message_Process+0x580>)
  800be4c:	781b      	ldrb	r3, [r3, #0]
  800be4e:	2b0a      	cmp	r3, #10
- 800be50:	f040 8088 	bne.w	800bf64 <Can_message_process+0x534>
+ 800be50:	f040 8088 	bne.w	800bf64 <Mid_Can_Message_Process+0x534>
                         {
                             position_mode_increment = (uint32_t)(((uint64_t)Sync_Motor_Speed * 0x100000000) / interrupt_freq_hz);
- 800be54:	4b5d      	ldr	r3, [pc, #372]	@ (800bfcc <Can_message_process+0x59c>)
+ 800be54:	4b5d      	ldr	r3, [pc, #372]	@ (800bfcc <Mid_Can_Message_Process+0x59c>)
  800be56:	681b      	ldr	r3, [r3, #0]
  800be58:	4618      	mov	r0, r3
  800be5a:	f7f4 fff3 	bl	8000e44 <__aeabi_f2ulz>
@@ -31700,29 +31700,29 @@ void Can_message_process(void)
  800be6c:	4619      	mov	r1, r3
  800be6e:	f7f4 ff8b 	bl	8000d88 <__aeabi_ul2f>
  800be72:	ee06 0a90 	vmov	s13, r0
- 800be76:	4b52      	ldr	r3, [pc, #328]	@ (800bfc0 <Can_message_process+0x590>)
+ 800be76:	4b52      	ldr	r3, [pc, #328]	@ (800bfc0 <Mid_Can_Message_Process+0x590>)
  800be78:	ed93 7a00 	vldr	s14, [r3]
  800be7c:	eec6 7a87 	vdiv.f32	s15, s13, s14
  800be80:	eefc 7ae7 	vcvt.u32.f32	s15, s15
  800be84:	ee17 2a90 	vmov	r2, s15
- 800be88:	4b4e      	ldr	r3, [pc, #312]	@ (800bfc4 <Can_message_process+0x594>)
+ 800be88:	4b4e      	ldr	r3, [pc, #312]	@ (800bfc4 <Mid_Can_Message_Process+0x594>)
  800be8a:	601a      	str	r2, [r3, #0]
                             target_step_position = Sync_Motor_position;
- 800be8c:	4b50      	ldr	r3, [pc, #320]	@ (800bfd0 <Can_message_process+0x5a0>)
+ 800be8c:	4b50      	ldr	r3, [pc, #320]	@ (800bfd0 <Mid_Can_Message_Process+0x5a0>)
  800be8e:	681b      	ldr	r3, [r3, #0]
  800be90:	461a      	mov	r2, r3
- 800be92:	4b4d      	ldr	r3, [pc, #308]	@ (800bfc8 <Can_message_process+0x598>)
+ 800be92:	4b4d      	ldr	r3, [pc, #308]	@ (800bfc8 <Mid_Can_Message_Process+0x598>)
  800be94:	601a      	str	r2, [r3, #0]
                         }
                     }
                     break;
- 800be96:	e065      	b.n	800bf64 <Can_message_process+0x534>
+ 800be96:	e065      	b.n	800bf64 <Mid_Can_Message_Process+0x534>
                 }
 
                 case 0x09: /* 命令: 开环速度模式 */
                 {
                     EFA_DATA.Motor_mode = MOTOR_OPEN_VELOCITY;
- 800be98:	4b45      	ldr	r3, [pc, #276]	@ (800bfb0 <Can_message_process+0x580>)
+ 800be98:	4b45      	ldr	r3, [pc, #276]	@ (800bfb0 <Mid_Can_Message_Process+0x580>)
  800be9a:	2206      	movs	r2, #6
  800be9c:	701a      	strb	r2, [r3, #0]
 
@@ -31739,54 +31739,54 @@ void Can_message_process(void)
  800beb4:	4313      	orrs	r3, r2
  800beb6:	b29b      	uxth	r3, r3
  800beb8:	b21a      	sxth	r2, r3
- 800beba:	4b3e      	ldr	r3, [pc, #248]	@ (800bfb4 <Can_message_process+0x584>)
+ 800beba:	4b3e      	ldr	r3, [pc, #248]	@ (800bfb4 <Mid_Can_Message_Process+0x584>)
  800bebc:	801a      	strh	r2, [r3, #0]
                     temp_speed_float = temp_speed_int16 / 100.0f;
- 800bebe:	4b3d      	ldr	r3, [pc, #244]	@ (800bfb4 <Can_message_process+0x584>)
+ 800bebe:	4b3d      	ldr	r3, [pc, #244]	@ (800bfb4 <Mid_Can_Message_Process+0x584>)
  800bec0:	f9b3 3000 	ldrsh.w	r3, [r3]
  800bec4:	ee07 3a90 	vmov	s15, r3
  800bec8:	eeb8 7ae7 	vcvt.f32.s32	s14, s15
- 800becc:	eddf 6a3a 	vldr	s13, [pc, #232]	@ 800bfb8 <Can_message_process+0x588>
+ 800becc:	eddf 6a3a 	vldr	s13, [pc, #232]	@ 800bfb8 <Mid_Can_Message_Process+0x588>
  800bed0:	eec7 7a26 	vdiv.f32	s15, s14, s13
- 800bed4:	4b39      	ldr	r3, [pc, #228]	@ (800bfbc <Can_message_process+0x58c>)
+ 800bed4:	4b39      	ldr	r3, [pc, #228]	@ (800bfbc <Mid_Can_Message_Process+0x58c>)
  800bed6:	edc3 7a00 	vstr	s15, [r3]
                     open_loop_velocity = temp_speed_float;
- 800beda:	4b38      	ldr	r3, [pc, #224]	@ (800bfbc <Can_message_process+0x58c>)
+ 800beda:	4b38      	ldr	r3, [pc, #224]	@ (800bfbc <Mid_Can_Message_Process+0x58c>)
  800bedc:	edd3 7a00 	vldr	s15, [r3]
  800bee0:	eefd 7ae7 	vcvt.s32.f32	s15, s15
  800bee4:	ee17 3a90 	vmov	r3, s15
  800bee8:	b21a      	sxth	r2, r3
- 800beea:	4b3a      	ldr	r3, [pc, #232]	@ (800bfd4 <Can_message_process+0x5a4>)
+ 800beea:	4b3a      	ldr	r3, [pc, #232]	@ (800bfd4 <Mid_Can_Message_Process+0x5a4>)
  800beec:	801a      	strh	r2, [r3, #0]
 
                     if (open_loop_velocity > 0)
- 800beee:	4b39      	ldr	r3, [pc, #228]	@ (800bfd4 <Can_message_process+0x5a4>)
+ 800beee:	4b39      	ldr	r3, [pc, #228]	@ (800bfd4 <Mid_Can_Message_Process+0x5a4>)
  800bef0:	f9b3 3000 	ldrsh.w	r3, [r3]
  800bef4:	2b00      	cmp	r3, #0
- 800bef6:	dd03      	ble.n	800bf00 <Can_message_process+0x4d0>
+ 800bef6:	dd03      	ble.n	800bf00 <Mid_Can_Message_Process+0x4d0>
                     {
                         motor_direction = MOTOR_FORWARD;
- 800bef8:	4b37      	ldr	r3, [pc, #220]	@ (800bfd8 <Can_message_process+0x5a8>)
+ 800bef8:	4b37      	ldr	r3, [pc, #220]	@ (800bfd8 <Mid_Can_Message_Process+0x5a8>)
  800befa:	2201      	movs	r2, #1
  800befc:	701a      	strb	r2, [r3, #0]
- 800befe:	e00a      	b.n	800bf16 <Can_message_process+0x4e6>
+ 800befe:	e00a      	b.n	800bf16 <Mid_Can_Message_Process+0x4e6>
                     }
                     else
                     {
                         motor_direction = MOTOR_REVERSE;
- 800bf00:	4b35      	ldr	r3, [pc, #212]	@ (800bfd8 <Can_message_process+0x5a8>)
+ 800bf00:	4b35      	ldr	r3, [pc, #212]	@ (800bfd8 <Mid_Can_Message_Process+0x5a8>)
  800bf02:	2200      	movs	r2, #0
  800bf04:	701a      	strb	r2, [r3, #0]
                         temp_speed_float = -temp_speed_float; /* 取绝对值供后续增量计算 */
- 800bf06:	4b2d      	ldr	r3, [pc, #180]	@ (800bfbc <Can_message_process+0x58c>)
+ 800bf06:	4b2d      	ldr	r3, [pc, #180]	@ (800bfbc <Mid_Can_Message_Process+0x58c>)
  800bf08:	edd3 7a00 	vldr	s15, [r3]
  800bf0c:	eef1 7a67 	vneg.f32	s15, s15
- 800bf10:	4b2a      	ldr	r3, [pc, #168]	@ (800bfbc <Can_message_process+0x58c>)
+ 800bf10:	4b2a      	ldr	r3, [pc, #168]	@ (800bfbc <Mid_Can_Message_Process+0x58c>)
  800bf12:	edc3 7a00 	vstr	s15, [r3]
                     }
 
                     velocity_mode_increment = (uint32_t)(((uint64_t)temp_speed_float * 0x100000000) / interrupt_freq_hz);
- 800bf16:	4b29      	ldr	r3, [pc, #164]	@ (800bfbc <Can_message_process+0x58c>)
+ 800bf16:	4b29      	ldr	r3, [pc, #164]	@ (800bfbc <Mid_Can_Message_Process+0x58c>)
  800bf18:	681b      	ldr	r3, [r3, #0]
  800bf1a:	4618      	mov	r0, r3
  800bf1c:	f7f4 ff92 	bl	8000e44 <__aeabi_f2ulz>
@@ -31798,16 +31798,16 @@ void Can_message_process(void)
  800bf2e:	4619      	mov	r1, r3
  800bf30:	f7f4 ff2a 	bl	8000d88 <__aeabi_ul2f>
  800bf34:	ee06 0a90 	vmov	s13, r0
- 800bf38:	4b21      	ldr	r3, [pc, #132]	@ (800bfc0 <Can_message_process+0x590>)
+ 800bf38:	4b21      	ldr	r3, [pc, #132]	@ (800bfc0 <Mid_Can_Message_Process+0x590>)
  800bf3a:	ed93 7a00 	vldr	s14, [r3]
  800bf3e:	eec6 7a87 	vdiv.f32	s15, s13, s14
  800bf42:	eefc 7ae7 	vcvt.u32.f32	s15, s15
  800bf46:	ee17 2a90 	vmov	r2, s15
- 800bf4a:	4b24      	ldr	r3, [pc, #144]	@ (800bfdc <Can_message_process+0x5ac>)
+ 800bf4a:	4b24      	ldr	r3, [pc, #144]	@ (800bfdc <Mid_Can_Message_Process+0x5ac>)
  800bf4c:	601a      	str	r2, [r3, #0]
                     // printf("%d,%ld\r\n", open_loop_velocity, velocity_mode_increment);
                     break;
- 800bf4e:	e00a      	b.n	800bf66 <Can_message_process+0x536>
+ 800bf4e:	e00a      	b.n	800bf66 <Mid_Can_Message_Process+0x536>
                 }
 
                 default:
@@ -31815,16 +31815,16 @@ void Can_message_process(void)
  800bf50:	2301      	movs	r3, #1
  800bf52:	74fb      	strb	r3, [r7, #19]
                     printf("ERR: Unknown Command\r\n");
- 800bf54:	4822      	ldr	r0, [pc, #136]	@ (800bfe0 <Can_message_process+0x5b0>)
+ 800bf54:	4822      	ldr	r0, [pc, #136]	@ (800bfe0 <Mid_Can_Message_Process+0x5b0>)
  800bf56:	f001 f967 	bl	800d228 <puts>
                     break;
- 800bf5a:	e004      	b.n	800bf66 <Can_message_process+0x536>
+ 800bf5a:	e004      	b.n	800bf66 <Mid_Can_Message_Process+0x536>
                     break;
  800bf5c:	bf00      	nop
- 800bf5e:	e002      	b.n	800bf66 <Can_message_process+0x536>
+ 800bf5e:	e002      	b.n	800bf66 <Mid_Can_Message_Process+0x536>
                     break;
  800bf60:	bf00      	nop
- 800bf62:	e000      	b.n	800bf66 <Can_message_process+0x536>
+ 800bf62:	e000      	b.n	800bf66 <Mid_Can_Message_Process+0x536>
                     break;
  800bf64:	bf00      	nop
             }
@@ -31834,7 +31834,7 @@ void Can_message_process(void)
  800bf66:	68fb      	ldr	r3, [r7, #12]
  800bf68:	681b      	ldr	r3, [r3, #0]
  800bf6a:	f5b3 7f80 	cmp.w	r3, #256	@ 0x100
- 800bf6e:	d010      	beq.n	800bf92 <Can_message_process+0x562>
+ 800bf6e:	d010      	beq.n	800bf92 <Mid_Can_Message_Process+0x562>
             {
                 Queue_Reply_Request(command, status_code);
  800bf70:	7cfa      	ldrb	r2, [r7, #19]
@@ -31845,20 +31845,20 @@ void Can_message_process(void)
 
                 /* 根据模式启停相关定时器功能 */
                 if (EFA_DATA.Motor_mode == MOTOR_OPEN_REPEATED)
- 800bf7c:	4b0c      	ldr	r3, [pc, #48]	@ (800bfb0 <Can_message_process+0x580>)
+ 800bf7c:	4b0c      	ldr	r3, [pc, #48]	@ (800bfb0 <Mid_Can_Message_Process+0x580>)
  800bf7e:	781b      	ldrb	r3, [r3, #0]
  800bf80:	2b05      	cmp	r3, #5
- 800bf82:	d103      	bne.n	800bf8c <Can_message_process+0x55c>
+ 800bf82:	d103      	bne.n	800bf8c <Mid_Can_Message_Process+0x55c>
                 {
                     HAL_TIM_Base_Start_IT(&htim16);
- 800bf84:	4817      	ldr	r0, [pc, #92]	@ (800bfe4 <Can_message_process+0x5b4>)
+ 800bf84:	4817      	ldr	r0, [pc, #92]	@ (800bfe4 <Mid_Can_Message_Process+0x5b4>)
  800bf86:	f7fc fb67 	bl	8008658 <HAL_TIM_Base_Start_IT>
- 800bf8a:	e002      	b.n	800bf92 <Can_message_process+0x562>
+ 800bf8a:	e002      	b.n	800bf92 <Mid_Can_Message_Process+0x562>
                 }
                 else
                 {
                     HAL_TIM_Base_Stop(&htim16);
- 800bf8c:	4815      	ldr	r0, [pc, #84]	@ (800bfe4 <Can_message_process+0x5b4>)
+ 800bf8c:	4815      	ldr	r0, [pc, #84]	@ (800bfe4 <Mid_Can_Message_Process+0x5b4>)
  800bf8e:	f7fc fb3b 	bl	8008608 <HAL_TIM_Base_Stop>
             /* ========================================================== */
         }
@@ -31866,14 +31866,14 @@ void Can_message_process(void)
         /* 6. 【关键】处理完毕，移动 Rx 队列的 "Tail" 指针 */
         /* 使用位运算提升效率，并正式将该条数据从队列中移出 */
         g_Rx_Queue_Tail = (g_Rx_Queue_Tail + 1) & (RX_QUEUE_SIZE - 1);
- 800bf92:	4b15      	ldr	r3, [pc, #84]	@ (800bfe8 <Can_message_process+0x5b8>)
+ 800bf92:	4b15      	ldr	r3, [pc, #84]	@ (800bfe8 <Mid_Can_Message_Process+0x5b8>)
  800bf94:	881b      	ldrh	r3, [r3, #0]
  800bf96:	b29b      	uxth	r3, r3
  800bf98:	3301      	adds	r3, #1
  800bf9a:	b29b      	uxth	r3, r3
  800bf9c:	f003 030f 	and.w	r3, r3, #15
  800bfa0:	b29a      	uxth	r2, r3
- 800bfa2:	4b11      	ldr	r3, [pc, #68]	@ (800bfe8 <Can_message_process+0x5b8>)
+ 800bfa2:	4b11      	ldr	r3, [pc, #68]	@ (800bfe8 <Mid_Can_Message_Process+0x5b8>)
  800bfa4:	801a      	strh	r2, [r3, #0]
     }
 }

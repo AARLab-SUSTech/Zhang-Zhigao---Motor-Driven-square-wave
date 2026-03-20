@@ -1,6 +1,6 @@
 "./APP/App_Can.o"
 "./APP/App_Control.o"
-"./APP/App_EMA.o"
+"./APP/App_EFA.o"
 "./APP/App_Fault.o"
 "./APP/App_Led.o"
 "./APP/App_Position_Sensor.o"

@@ -11,7 +11,7 @@
 #include <Mid_Control.h>
 #include "main.h"
 #include "Bsp_Control.h"
-#include "App_EMA.h"
+#include "App_EFA.h"
 #include "App_Fault.h"
 /* ==========================================
  * 外部依赖声明 (Extern Declarations)

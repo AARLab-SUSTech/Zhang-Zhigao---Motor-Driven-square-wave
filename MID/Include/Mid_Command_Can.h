@@ -19,7 +19,7 @@
  * @brief  处理 CAN 接收队列中的报文并执行业务逻辑分发 (消费者)
  * @note   需在主循环或高频业务任务中周期性调用，以非阻塞方式处理接收到的底层数据。
  */
-void Can_message_process(void);
+void Mid_Can_Message_Process(void);
 
 /**
  * @brief  CAN 发送队列清空任务 (MID 层)
