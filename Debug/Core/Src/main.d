@@ -56,7 +56,10 @@ Core/Src/main.o: ../Core/Src/main.c \
  /Users/letian/git/stm32-g4-hv/APP/Include/App_Voltage_Current.h \
  /Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Adc.h \
  /Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Usart.h \
- /Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Control.h
+ /Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Control.h \
+ /Users/letian/git/stm32-g4-hv/BSP/Include/lcd_init.h \
+ /Users/letian/git/stm32-g4-hv/BSP/Include/lcd.h \
+ /Users/letian/git/stm32-g4-hv/BSP/Include/pic.h
 /Users/letian/git/stm32-g4-hv/APP/Include/App_EFA.h:
 /Users/letian/git/stm32-g4-hv/Core/Inc/main.h:
 /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
@@ -115,3 +118,6 @@ Core/Src/main.o: ../Core/Src/main.c \
 /Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Adc.h:
 /Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Usart.h:
 /Users/letian/git/stm32-g4-hv/BSP/Include/Bsp_Control.h:
+/Users/letian/git/stm32-g4-hv/BSP/Include/lcd_init.h:
+/Users/letian/git/stm32-g4-hv/BSP/Include/lcd.h:
+/Users/letian/git/stm32-g4-hv/BSP/Include/pic.h:

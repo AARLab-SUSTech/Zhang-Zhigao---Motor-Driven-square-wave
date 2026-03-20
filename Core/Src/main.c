@@ -40,6 +40,11 @@
 #include "Bsp_Usart.h"
 #include "Bsp_Can.h"
 #include "Bsp_Control.h"
+
+#include "lcd_init.h"
+#include "lcd.h"
+#include "pic.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -192,6 +197,15 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim17);//CAN Heart中断
 
   App_Led_Set_State(SYS_STAT_IDLE);//Led灯状态    SYS_STAT_IDLE  SYS_STAT_WORKING, SYS_STAT_ERROR,
+
+  LCD_Init();//LCD初始化
+  LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
+
+  LCD_ShowChinese(0, 0, (uint8_t *)"中景园电子", RED, WHITE, 32, 0);
+  LCD_ShowString(0, 40, (uint8_t *)"LCD_W:", RED, WHITE, 16, 0);
+  LCD_ShowString(80, 40, (uint8_t *)"LCD_H:", RED, WHITE, 16, 0);
+  LCD_ShowString(80, 40, (uint8_t *)"LCD_H:", RED, WHITE, 16, 0);
+  LCD_ShowString(0, 70, (uint8_t *)"Increaseing Nun:", RED, WHITE, 16, 0);
 
   /* USER CODE END 2 */
 
