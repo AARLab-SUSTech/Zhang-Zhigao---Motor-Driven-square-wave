@@ -43,7 +43,6 @@
 
 #include "lcd_init.h"
 #include "lcd.h"
-#include "pic.h"
 
 /* USER CODE END Includes */
 
@@ -169,7 +168,7 @@ int main(void)
   MX_FDCAN1_Init();
   MX_TIM16_Init();
   MX_TIM17_Init();
-  MX_IWDG_Init();
+  //MX_IWDG_Init();
   MX_TIM15_Init();
   /* USER CODE BEGIN 2 */
 
@@ -184,24 +183,24 @@ int main(void)
   EFA_DATA.sin_offset = 1.65f;
   EFA_DATA.cos_offset = 1.65f;//磁栅传感器设置
 
-  HAL_TIM_Base_Start_IT(&htim6);//高频计算中断
-
-  HAL_TIM_Base_Start_IT(&htim15);//用于LED状态修改
-
-  //HAL_TIM_Base_Start_IT(&htim16);//周期性返回CAN报文
-
-  HAL_TIM_Base_Start_IT(&htim17);//CAN Heart中断
-
-  App_Led_Set_State(SYS_STAT_IDLE);//Led灯状态    SYS_STAT_IDLE  SYS_STAT_WORKING, SYS_STAT_ERROR,
-
   LCD_Init();//LCD初始化
   LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
 
-  LCD_ShowChinese(0, 0, (uint8_t *)"中景园电子", RED, WHITE, 32, 0);
+  LCD_ShowChinese(0, 0, (uint8_t *)"中景园电子", RED, WHITE, 24, 0);
   LCD_ShowString(0, 40, (uint8_t *)"LCD_W:", RED, WHITE, 16, 0);
   LCD_ShowString(80, 40, (uint8_t *)"LCD_H:", RED, WHITE, 16, 0);
   LCD_ShowString(80, 40, (uint8_t *)"LCD_H:", RED, WHITE, 16, 0);
   LCD_ShowString(0, 70, (uint8_t *)"Increaseing Nun:", RED, WHITE, 16, 0);
+
+  //HAL_TIM_Base_Start_IT(&htim6);//高频计算中断
+
+  //HAL_TIM_Base_Start_IT(&htim15);//用于LED状态修改
+
+  //HAL_TIM_Base_Start_IT(&htim16);//周期性返回CAN报文
+
+  //HAL_TIM_Base_Start_IT(&htim17);//CAN Heart中断
+
+  App_Led_Set_State(SYS_STAT_IDLE);//Led灯状态    SYS_STAT_IDLE  SYS_STAT_WORKING, SYS_STAT_ERROR,
 
   /* USER CODE END 2 */
 
@@ -221,6 +220,10 @@ int main(void)
 
 	  App_Fault_Task_Handler();//错误处理函数
 
+	  LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
+	  HAL_Delay(200);
+	  LCD_Fill(0,0,LCD_W,LCD_H,BLUE);
+	  HAL_Delay(200);
   }
   /* USER CODE END 3 */
 }
@@ -1058,8 +1061,10 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOF, GPIO_PIN_1, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, SPI1_CS_Pin|Power_ON_Pin|GPIO_PIN_3|GPIO_PIN_4
-                          |GPIO_PIN_5|CH1__CTR_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, SPI1_CS_Pin|GPIO_PIN_3, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, Power_ON_Pin|GPIO_PIN_4|GPIO_PIN_5|CH1__CTR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : PC13 */
   GPIO_InitStruct.Pin = GPIO_PIN_13;
@@ -1075,14 +1080,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SPI1_CS_Pin PB3 PB4 PB5
-                           CH1__CTR_Pin */
-  GPIO_InitStruct.Pin = SPI1_CS_Pin|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
-                          |CH1__CTR_Pin;
+  /*Configure GPIO pin : SPI1_CS_Pin */
+  GPIO_InitStruct.Pin = SPI1_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(SPI1_CS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : Power_ON_Pin */
   GPIO_InitStruct.Pin = Power_ON_Pin;
@@ -1090,6 +1093,20 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(Power_ON_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB3 PB4 PB5 */
+  GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : CH1__CTR_Pin */
+  GPIO_InitStruct.Pin = CH1__CTR_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(CH1__CTR_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
