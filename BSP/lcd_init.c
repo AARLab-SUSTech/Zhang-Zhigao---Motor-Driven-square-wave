@@ -26,27 +26,44 @@ void LCD_GPIO_Init(void)
       入口数据：dat  要写入的串行数据
       返回值：  无
 ******************************************************************************/
+//void LCD_Writ_Bus(uint8_t dat)
+//{
+//	uint8_t i;
+//	LCD_CS_Clr();
+//	for(i=0;i<8;i++)
+//	{
+//		LCD_SCLK_Clr();
+//		if(dat&0x80)
+//		{
+//		   LCD_MOSI_Set();
+//		}
+//		else
+//		{
+//		   LCD_MOSI_Clr();
+//		}
+//		LCD_SCLK_Set();
+//		dat<<=1;
+//	}
+//  LCD_CS_Set();
+//}
+extern SPI_HandleTypeDef hspi1;
+/******************************************************************************
+      函数说明：LCD串行数据写入函数 (硬件SPI版)
+      入口数据：dat  要写入的串行数据
+      返回值：  无
+******************************************************************************/
 void LCD_Writ_Bus(uint8_t dat)
-{	
-	uint8_t i;
-	LCD_CS_Clr();
-	for(i=0;i<8;i++)
-	{			  
-		LCD_SCLK_Clr();
-		if(dat&0x80)
-		{
-		   LCD_MOSI_Set();
-		}
-		else
-		{
-		   LCD_MOSI_Clr();
-		}
-		LCD_SCLK_Set();
-		dat<<=1;
-	}	
-  LCD_CS_Set();	
-}
+{
+	LCD_CS_Clr(); // 拉低片选，选中屏幕
 
+	// 使用 HAL 库的轮询发送函数
+	// &dat: 数据的地址
+	// 1: 发送 1 个字节
+	// 10: 超时时间 10ms
+	HAL_SPI_Transmit(&hspi1, &dat, 1, 100);
+
+	LCD_CS_Set(); // 拉高片选，取消选中
+}
 
 /******************************************************************************
       函数说明：LCD写入数据
@@ -144,7 +161,7 @@ void LCD_Init(void)
 	HAL_Delay(100);
 	
 	//LCD_BLK_Set();//打开背光
-  HAL_Delay(100);
+	HAL_Delay(100);
 	
 	//************* Start Initial Sequence **********//
 	LCD_WR_REG(0x11); //Sleep out 

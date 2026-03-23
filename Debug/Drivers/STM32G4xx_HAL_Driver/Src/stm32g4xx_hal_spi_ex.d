@@ -1,5 +1,5 @@
-Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc.o: \
- ../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc.c \
+Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_spi_ex.o: \
+ ../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_spi_ex.c \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h \
  /Users/letian/git/stm32-g4-hv/Core/Inc/stm32g4xx_hal_conf.h \
  /Users/letian/git/stm32-g4-hv/Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_rcc.h \
