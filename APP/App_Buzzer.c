@@ -2,45 +2,88 @@
 #include "Bsp_Control.h"
 #include "stm32g4xx_hal.h"
 
-/* 记录蜂鸣器应该关闭的时间戳 */
-static uint32_t Buzzer_Stop_Tick = 0;
-/* 记录蜂鸣器当前是否在响 */
-static bool Buzzer_Is_On = false;
+/* 定义蜂鸣器的工作模式 */
+typedef enum {
+    BUZZER_MODE_IDLE = 0,    // 静音
+    BUZZER_MODE_ONESHOT,     // 单次发声 (如按键音)
+    BUZZER_MODE_ERROR_ALARM  // 周期性报警音 (故障)
+} Buzzer_Mode_t;
 
-/**
- * @brief  启动蜂鸣器 (非阻塞)
- * @param  ms: 响鸣时间
- */
+static Buzzer_Mode_t Buzzer_Mode = BUZZER_MODE_IDLE;
+
+/* 状态机时间戳变量 */
+static uint32_t Buzzer_Next_Toggle_Tick = 0;
+static bool     Buzzer_HW_State = false;
+
+/* ==================================================== *
+ * 1. 单次发声 API (按键提示音调用这个)
+ * ==================================================== */
 void App_Buzzer_Beep(uint32_t ms)
 {
     if (ms == 0) return;
 
-    Bsp_Buzzer_Control(true);            // 1. 硬件引脚拉高，开始发声
-    Buzzer_Stop_Tick = HAL_GetTick() + ms; // 2. 计算并记录未来的停止时间点
-    Buzzer_Is_On = true;                 // 3. 标记状态
+    /* 如果系统正在严重报警，按键音不要去打断报警音 */
+    if (Buzzer_Mode == BUZZER_MODE_ERROR_ALARM) return;
+
+    Buzzer_Mode = BUZZER_MODE_ONESHOT;
+    Buzzer_HW_State = true;
+    Bsp_Buzzer_Control(true);
+    Buzzer_Next_Toggle_Tick = HAL_GetTick() + ms; // 记录关闭时间
 }
 
-/**
- * @brief  蜂鸣器后台守护任务 (放在 main.c 的 while(1) 中循环调用)
- */
-void App_Buzzer_Task(void)
+/* ==================================================== *
+ * 2. 持续报警 API (故障中心调用这个)
+ * ==================================================== */
+void App_Buzzer_Set_Alarm(bool enable)
 {
-    /* 只有当蜂鸣器在响，并且当前系统时间已经超过了设定的停止时间时，才执行关闭 */
-    if (Buzzer_Is_On && (HAL_GetTick() >= Buzzer_Stop_Tick))
+    if (enable)
     {
-        Bsp_Buzzer_Control(false); // 关闭硬件
-        Buzzer_Is_On = false;      // 清除状态
+        if (Buzzer_Mode != BUZZER_MODE_ERROR_ALARM) {
+            Buzzer_Mode = BUZZER_MODE_ERROR_ALARM;
+            Buzzer_HW_State = true;
+            Bsp_Buzzer_Control(true);
+            Buzzer_Next_Toggle_Tick = HAL_GetTick() + 300; // 首次响 300ms
+        }
+    }
+    else
+    {
+        Buzzer_Mode = BUZZER_MODE_IDLE;
+        Buzzer_HW_State = false;
+        Bsp_Buzzer_Control(false);
     }
 }
 
+/* ==================================================== *
+ * 3. 蜂鸣器后台守护任务 (放在 main 的 while(1) 中高频调用)
+ * ==================================================== */
+void App_Buzzer_Task(void)
+{
+    if (Buzzer_Mode == BUZZER_MODE_IDLE) {
+        return; /* 静音模式，直接退出，不浪费 CPU */
+    }
 
+    /* 时间到了！执行动作 */
+    if (HAL_GetTick() >= Buzzer_Next_Toggle_Tick)
+    {
+        if (Buzzer_Mode == BUZZER_MODE_ONESHOT)
+        {
+            /* 单次发声结束，关闭硬件并切回 IDLE */
+            Buzzer_HW_State = false;
+            Bsp_Buzzer_Control(false);
+            Buzzer_Mode = BUZZER_MODE_IDLE;
+        }
+        else if (Buzzer_Mode == BUZZER_MODE_ERROR_ALARM)
+        {
+            /* 周期性报警：翻转蜂鸣器状态 (滴、滴、滴...) */
+            Buzzer_HW_State = !Buzzer_HW_State;
+            Bsp_Buzzer_Control(Buzzer_HW_State);
 
-
-
-
-
-
-
-
-
-
+            /* 设置下一次翻转的时间 (你可以随意调节这个节奏) */
+            if (Buzzer_HW_State == true) {
+                Buzzer_Next_Toggle_Tick = HAL_GetTick() + 200; // 响 200ms
+            } else {
+                Buzzer_Next_Toggle_Tick = HAL_GetTick() + 1200; // 停 1200ms
+            }
+        }
+    }
+}

@@ -25,14 +25,16 @@ void App_Fault_Clear(uint32_t fault_code)
     App_Led_Set_State(SYS_STAT_IDLE);
 }
 
-/**
- * @brief  全局故障裁决任务 (在 main 函数 while(1) 中高频轮询)
- */
 void App_Fault_Task_Handler(void)
 {
-    /* 1. 如果没有任何故障，直接退出 */
+    /* 1. 如果没有任何故障，解除报警并退出 */
     if (EFA_DATA.Fault_Flags == FAULT_NONE)
     {
+        /* 假设系统被复位清除了故障，我们顺手关掉报警 */
+        if (EFA_DATA.Motor_mode == MOTOR_ERROR) {
+             App_Buzzer_Set_Alarm(false); // 取消持续报警
+             // 其他恢复逻辑...
+        }
         return;
     }
 
@@ -45,8 +47,8 @@ void App_Fault_Task_Handler(void)
         App_Led_Set_State(SYS_STAT_ERROR);
         Bsp_Close_All_Output();           /* 封锁 PWM */
         Bsp_Dc_Power_Control(false);      /* 切断高压 */
-        //Bsp_Buzzer_Control(true);         /* 鸣叫报警 */
+
+        // ！！！完美调用，只需一句话，后台自动滴滴滴 ！！！
+        App_Buzzer_Set_Alarm(true);
     }
-
-
 }

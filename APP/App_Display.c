@@ -469,7 +469,9 @@ void App_Display_Update(void)
                 LCD_ShowString(163, 190, (uint8_t *)"Over Cur", WHITE, RED, 24, 0);
             } else if (EFA_DATA.Fault_Flags & FAULT_HV_OVER_VOLTAGE) {
                 LCD_ShowString(163, 190, (uint8_t *)"Over Vol", WHITE, RED, 24, 0);
-            } else {
+			} else if (EFA_DATA.Fault_Flags & FAULT_DC_OVER_CURRENT) {
+				LCD_ShowString(163, 190, (uint8_t *)"Over Dc", WHITE, RED, 24, 0);
+			} else {
                 LCD_ShowString(163, 190, (uint8_t *)"SYS ERR ", WHITE, RED, 24, 0);
             }
         }

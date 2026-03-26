@@ -233,8 +233,6 @@ int main(void)
 
 	  Mid_Can_Message_Process();//Can报文接收数据处理
 
-	  App_Fault_Task_Handler();//错误处理函数
-
 	#ifdef LCD_169_ENABLE
 	  App_Display_Update();
 	#endif
@@ -244,6 +242,8 @@ int main(void)
 		  Last_Sys_Time_ms = HAL_GetTick();
 		  Button_Process();     //周期调用按键处理函数
 	  }
+
+	  App_Fault_Task_Handler();//错误处理函数
 
 	  App_Buzzer_Task();//
 

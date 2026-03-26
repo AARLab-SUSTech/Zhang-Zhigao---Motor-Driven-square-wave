@@ -4,6 +4,7 @@
 #include "stdio.h"
 #include "Bsp_Button.h"
 
+#include "App_Fault.h"
 #include "App_EFA.h"
 #include <Mid_Control.h>
 #include "Mid_Command_Usart.h"
