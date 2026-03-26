@@ -245,7 +245,7 @@ int main(void)
 		  Button_Process();     //周期调用按键处理函数
 	  }
 
-	  App_Buzzer_Task();
+	  App_Buzzer_Task();//
 
 	  App_Button_Task();
 
