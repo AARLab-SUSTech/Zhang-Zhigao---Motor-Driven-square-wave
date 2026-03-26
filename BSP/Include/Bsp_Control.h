@@ -27,4 +27,10 @@ void Bsp_Update_Output(uint8_t new_step);
  */
 void Bsp_Close_All_Output(void);
 
+/**
+ * @brief  返回高压 DCDC 电源状态
+ * @param  state 1: 开启高压供电, 0: 切断高压供电
+ */
+uint8_t Bsp_Get_Dc_Power_State(void);
+
 #endif

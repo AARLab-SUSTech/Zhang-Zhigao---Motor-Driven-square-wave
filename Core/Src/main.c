@@ -22,6 +22,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <Bsp_Can.h>
+#include <Bsp_Lcd.h>
+#include <Bsp_Lcd_Init.h>
 #include <Mid_Command_Usart.h>
 #include <Mid_Command_Can.h>
 #include <Mid_Control.h>
@@ -30,6 +32,7 @@
 
 #include "APP_EFA.h"
 
+#include "App_Button.h"
 #include "App_Led.h"
 #include "App_Can.h"
 #include "App_Fault.h"
@@ -41,14 +44,18 @@
 #include "Bsp_Can.h"
 #include "Bsp_Control.h"
 
-#include "lcd_init.h"
-#include "lcd.h"
+#include "App_Display.h"
+#include "App_Button.h"
+#include "App_Buzzer.h"
 
+
+#include "Bsp_Led.h"
+#include "Bsp_Button.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define LCD_169_ENABLE
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -86,6 +93,7 @@ TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim7;
+TIM_HandleTypeDef htim8;
 TIM_HandleTypeDef htim15;
 TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
@@ -95,7 +103,6 @@ DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USER CODE BEGIN PV */
-
 
 /* USER CODE END PV */
 
@@ -116,16 +123,17 @@ static void MX_TIM6_Init(void);
 static void MX_FDCAN1_Init(void);
 static void MX_TIM16_Init(void);
 static void MX_TIM17_Init(void);
-static void MX_IWDG_Init(void);
 static void MX_TIM15_Init(void);
 static void MX_SPI1_Init(void);
+static void MX_TIM8_Init(void);
+static void MX_IWDG_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint32_t Last_Sys_Time_ms = 0;
 /* USER CODE END 0 */
 
 /**
@@ -171,9 +179,10 @@ int main(void)
   MX_FDCAN1_Init();
   MX_TIM16_Init();
   MX_TIM17_Init();
-  //MX_IWDG_Init();
   MX_TIM15_Init();
   MX_SPI1_Init();
+  MX_TIM8_Init();
+  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
 
   Bsp_Usart_Init();//板载串口Usart初始化
@@ -184,25 +193,27 @@ int main(void)
 
   Bsp_Can_Init();//板载Can接口初始化
 
+  App_Button_Init();
+
   EFA_DATA.sin_offset = 1.65f;
   EFA_DATA.cos_offset = 1.65f;//磁栅传感器设置
 
-  LCD_Init();//LCD初始化
-  LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
+  #ifdef LCD_169_ENABLE
 
-  LCD_ShowChinese(0, 0, (uint8_t *)"中景园电子", RED, WHITE, 24, 0);
-  LCD_ShowString(0, 40, (uint8_t *)"LCD_W:", RED, WHITE, 16, 0);
-  LCD_ShowString(80, 40, (uint8_t *)"LCD_H:", RED, WHITE, 16, 0);
-  LCD_ShowString(80, 40, (uint8_t *)"LCD_H:", RED, WHITE, 16, 0);
-  LCD_ShowString(0, 70, (uint8_t *)"Increaseing Nun:", RED, WHITE, 16, 0);
+	  LCD_Init();//LCD初始化
+	  LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
 
-  //HAL_TIM_Base_Start_IT(&htim6);//高频计算中断
+	  App_Display_Init();
 
-  //HAL_TIM_Base_Start_IT(&htim15);//用于LED状态修改
+   #endif
 
-  //HAL_TIM_Base_Start_IT(&htim16);//周期性返回CAN报文
+  HAL_TIM_Base_Start_IT(&htim6);//高频计算中断
 
-  //HAL_TIM_Base_Start_IT(&htim17);//CAN Heart中断
+  HAL_TIM_Base_Start_IT(&htim15);//用于LED状态修改
+
+  HAL_TIM_Base_Start_IT(&htim16);//周期性返回CAN报文
+
+  HAL_TIM_Base_Start_IT(&htim17);//CAN Heart中断
 
   App_Led_Set_State(SYS_STAT_IDLE);//Led灯状态    SYS_STAT_IDLE  SYS_STAT_WORKING, SYS_STAT_ERROR,
 
@@ -224,10 +235,20 @@ int main(void)
 
 	  App_Fault_Task_Handler();//错误处理函数
 
-	  LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
-	  HAL_Delay(200);
-	  LCD_Fill(0,0,LCD_W,LCD_H,BLUE);
-	  HAL_Delay(200);
+	#ifdef LCD_169_ENABLE
+	  App_Display_Update();
+	#endif
+
+	  if((HAL_GetTick() - Last_Sys_Time_ms) > 20)
+	  {
+		  Last_Sys_Time_ms = HAL_GetTick();
+		  Button_Process();     //周期调用按键处理函数
+	  }
+
+	  App_Buzzer_Task();
+
+	  App_Button_Task();
+
   }
   /* USER CODE END 3 */
 }
@@ -653,7 +674,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -893,6 +914,53 @@ static void MX_TIM7_Init(void)
   /* USER CODE BEGIN TIM7_Init 2 */
 
   /* USER CODE END TIM7_Init 2 */
+
+}
+
+/**
+  * @brief TIM8 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM8_Init(void)
+{
+
+  /* USER CODE BEGIN TIM8_Init 0 */
+
+  /* USER CODE END TIM8_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM8_Init 1 */
+
+  /* USER CODE END TIM8_Init 1 */
+  htim8.Instance = TIM8;
+  htim8.Init.Prescaler = 169;
+  htim8.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim8.Init.Period = 9999;
+  htim8.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim8.Init.RepetitionCounter = 0;
+  htim8.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim8, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterOutputTrigger2 = TIM_TRGO2_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim8, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM8_Init 2 */
+
+  /* USER CODE END TIM8_Init 2 */
 
 }
 
@@ -1144,6 +1212,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Btn1_Pin */
+  GPIO_InitStruct.Pin = Btn1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(Btn1_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 

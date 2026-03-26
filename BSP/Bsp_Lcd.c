@@ -1,6 +1,6 @@
-#include "lcd.h"
-#include "lcd_init.h"
-#include "lcdfont.h"
+#include <Bsp_Lcd.h>
+#include <Bsp_Lcd_Init.h>
+#include <Bsp_Lcdfont.h>
 
 
 /******************************************************************************
@@ -554,4 +554,56 @@ void LCD_ShowPicture(uint16_t x,uint16_t y,uint16_t length,uint16_t width,const 
 	}			
 }
 
+///**
+// * @brief  在 LCD 上画一个实心圆点 (用于指示灯)
+// * @param  x0, y0: 圆心坐标
+// * @param  r: 半径
+// * @param  color: 圆的颜色
+// * @param  bg_color: 背景色 (用于覆盖擦除旧状态，绝对防闪屏)
+// */
+//void LCD_Draw_SolidDot(uint16_t x0, uint16_t y0, uint8_t r, uint16_t color, uint16_t bg_color)
+//{
+//    int16_t x, y;
+//    // 简单粗暴的矩形扫描法画圆，适合小半径(如 r=4~6)，性能完全足够
+//    for(x = -r; x <= r; x++) {
+//        for(y = -r; y <= r; y++) {
+//            if(x*x + y*y <= r*r) {
+//                LCD_DrawPoint(x0 + x, y0 + y, color);
+//            } else {
+//                /* 如果你想完美防闪，可以在这里画背景色，
+//                   但对于这种小点，直接在调用前用 LCD_Fill 刷一下局部背景更快 */
+//            }
+//        }
+//    }
+//}
 
+/**
+ * @brief  【极速优化版】在 LCD 上画一个实心圆点
+ * @note   消除 LCD_DrawPoint 开销，采用一次性开辟窗口 + 连续显存倾倒法
+ */
+void LCD_Draw_SolidDot(uint16_t x0, uint16_t y0, uint8_t r, uint16_t color, uint16_t bg_color)
+{
+    int16_t x, y;
+
+    /* 1. 一次性开辟一个正方形的显存窗口 (从左上角到右下角) */
+    /* 这句话只执行 1 次！省去了原来 121 次的坐标指令握手 */
+    LCD_Address_Set(x0 - r, y0 - r, x0 + r, y0 + r);
+
+    /* 2. 连续向窗口内倾倒颜色数据 (屏幕硬件会自动从左到右，从上到下换行) */
+    for(y = -r; y <= r; y++)
+    {
+        for(x = -r; x <= r; x++)
+        {
+            if(x*x + y*y <= r*r)
+            {
+                LCD_WR_DATA(color);    // 在圆内，倒前景颜色
+            }
+            else
+            {
+                LCD_WR_DATA(bg_color); // 在圆外但在方框内，倒背景颜色
+                /* 注意：这里画背景色，顺带把原有屏幕的旧圆残影给擦除了！
+                   所以你连上一层的 LCD_Fill 局部清屏都可以删掉了！*/
+            }
+        }
+    }
+}

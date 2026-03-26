@@ -118,6 +118,8 @@ extern COMP_HandleTypeDef hcomp2;
 #define Buzzer_GPIO_Port GPIOA
 #define Lcd_DC_Pin GPIO_PIN_4
 #define Lcd_DC_GPIO_Port GPIOB
+#define Btn1_Pin GPIO_PIN_8
+#define Btn1_GPIO_Port GPIOB
 #define CH1__CTR_Pin GPIO_PIN_9
 #define CH1__CTR_GPIO_Port GPIOB
 

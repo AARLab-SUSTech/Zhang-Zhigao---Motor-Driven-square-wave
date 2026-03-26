@@ -65,6 +65,8 @@ typedef struct {
     Motor_Control_Mode_e Motor_mode;         /* 当前电机所处的工作模式 */
     uint8_t              first_calculation;  /* 首次计算标志位 (用于初始化差分等历史状态) */
     uint8_t              Loop_count;         /* 降频计数器 (用于低速位置环和速度环的执行节拍) */
+    uint8_t              Step;               /* 六步换相的步数 */
+    uint8_t              Last_Step;               /* 六步换相的步数 */
 
     /* --- 2. 磁栅/编码器传感器数据 --- */
     uint32_t             sin_cos_ADC_RAW[2]; /* 原始 ADC 采样值 (0: SIN, 1: COS) */

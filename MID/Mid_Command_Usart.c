@@ -320,7 +320,7 @@ void Mid_Process_Usart_Data(uint8_t* data, uint16_t size)
                 /* 7. 状态预处理：如果是运行指令，则打开电源并置位 Ready */
                 if(data[4] != 0x25)
                 {
-                    Bsp_Dc_Power_Control(true); ;
+                    Bsp_Dc_Power_Control(true);
                     EFA_DATA.Motor_mode = MOTOR_READY;
                 }
 
@@ -464,5 +464,19 @@ void Mid_Usart_Send_JustFloat(float *pData, uint8_t count)
     Bsp_Usart_Send_DMA(g_uart_tx_buffer, TotalBytes);
 }
 
+/**
+ * @brief  获取输出的电频率
+ */
+float Mid_Get_Fre_Ele(void)
+{
+	return temp_speed_float;
+}
 
+/**
+ * @brief  设置新的电频率
+ */
+void Mid_Set_Fre_Ele(float Fre)
+{
+	temp_speed_float = Fre;
+}
 

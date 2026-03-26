@@ -13,6 +13,7 @@
 #include "Bsp_Control.h"
 #include "stm32g4xx_hal.h"
 
+uint8_t Dc_Power_State = 0;
 
 /* ========================================================================== *
  * 全局变量声明 (如在头文件已声明，此处可按需保留或删除)
@@ -147,12 +148,23 @@ void Bsp_Dc_Power_Control(bool state)
     {
         /* 硬件层：拉高 GPIOB_PIN_9 */
         HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+        Dc_Power_State = 1;
     }
     else
     {
         /* 硬件层：拉低 GPIOB_PIN_9 */
         HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
+        Dc_Power_State = 0;
     }
+}
+
+/**
+ * @brief  返回高压 DCDC 电源状态
+ * @param  state 1: 开启高压供电, 0: 切断高压供电
+ */
+uint8_t Bsp_Get_Dc_Power_State(void)
+{
+	return Dc_Power_State;
 }
 
 /**

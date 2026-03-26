@@ -62,4 +62,14 @@ void Mid_Int16_Groups_Dma_Send(int16_t* arr, int total_count, int elements_per_g
  */
 void Mid_Usart_Send_JustFloat(float *pData, uint8_t count);
 
+/**
+ * @brief  获取输出的电频率
+ */
+float Mid_Get_Fre_Ele(void);
+
+/**
+ * @brief  设置新的电频率
+ */
+void Mid_Set_Fre_Ele(float Fre);
+
 #endif /* _MID_COMMAND_USART_H_ */

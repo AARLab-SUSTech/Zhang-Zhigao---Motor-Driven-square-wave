@@ -1,25 +1,5 @@
-#include "lcd_init.h"
-
-void LCD_GPIO_Init(void)
-{
-//	GPIO_InitTypeDef  GPIO_InitStructure;
-//
-//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOD, ENABLE);	 //使能A端口时钟
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_7;
-// 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //推挽输出
-//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;//速度50MHz
-// 	GPIO_Init(GPIOA, &GPIO_InitStructure);
-// 	GPIO_SetBits(GPIOA,GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_7);
-//
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5|GPIO_Pin_6;
-// 	GPIO_Init(GPIOB, &GPIO_InitStructure);
-// 	GPIO_SetBits(GPIOB,GPIO_Pin_5|GPIO_Pin_6);
-//
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
-// 	GPIO_Init(GPIOD, &GPIO_InitStructure);
-// 	GPIO_SetBits(GPIOD,GPIO_Pin_2);
-}
-
+#include <Bsp_Lcd_Init.h>
+#include "stm32g4xx.h"
 
 /******************************************************************************
       函数说明：LCD串行数据写入函数
@@ -81,11 +61,54 @@ void LCD_WR_DATA8(uint8_t dat)
       入口数据：dat 写入的数据
       返回值：  无
 ******************************************************************************/
-void LCD_WR_DATA(uint16_t dat)
-{
-	LCD_Writ_Bus(dat>>8);
-	LCD_Writ_Bus(dat);
+//void LCD_WR_DATA(uint16_t dat)
+//{
+//	LCD_Writ_Bus(dat>>8);
+//	LCD_Writ_Bus(dat);
+//}
+/******************************************************************************
+      函数说明：LCD写入16位颜色数据 (极速画图专用)
+      核心优化：16位数据只拉低一次片选，直接连发两字节！
+******************************************************************************/
+void LCD_WR_DATA(uint16_t dat){
+
+    LCD_CS_Clr(); // 拉低片选，准备连续发送
+
+    /* 发送高8位 */
+    while((SPI1->SR & SPI_SR_TXE) == 0);
+    *((__IO uint8_t *)&SPI1->DR) = (dat >> 8);
+    /* 发送低8位 (不需要拉高片选，直接连发) */
+
+    while((SPI1->SR & SPI_SR_TXE) == 0);
+    *((__IO uint8_t *)&SPI1->DR) = dat;
+    /* 等待最后的数据从移位寄存器发完 */
+
+    while((SPI1->SR & SPI_SR_BSY) != 0);
+
+    LCD_CS_Set(); // 传输完毕，拉高片选
+
 }
+//void LCD_WR_DATA(uint16_t dat)
+//{
+//    /* 1. 将 16 位数据拆分成 2 个 8 位字节的数组 (高位在前) */
+//    uint8_t tx_buf[2];
+//    tx_buf[0] = (uint8_t)(dat >> 8);   // 高 8 位
+//    tx_buf[1] = (uint8_t)(dat & 0xFF); // 低 8 位
+//
+//    /* 2. 拉低片选，选中屏幕 */
+//    LCD_CS_Clr();
+//
+//    /* 3. 使用 HAL 库一次性连续发送 2 个字节
+//     * 参数1: SPI句柄
+//     * 参数2: 数据数组的首地址
+//     * 参数3: 要发送的字节数 (2个)
+//     * 参数4: 超时时间 (设为 10ms 足够了)
+//     */
+//    HAL_SPI_Transmit(&hspi1, tx_buf, 2, 10);
+//
+//    /* 4. 传输完毕，拉高片选 */
+//    LCD_CS_Set();
+//}
 
 
 /******************************************************************************
@@ -153,13 +176,7 @@ void LCD_Address_Set(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2)
 
 void LCD_Init(void)
 {
-	LCD_GPIO_Init();//初始化GPIO
-	
-	LCD_RES_Clr();//复位
-	HAL_Delay(100);
-	LCD_RES_Set();
-	HAL_Delay(100);
-	
+
 	//LCD_BLK_Set();//打开背光
 	HAL_Delay(100);
 	

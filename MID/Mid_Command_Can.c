@@ -25,7 +25,7 @@ extern Motor EFA_DATA;
  * 全局变量定义 (Global Variables)
  * ========================================== */
 /* 储存速度计算临时值 */
-float    temp_speed_float;
+float    temp_speed_float = 10;
 int16_t  temp_speed_int16;
 
 /* 定义一个全局错误计数器，用于替代危险的 printf */

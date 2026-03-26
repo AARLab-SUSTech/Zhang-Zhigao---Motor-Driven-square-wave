@@ -23,7 +23,13 @@ void LCD_ShowFloatNum1(uint16_t x,uint16_t y,float num,uint8_t len,uint16_t fc,u
 
 void LCD_ShowPicture(uint16_t x,uint16_t y,uint16_t length,uint16_t width,const uint8_t pic[]);//显示图片
 
+void LCD_Draw_SolidDot(uint16_t x0, uint16_t y0, uint8_t r, uint16_t color, uint16_t bg_color);
 
+/* 定义苹果风常用的亮色调 against BLACK background */
+#define APPLE_GRAY      0X8430  // Softer gray for non-active borders
+#define APPLE_BLUE      0X07FF  // Light Cyan/Blue for active data
+#define APPLE_RED       0XF800  // Pure Red for alarms
+#define APPLE_GREEN     0X07E0  // Pure Green for RUN status
 //画笔颜色
 #define WHITE         	 0xFFFF
 #define BLACK         	 0x0000	  
