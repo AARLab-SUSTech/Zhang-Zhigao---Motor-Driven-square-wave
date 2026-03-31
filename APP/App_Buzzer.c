@@ -54,12 +54,12 @@ void App_Buzzer_Set_Alarm(bool enable)
 }
 
 /* ==================================================== *
- * 3. 蜂鸣器后台守护任务 (放在 main 的 while(1) 中高频调用)
+ * 3. 蜂鸣器后台任务
  * ==================================================== */
 void App_Buzzer_Task(void)
 {
     if (Buzzer_Mode == BUZZER_MODE_IDLE) {
-        return; /* 静音模式，直接退出，不浪费 CPU */
+        return; /* 静音模式，直接退出*/
     }
 
     /* 时间到了！执行动作 */

@@ -102,7 +102,7 @@ void Btn1_Long_Free_CallBack()
     /* 如果已经在运行了，就不要重复触发启动 */
     if (EFA_DATA.Motor_mode != MOTOR_IDLE) return;
 
-    App_Buzzer_Beep(600); // 发出 0.5 秒的长鸣，警告操作员即将启动
+    App_Buzzer_Beep(600); // 发出 0.6 秒的长鸣
 
     /* 标记等待启动，并记录未来要启动的时间戳 (当前时间 + 延时) */
     Motor_Pending_Start = true;
