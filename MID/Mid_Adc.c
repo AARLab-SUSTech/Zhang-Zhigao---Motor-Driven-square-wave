@@ -29,10 +29,10 @@ float Mid_Get_Hv_V(void)
     temp_data = (2048 - Bsp_Get_Hv_Raw_Data()) * 2;
 
     /* 2. 根据硬件分压比进行物理量换算
-     * 理论推导公式: HV_V = (temp_data / 4096) * 3.3f * 2 * 501 / 0.4f
-     * 预结算常数  : 1.00909423828125f
+     * 理论推导公式: HV_V = (temp_data / 4096) * 3.3f * 625 / 0.4f
+     * 预结算常数  : 1.25885f
      */
-    HV_V = temp_data * 1.00909423828125f;
+    HV_V = temp_data * 1.25885f;
 
     return HV_V;
 }
