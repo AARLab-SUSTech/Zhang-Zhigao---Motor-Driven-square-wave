@@ -1,4 +1,5 @@
 #include <Bsp_Lcd.h>
+#include "Bsp_Can.h"
 #include "App_EFA.h"
 #include "App_Fault.h"
 #include "App_Display.h"
@@ -51,9 +52,15 @@ void App_Display_Init(void)
     LCD_ShowString(53,  155, (uint8_t *)"MODE",  WHITE, UI_BG_DARK,  24, 0);
     LCD_ShowString(191, 155, (uint8_t *)"STATE", WHITE, UI_BG_DARK,  24, 0);
 
-        // 【新增】把不会变的单位移到静态初始化里，终生只画一次！
-        LCD_ShowString(42, 116, (uint8_t *)"Hz", UI_TXT_GREEN, UI_BG_GREEN, 16, 0);
-        LCD_ShowString(260, 116, (uint8_t *)"W", RED, UI_BG_PURPLE, 16, 0);
+    // 【新增】把不会变的单位移到静态初始化里，终生只画一次！
+    LCD_ShowString(42, 100, (uint8_t *)"Hz", UI_TXT_GREEN, UI_BG_GREEN, 16, 0);
+    LCD_ShowString(260, 100, (uint8_t *)"W", RED, UI_BG_PURPLE, 16, 0);
+
+    LCD_ShowString(20, 120, (uint8_t *)"CAN ID", BLACK, UI_BG_GREEN, 12, 0);
+    LCD_ShowIntNum(32, 132, MOTOR_ID, 2, BLACK, UI_BG_GREEN,12);
+
+    LCD_ShowString(222, 120, (uint8_t *)"Voltage", RED, UI_BG_PURPLE, 12, 0);
+    LCD_ShowIntNum(230, 132, Module_Voltage, 4, RED, UI_BG_PURPLE,12);
 
 }
 
@@ -379,21 +386,21 @@ void App_Display_Update(void)
     int curr_dc_i = (int)(EFA_DATA.Dc_I_A * 10.0f);
     if (curr_dc_i != last_dc_i) {
         last_dc_i = curr_dc_i;
-        LCD_ShowFloatNum1(14,  70, EFA_DATA.Dc_I_A,  4, UI_TXT_GREEN,  UI_BG_GREEN,  24);
+        LCD_ShowFloatNum1(14,  60, EFA_DATA.Dc_I_A,  4, UI_TXT_GREEN,  UI_BG_GREEN,  24);
     }
 
     /* 2.2 电频率 (整数比对) */
     int curr_fre = (int)Mid_Get_Fre_Ele();
     if (curr_fre != last_fre) {
         last_fre = curr_fre;
-        LCD_ShowIntNum(14, 116, curr_fre, 3, UI_TXT_GREEN, UI_BG_GREEN, 16);
+        LCD_ShowIntNum(14, 100, curr_fre, 3, UI_TXT_GREEN, UI_BG_GREEN, 16);
     }
 
     /* 2.3 高压电压 (整数比对) */
     int curr_hv_v = (int)EFA_DATA.Hv_V_V;
     if (curr_hv_v != last_hv_v) {
         last_hv_v = curr_hv_v;
-        LCD_ShowIntNum(100, 70, curr_hv_v,  4, UI_TXT_BLUE,   UI_BG_BLUE,   24);
+        LCD_ShowIntNum(100, 60, curr_hv_v,  4, UI_TXT_BLUE,   UI_BG_BLUE,   24);
     }
 
     /* 2.4 高压电流 (放大10倍比对) */
@@ -401,7 +408,7 @@ void App_Display_Update(void)
     if (curr_hv_i != last_hv_i) {
         last_hv_i = curr_hv_i;
         uint16_t hv_i_color = (EFA_DATA.Hv_I_mA > 10.0f) ? RED : UI_TXT_PURPLE;
-        LCD_ShowFloatNum1(218, 70, EFA_DATA.Hv_I_mA, 4, hv_i_color,  UI_BG_PURPLE, 24);
+        LCD_ShowFloatNum1(218, 60, EFA_DATA.Hv_I_mA, 4, hv_i_color,  UI_BG_PURPLE, 24);
     }
 
     /* 2.5 功率 (放大10倍比对) */
@@ -409,7 +416,7 @@ void App_Display_Update(void)
     int curr_power = (int)(Hv_Output_Power * 10.0f);
     if (curr_power != last_power) {
         last_power = curr_power;
-        LCD_ShowFloatNum1(218, 116, Hv_Output_Power, 4, RED,  UI_BG_PURPLE, 16);
+        LCD_ShowFloatNum1(218, 100, Hv_Output_Power, 4, RED,  UI_BG_PURPLE, 16);
     }
 
     /* ==================================================== *

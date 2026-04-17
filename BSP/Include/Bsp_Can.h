@@ -15,7 +15,9 @@
 /* ==========================================
  * 节点 ID 与通信宏定义 (Node IDs & Macros)
  * ========================================== */
-#define MOTOR_ID        0x03
+#define Module_Voltage  1000
+
+#define MOTOR_ID        0x02
 
 #define BROADCAST_ID    0x100                 /* <-- 我们协议中定义的广播ID */
 
