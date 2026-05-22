@@ -180,6 +180,13 @@ void LCD_Init(void)
 	//LCD_BLK_Set();//打开背光
 	HAL_Delay(100);
 	
+	LCD_RST_Set();
+	HAL_Delay(1);   // 稳定电平
+	LCD_RST_Clr();  // 拉低 RST 引脚，开始复位
+	HAL_Delay(50);  // 保持低电平，确保芯片完全复位
+	LCD_RST_Set();  // 拉高 RST 引脚，结束复位
+	HAL_Delay(200); // 复位结束后，必须等待芯片内部完成初始化
+
 	//************* Start Initial Sequence **********//
 	LCD_WR_REG(0x11); //Sleep out 
 	HAL_Delay(120);              //Delay 120ms
